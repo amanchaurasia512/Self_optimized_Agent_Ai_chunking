@@ -1,0 +1,92 @@
+{
+  "run_id": "P0-LOCAL-20261027-1",
+  "created_at": "2026-10-27T00:34:08+00:00",
+  "code": {
+    "commit": "e84183a197b9cb3a78f47d9523db155b0ababd2e",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "chunker": {
+      "name": "page_placeholder",
+      "version": "0.1",
+      "settings": {
+        "unit": "page"
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/WHO_NMH_NHD_14.1_eng.pdf",
+      "sha256": "c6588c587a67d82996e6721e8f7dd3a6f042efa8adecfcf3cdc08de534f99e65"
+    }
+  ],
+  "outputs": [
+    "data/extracted/pdfplumber/WHO_NMH_NHD_14.1_eng.json",
+    "data/chunks/pdfplumber/page_placeholder/WHO_NMH_NHD_14.1_eng.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.462,
+        "peak_ram_mb": 165.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.579,
+        "peak_ram_mb": 460.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "validate",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.028,
+        "peak_ram_mb": 463.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 2.069,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 463.6,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
