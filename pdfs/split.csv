@@ -1,0 +1,24 @@
+doc_id,source_dataset,split
+cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement,CUAD v1,tuning
+cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement,CUAD v1,held_out
+cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement,CUAD v1,tuning
+cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement,CUAD v1,tuning
+cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement,CUAD v1,tuning
+cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement,CUAD v1,held_out
+cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement,CUAD v1,tuning
+cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement,CUAD v1,tuning
+indian_d1,Indian regulatory benchmark (arXiv 2609.31660),tuning
+indian_d2_ccs_conduct_rules,Indian regulatory benchmark (arXiv 2609.31660),held_out
+indian_d3_fundamental_rules,Indian regulatory benchmark (arXiv 2609.31660),tuning
+indian_d4_rti_act,Indian regulatory benchmark (arXiv 2609.31660),tuning
+qasper_1806_03369,QASPER,tuning
+qasper_2001_01269,QASPER,held_out
+qasper_2001_09899,QASPER,tuning
+qasper_1911_01680,QASPER,tuning
+qasper_1910_03355,QASPER,held_out
+unidoc_finance_0458505,UniDoc-Bench,tuning
+unidoc_finance_6941304,UniDoc-Bench,held_out
+unidoc_healthcare_3428789,UniDoc-Bench,tuning
+unidoc_healthcare_4671258,UniDoc-Bench,tuning
+rti_act_en,Own (Hindi track),held_out_hindi
+rti_act_hi,Own (Hindi track),held_out_hindi
