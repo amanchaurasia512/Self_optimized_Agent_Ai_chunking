@@ -12,7 +12,7 @@ from src.common.manifest import PROJECT_ROOT, file_sha256, project_path
 REPO_ID = "theatticusproject/cuad"
 CUAD_DIR = PROJECT_ROOT / "data" / "external" / "cuad"
 RAW_DIR = PROJECT_ROOT / "data" / "raw" / "cuad"
-PDF_MANIFEST = PROJECT_ROOT / "pdfs" / "manifest.csv"
+PDF_MANIFEST = PROJECT_ROOT / "pdfs" / "catalog.csv"
 LICENCE = "CC BY 4.0"
 
 
