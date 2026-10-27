@@ -1,0 +1,504 @@
+{
+  "run_id": "P1-KN02-20261027-1",
+  "created_at": "2026-10-27T17:00:21+00:00",
+  "code": {
+    "commit": "9447046077d1ae24cca393318c685e53b1aabf90",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false
+      }
+    }
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "4f8d3bfb52a8",
+    "python": "3.13.15",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement.pdf",
+      "sha256": "e3bbdb7a34b44ecccb97e2acd20a500f499530ff92f8e50d752740ac3edb3f60"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.pdf",
+      "sha256": "38c558681f151ce76793fef1dd5637b713bbdf9165d28b2b6c475021b9a0b521"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.pdf",
+      "sha256": "29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement.pdf",
+      "sha256": "73284d7799dbdcafee112ad5ae53b9fe68472b60c6f3702a0f624ac217d0ff09"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement.pdf",
+      "sha256": "b69198b1a68092ce20b6b1aa48d80f34c99caecafdd00fa121610dcae55e7f6d"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement.pdf",
+      "sha256": "0bf7db4f1b4daca1936acc06e669f43fc0c442a5b39b71af8199ee333e8de179"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement.pdf",
+      "sha256": "79d7376a8d3961ab2e72632a919735da62e4bdc1d30aaf573ed24479980b7611"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement.pdf",
+      "sha256": "25f9bab4851b434110a05281147e2029f104426604be710e4312d250182011c7"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/indian_d1.pdf",
+      "sha256": "6eb3578af1b378f1f62335a7cd42506c98dd389d92fad9c4232ca0088d61b4ee"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/indian_d2_ccs_conduct_rules.pdf",
+      "sha256": "88bc44ea94fe59cb221cfab0ff4da1679c83e014b26e50fb6e18aab8da98c5b1"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/indian_d3_fundamental_rules.pdf",
+      "sha256": "b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/indian_d4_rti_act.pdf",
+      "sha256": "7eed541caa5c6d2ab79cd6455569292312a85047094ecb9ce0b83f0cc19828cf"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/qasper_1806_03369.pdf",
+      "sha256": "e61e798c548886d0566b18e77dcc554b24214032e23b1bd276944f339f0a82ec"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/qasper_1910_03355.pdf",
+      "sha256": "3b107c08c395e360dc4f9a093d85757af7b8451952cbd141e7a19950c2b6a11b"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/qasper_1911_01680.pdf",
+      "sha256": "4228e2bc6ead210172bb2290298ef79018c05dd3d6024e1bc2dc54f789705051"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/qasper_2001_01269.pdf",
+      "sha256": "93d58769039098db39f61ca30438fd422fbb0948bf50138f66734389d419f2bc"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/qasper_2001_09899.pdf",
+      "sha256": "7a97425000fcd16f3c32043bc6f7f94e0b9a060c9b7fc45b70b3343fe46b78bf"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/rti_act_en.pdf",
+      "sha256": "8956eaba5db4079674bc16e50c14b210e8872c28e8a18f458f01a8fbcdde1479"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/rti_act_hi.pdf",
+      "sha256": "a15363ccb1550a6c8d7bb044ac8e366ccfd8864494adcf06ccdbceec6b20efe1"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/unidoc_finance_0458505.pdf",
+      "sha256": "0ed41e04312e58e54b56eb77cd57bf1be73b870124308a103e3412202148d0e7"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/unidoc_finance_6941304.pdf",
+      "sha256": "e0082fbf7e8f6783f1f34758e2357a1b82477befc3f1fc54ca0876f576370dec"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/unidoc_healthcare_3428789.pdf",
+      "sha256": "6ea482579475e5af501bf5d4d207e1429165533f83634859625fa7cecdcfc447"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/unidoc_healthcare_4671258.pdf",
+      "sha256": "96c1a87a96465acd65b1820fadefa3b803a918f2b0f3ff2214d5c22e5ebbc11f"
+    }
+  ],
+  "outputs": [
+    "/kaggle/working/docling/cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement.json",
+    "/kaggle/working/docling/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.json",
+    "/kaggle/working/docling/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+    "/kaggle/working/docling/cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement.json",
+    "/kaggle/working/docling/cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement.json",
+    "/kaggle/working/docling/cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement.json",
+    "/kaggle/working/docling/cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement.json",
+    "/kaggle/working/docling/cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement.json",
+    "/kaggle/working/docling/indian_d1.json",
+    "/kaggle/working/docling/indian_d2_ccs_conduct_rules.json",
+    "/kaggle/working/docling/indian_d3_fundamental_rules.json",
+    "/kaggle/working/docling/indian_d4_rti_act.json",
+    "/kaggle/working/docling/qasper_1806_03369.json",
+    "/kaggle/working/docling/qasper_1910_03355.json",
+    "/kaggle/working/docling/qasper_1911_01680.json",
+    "/kaggle/working/docling/qasper_2001_01269.json",
+    "/kaggle/working/docling/qasper_2001_09899.json",
+    "/kaggle/working/docling/rti_act_en.json",
+    "/kaggle/working/docling/rti_act_hi.json",
+    "/kaggle/working/docling/unidoc_finance_0458505.json",
+    "/kaggle/working/docling/unidoc_finance_6941304.json",
+    "/kaggle/working/docling/unidoc_healthcare_3428789.json",
+    "/kaggle/working/docling/unidoc_healthcare_4671258.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 23311,
+        "empty_pages": 1,
+        "elements": 90,
+        "wall_seconds": 28.764,
+        "peak_ram_mb": 2398.2,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1085.4
+      },
+      {
+        "stage": "parse:cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 183206,
+        "empty_pages": 0,
+        "elements": 564,
+        "wall_seconds": 5.997,
+        "peak_ram_mb": 3200.7,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 984.3
+      },
+      {
+        "stage": "parse:cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 13538,
+        "empty_pages": 0,
+        "elements": 41,
+        "wall_seconds": 0.669,
+        "peak_ram_mb": 2860.8,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1001.6
+      },
+      {
+        "stage": "parse:cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 23798,
+        "empty_pages": 0,
+        "elements": 80,
+        "wall_seconds": 1.296,
+        "peak_ram_mb": 2888.0,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 972.4
+      },
+      {
+        "stage": "parse:cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 37571,
+        "empty_pages": 0,
+        "elements": 112,
+        "wall_seconds": 1.156,
+        "peak_ram_mb": 2960.8,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 972.4
+      },
+      {
+        "stage": "parse:cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 10100,
+        "empty_pages": 0,
+        "elements": 33,
+        "wall_seconds": 0.328,
+        "peak_ram_mb": 2925.7,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 734.5
+      },
+      {
+        "stage": "parse:cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 110209,
+        "empty_pages": 0,
+        "elements": 270,
+        "wall_seconds": 4.319,
+        "peak_ram_mb": 3391.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1429.3
+      },
+      {
+        "stage": "parse:cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 59049,
+        "empty_pages": 0,
+        "elements": 287,
+        "wall_seconds": 3.592,
+        "peak_ram_mb": 3374.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 973.1
+      },
+      {
+        "stage": "parse:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 158554,
+        "empty_pages": 0,
+        "elements": 848,
+        "wall_seconds": 22.744,
+        "peak_ram_mb": 4016.6,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2943.4
+      },
+      {
+        "stage": "parse:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 67544,
+        "empty_pages": 0,
+        "elements": 202,
+        "wall_seconds": 12.218,
+        "peak_ram_mb": 3601.9,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2204.5
+      },
+      {
+        "stage": "parse:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 116240,
+        "empty_pages": 4,
+        "elements": 394,
+        "wall_seconds": 7.635,
+        "peak_ram_mb": 3940.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2318.0
+      },
+      {
+        "stage": "parse:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 188408,
+        "empty_pages": 0,
+        "elements": 983,
+        "wall_seconds": 99.442,
+        "peak_ram_mb": 4680.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2216.0
+      },
+      {
+        "stage": "parse:qasper_1806_03369",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 61608,
+        "empty_pages": 0,
+        "elements": 97,
+        "wall_seconds": 5.416,
+        "peak_ram_mb": 4138.6,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 972.4
+      },
+      {
+        "stage": "parse:qasper_1910_03355",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 36565,
+        "empty_pages": 0,
+        "elements": 124,
+        "wall_seconds": 3.14,
+        "peak_ram_mb": 3952.9,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1049.9
+      },
+      {
+        "stage": "parse:qasper_1911_01680",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 21714,
+        "empty_pages": 0,
+        "elements": 81,
+        "wall_seconds": 4.003,
+        "peak_ram_mb": 3827.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 972.4
+      },
+      {
+        "stage": "parse:qasper_2001_01269",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 33473,
+        "empty_pages": 0,
+        "elements": 98,
+        "wall_seconds": 2.412,
+        "peak_ram_mb": 3724.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 973.1
+      },
+      {
+        "stage": "parse:qasper_2001_09899",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 43116,
+        "empty_pages": 0,
+        "elements": 133,
+        "wall_seconds": 3.485,
+        "peak_ram_mb": 3699.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1428.1
+      },
+      {
+        "stage": "parse:rti_act_en",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 69986,
+        "empty_pages": 0,
+        "elements": 448,
+        "wall_seconds": 3.297,
+        "peak_ram_mb": 3850.9,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1068.8
+      },
+      {
+        "stage": "parse:rti_act_hi",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 61159,
+        "empty_pages": 0,
+        "elements": 410,
+        "wall_seconds": 2.773,
+        "peak_ram_mb": 3978.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 972.9
+      },
+      {
+        "stage": "parse:unidoc_finance_0458505",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 94872,
+        "empty_pages": 2,
+        "elements": 199,
+        "wall_seconds": 26.155,
+        "peak_ram_mb": 4031.7,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2636.6
+      },
+      {
+        "stage": "parse:unidoc_finance_6941304",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 61152,
+        "empty_pages": 1,
+        "elements": 143,
+        "wall_seconds": 7.307,
+        "peak_ram_mb": 4001.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1222.1
+      },
+      {
+        "stage": "parse:unidoc_healthcare_3428789",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 40301,
+        "empty_pages": 0,
+        "elements": 104,
+        "wall_seconds": 3.267,
+        "peak_ram_mb": 4031.2,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1264.4
+      },
+      {
+        "stage": "parse:unidoc_healthcare_4671258",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 27200,
+        "empty_pages": 0,
+        "elements": 103,
+        "wall_seconds": 2.882,
+        "peak_ram_mb": 4047.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 973.1
+      }
+    ],
+    "totals": {
+      "wall_seconds": 252.297,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 4680.5,
+      "gpu_peak_mb": 2943.4
+    }
+  }
+}

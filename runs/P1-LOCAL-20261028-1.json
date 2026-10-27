@@ -1,0 +1,83 @@
+{
+  "run_id": "P1-LOCAL-20261028-1",
+  "created_at": "2026-10-27T19:26:29+00:00",
+  "code": {
+    "commit": "6eb5200493d4d81ef557ad8e7c9fd3d34854b709",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "llamaparse",
+      "sdk_version": "2.19.0",
+      "tier": "cost_effective",
+      "parse_version": "latest",
+      "ocr_lang": [
+        "hi",
+        "en"
+      ]
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/hindi/rti_act_en.pdf",
+      "sha256": "8956eaba5db4079674bc16e50c14b210e8872c28e8a18f458f01a8fbcdde1479"
+    },
+    {
+      "path": "data/raw/hindi/rti_act_hi.pdf",
+      "sha256": "a15363ccb1550a6c8d7bb044ac8e366ccfd8864494adcf06ccdbceec6b20efe1"
+    }
+  ],
+  "outputs": [
+    "data/extracted/llamaparse_cost_effective/rti_act_en.json",
+    "data/extracted/llamaparse_cost_effective/rti_act_hi.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:rti_act_en",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 75.0,
+        "chars": 71328,
+        "empty_pages": 0,
+        "wall_seconds": 19.498,
+        "peak_ram_mb": 203.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:rti_act_hi",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 60.0,
+        "chars": 59442,
+        "empty_pages": 0,
+        "wall_seconds": 32.87,
+        "peak_ram_mb": 204.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 52.368,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 135.0,
+      "peak_ram_mb": 204.6,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

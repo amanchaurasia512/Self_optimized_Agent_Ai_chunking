@@ -9,12 +9,16 @@ from llama_cloud import LlamaCloud
 
 PAGE_SEPARATOR = "\n\n"
 KEY_FILE = Path.home() / ".config" / "llamacloud" / "api_key"
+BASE_URL_FILE = Path.home() / ".config" / "llamacloud" / "base_url"
 CREDITS_PER_PAGE = {"fast": 1, "cost_effective": 3, "agentic": 10, "agentic_plus": 45}
 
 
 def make_client():
-    api_key = os.environ.get("LLAMA_CLOUD_API_KEY") or KEY_FILE.read_text(encoding="utf-8").strip()
-    return LlamaCloud(api_key=api_key)
+    api_key = os.environ.get("LLAMA_CLOUD_API_KEY") or (KEY_FILE.read_text(encoding="utf-8").strip() if KEY_FILE.exists() else "")
+    if not api_key:
+        raise RuntimeError(f"No LlamaCloud API key: set LLAMA_CLOUD_API_KEY or save the key in {KEY_FILE}")
+    base_url = os.environ.get("LLAMA_CLOUD_BASE_URL") or (BASE_URL_FILE.read_text(encoding="utf-8").strip() if BASE_URL_FILE.exists() else None)
+    return LlamaCloud(api_key=api_key, base_url=base_url) if base_url else LlamaCloud(api_key=api_key)
 
 
 def parser_info(tier, ocr_lang=None):
