@@ -1,0 +1,476 @@
+{
+  "run_id": "P1-LOCAL-20261027-1",
+  "created_at": "2026-10-27T12:35:39+00:00",
+  "code": {
+    "commit": "5086d2a07b6d659c82d90edad9ce2c5ef7f72617",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/cuad/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.pdf",
+      "sha256": "29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64"
+    },
+    {
+      "path": "data/raw/cuad/cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement.pdf",
+      "sha256": "0bf7db4f1b4daca1936acc06e669f43fc0c442a5b39b71af8199ee333e8de179"
+    },
+    {
+      "path": "data/raw/cuad/cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement.pdf",
+      "sha256": "73284d7799dbdcafee112ad5ae53b9fe68472b60c6f3702a0f624ac217d0ff09"
+    },
+    {
+      "path": "data/raw/cuad/cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement.pdf",
+      "sha256": "e3bbdb7a34b44ecccb97e2acd20a500f499530ff92f8e50d752740ac3edb3f60"
+    },
+    {
+      "path": "data/raw/cuad/cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement.pdf",
+      "sha256": "25f9bab4851b434110a05281147e2029f104426604be710e4312d250182011c7"
+    },
+    {
+      "path": "data/raw/cuad/cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement.pdf",
+      "sha256": "b69198b1a68092ce20b6b1aa48d80f34c99caecafdd00fa121610dcae55e7f6d"
+    },
+    {
+      "path": "data/raw/cuad/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.pdf",
+      "sha256": "38c558681f151ce76793fef1dd5637b713bbdf9165d28b2b6c475021b9a0b521"
+    },
+    {
+      "path": "data/raw/cuad/cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement.pdf",
+      "sha256": "79d7376a8d3961ab2e72632a919735da62e4bdc1d30aaf573ed24479980b7611"
+    },
+    {
+      "path": "data/raw/indian_regulatory/indian_d1.pdf",
+      "sha256": "6eb3578af1b378f1f62335a7cd42506c98dd389d92fad9c4232ca0088d61b4ee"
+    },
+    {
+      "path": "data/raw/indian_regulatory/indian_d2_ccs_conduct_rules.pdf",
+      "sha256": "88bc44ea94fe59cb221cfab0ff4da1679c83e014b26e50fb6e18aab8da98c5b1"
+    },
+    {
+      "path": "data/raw/indian_regulatory/indian_d3_fundamental_rules.pdf",
+      "sha256": "b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d"
+    },
+    {
+      "path": "data/raw/indian_regulatory/indian_d4_rti_act.pdf",
+      "sha256": "7eed541caa5c6d2ab79cd6455569292312a85047094ecb9ce0b83f0cc19828cf"
+    },
+    {
+      "path": "data/raw/qasper/qasper_1806_03369.pdf",
+      "sha256": "e61e798c548886d0566b18e77dcc554b24214032e23b1bd276944f339f0a82ec"
+    },
+    {
+      "path": "data/raw/qasper/qasper_2001_01269.pdf",
+      "sha256": "93d58769039098db39f61ca30438fd422fbb0948bf50138f66734389d419f2bc"
+    },
+    {
+      "path": "data/raw/qasper/qasper_2001_09899.pdf",
+      "sha256": "7a97425000fcd16f3c32043bc6f7f94e0b9a060c9b7fc45b70b3343fe46b78bf"
+    },
+    {
+      "path": "data/raw/qasper/qasper_1911_01680.pdf",
+      "sha256": "4228e2bc6ead210172bb2290298ef79018c05dd3d6024e1bc2dc54f789705051"
+    },
+    {
+      "path": "data/raw/qasper/qasper_1910_03355.pdf",
+      "sha256": "3b107c08c395e360dc4f9a093d85757af7b8451952cbd141e7a19950c2b6a11b"
+    },
+    {
+      "path": "data/raw/unidoc/unidoc_finance_0458505.pdf",
+      "sha256": "0ed41e04312e58e54b56eb77cd57bf1be73b870124308a103e3412202148d0e7"
+    },
+    {
+      "path": "data/raw/unidoc/unidoc_finance_6941304.pdf",
+      "sha256": "e0082fbf7e8f6783f1f34758e2357a1b82477befc3f1fc54ca0876f576370dec"
+    },
+    {
+      "path": "data/raw/unidoc/unidoc_healthcare_3428789.pdf",
+      "sha256": "6ea482579475e5af501bf5d4d207e1429165533f83634859625fa7cecdcfc447"
+    },
+    {
+      "path": "data/raw/unidoc/unidoc_healthcare_4671258.pdf",
+      "sha256": "96c1a87a96465acd65b1820fadefa3b803a918f2b0f3ff2214d5c22e5ebbc11f"
+    },
+    {
+      "path": "data/raw/hindi/rti_act_en.pdf",
+      "sha256": "8956eaba5db4079674bc16e50c14b210e8872c28e8a18f458f01a8fbcdde1479"
+    },
+    {
+      "path": "data/raw/hindi/rti_act_hi.pdf",
+      "sha256": "a15363ccb1550a6c8d7bb044ac8e366ccfd8864494adcf06ccdbceec6b20efe1"
+    }
+  ],
+  "outputs": [
+    "data/extracted/pdfplumber/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+    "data/extracted/pdfplumber/cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement.json",
+    "data/extracted/pdfplumber/cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement.json",
+    "data/extracted/pdfplumber/cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement.json",
+    "data/extracted/pdfplumber/cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement.json",
+    "data/extracted/pdfplumber/cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement.json",
+    "data/extracted/pdfplumber/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.json",
+    "data/extracted/pdfplumber/cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement.json",
+    "data/extracted/pdfplumber/indian_d1.json",
+    "data/extracted/pdfplumber/indian_d2_ccs_conduct_rules.json",
+    "data/extracted/pdfplumber/indian_d3_fundamental_rules.json",
+    "data/extracted/pdfplumber/indian_d4_rti_act.json",
+    "data/extracted/pdfplumber/qasper_1806_03369.json",
+    "data/extracted/pdfplumber/qasper_2001_01269.json",
+    "data/extracted/pdfplumber/qasper_2001_09899.json",
+    "data/extracted/pdfplumber/qasper_1911_01680.json",
+    "data/extracted/pdfplumber/qasper_1910_03355.json",
+    "data/extracted/pdfplumber/unidoc_finance_0458505.json",
+    "data/extracted/pdfplumber/unidoc_finance_6941304.json",
+    "data/extracted/pdfplumber/unidoc_healthcare_3428789.json",
+    "data/extracted/pdfplumber/unidoc_healthcare_4671258.json",
+    "data/extracted/pdfplumber/rti_act_en.json",
+    "data/extracted/pdfplumber/rti_act_hi.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 13526,
+        "empty_pages": 0,
+        "wall_seconds": 0.334,
+        "peak_ram_mb": 200.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 10125,
+        "empty_pages": 0,
+        "wall_seconds": 0.276,
+        "peak_ram_mb": 223.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 22331,
+        "empty_pages": 0,
+        "wall_seconds": 0.528,
+        "peak_ram_mb": 256.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 23755,
+        "empty_pages": 0,
+        "wall_seconds": 0.852,
+        "peak_ram_mb": 287.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 57400,
+        "empty_pages": 0,
+        "wall_seconds": 1.895,
+        "peak_ram_mb": 345.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 37917,
+        "empty_pages": 0,
+        "wall_seconds": 0.915,
+        "peak_ram_mb": 401.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 135889,
+        "empty_pages": 0,
+        "wall_seconds": 3.52,
+        "peak_ram_mb": 486.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 111685,
+        "empty_pages": 0,
+        "wall_seconds": 2.784,
+        "peak_ram_mb": 568.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 143505,
+        "empty_pages": 0,
+        "wall_seconds": 6.143,
+        "peak_ram_mb": 571.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 50774,
+        "empty_pages": 0,
+        "wall_seconds": 1.859,
+        "peak_ram_mb": 631.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 116050,
+        "empty_pages": 0,
+        "wall_seconds": 4.205,
+        "peak_ram_mb": 643.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 194372,
+        "empty_pages": 0,
+        "wall_seconds": 4.925,
+        "peak_ram_mb": 643.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:qasper_1806_03369",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 32736,
+        "empty_pages": 0,
+        "wall_seconds": 0.654,
+        "peak_ram_mb": 657.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:qasper_2001_01269",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 29038,
+        "empty_pages": 0,
+        "wall_seconds": 0.551,
+        "peak_ram_mb": 688.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:qasper_2001_09899",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 40936,
+        "empty_pages": 0,
+        "wall_seconds": 1.132,
+        "peak_ram_mb": 737.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:qasper_1911_01680",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 20484,
+        "empty_pages": 0,
+        "wall_seconds": 0.54,
+        "peak_ram_mb": 737.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:qasper_1910_03355",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 29032,
+        "empty_pages": 0,
+        "wall_seconds": 0.68,
+        "peak_ram_mb": 738.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_finance_0458505",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 39221,
+        "empty_pages": 3,
+        "wall_seconds": 1.646,
+        "peak_ram_mb": 738.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_finance_6941304",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 62806,
+        "empty_pages": 0,
+        "wall_seconds": 2.388,
+        "peak_ram_mb": 738.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_healthcare_3428789",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 36385,
+        "empty_pages": 0,
+        "wall_seconds": 0.822,
+        "peak_ram_mb": 737.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_healthcare_4671258",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 24832,
+        "empty_pages": 0,
+        "wall_seconds": 0.602,
+        "peak_ram_mb": 737.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:rti_act_en",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 69438,
+        "empty_pages": 0,
+        "wall_seconds": 2.161,
+        "peak_ram_mb": 737.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:rti_act_hi",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 58974,
+        "empty_pages": 0,
+        "wall_seconds": 5.567,
+        "peak_ram_mb": 735.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 44.979,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 738.6,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
