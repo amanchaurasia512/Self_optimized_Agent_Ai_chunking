@@ -18,13 +18,16 @@ def main():
     arg_parser.add_argument("--output", type=Path, required=True)
     arg_parser.add_argument("--machine", default="kaggle")
     arg_parser.add_argument("--force-full-page-ocr", action="store_true")
+    arg_parser.add_argument("--ocr-lang", nargs="+")
+    arg_parser.add_argument("--only", nargs="+", help="doc ids to run; default: all PDFs under --input")
     args = arg_parser.parse_args()
 
-    converter, parser_info = make_converter(args.force_full_page_ocr)
+    converter, parser_info = make_converter(args.force_full_page_ocr, args.ocr_lang)
     args.output.mkdir(parents=True, exist_ok=True)
     logger = CostLogger()
     inputs, outputs = [], []
-    for pdf_path in sorted(args.input.rglob("*.pdf")):
+    pdf_paths = [path for path in sorted(args.input.rglob("*.pdf")) if not args.only or path.stem in args.only]
+    for pdf_path in pdf_paths:
         output_path = args.output / f"{pdf_path.stem}.json"
         if output_path.exists():
             continue
@@ -44,7 +47,6 @@ def main():
                                   logger.summary(), args.machine)
         print("manifest:", write_manifest(manifest))
         print(pd.DataFrame(logger.stages)[["stage", "wall_seconds", "chars", "empty_pages", "elements"]].to_string(index=False))
-
 
 if __name__ == "__main__":
     main()

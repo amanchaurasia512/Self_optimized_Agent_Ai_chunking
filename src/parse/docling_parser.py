@@ -4,22 +4,24 @@ from importlib.metadata import version
 from itertools import accumulate
 
 from docling.datamodel.base_models import InputFormat
-from docling.datamodel.pipeline_options import PdfPipelineOptions
+from docling.datamodel.pipeline_options import EasyOcrOptions, PdfPipelineOptions
 from docling.document_converter import DocumentConverter, PdfFormatOption
 from docling_core.types.doc import TableItem
 
 PAGE_SEPARATOR = "\n\n"
 ELEMENT_SEPARATOR = "\n\n"
 
-
-def make_converter(force_full_page_ocr=False):
+def make_converter(force_full_page_ocr=False, ocr_lang=None):
     options = PdfPipelineOptions()
     options.do_ocr = True
     options.do_table_structure = True
+    if ocr_lang:
+        options.ocr_options = EasyOcrOptions(lang=ocr_lang)
     options.ocr_options.force_full_page_ocr = force_full_page_ocr
     converter = DocumentConverter(format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=options)})
     parser_info = {"name": "docling", "version": version("docling"),
-                   "settings": {"do_ocr": True, "do_table_structure": True, "force_full_page_ocr": force_full_page_ocr}}
+                   "settings": {"do_ocr": True, "do_table_structure": True, "force_full_page_ocr": force_full_page_ocr,
+                                "ocr_engine": type(options.ocr_options).__name__, "ocr_lang": ocr_lang or []}}
     return converter, parser_info
 
 
