@@ -1,2 +1,3 @@
 kaggle_id,version,runs,git_commit,inputs,outputs,run_id,status
 P1-KN01,v1,notebooks/kaggle (self-contained download),fcef031,Salesforce/UniDoc-Bench health+finance archives,data/raw/unidoc (4 PDFs),P1-KN01-20261027-1,done
+P1-KN02,v1,scripts/p1_extract_docling.py,9447046,P1-KD02 (23 test PDFs),data/extracted/docling (23 JSON),P1-KN02-20261027-1,done
