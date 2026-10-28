@@ -17,6 +17,7 @@ def main():
     arg_parser.add_argument("--input", type=Path, required=True)
     arg_parser.add_argument("--output", type=Path, required=True)
     arg_parser.add_argument("--machine", default="kaggle")
+    arg_parser.add_argument("--run-source", default="KN02", help="notebook id used in the run id, e.g. KN04")
     arg_parser.add_argument("--force-full-page-ocr", action="store_true")
     arg_parser.add_argument("--ocr-lang", nargs="+")
     arg_parser.add_argument("--only", nargs="+", help="doc ids to run; default: all PDFs under --input")
@@ -43,7 +44,7 @@ def main():
         outputs.append(output_path)
 
     if outputs:
-        manifest = build_manifest(new_run_id(1, "KN02"), SPEC_VERSION, {"parser": parser_info}, inputs, outputs,
+        manifest = build_manifest(new_run_id(1, args.run_source), SPEC_VERSION, {"parser": parser_info}, inputs, outputs,
                                   logger.summary(), args.machine)
         print("manifest:", write_manifest(manifest))
         print(pd.DataFrame(logger.stages)[["stage", "wall_seconds", "chars", "empty_pages", "elements"]].to_string(index=False))
