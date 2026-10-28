@@ -4,9 +4,8 @@ import argparse
 import json
 import subprocess
 import sys
-
 import pandas as pd
-
+import csv
 from src.common.cost_logger import CostLogger
 from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
 from src.parse.llamaparse_parser import CREDITS_PER_PAGE, make_client, parse_pdf, parser_info
@@ -14,6 +13,7 @@ from src.parse.llamaparse_parser import CREDITS_PER_PAGE, make_client, parse_pdf
 SARVAM_DIR = PROJECT_ROOT / "data" / "external" / "sarvam_ocr"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "extracted" / "sarvam_hindi"
 OCR_LANG = ["hi", "en"]
+EXCLUSIONS_FILE = PROJECT_ROOT / "configs" / "sarvam_hindi_exclusions.csv"
 
 
 def predict(samples, tier, client, logger):
@@ -34,13 +34,14 @@ def predict(samples, tier, client, logger):
     return predictions, new_outputs
 
 
-def score(predictions, tier):
-    input_path, report_path = OUTPUT_DIR / f"predictions_{tier}.json", OUTPUT_DIR / f"report_{tier}.json"
+def score(predictions, tier, subset):
+    input_path, report_path = OUTPUT_DIR / f"predictions_{tier}_{subset}.json", OUTPUT_DIR / f"report_{tier}_{subset}.json"
     input_path.write_text(json.dumps(predictions, ensure_ascii=False, indent=2), encoding="utf-8")
     subprocess.run([sys.executable, str(SARVAM_DIR / "metrics.py"), "--input", str(input_path), "--normalize",
                     "--overwrite", "--output", str(report_path)], check=True, capture_output=True)
     report = json.loads(report_path.read_text(encoding="utf-8"))
-    return {"tier": tier, "cer": report.get("avg_metrics", {}).get("cer"), "wer": report.get("avg_metrics", {}).get("wer"),
+    return {"tier": tier, "subset": subset, "samples": len(predictions),
+            "cer": report.get("avg_metrics", {}).get("cer"), "wer": report.get("avg_metrics", {}).get("wer"),
             "word_accuracy": report.get("word_accuracy"), "loop_failures": report.get("loop_failure_count"),
             "missing": report.get("missing_prediction_count")}
 
@@ -51,12 +52,14 @@ def main():
     args = arg_parser.parse_args()
 
     samples = json.loads((SARVAM_DIR / "hindi_small" / "ground_truth.json").read_text(encoding="utf-8"))
+    excluded = {row["image_name"] for row in csv.DictReader(EXCLUSIONS_FILE.open(encoding="utf-8"))} if EXCLUSIONS_FILE.exists() else set()
     client, logger = make_client(), CostLogger()
     results, outputs = [], []
     for tier in args.tiers:
         predictions, new_outputs = predict(samples, tier, client, logger)
         outputs += new_outputs
-        results.append(score(predictions, tier))
+        results.append(score(predictions, tier, "all"))
+        results.append(score([item for item in predictions if item["image_name"] not in excluded], tier, "hindi_only"))
 
     if outputs:
         manifest = build_manifest(new_run_id(1, "LOCAL"), "v1", {"benchmark": "sarvamai/indic-ocr-bench small_representative Hindi",

@@ -1,0 +1,6 @@
+image_name,reason
+indic_ocr_bench_test_hin_165,not Hindi (Bodo)
+indic_ocr_bench_test_hin_11,not Hindi (Bodo)
+indic_ocr_bench_test_hin_69,English text
+indic_ocr_bench_test_hin_60,English text
+indic_ocr_bench_test_hin_151,ground truth contains Burmese characters
