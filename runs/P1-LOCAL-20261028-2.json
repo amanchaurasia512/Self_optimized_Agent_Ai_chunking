@@ -1,0 +1,244 @@
+{
+  "run_id": "P1-LOCAL-20261028-2",
+  "created_at": "2026-10-28T07:11:01+00:00",
+  "code": {
+    "commit": "e03367a50a3c28b32655275ca0a794364768ca49",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "test": "hindi parser comparison",
+    "ocr_lang": [
+      "hi",
+      "en"
+    ]
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5.pdf",
+      "sha256": "5625e3458260584a3c9aa4c086576aeefdeb992a75b3e4f69bf866744dfbcf71"
+    },
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5.pdf",
+      "sha256": "5625e3458260584a3c9aa4c086576aeefdeb992a75b3e4f69bf866744dfbcf71"
+    },
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5.pdf",
+      "sha256": "5625e3458260584a3c9aa4c086576aeefdeb992a75b3e4f69bf866744dfbcf71"
+    },
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5.pdf",
+      "sha256": "5625e3458260584a3c9aa4c086576aeefdeb992a75b3e4f69bf866744dfbcf71"
+    },
+    {
+      "path": "data/raw/hindi_test/cic_hi_p3.pdf",
+      "sha256": "7db19c2b49261472152540c61e9ff03e33e3196ef3368e2b36fea06c14feb14a"
+    },
+    {
+      "path": "data/raw/hindi_test/cic_hi_p3.pdf",
+      "sha256": "7db19c2b49261472152540c61e9ff03e33e3196ef3368e2b36fea06c14feb14a"
+    },
+    {
+      "path": "data/raw/hindi_test/cic_hi_p3.pdf",
+      "sha256": "7db19c2b49261472152540c61e9ff03e33e3196ef3368e2b36fea06c14feb14a"
+    },
+    {
+      "path": "data/raw/hindi_test/cic_hi_p3.pdf",
+      "sha256": "7db19c2b49261472152540c61e9ff03e33e3196ef3368e2b36fea06c14feb14a"
+    },
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5_scan.pdf",
+      "sha256": "2266b5f3feeb6d1722a0bfa844961dcb4987ebfac4d1700a40aced992037652e"
+    },
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5_scan.pdf",
+      "sha256": "2266b5f3feeb6d1722a0bfa844961dcb4987ebfac4d1700a40aced992037652e"
+    },
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5_scan.pdf",
+      "sha256": "2266b5f3feeb6d1722a0bfa844961dcb4987ebfac4d1700a40aced992037652e"
+    },
+    {
+      "path": "data/raw/hindi_test/rti_hi_p5_scan.pdf",
+      "sha256": "2266b5f3feeb6d1722a0bfa844961dcb4987ebfac4d1700a40aced992037652e"
+    }
+  ],
+  "outputs": [
+    "data/extracted/hindi_test/pdfplumber/rti_hi_p5.json",
+    "data/extracted/hindi_test/llamaparse_fast/rti_hi_p5.json",
+    "data/extracted/hindi_test/llamaparse_cost_effective/rti_hi_p5.json",
+    "data/extracted/hindi_test/llamaparse_agentic/rti_hi_p5.json",
+    "data/extracted/hindi_test/pdfplumber/cic_hi_p3.json",
+    "data/extracted/hindi_test/llamaparse_fast/cic_hi_p3.json",
+    "data/extracted/hindi_test/llamaparse_cost_effective/cic_hi_p3.json",
+    "data/extracted/hindi_test/llamaparse_agentic/cic_hi_p3.json",
+    "data/extracted/hindi_test/pdfplumber/rti_hi_p5_scan.json",
+    "data/extracted/hindi_test/llamaparse_fast/rti_hi_p5_scan.json",
+    "data/extracted/hindi_test/llamaparse_cost_effective/rti_hi_p5_scan.json",
+    "data/extracted/hindi_test/llamaparse_agentic/rti_hi_p5_scan.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "pdfplumber:rti_hi_p5",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.33,
+        "peak_ram_mb": 192.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_fast:rti_hi_p5",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 1.0,
+        "wall_seconds": 6.198,
+        "peak_ram_mb": 197.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_cost_effective:rti_hi_p5",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 3.0,
+        "wall_seconds": 7.924,
+        "peak_ram_mb": 198.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_agentic:rti_hi_p5",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 10.0,
+        "wall_seconds": 8.985,
+        "peak_ram_mb": 198.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "pdfplumber:cic_hi_p3",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.044,
+        "peak_ram_mb": 198.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_fast:cic_hi_p3",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 1.0,
+        "wall_seconds": 4.146,
+        "peak_ram_mb": 198.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_cost_effective:cic_hi_p3",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 3.0,
+        "wall_seconds": 8.501,
+        "peak_ram_mb": 199.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_agentic:cic_hi_p3",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 10.0,
+        "wall_seconds": 4.104,
+        "peak_ram_mb": 199.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "pdfplumber:rti_hi_p5_scan",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.009,
+        "peak_ram_mb": 200.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_fast:rti_hi_p5_scan",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 1.0,
+        "wall_seconds": 6.013,
+        "peak_ram_mb": 200.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_cost_effective:rti_hi_p5_scan",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 3.0,
+        "wall_seconds": 12.492,
+        "peak_ram_mb": 201.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "llamaparse_agentic:rti_hi_p5_scan",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 10.0,
+        "wall_seconds": 9.166,
+        "peak_ram_mb": 202.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 67.912,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 42.0,
+      "peak_ram_mb": 202.4,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
