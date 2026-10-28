@@ -14,10 +14,12 @@ def devanagari_words(text):
 def devanagari_quality(text):
     words = devanagari_words(text)
     broken = [word for word in words if unicodedata.category(word[0]) in ("Mn", "Mc")]
-    return {"devanagari_words": len(words), "starts_with_mark": len(broken),
+    letters = [char for char in text if unicodedata.category(char)[0] in ("L", "M")]
+    devanagari_letters = sum("\u0900" <= char <= "\u097f" for char in letters)
+    return {"devanagari_share": round(devanagari_letters / len(letters), 3) if letters else 0.0,
+            "devanagari_words": len(words), "starts_with_mark": len(broken),
             "broken_share": round(len(broken) / len(words), 3) if words else 0.0,
             "replacement_chars": text.count("\ufffd"), "examples": broken[:10]}
-
 
 def main():
     for path in sys.argv[1:]:

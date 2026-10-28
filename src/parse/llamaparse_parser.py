@@ -25,12 +25,12 @@ def parser_info(tier, ocr_lang=None):
     return {"name": "llamaparse", "sdk_version": version("llama-cloud"), "tier": tier, "parse_version": "latest",
             "ocr_lang": ocr_lang or []}
 
-
 def parse_pdf(pdf_path, client, tier, ocr_lang=None):
     uploaded = client.files.create(file=str(pdf_path), purpose="parse")
     options = {"processing_options": {"ocr_parameters": {"languages": ocr_lang}}} if ocr_lang else {}
-    result = client.parsing.parse(file_id=uploaded.id, tier=tier, version="latest", expand=["markdown"], **options)
-    page_texts = [getattr(page, "markdown", "") or "" for page in result.markdown.pages]
+    field = "text" if tier == "fast" else "markdown"
+    result = client.parsing.parse(file_id=uploaded.id, tier=tier, version="latest", expand=[field], **options)
+    page_texts = [getattr(page, field, "") or "" for page in getattr(result, field).pages]
     starts = [0, *accumulate(len(text) + len(PAGE_SEPARATOR) for text in page_texts[:-1])]
     pages = [{"page": number, "start_char": start, "end_char": start + len(text)}
              for number, (start, text) in enumerate(zip(starts, page_texts), start=1)]
