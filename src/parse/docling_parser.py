@@ -7,6 +7,7 @@ from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import EasyOcrOptions, PdfPipelineOptions
 from docling.document_converter import DocumentConverter, PdfFormatOption
 from docling_core.types.doc import TableItem
+from docling_core.types.doc import ListItem, TableItem
 
 PAGE_SEPARATOR = "\n\n"
 ELEMENT_SEPARATOR = "\n\n"
@@ -26,8 +27,12 @@ def make_converter(force_full_page_ocr=False, ocr_lang=None):
 
 
 def item_text(item, document):
-    return item.export_to_markdown(doc=document) if isinstance(item, TableItem) else (getattr(item, "text", "") or "")
-
+    """Table → Markdown; numbered list item → its number put back in front ('(4) Notwithstanding…'); bullets are left out."""
+    if isinstance(item, TableItem):
+        return item.export_to_markdown(doc=document)
+    text = getattr(item, "text", "") or ""
+    marker = item.marker if isinstance(item, ListItem) and item.enumerated else ""
+    return f"{marker} {text}" if marker and not text.startswith(marker) else text
 
 def page_entries(document):
     entries = {page_number: [] for page_number in sorted(document.pages)}
