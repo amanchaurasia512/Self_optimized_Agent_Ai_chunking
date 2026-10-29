@@ -121,12 +121,11 @@ def main():
                 gold = placement.pop("segment", None) or (record["evidence"][evidence_index] if record["kind"] == "span" else None)
                 rows.append({**{key: value for key, value in record.items() if key != "evidence"}, **placement,
                              "parser": parser, "evidence_index": evidence_index, "piece_index": piece_index,
-                             "split": splits.get(record["doc_id"]),
+                             "gold": gold, "split": splits.get(record["doc_id"]),
                              "start": span[0] if span else None, "end": span[1] if span else None})
         with (GOLD_DIR / f"spans_{parser}.jsonl").open("w", encoding="utf-8") as output:
             output.writelines(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
         print(f"{parser}: {len(rows)} placements written")
-
 
 if __name__ == "__main__":
     main()
