@@ -91,16 +91,24 @@ def segments(evidence):
     return [piece.strip() for piece in SEGMENT_BOUNDARY.split(strip_markup(evidence)) if clean_evidence(piece)]
 
 
-def place_segments(evidence, around, normalised_text, index_map):
-    """Place each piece of the evidence exactly (normalised) within one evidence-length of the fuzzy match."""
+def place_segments(evidence, around, text, normalised_text, index_map):
+    """Place each piece within one evidence-length of the fuzzy match: exactly if possible, otherwise fuzzily (flagged)."""
     reach = len(evidence)
     low, high = bisect_left(index_map, max(around[0] - reach, 0)), bisect_left(index_map, around[1] + reach)
-    pieces = segments(evidence)
-    placed = [(piece, hits[0]) for piece in pieces
-              for hits in [normalised_hits(clean_evidence(piece), normalised_text, index_map, low, high)] if len(hits) == 1]
-    coverage = round(sum(len(piece) for piece, span in placed) / max(sum(len(piece) for piece in pieces), 1), 3)
-    return [{"method": "segment", "resolution": "in_region", "span": span, "score": 100.0, "word_coverage": 1.0,
-             "segment": piece, "segment_coverage": coverage} for piece, span in placed]
+    placements = []
+    for piece in segments(evidence):
+        needle = clean_evidence(piece)
+        hits = normalised_hits(needle, normalised_text, index_map, low, high)
+        if hits:
+            span = min(hits, key=lambda hit: abs(hit[0] - around[0]))
+            placement = {"method": "segment", "resolution": "in_region" if len(hits) == 1 else "nearest",
+                         "span": span, "score": 100.0, "word_coverage": 1.0}
+        else:
+            placement = align(needle, piece, text, normalised_text, index_map, low, high, "segment_fuzzy")
+        placements.append({**placement, "segment": piece})
+    exact_share = sum(len(item["segment"]) for item in placements if item["method"] == "segment")
+    coverage = round(exact_share / max(sum(len(item["segment"]) for item in placements), 1), 3)
+    return [{**item, "segment_coverage": coverage} for item in placements] if exact_share else []
 
 def search_window(pages, page_number, index_map, length):
     nearby = [page for page in pages if page_number is not None and abs(page["page"] - page_number) <= 1]
@@ -110,15 +118,20 @@ def search_window(pages, page_number, index_map, length):
             bisect_left(index_map, max(page["end_char"] for page in nearby)))
 
 
-def fuzzy(needle, evidence, text, pages, normalised_text, index_map, page_number):
-    low, high = search_window(pages, page_number, index_map, len(normalised_text))
+def align(needle, evidence, text, normalised_text, index_map, low, high, method):
+    """Best fuzzy alignment of needle inside normalised_text[low:high], snapped to whole words."""
     alignment = fuzz.partial_ratio_alignment(needle, normalised_text[low:high])
     start, end = low + alignment.dest_start, low + alignment.dest_end
     if end <= start:
-        return {"method": "fuzzy", "resolution": "missing", "span": None, "score": 0.0, "word_coverage": 0.0}
+        return {"method": method, "resolution": "missing", "span": None, "score": 0.0, "word_coverage": 0.0}
     span = snap((index_map[start], index_map[end - 1] + 1), text)
-    return {"method": "fuzzy", "resolution": "flagged", "span": span, "score": round(alignment.score, 1),
+    return {"method": method, "resolution": "flagged", "span": span, "score": round(alignment.score, 1),
             "word_coverage": word_coverage(evidence, text[span[0]:span[1]])}
+
+
+def fuzzy(needle, evidence, text, pages, normalised_text, index_map, page_number):
+    low, high = search_window(pages, page_number, index_map, len(normalised_text))
+    return align(needle, evidence, text, normalised_text, index_map, low, high, "fuzzy")
 
 
 def place(evidence, text, pages, normalised_text, index_map, page_number):
@@ -135,5 +148,5 @@ def place(evidence, text, pages, normalised_text, index_map, page_number):
         span, resolution = choose(normalised, pages, page_number)
         return [{"method": "normalised", "resolution": resolution, "span": span, "score": 100.0, "word_coverage": 1.0}]
     approximate = fuzzy(needle, evidence, text, pages, normalised_text, index_map, page_number)
-    pieces = place_segments(evidence, approximate["span"], normalised_text, index_map) if approximate["span"] else []
+    pieces = place_segments(evidence, approximate["span"], text, normalised_text, index_map) if approximate["span"] else []
     return pieces or [approximate]

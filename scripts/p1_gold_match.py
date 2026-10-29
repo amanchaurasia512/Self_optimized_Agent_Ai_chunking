@@ -118,6 +118,7 @@ def main():
                 continue
             for evidence_index, piece_index, placement in place_question(record, document):
                 span = placement.pop("span")
+                gold = placement.pop("segment", None) or (record["evidence"][evidence_index] if record["kind"] == "span" else None)
                 rows.append({**{key: value for key, value in record.items() if key != "evidence"}, **placement,
                              "parser": parser, "evidence_index": evidence_index, "piece_index": piece_index,
                              "split": splits.get(record["doc_id"]),
