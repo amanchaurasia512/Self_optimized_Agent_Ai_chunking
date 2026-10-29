@@ -1,0 +1,8 @@
+{
+  "rule": "drop fuzzy/segment_fuzzy placements with word_coverage below threshold",
+  "threshold": 0.604,
+  "fitted_on": [
+    "data/gold/review2_docling.csv"
+  ],
+  "rows": 50
+}

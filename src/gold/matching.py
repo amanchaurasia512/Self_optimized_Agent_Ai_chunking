@@ -4,7 +4,7 @@ notation, so glued words and Markdown/LaTeX tables still match; positions always
 import re
 import unicodedata
 from bisect import bisect_left
-
+from src.common.manifest import PROJECT_ROOT
 from rapidfuzz import fuzz
 
 LATEX_ENVIRONMENT = re.compile(r"\\(?:begin|end)\{[^}]*\}(?:\{[^}]*\})?")
@@ -15,6 +15,11 @@ SEGMENT_BOUNDARY = re.compile(r"\.\.\.|…|\\\\|;\s+|(?<=[.!?:])\s+(?=[A-Z0-9\"'
 WORD = re.compile(r"\w+")
 IGNORED = set("|&$\\{}^_*#`~-‐‑‒–—―−")
 QUOTES = {"‘": "'", "’": "'", "‚": "'", "‛": "'", "“": '"', "”": '"', "„": '"', "‟": '"'}
+LATEX_TABLE_FORMAT = re.compile(r"\\multicolumn\s*\{[^{}]*\}\s*\{[^{}]*\}"
+                                r"|\\multirow\s*(?:\[[^\]]*\])?\s*\{[^{}]*\}\s*\{[^{}]*\}|\\cline\s*\{[^{}]*\}")
+REFERENCE_LABEL = re.compile(r"\b[a-z]{2,3}:[A-Za-z][\w-]*")  # converted \ref labels such as eq:SMT, ta:quality
+UNCERTAIN = {"fuzzy", "segment_fuzzy"}
+DROP_RULE_FILE = PROJECT_ROOT / "configs" / "gold_drop_rule.json"
 
 
 def normalise_char(char):
@@ -35,7 +40,16 @@ def normalise_with_map(text):
 
 def strip_markup(evidence):
     restored = evidence.translate(JSON_ESCAPE_DAMAGE)
-    return DATASET_MARKUP.sub(" ", LATEX_COMMAND.sub(" ", LATEX_ENVIRONMENT.sub(" ", restored)))
+    without_latex = LATEX_COMMAND.sub(" ", LATEX_ENVIRONMENT.sub(" ", LATEX_TABLE_FORMAT.sub(" ", restored)))
+    return REFERENCE_LABEL.sub(" ", DATASET_MARKUP.sub(" ", without_latex))
+
+
+def gold_words(evidence):
+    return set(WORD.findall(strip_markup(evidence).lower()))
+
+
+def missing_words(evidence, placed_text):
+    return sorted(gold_words(evidence) - set(WORD.findall(placed_text.lower())))
 
 
 def clean_evidence(evidence):
@@ -81,15 +95,15 @@ def snap(span, text):
     return start, end
 
 
-def word_coverage(evidence, placed_text):
-    gold_words = set(WORD.findall(strip_markup(evidence).lower()))
-    placed_words = set(WORD.findall(placed_text.lower()))
-    return round(len(gold_words & placed_words) / len(gold_words), 3) if gold_words else 0.0
 
+def word_coverage(evidence, placed_text):
+    words = gold_words(evidence)
+    return round(1 - len(missing_words(evidence, placed_text)) / len(words), 3) if words else 0.0
 
 def segments(evidence):
-    return [piece.strip() for piece in SEGMENT_BOUNDARY.split(strip_markup(evidence)) if clean_evidence(piece)]
-
+    """Pieces of the evidence; a piece with fewer than two letters or digits (a list label like 'A.') can't be placed."""
+    pieces = [piece.strip() for piece in SEGMENT_BOUNDARY.split(strip_markup(evidence))]
+    return [piece for piece in pieces if sum(char.isalnum() for char in piece) >= 2]
 
 def place_segments(evidence, around, text, normalised_text, index_map):
     """Place each piece within one evidence-length of the fuzzy match: exactly if possible, otherwise fuzzily (flagged)."""

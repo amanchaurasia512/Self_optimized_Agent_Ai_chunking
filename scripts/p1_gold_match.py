@@ -10,6 +10,7 @@ import pandas as pd
 from src.common.manifest import PROJECT_ROOT
 from src.common.pdf_catalog import safe_id
 from src.gold.matching import normalise_with_map, place
+from src.gold.matching import DROP_RULE_FILE, missing_words, UNCERTAIN
 
 EXTERNAL = PROJECT_ROOT / "data" / "external"
 EXTRACTED = PROJECT_ROOT / "data" / "extracted"
@@ -99,6 +100,19 @@ def place_question(record, document):
             for piece_index, placement in enumerate(place(evidence, document["text"], document["pages"],
                                                           document["normalised"], document["index_map"], record["page"]))]
 
+def load_drop_threshold():
+    if not DROP_RULE_FILE.exists():
+        print(f"no drop rule at {DROP_RULE_FILE}: all uncertain placements kept")
+        return None
+    return json.loads(DROP_RULE_FILE.read_text())["threshold"]
+
+
+def judge(placement, span, gold, placed_text, threshold):
+    """keep: placed and not below the drop rule; incomplete: kept, but some gold words are not in the placed text."""
+    below_rule = placement["method"] in UNCERTAIN and threshold is not None and placement["word_coverage"] < threshold
+    keep = span is not None and not below_rule
+    missing = missing_words(gold, placed_text) if gold and placed_text else []
+    return {"keep": keep, "incomplete": keep and bool(missing), "missing_words": missing}
 
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
@@ -107,6 +121,7 @@ def main():
 
     splits = pd.read_csv(PROJECT_ROOT / "pdfs" / "split.csv").set_index("doc_id")["split"].to_dict()
     records = cuad_questions() + indian_questions() + qasper_questions() + unidoc_questions() + ohr_questions()
+    threshold = load_drop_threshold()
     GOLD_DIR.mkdir(parents=True, exist_ok=True)
     for parser in args.parsers:
         documents, rows = {}, []
@@ -119,7 +134,9 @@ def main():
             for evidence_index, piece_index, placement in place_question(record, document):
                 span = placement.pop("span")
                 gold = placement.pop("segment", None) or (record["evidence"][evidence_index] if record["kind"] == "span" else None)
+                placed_text = document["text"][span[0]:span[1]] if span else ""
                 rows.append({**{key: value for key, value in record.items() if key != "evidence"}, **placement,
+                             **judge(placement, span, gold, placed_text, threshold),
                              "parser": parser, "evidence_index": evidence_index, "piece_index": piece_index,
                              "gold": gold, "split": splits.get(record["doc_id"]),
                              "start": span[0] if span else None, "end": span[1] if span else None})
