@@ -22,6 +22,9 @@ def question(source, question_id, doc_id, text, evidence, page=None, gold_pages=
     return {"source": source, "question_id": question_id, "doc_id": doc_id, "question": text, "evidence": evidence,
             "page": page, "gold_pages": gold_pages or [], "kind": kind}
 
+def heading_or_text(evidence):
+    """QASPER marks section-title evidence as a heading path 'A ::: B'; only the last heading appears on the page."""
+    return evidence.split(" ::: ")[-1]
 
 def cuad_questions():
     spans = pd.read_csv(EXTERNAL / "cuad" / "selected_gold_spans.csv")
@@ -47,7 +50,7 @@ def qasper_questions():
     records = []
     for paper in papers[papers["id"].isin(selected)].to_dict("records"):
         for text, question_id, answers in zip(paper["qas"]["question"], paper["qas"]["question_id"], paper["qas"]["answers"]):
-            evidence = sorted({item for annotation in answers["answer"] if not annotation["unanswerable"]
+            evidence = sorted({heading_or_text(item) for annotation in answers["answer"] if not annotation["unanswerable"]
                                for item in annotation["evidence"] if not item.startswith(FLOAT_PREFIX)})
             if evidence:
                 records.append(question("QASPER", question_id, safe_id("qasper", paper["id"]), text, evidence))
@@ -86,11 +89,15 @@ def load_document(parser, doc_id):
 
 
 def place_question(record, document):
+    """(evidence_index, piece_index, placement) for every placement of a question."""
     if record["kind"] == "page":
-        return [{"method": "page", "resolution": "page_level", "span": (page["start_char"], page["end_char"]), "score": None}
-                for page in document["pages"] if page["page"] in record["gold_pages"]]
-    return [place(evidence, document["text"], document["pages"], document["normalised"], document["index_map"], record["page"])
-            for evidence in record["evidence"]]
+        pages = [page for page in document["pages"] if page["page"] in record["gold_pages"]]
+        return [(0, index, {"method": "page", "resolution": "page_level", "span": (page["start_char"], page["end_char"]),
+                            "score": None}) for index, page in enumerate(pages)]
+    return [(evidence_index, piece_index, placement)
+            for evidence_index, evidence in enumerate(record["evidence"])
+            for piece_index, placement in enumerate(place(evidence, document["text"], document["pages"],
+                                                          document["normalised"], document["index_map"], record["page"]))]
 
 
 def main():
@@ -101,7 +108,6 @@ def main():
     splits = pd.read_csv(PROJECT_ROOT / "pdfs" / "split.csv").set_index("doc_id")["split"].to_dict()
     records = cuad_questions() + indian_questions() + qasper_questions() + unidoc_questions() + ohr_questions()
     GOLD_DIR.mkdir(parents=True, exist_ok=True)
-    summaries = []
     for parser in args.parsers:
         documents, rows = {}, []
         for record in records:
@@ -110,21 +116,15 @@ def main():
             document = documents[record["doc_id"]]
             if document is None:
                 continue
-            for index, result in enumerate(place_question(record, document)):
-                span = result.pop("span")
-                rows.append({**{key: value for key, value in record.items() if key != "evidence"}, **result,
-                             "parser": parser, "evidence_index": index, "split": splits.get(record["doc_id"]),
+            for evidence_index, piece_index, placement in place_question(record, document):
+                span = placement.pop("span")
+                rows.append({**{key: value for key, value in record.items() if key != "evidence"}, **placement,
+                             "parser": parser, "evidence_index": evidence_index, "piece_index": piece_index,
+                             "split": splits.get(record["doc_id"]),
                              "start": span[0] if span else None, "end": span[1] if span else None})
         with (GOLD_DIR / f"spans_{parser}.jsonl").open("w", encoding="utf-8") as output:
             output.writelines(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
-        summaries.append(pd.DataFrame(rows))
-
-    combined = pd.concat(summaries, ignore_index=True)
-    combined["outcome"] = combined["method"] + ":" + combined["resolution"]
-    print("questions per source:", pd.Series([record["source"] for record in records]).value_counts().to_dict(), "\n")
-    for parser, frame in combined.groupby("parser"):
-        print(f"=== {parser} ===")
-        print(pd.crosstab(frame["source"], frame["outcome"]), "\n")
+        print(f"{parser}: {len(rows)} placements written")
 
 
 if __name__ == "__main__":
