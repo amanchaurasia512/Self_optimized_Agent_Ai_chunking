@@ -114,6 +114,15 @@ def judge(placement, span, gold, placed_text, threshold):
     missing = missing_words(gold, placed_text) if gold and placed_text else []
     return {"keep": keep, "incomplete": keep and bool(missing), "missing_words": missing}
 
+CERTAIN_METHODS = {"exact", "normalised", "page"}
+
+
+def certain(placements):
+    """Certain: placed exactly/normalised at one place, or piecewise with every piece exact at one place near the match."""
+    methods = {placement["method"] for placement in placements}
+    single_place = all(placement["resolution"] not in {"ambiguous", "nearest"} for placement in placements)
+    return single_place and (methods <= CERTAIN_METHODS or methods == {"segment"})
+
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
     arg_parser.add_argument("--parsers", nargs="+", default=["pdfplumber", "docling", "llamaparse_agentic"])
@@ -121,7 +130,6 @@ def main():
 
     splits = pd.read_csv(PROJECT_ROOT / "pdfs" / "split.csv").set_index("doc_id")["split"].to_dict()
     records = cuad_questions() + indian_questions() + qasper_questions() + unidoc_questions() + ohr_questions()
-    threshold = load_drop_threshold()
     GOLD_DIR.mkdir(parents=True, exist_ok=True)
     for parser in args.parsers:
         documents, rows = {}, []
@@ -131,15 +139,18 @@ def main():
             document = documents[record["doc_id"]]
             if document is None:
                 continue
+            by_evidence = {}
             for evidence_index, piece_index, placement in place_question(record, document):
-                span = placement.pop("span")
-                gold = placement.pop("segment", None) or (record["evidence"][evidence_index] if record["kind"] == "span" else None)
-                placed_text = document["text"][span[0]:span[1]] if span else ""
-                rows.append({**{key: value for key, value in record.items() if key != "evidence"}, **placement,
-                             **judge(placement, span, gold, placed_text, threshold),
-                             "parser": parser, "evidence_index": evidence_index, "piece_index": piece_index,
-                             "gold": gold, "split": splits.get(record["doc_id"]),
-                             "start": span[0] if span else None, "end": span[1] if span else None})
+                by_evidence.setdefault(evidence_index, []).append((piece_index, placement))
+            for evidence_index, pieces in by_evidence.items():
+                is_certain = certain([pair[1] for pair in pieces])
+                for piece_index, placement in pieces:
+                    span = placement.pop("span")
+                    gold = placement.pop("segment", None) or (record["evidence"][evidence_index] if record["kind"] == "span" else None)
+                    rows.append({**{key: value for key, value in record.items() if key != "evidence"}, **placement,
+                                 "certain": is_certain, "parser": parser, "evidence_index": evidence_index,
+                                 "piece_index": piece_index, "gold": gold, "split": splits.get(record["doc_id"]),
+                                 "start": span[0] if span else None, "end": span[1] if span else None})
         with (GOLD_DIR / f"spans_{parser}.jsonl").open("w", encoding="utf-8") as output:
             output.writelines(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
         print(f"{parser}: {len(rows)} placements written")
