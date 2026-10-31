@@ -1,0 +1,226 @@
+{
+  "run_id": "P1-KN09-20261030-1",
+  "created_at": "2026-10-30T17:54:34+00:00",
+  "code": {
+    "commit": "816f3d7ba112b3569c29a9d2a9cb02db82cb81f7",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    }
+  },
+  "environment": {
+    "machine": "kaggle-cpu",
+    "host": "d4a73963c92b",
+    "python": "3.13.15",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd02-test-pdfs/unidoc_finance_0458505.pdf",
+      "sha256": "0ed41e04312e58e54b56eb77cd57bf1be73b870124308a103e3412202148d0e7"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_academic_dude_1c6061aa2d4c3167592fff8e35e5100a.pdf",
+      "sha256": "80ae34bc78743e348601e263636c3716666c2944eef353bc452cc97b39810a2d"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_finance_aes_2022_10k.pdf",
+      "sha256": "9c5de2227534c4d6bf3d805f635bad5d82eddf8e4183a85a3d1311b48b50291d"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_finance_amazon_2017_10k.pdf",
+      "sha256": "f8af08ff6c4147351ec3a6e5e2c74e104678ce68fb0d6d476b1e43f685c09a3f"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_finance_jpmorgan_2023q2_10q.pdf",
+      "sha256": "eef2d9c1fdb5dc82be48166487a9e451c8544aec932a01fb06309ea7cd7122f5"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_law_mplxlp_06_17_2015_ex_10_1_transportation_services_agreement.pdf",
+      "sha256": "7fa6d1466b4c82afb06e35b204a2825ccc4010129f77fa11682409137b89976a"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_manual_2021_apple_catalog.pdf",
+      "sha256": "6ec3f43d9efb3df34e3ee3f0f72c2a3497892bdaf960fc0e6ce6a507bbc08425"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_manual_mi_phone.pdf",
+      "sha256": "c5feec13dc1033920affd4fb6dff558d265f917fd19aaa21fe39ce15b31a1712"
+    },
+    {
+      "path": "/kaggle/input/datasets/aman125/p1-kd04-ohr-pdfs/ohr_manual_nova_y70.pdf",
+      "sha256": "1d645b8b4b035ca54e197309d3d0db23e89cfc406066f030db44ee2cd0e536a5"
+    }
+  ],
+  "outputs": [
+    "/kaggle/working/docling/unidoc_finance_0458505.json",
+    "/kaggle/working/docling/ohr_academic_dude_1c6061aa2d4c3167592fff8e35e5100a.json",
+    "/kaggle/working/docling/ohr_finance_aes_2022_10k.json",
+    "/kaggle/working/docling/ohr_finance_amazon_2017_10k.json",
+    "/kaggle/working/docling/ohr_finance_jpmorgan_2023q2_10q.json",
+    "/kaggle/working/docling/ohr_law_mplxlp_06_17_2015_ex_10_1_transportation_services_agreement.json",
+    "/kaggle/working/docling/ohr_manual_2021_apple_catalog.json",
+    "/kaggle/working/docling/ohr_manual_mi_phone.json",
+    "/kaggle/working/docling/ohr_manual_nova_y70.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:unidoc_finance_0458505",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 94949,
+        "empty_pages": 2,
+        "elements": 199,
+        "wall_seconds": 404.437,
+        "peak_ram_mb": 5150.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_academic_dude_1c6061aa2d4c3167592fff8e35e5100a",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 48765,
+        "empty_pages": 1,
+        "elements": 127,
+        "wall_seconds": 738.429,
+        "peak_ram_mb": 6146.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_finance_aes_2022_10k",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 1285436,
+        "empty_pages": 2,
+        "elements": 2344,
+        "wall_seconds": 2298.929,
+        "peak_ram_mb": 9802.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_finance_amazon_2017_10k",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 395593,
+        "empty_pages": 0,
+        "elements": 897,
+        "wall_seconds": 544.59,
+        "peak_ram_mb": 7721.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_finance_jpmorgan_2023q2_10q",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 1718216,
+        "empty_pages": 0,
+        "elements": 2907,
+        "wall_seconds": 3237.29,
+        "peak_ram_mb": 8495.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_law_mplxlp_06_17_2015_ex_10_1_transportation_services_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 78629,
+        "empty_pages": 1,
+        "elements": 229,
+        "wall_seconds": 376.208,
+        "peak_ram_mb": 5837.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_manual_2021_apple_catalog",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 47279,
+        "empty_pages": 0,
+        "elements": 572,
+        "wall_seconds": 774.813,
+        "peak_ram_mb": 8287.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_manual_mi_phone",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 36636,
+        "empty_pages": 0,
+        "elements": 411,
+        "wall_seconds": 285.914,
+        "peak_ram_mb": 7543.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_manual_nova_y70",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 66990,
+        "empty_pages": 0,
+        "elements": 750,
+        "wall_seconds": 1045.158,
+        "peak_ram_mb": 7873.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 9705.768,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 9802.3,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
