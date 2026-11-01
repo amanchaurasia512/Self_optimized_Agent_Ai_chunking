@@ -3,6 +3,8 @@ from src.chunk.base import token_windows
 from functools import lru_cache
 from src.chunk.base import token_counts, token_windows
 from src.chunk.vendor.adaptive_splitters import RecursiveSplitter
+from src.chunk.vendor.adaptive_sentence import SentenceSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # Separators of the Adaptive Chunking paper, copied from ekimetrics/adaptive-chunking (commit ea87ce8),
 # src/adaptive_chunking/paper/replicate.py (MIT, Copyright (c) 2026 Ekimetrics).
@@ -47,7 +49,26 @@ def recursive(document, size, overlap=0):
                                  merging_order="forward")
     return locate(splitter.split_text(document["text"]), document["text"])
 
+def sentence(document, sentences=5):
+    """Adaptive Chunking's sentence baseline (vendored, commit ea87ce8): Stanza English sentences, each keeping its
+    trailing separator, grouped `sentences` at a time ('sentence' in its replicate.py); mapped back to exact offsets."""
+    splitter = SentenceSplitter(method="stanza", sentences_per_chunk=sentences, device="cpu")
+    return locate(splitter.split_text(document["text"]), document["text"])
+def langchain_default(document):
+    """Paper baseline 'langch_recurs_default': LangChain's RecursiveCharacterTextSplitter with all its defaults
+    (4,000 characters, 200-character overlap, separators blank line / line break / space / character)."""
+    return locate(RecursiveCharacterTextSplitter().split_text(document["text"]), document["text"])
+
+
+def langchain_recursive(document, size, overlap=0):
+    """Paper baseline 'langch_recurs_1100' (run at our sizes): LangChain's splitter with the paper's separators,
+    separators kept at the start of a chunk, counted in bge-m3 tokens."""
+    splitter = RecursiveCharacterTextSplitter(separators=SEPARATORS, chunk_size=size, chunk_overlap=overlap,
+                                              is_separator_regex=True, keep_separator="start", length_function=bge_tokens)
+    return locate(splitter.split_text(document["text"]), document["text"])
 CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "page": {"function": page, "version": "1.0"},
-            "recursive": {"function": recursive, "version": "1.0+adaptive-chunking-ea87ce8"}}
-
+            "recursive": {"function": recursive, "version": "1.0+adaptive-chunking-ea87ce8"},
+            "sentence": {"function": sentence, "version": "1.0+adaptive-chunking-ea87ce8+stanza-1.15.0"},
+            "langchain_default": {"function": langchain_default, "version": "1.0+langchain-text-splitters-1.1.3"},
+            "langchain_recursive": {"function": langchain_recursive, "version": "1.0+langchain-text-splitters-1.1.3"}}
