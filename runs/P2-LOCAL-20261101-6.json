@@ -1,0 +1,202 @@
+{
+  "run_id": "P2-LOCAL-20261101-6",
+  "created_at": "2026-11-01T12:35:37+00:00",
+  "code": {
+    "commit": "1ce0f5e91ba7619b9cfde886baadba9bb37845c4",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "page",
+      "version": "1.0",
+      "settings": {
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ]
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling/indian_d1.json",
+      "sha256": "5612acea5da28bb5054d82133bbc2413dab36a23067f4297e311bf4b546b3725"
+    },
+    {
+      "path": "data/extracted/docling/indian_d2_ccs_conduct_rules.json",
+      "sha256": "7d05349eb78ae21116c4a3fe3fe0505de62ebc45716c8d890066c91e14bc52c1"
+    },
+    {
+      "path": "data/extracted/docling/indian_d3_fundamental_rules.json",
+      "sha256": "415a85d7fb273c28f0c40cb6741e86b930e6a547c5eda55b246dcda3dd6c1386"
+    },
+    {
+      "path": "data/extracted/docling/indian_d4_rti_act.json",
+      "sha256": "c9baf1c9d040d6950f9db46525b8d8ed238302e48e97fbb3adf5bf63f7de9a3b"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d1.json",
+      "sha256": "f1258539635e0a1e2c54e9638bed0d1478885fd25e087a881610fdf223c5e7f5"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d2_ccs_conduct_rules.json",
+      "sha256": "5c3ba096ce33fb6cc4233a0301a8924a7eb765c8f37f4318bf5ac5068c26bcac"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d3_fundamental_rules.json",
+      "sha256": "963a71b27ebdb877225839abacd3e0087b54e203c220ee82121481bd4a1664da"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d4_rti_act.json",
+      "sha256": "facc1eca39ffa779a27eb7ffdef358772e77fed71f55e93136fda5d0af087a98"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling/page_noprefix/indian_d1.json",
+    "data/chunks/docling/page_noprefix/indian_d2_ccs_conduct_rules.json",
+    "data/chunks/docling/page_noprefix/indian_d3_fundamental_rules.json",
+    "data/chunks/docling/page_noprefix/indian_d4_rti_act.json",
+    "data/chunks/pdfplumber/page_noprefix/indian_d1.json",
+    "data/chunks/pdfplumber/page_noprefix/indian_d2_ccs_conduct_rules.json",
+    "data/chunks/pdfplumber/page_noprefix/indian_d3_fundamental_rules.json",
+    "data/chunks/pdfplumber/page_noprefix/indian_d4_rti_act.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 72,
+        "index_tokens": 35886,
+        "wall_seconds": 0.792,
+        "peak_ram_mb": 448.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 22,
+        "index_tokens": 13238,
+        "wall_seconds": 0.063,
+        "peak_ram_mb": 451.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 54,
+        "index_tokens": 26515,
+        "wall_seconds": 0.132,
+        "peak_ram_mb": 451.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 74,
+        "index_tokens": 39357,
+        "wall_seconds": 0.183,
+        "peak_ram_mb": 453.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 70,
+        "index_tokens": 34844,
+        "wall_seconds": 0.141,
+        "peak_ram_mb": 454.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 21,
+        "index_tokens": 12592,
+        "wall_seconds": 0.047,
+        "peak_ram_mb": 456.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 57,
+        "index_tokens": 26547,
+        "wall_seconds": 0.116,
+        "peak_ram_mb": 456.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 74,
+        "index_tokens": 41631,
+        "wall_seconds": 0.186,
+        "peak_ram_mb": 456.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1.66,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 456.8,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
