@@ -11,6 +11,7 @@ from src.common.cost_logger import CostLogger
 from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
 from src.common.pdf_catalog import PDF_MANIFEST
 from src.common.validate import layer1_report, load_validator
+from src.chunk.base import SPEC_VERSION
 
 EXTRACTED, CHUNKS = PROJECT_ROOT / "data" / "extracted", PROJECT_ROOT / "data" / "chunks"
 INDIAN = ["indian_d1", "indian_d2_ccs_conduct_rules", "indian_d3_fundamental_rules", "indian_d4_rti_act"]
@@ -65,7 +66,7 @@ def main():
                          "coverage": round(layer1.get("text_coverage", 0), 4), "seconds": stage["wall_seconds"]})
 
     stack = {"chunker": chunker, "tokenizer": TOKENIZER, "parsers": args.parsers}
-    manifest_path = write_manifest(build_manifest(run_id, "v1", stack, inputs, outputs, logger.summary(), "laptop"))
+    manifest_path = write_manifest(build_manifest(run_id, SPEC_VERSION, stack, inputs, outputs, logger.summary(), "laptop"))
     pd.set_option("display.width", 200)
     print(f"{name} | run {run_id}\n{pd.DataFrame(rows).to_string(index=False)}\nmanifest: {manifest_path}")
 

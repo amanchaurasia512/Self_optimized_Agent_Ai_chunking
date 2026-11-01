@@ -7,6 +7,7 @@ from functools import cache
 from tokenizers import Tokenizer
 
 TOKENIZER = {"name": "BAAI/bge-m3", "revision": "5617a9f61b028005a4858fdac845db406aefb181"}
+SPEC_VERSION = "v1.1"
 MIN_TOKENS, MAX_TOKENS = 100, 1024
 SPLIT_TOKENS = 1000  # re-split target under MAX_TOKENS: a re-tokenised piece can come out a few tokens longer
 WORD_START = "\u2581"  # sentencepiece marks a token that starts a new word
@@ -146,7 +147,7 @@ def chunk_document(document, spans, chunker, run_id, source, heading_prefix=Fals
         "document": {"doc_id": document["doc_id"], "file_hash": source["sha256"], "source_file": source["file"],
                      "page_count": len(document["pages"]),
                      "parser": {"name": document["parser"]["name"], "version": document["parser"]["version"]}},
-        "run": {"run_id": run_id, "chunker": chunker, "spec_version": "v1", "tokenizer": TOKENIZER,
+        "run": {"run_id": run_id, "chunker": chunker, "spec_version": SPEC_VERSION, "tokenizer": TOKENIZER,
                 "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds")},
         "nodes": nodes, "chunks": build_chunks(spans, document, nodes, heading_prefix),
         "quality": {"layer1": {}, "layer2": {}}, "edges": [],
