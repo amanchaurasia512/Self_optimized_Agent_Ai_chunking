@@ -36,9 +36,11 @@ def project_path(path):
 
 
 def new_run_id(phase, source):
-    """Run id format from the naming scheme: P{phase}-{source}-{date}-{n}."""
+    """Run id format from the naming scheme: P{phase}-{source}-{date}-{n}. n = highest existing n + 1,
+    so a deleted manifest never leads to a reused id."""
     prefix = f"P{phase}-{source}-{datetime.now():%Y%m%d}"
-    return f"{prefix}-{len(list(RUNS_DIR.glob(f'{prefix}-*.json'))) + 1}"
+    numbers = [int(path.stem.rsplit("-", 1)[1]) for path in RUNS_DIR.glob(f"{prefix}-*.json")]
+    return f"{prefix}-{max(numbers, default=0) + 1}"
 
 
 def build_manifest(run_id, spec_version, stack, inputs, outputs, costs, machine, config_path=None):
