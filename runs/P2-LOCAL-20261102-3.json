@@ -1,0 +1,204 @@
+{
+  "run_id": "P2-LOCAL-20261102-3",
+  "created_at": "2026-11-02T07:24:13+00:00",
+  "code": {
+    "commit": "18b62a15fc6379e444c3ea672f258fd7ec66db38",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "recursive",
+      "version": "1.0+adaptive-chunking-ea87ce8",
+      "settings": {
+        "size": 512,
+        "overlap": 32,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ]
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling/indian_d1.json",
+      "sha256": "5612acea5da28bb5054d82133bbc2413dab36a23067f4297e311bf4b546b3725"
+    },
+    {
+      "path": "data/extracted/docling/indian_d2_ccs_conduct_rules.json",
+      "sha256": "7d05349eb78ae21116c4a3fe3fe0505de62ebc45716c8d890066c91e14bc52c1"
+    },
+    {
+      "path": "data/extracted/docling/indian_d3_fundamental_rules.json",
+      "sha256": "415a85d7fb273c28f0c40cb6741e86b930e6a547c5eda55b246dcda3dd6c1386"
+    },
+    {
+      "path": "data/extracted/docling/indian_d4_rti_act.json",
+      "sha256": "c9baf1c9d040d6950f9db46525b8d8ed238302e48e97fbb3adf5bf63f7de9a3b"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d1.json",
+      "sha256": "f1258539635e0a1e2c54e9638bed0d1478885fd25e087a881610fdf223c5e7f5"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d2_ccs_conduct_rules.json",
+      "sha256": "5c3ba096ce33fb6cc4233a0301a8924a7eb765c8f37f4318bf5ac5068c26bcac"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d3_fundamental_rules.json",
+      "sha256": "963a71b27ebdb877225839abacd3e0087b54e203c220ee82121481bd4a1664da"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d4_rti_act.json",
+      "sha256": "facc1eca39ffa779a27eb7ffdef358772e77fed71f55e93136fda5d0af087a98"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling/recursive_size512_overlap32_noprefix/indian_d1.json",
+    "data/chunks/docling/recursive_size512_overlap32_noprefix/indian_d2_ccs_conduct_rules.json",
+    "data/chunks/docling/recursive_size512_overlap32_noprefix/indian_d3_fundamental_rules.json",
+    "data/chunks/docling/recursive_size512_overlap32_noprefix/indian_d4_rti_act.json",
+    "data/chunks/pdfplumber/recursive_size512_overlap32_noprefix/indian_d1.json",
+    "data/chunks/pdfplumber/recursive_size512_overlap32_noprefix/indian_d2_ccs_conduct_rules.json",
+    "data/chunks/pdfplumber/recursive_size512_overlap32_noprefix/indian_d3_fundamental_rules.json",
+    "data/chunks/pdfplumber/recursive_size512_overlap32_noprefix/indian_d4_rti_act.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 87,
+        "index_tokens": 38026,
+        "wall_seconds": 0.878,
+        "peak_ram_mb": 1006.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 33,
+        "index_tokens": 14001,
+        "wall_seconds": 0.15,
+        "peak_ram_mb": 1008.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 64,
+        "index_tokens": 28133,
+        "wall_seconds": 0.295,
+        "peak_ram_mb": 1008.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 96,
+        "index_tokens": 41647,
+        "wall_seconds": 0.419,
+        "peak_ram_mb": 1012.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 84,
+        "index_tokens": 36778,
+        "wall_seconds": 0.307,
+        "peak_ram_mb": 1015.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 28,
+        "index_tokens": 13166,
+        "wall_seconds": 0.099,
+        "peak_ram_mb": 1016.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 64,
+        "index_tokens": 27953,
+        "wall_seconds": 0.242,
+        "peak_ram_mb": 1016.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 100,
+        "index_tokens": 43805,
+        "wall_seconds": 0.379,
+        "peak_ram_mb": 1017.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 2.769,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1017.2,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
