@@ -20,7 +20,7 @@ chunker, from free to paid, so the gap measures chunking, not our selection.
 | Layout | Page | one page per chunk | all | v1 |
 | Structure | Section + table-aware | one section per chunk; table row chunks; no overlap; section rule decided on 1-2 tuning PDFs | all | v1 |
 | Hybrid | Docling HybridChunker | max 512 bge-m3 tokens; structure from the DoclingDocument | Docling only | new |
-| Semantic | Embedding breakpoints | bge-m3 sentence embeddings; cut where consecutive-sentence distance is high, threshold set per document from its own distances (no fixed number) | all | new |
+| Semantic | Embedding breakpoints (paper baseline) | LangChain SemanticChunker, gradient breakpoints (threshold from each document's own distances), its defaults; Qwen3-Embedding-0.6B (pinned revision) as in the paper, float32 standard attention (the paper's bfloat16 + flash-attention 2 need an Ampere GPU) | all | Adaptive Chunking |
 | LLM | LLM-regex | Gemini 3.5 Flash-Lite (exact model id as listed by the API, recorded in every manifest); LLM sees a document sample, returns a split regex applied to the whole text; 2-3 runs to measure noise | all | new (Adaptive Chunking) |
 
 All chunkers share the v1 post-processing (merge under 100, re-split over 1,024), the bge-m3 tokenizer and the

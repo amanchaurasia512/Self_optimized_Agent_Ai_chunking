@@ -5,6 +5,10 @@ from src.chunk.base import token_counts, token_windows
 from src.chunk.vendor.adaptive_splitters import RecursiveSplitter
 from src.chunk.vendor.adaptive_sentence import SentenceSplitter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+from src.chunk.vendor.adaptive_semantic import SemanticChunkerWrapper
+SEMANTIC_MODEL = {"name": "Qwen/Qwen3-Embedding-0.6B", "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"}
 
 # Separators of the Adaptive Chunking paper, copied from ekimetrics/adaptive-chunking (commit ea87ce8),
 # src/adaptive_chunking/paper/replicate.py (MIT, Copyright (c) 2026 Ekimetrics).
@@ -66,9 +70,29 @@ def langchain_recursive(document, size, overlap=0):
     splitter = RecursiveCharacterTextSplitter(separators=SEPARATORS, chunk_size=size, chunk_overlap=overlap,
                                               is_separator_regex=True, keep_separator="start", length_function=bge_tokens)
     return locate(splitter.split_text(document["text"]), document["text"])
+
+@lru_cache(maxsize=1)
+def semantic_embeddings():
+    """The paper's embedder for its semantic baseline, in float32 (set explicitly, never the model's default) with standard
+    attention: flash_attention_2 and bfloat16 need an Ampere GPU. Uses the GPU when one is present (Kaggle), else CPU.
+    'processor_kwargs' is the paper's 'tokenizer_kwargs' under its sentence-transformers 6 name (left padding)."""
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    return HuggingFaceEmbeddings(model_name=SEMANTIC_MODEL["name"], encode_kwargs={"batch_size": 16},
+                                 model_kwargs={"device": device, "revision": SEMANTIC_MODEL["revision"],
+                                               "processor_kwargs": {"padding_side": "left"},
+                                               "model_kwargs": {"dtype": torch.float32}})
+
+
+def semantic(document):
+    """Paper baseline 'semantic': LangChain SemanticChunker (gradient breakpoints, its defaults) in the paper's wrapper,
+    with Qwen3-Embedding-0.6B; chunk strings mapped back to exact offsets."""
+    splitter = SemanticChunkerWrapper(embeddings=semantic_embeddings(), breakpoint_threshold_type="gradient")
+    return locate(splitter.split_text(document["text"]), document["text"])
+
 CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "page": {"function": page, "version": "1.0"},
             "recursive": {"function": recursive, "version": "1.0+adaptive-chunking-ea87ce8"},
             "sentence": {"function": sentence, "version": "1.0+adaptive-chunking-ea87ce8+stanza-1.15.0"},
             "langchain_default": {"function": langchain_default, "version": "1.0+langchain-text-splitters-1.1.3"},
-            "langchain_recursive": {"function": langchain_recursive, "version": "1.0+langchain-text-splitters-1.1.3"}}
+            "langchain_recursive": {"function": langchain_recursive, "version": "1.0+langchain-text-splitters-1.1.3"},
+            "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"}}

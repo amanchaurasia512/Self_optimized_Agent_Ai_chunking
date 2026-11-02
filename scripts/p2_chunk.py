@@ -32,6 +32,8 @@ def main():
     arg_parser.add_argument("--heading-prefix", action="store_true")
     arg_parser.add_argument("--parsers", nargs="+", default=["docling", "pdfplumber"])
     arg_parser.add_argument("--docs", nargs="+", default=INDIAN)
+    arg_parser.add_argument("--machine", default="laptop")
+    arg_parser.add_argument("--run-source", default="LOCAL", help="run id source, e.g. LOCAL or KN01 for a Kaggle notebook")
     args = arg_parser.parse_args()
 
     settings = parse_settings(args.set)
@@ -39,7 +41,7 @@ def main():
                "settings": {**settings, "heading_prefix": args.heading_prefix}}
     name = setting_name(args.chunker, settings, args.heading_prefix)
     catalog = pd.read_csv(PDF_MANIFEST).set_index("doc_id")
-    run_id, logger, validator = new_run_id(2, "LOCAL"), CostLogger(), load_validator()
+    run_id, logger, validator = new_run_id(2, args.run_source), CostLogger(), load_validator()
     rows, inputs, outputs = [], [], []
     for parser in args.parsers:
         for doc_id in args.docs:
@@ -66,10 +68,9 @@ def main():
                          "coverage": round(layer1.get("text_coverage", 0), 4), "seconds": stage["wall_seconds"]})
 
     stack = {"chunker": chunker, "tokenizer": TOKENIZER, "parsers": args.parsers}
-    manifest_path = write_manifest(build_manifest(run_id, SPEC_VERSION, stack, inputs, outputs, logger.summary(), "laptop"))
+    manifest_path = write_manifest(build_manifest(run_id, SPEC_VERSION, stack, inputs, outputs, logger.summary(), args.machine))
     pd.set_option("display.width", 200)
     print(f"{name} | run {run_id}\n{pd.DataFrame(rows).to_string(index=False)}\nmanifest: {manifest_path}")
-
-
+    
 if __name__ == "__main__":
     main()

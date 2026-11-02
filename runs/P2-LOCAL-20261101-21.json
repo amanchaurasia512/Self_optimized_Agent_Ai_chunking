@@ -1,0 +1,88 @@
+{
+  "run_id": "P2-LOCAL-20261101-21",
+  "created_at": "2026-11-01T18:43:04+00:00",
+  "code": {
+    "commit": "96302548a57eb2b5cde9946062391c62e79ac03a",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "semantic",
+      "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b",
+      "settings": {
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ]
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling/indian_d2_ccs_conduct_rules.json",
+      "sha256": "7d05349eb78ae21116c4a3fe3fe0505de62ebc45716c8d890066c91e14bc52c1"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d2_ccs_conduct_rules.json",
+      "sha256": "5c3ba096ce33fb6cc4233a0301a8924a7eb765c8f37f4318bf5ac5068c26bcac"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling/semantic_noprefix/indian_d2_ccs_conduct_rules.json",
+    "data/chunks/pdfplumber/semantic_noprefix/indian_d2_ccs_conduct_rules.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 20,
+        "index_tokens": 13238,
+        "wall_seconds": 1774.708,
+        "peak_ram_mb": 2500.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 21,
+        "index_tokens": 12592,
+        "wall_seconds": 1336.133,
+        "peak_ram_mb": 2792.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 3110.841,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 2792.8,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
