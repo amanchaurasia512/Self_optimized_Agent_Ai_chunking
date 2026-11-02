@@ -45,3 +45,45 @@ Random cut stays a scorer sanity test (floor), not a candidate.
 - Cost ratio = mean_d C(d, agent's choice) / mean_d C(d, s0)
 - Pareto front of all setups on (mean R, mean C); gap also reported at a few cost limits.
 No single quality-minus-cost score: a weight between recall and tokens would be a value judgement.
+
+## Own methods (defined before any retrieval result)
+
+### Method 1: structure-tree chunker
+- Input: any parser's frozen text (and its blocks, when the parser gives them). No questions.
+- Tree: document -> sections -> sub-sections -> blocks (paragraph, list item, table, table row) -> sentences.
+  Levels come from the parser's structure (Docling labels) or, without it, from the text's own numbering
+  patterns. The rule is designed on tuning PDFs only and then frozen.
+- Chunking: a node becomes one chunk if its whole subtree fits the target size T; otherwise go one level down.
+  Neighbouring small siblings are merged up to T. Cuts only between nodes: never inside a sentence, clause,
+  list item or table row. Table chunks repeat the table's header row.
+- Settings: T = 512 (main), 1,024; shared post-processing as for every chunker.
+
+#### Cross-references
+- What: one part of a document pointing to another part of the same document, e.g. D2 rule 13, sub-rule (5):
+  "... shall be subject to the provisions of sub-rule (3)". A chunk holding (5) is incomplete without knowing
+  what (3) is.
+- Detection: a reference is text matching the numbering label of another node in the same document's tree
+  ("(3)", "13-A", "section 6"). Labels come from the document itself; no word lists.
+- Resolution: the referenced node's label and title (not its full text) are attached to the chunk as context,
+  e.g. "[refers to: sub-rule (3) - <title>]". Counted like the heading prefix: outside the size limit, inside
+  token budgets and index cost.
+- Not the same as overlap:
+
+  | | Overlap | Cross-reference |
+  |---|---|---|
+  | Added text | last tokens of the previous chunk, repeated | short label of the referenced part |
+  | Source | always the neighbouring chunk | anywhere in the document |
+  | When | always, fixed size (8, 32, 64 tokens) | only where the text points somewhere |
+
+  Both add context and both cost tokens, so both are compared per extra index token: does targeted
+  cross-referencing buy more retrieval quality than blind overlap (recursive baseline, overlap 0/8/32/64)?
+- Closest published work: StrucChunk (arXiv 2610.26313; legal documents only, legal-specific graph,
+  cross-reference augmentation +2.3% on cross-reference queries). Difference: any document, any parser,
+  token-budgeted. (STC, arXiv 2605.00318, is the table paper: table rows as units.)
+
+#### Design documents (tuning only)
+- The tree rule and cross-reference detection are designed on D4 (RTI Act, tuning) first, then checked on
+  D3 (Fundamental Rules, tuning, different numbering style). D1 (tuning) is the final check.
+- D2 (CCS Conduct Rules) is held-out: never used to design or adjust this method. Earlier use of D2 was
+  only for process checks (does the code run, timing) and for looking at parser output, never to shape a
+  chunker.
