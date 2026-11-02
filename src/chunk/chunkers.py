@@ -6,6 +6,7 @@ from src.chunk.vendor.adaptive_splitters import RecursiveSplitter
 from src.chunk.vendor.adaptive_sentence import SentenceSplitter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
+import torch
 
 from src.chunk.vendor.adaptive_semantic import SemanticChunkerWrapper
 SEMANTIC_MODEL = {"name": "Qwen/Qwen3-Embedding-0.6B", "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"}
