@@ -7,6 +7,10 @@ from src.chunk.vendor.adaptive_sentence import SentenceSplitter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 import torch
+import asyncio
+
+from src.chunk.llm import complete
+from src.chunk.vendor.adaptive_llm_regex import LLMRegexSplitter, _build_few_shot_prompt
 
 from src.chunk.vendor.adaptive_semantic import SemanticChunkerWrapper
 SEMANTIC_MODEL = {"name": "Qwen/Qwen3-Embedding-0.6B", "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"}
@@ -95,10 +99,19 @@ def semantic(document):
     splitter = SemanticChunkerWrapper(embeddings=semantic_embeddings(), breakpoint_threshold_type="gradient")
     return locate(splitter.split_text(document["text"]), document["text"])
 
+def llm_regex(document, run=1):
+    """Paper baseline 'llm_regex' (vendored, commit ea87ce8): the LLM sees the first 8,000 bge-m3 tokens with the paper's
+    few-shot prompt and returns one split regex, applied to the whole text (no valid regex -> one chunk, re-split by
+    post-processing). `run` only names repeated runs, which measure the LLM's noise."""
+    splitter = LLMRegexSplitter(base_prompt=_build_few_shot_prompt(), async_client_completion_func=complete,
+                                count_tokens_func=bge_tokens, context_tokens=8000)
+    return locate(asyncio.run(splitter.split_text(document["text"])), document["text"])
+
 CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "page": {"function": page, "version": "1.0"},
             "recursive": {"function": recursive, "version": "1.0+adaptive-chunking-ea87ce8"},
             "sentence": {"function": sentence, "version": "1.0+adaptive-chunking-ea87ce8+stanza-1.15.0"},
             "langchain_default": {"function": langchain_default, "version": "1.0+langchain-text-splitters-1.1.3"},
             "langchain_recursive": {"function": langchain_recursive, "version": "1.0+langchain-text-splitters-1.1.3"},
-            "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"}}
+            "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"},
+            "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True}}

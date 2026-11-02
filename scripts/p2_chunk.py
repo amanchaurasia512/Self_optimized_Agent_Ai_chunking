@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
-
+from src.chunk.llm import llm_info, take_calls
 from src.chunk.base import TOKENIZER, chunk_document
 from src.chunk.chunkers import CHUNKERS
 from src.common.cost_logger import CostLogger
@@ -50,9 +50,13 @@ def main():
             source = {"sha256": catalog.loc[doc_id, "sha256"], "file": Path(catalog.loc[doc_id, "file"]).name}
             with logger.stage(f"chunk:{parser}:{doc_id}") as stage:
                 spans = CHUNKERS[args.chunker]["function"](document, **settings)
+                calls = take_calls()
+                for call in calls:
+                    logger.record_llm_call(call["input_tokens"], call["output_tokens"] + call["thinking_tokens"])
                 chunk_doc = chunk_document(document, spans, chunker, run_id, source, args.heading_prefix)
                 stage["chunks"] = len(chunk_doc["chunks"])
                 stage["index_tokens"] = sum(chunk["token_count"] + chunk["prefix_token_count"] for chunk in chunk_doc["chunks"])
+                stage["llm"] = calls
             layer1 = layer1_report(chunk_doc, document["text"], validator)
             chunk_doc["quality"]["layer1"] = layer1
             output_path = CHUNKS / parser / name / f"{doc_id}.json"
@@ -62,15 +66,17 @@ def main():
             outputs.append(output_path)
             tokens = pd.Series([chunk["token_count"] for chunk in chunk_doc["chunks"]])
             rows.append({"parser": parser, "doc_id": doc_id, "chunks": len(tokens), "index_tokens": stage["index_tokens"],
+                         "llm_in": stage["input_tokens"], "llm_out": stage["output_tokens"],
                          "min": tokens.min(), "median": int(tokens.median()), "max": tokens.max(),
                          "C3": sum("C3" in chunk["errors"] for chunk in chunk_doc["chunks"]),
-                         "passed": layer1.get("passed"), "offset_match": layer1.get("offset_match_rate"),
-                         "coverage": round(layer1.get("text_coverage", 0), 4), "seconds": stage["wall_seconds"]})
+                         "passed": layer1.get("passed"), "coverage": round(layer1.get("text_coverage", 0), 4),
+                         "seconds": stage["wall_seconds"]})
 
-    stack = {"chunker": chunker, "tokenizer": TOKENIZER, "parsers": args.parsers}
+    stack = {"chunker": chunker, "tokenizer": TOKENIZER, "parsers": args.parsers,
+             "llm": llm_info() if CHUNKERS[args.chunker].get("llm") else None}
     manifest_path = write_manifest(build_manifest(run_id, SPEC_VERSION, stack, inputs, outputs, logger.summary(), args.machine))
-    pd.set_option("display.width", 200)
+    pd.set_option("display.width", 220)
     print(f"{name} | run {run_id}\n{pd.DataFrame(rows).to_string(index=False)}\nmanifest: {manifest_path}")
-    
+
 if __name__ == "__main__":
     main()
