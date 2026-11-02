@@ -1,0 +1,202 @@
+{
+  "run_id": "P2-KN01-20261102-1",
+  "created_at": "2026-11-02T06:37:20+00:00",
+  "code": {
+    "commit": "83fe6db40d3074caaa7baaeeb1ce110d0e34ed49",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "semantic",
+      "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32",
+      "settings": {
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ]
+  },
+  "environment": {
+    "machine": "kaggle-gpu-t4",
+    "host": "ad29411d42b1",
+    "python": "3.13.15",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling/indian_d1.json",
+      "sha256": "5612acea5da28bb5054d82133bbc2413dab36a23067f4297e311bf4b546b3725"
+    },
+    {
+      "path": "data/extracted/docling/indian_d2_ccs_conduct_rules.json",
+      "sha256": "7d05349eb78ae21116c4a3fe3fe0505de62ebc45716c8d890066c91e14bc52c1"
+    },
+    {
+      "path": "data/extracted/docling/indian_d3_fundamental_rules.json",
+      "sha256": "415a85d7fb273c28f0c40cb6741e86b930e6a547c5eda55b246dcda3dd6c1386"
+    },
+    {
+      "path": "data/extracted/docling/indian_d4_rti_act.json",
+      "sha256": "c9baf1c9d040d6950f9db46525b8d8ed238302e48e97fbb3adf5bf63f7de9a3b"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d1.json",
+      "sha256": "f1258539635e0a1e2c54e9638bed0d1478885fd25e087a881610fdf223c5e7f5"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d2_ccs_conduct_rules.json",
+      "sha256": "5c3ba096ce33fb6cc4233a0301a8924a7eb765c8f37f4318bf5ac5068c26bcac"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d3_fundamental_rules.json",
+      "sha256": "963a71b27ebdb877225839abacd3e0087b54e203c220ee82121481bd4a1664da"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d4_rti_act.json",
+      "sha256": "facc1eca39ffa779a27eb7ffdef358772e77fed71f55e93136fda5d0af087a98"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling/semantic_noprefix/indian_d1.json",
+    "data/chunks/docling/semantic_noprefix/indian_d2_ccs_conduct_rules.json",
+    "data/chunks/docling/semantic_noprefix/indian_d3_fundamental_rules.json",
+    "data/chunks/docling/semantic_noprefix/indian_d4_rti_act.json",
+    "data/chunks/pdfplumber/semantic_noprefix/indian_d1.json",
+    "data/chunks/pdfplumber/semantic_noprefix/indian_d2_ccs_conduct_rules.json",
+    "data/chunks/pdfplumber/semantic_noprefix/indian_d3_fundamental_rules.json",
+    "data/chunks/pdfplumber/semantic_noprefix/indian_d4_rti_act.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 48,
+        "index_tokens": 35871,
+        "wall_seconds": 70.561,
+        "peak_ram_mb": 4495.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 3132.3
+      },
+      {
+        "stage": "chunk:docling:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 20,
+        "index_tokens": 13238,
+        "wall_seconds": 18.934,
+        "peak_ram_mb": 3231.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2787.6
+      },
+      {
+        "stage": "chunk:docling:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 40,
+        "index_tokens": 26515,
+        "wall_seconds": 31.289,
+        "peak_ram_mb": 3234.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2878.0
+      },
+      {
+        "stage": "chunk:docling:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 56,
+        "index_tokens": 39357,
+        "wall_seconds": 56.219,
+        "peak_ram_mb": 3241.8,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 3607.7
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 49,
+        "index_tokens": 34829,
+        "wall_seconds": 47.604,
+        "peak_ram_mb": 3244.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2887.9
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d2_ccs_conduct_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 21,
+        "index_tokens": 12592,
+        "wall_seconds": 19.424,
+        "peak_ram_mb": 3346.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2807.6
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 40,
+        "index_tokens": 26547,
+        "wall_seconds": 31.285,
+        "peak_ram_mb": 3351.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2878.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 61,
+        "index_tokens": 41631,
+        "wall_seconds": 55.578,
+        "peak_ram_mb": 3367.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 3091.3
+      }
+    ],
+    "totals": {
+      "wall_seconds": 330.894,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 4495.1,
+      "gpu_peak_mb": 3607.7
+    }
+  }
+}

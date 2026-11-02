@@ -34,17 +34,20 @@ def bge_tokens(text):
     return token_counts([text])[0]
 
 
-def locate(pieces, text):
-    """Exact offsets of the splitter's chunk strings: each is a substring of the text, in order, starting after the previous one."""
-    spans, previous = [], -1
-    for piece in pieces:
-        start = text.find(piece, previous + 1)
+def locate(pieces, text, overlapping=False):
+    """Exact offsets of a splitter's chunk strings, which are substrings of the text in order. Without overlap a chunk starts
+    at or after the previous chunk's end; with overlap it starts after the previous start and must end after the previous
+    end. Either way a repeated phrase earlier in the text can't be mistaken for the chunk."""
+    spans, previous_start, previous_end = [], -1, 0
+    for piece in (piece for piece in pieces if piece.strip()):
+        start = text.find(piece, previous_start + 1 if overlapping else previous_end)
+        while start >= 0 and start + len(piece) <= previous_end:
+            start = text.find(piece, start + 1)
         if start < 0:
-            raise ValueError(f"chunk {len(spans)} not found in the text after offset {previous}")
+            raise ValueError(f"chunk {len(spans)} not found in the text after offset {previous_end}")
         spans.append((start, start + len(piece)))
-        previous = start
+        previous_start, previous_end = start, start + len(piece)
     return spans
-
 
 def recursive(document, size, overlap=0):
     """P2-R04: Adaptive Chunking's recursive split-then-merge (vendored, commit ea87ce8) with the paper's separators and
@@ -52,17 +55,19 @@ def recursive(document, size, overlap=0):
     splitter = RecursiveSplitter(separators=SEPARATORS, chunk_size=size, chunk_overlap=overlap, is_separator_regex=True,
                                  attach_separator_to="start", length_function=bge_tokens, merging="to_chunk_size",
                                  merging_order="forward")
-    return locate(splitter.split_text(document["text"]), document["text"])
+    return locate(splitter.split_text(document["text"]), document["text"], overlapping=overlap > 0)
+
 
 def sentence(document, sentences=5):
     """Adaptive Chunking's sentence baseline (vendored, commit ea87ce8): Stanza English sentences, each keeping its
     trailing separator, grouped `sentences` at a time ('sentence' in its replicate.py); mapped back to exact offsets."""
     splitter = SentenceSplitter(method="stanza", sentences_per_chunk=sentences, device="cpu")
     return locate(splitter.split_text(document["text"]), document["text"])
+
 def langchain_default(document):
     """Paper baseline 'langch_recurs_default': LangChain's RecursiveCharacterTextSplitter with all its defaults
     (4,000 characters, 200-character overlap, separators blank line / line break / space / character)."""
-    return locate(RecursiveCharacterTextSplitter().split_text(document["text"]), document["text"])
+    return locate(RecursiveCharacterTextSplitter().split_text(document["text"]), document["text"], overlapping=True)
 
 
 def langchain_recursive(document, size, overlap=0):
@@ -70,7 +75,7 @@ def langchain_recursive(document, size, overlap=0):
     separators kept at the start of a chunk, counted in bge-m3 tokens."""
     splitter = RecursiveCharacterTextSplitter(separators=SEPARATORS, chunk_size=size, chunk_overlap=overlap,
                                               is_separator_regex=True, keep_separator="start", length_function=bge_tokens)
-    return locate(splitter.split_text(document["text"]), document["text"])
+    return locate(splitter.split_text(document["text"]), document["text"], overlapping=overlap > 0)
 
 @lru_cache(maxsize=1)
 def semantic_embeddings():
