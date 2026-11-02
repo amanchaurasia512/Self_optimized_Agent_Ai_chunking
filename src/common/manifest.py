@@ -15,9 +15,10 @@ def git_output(*args):
     result = subprocess.run(["git", *args], cwd=PROJECT_ROOT, capture_output=True, text=True)
     return result.stdout.strip() if result.returncode == 0 else None
 
-
 def code_version():
-    status = git_output("status", "--porcelain")
+    """Commit, plus whether the code differs from it. Files in runs/ don't count: every run writes a manifest there,
+    which must not mark the next run in the same session as uncommitted."""
+    status = git_output("status", "--porcelain", "--", ".", ":(exclude)runs")
     return {"commit": git_output("rev-parse", "HEAD"), "uncommitted_changes": None if status is None else bool(status)}
 
 
