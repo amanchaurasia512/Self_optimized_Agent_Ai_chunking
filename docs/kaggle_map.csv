@@ -3,4 +3,4 @@ P1-KN01,v1,notebooks/kaggle (self-contained download),fcef031,Salesforce/UniDoc-
 P1-KN02,v1,scripts/p1_extract_docling.py,9447046,P1-KD02 (23 test PDFs),data/extracted/docling (23 JSON),P1-KN02-20261027-1,done
 P1-KN03,v1,notebooks/kaggle (self-contained extraction),ea4822b,opendatalab/OHR-Bench pdfs.zip,data/raw/ohr (15 PDFs),P1-KN03-20261028-1,done
 P1-KN04,v1,scripts/p1_extract_docling.py,95d0c7a,P1-KD04 (15 OHR PDFs),data/extracted/docling (15 JSON),P1-KN04,done
-P2-KN02,v2,scripts/p1_extract_docling.py,b8a0212,18 held-out PDFs fetched from source (pdfs/heldout_picks.csv),data/raw/heldout (18 PDFs) + data/extracted/docling (18 JSON),P1-P2-    KN02-20261103-1,done
+P2-KN02,v2,scripts/p1_extract_docling.py,b8a0212,18 held-out PDFs fetched from source (pdfs/heldout_picks.csv),data/raw/heldout (18 PDFs) + data/extracted/docling (18 JSON),P1-P2-KN02-20261103-1,done
