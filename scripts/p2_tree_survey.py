@@ -7,6 +7,7 @@ from pathlib import Path
 
 from src.chunk.base import token_counts
 from src.chunk.tree import build_tree, fit_report
+from src.common.split import tuning_ids
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,7 +29,9 @@ def survey(path, budget):
 
 
 def windows(nodes, size):
-    """The first, middle and last nodes of a tree (all of them when it is small)."""
+    """The first, middle and last nodes of a tree (all of them when it is small, none when size is 0)."""
+    if size == 0:
+        return {}
     if len(nodes) <= 3 * size:
         return {"all": nodes}
     middle = len(nodes) // 2 - size // 2
@@ -40,13 +43,13 @@ def main():
     arg_parser.add_argument("--parser", default="docling")
     arg_parser.add_argument("--budget", type=int, default=1024)
     arg_parser.add_argument("--show", type=int, default=4)
-    arg_parser.add_argument("--exclude", nargs="*", default=["indian_d2_ccs_conduct_rules"])
     args = arg_parser.parse_args()
 
     root = PROJECT_ROOT / "data" / "extracted" / args.parser
-    paths = sorted(path for path in root.rglob("*.json") if path.stem not in args.exclude)
+    tuning = tuning_ids()
+    paths = sorted(path for path in root.rglob("*.json") if path.stem in tuning)
     results = [survey(path, args.budget) for path in paths]
-    print(dict(Counter(source_of(path, root) for path in paths)), f"| budget {args.budget}\n")
+    print(dict(Counter(source_of(path, root) for path in paths)), f"| tuning documents only | budget {args.budget}\n")
 
     print(f"{'document':<42} {'tokens':>7} {'headers':>7} {'proven':>6} {'nodes':>5} {'levels':>6} {'break%':>6} "
           f"{'pieces':>6} {'largest':>7} {'conf_lbl':>8} {'conf':>5}")

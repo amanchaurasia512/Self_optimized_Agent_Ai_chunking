@@ -2,7 +2,7 @@
 import argparse
 import json
 from collections import Counter
-
+from src.common.split import tuning_ids
 from src.chunk.tree import build_tree, subtree_tokens
 from src.common.manifest import PROJECT_ROOT
 
@@ -13,6 +13,8 @@ def main():
     arg_parser.add_argument("--parser", default="docling")
     arg_parser.add_argument("--limit", type=int, default=80)
     args = arg_parser.parse_args()
+    if args.doc not in tuning_ids():
+        raise PermissionError(f"{args.doc} is not a tuning document in pdfs/split.csv: it is sealed")
 
     document = json.loads((PROJECT_ROOT / "data" / "extracted" / args.parser / f"{args.doc}.json").read_text(encoding="utf-8"))
     nodes, stats = build_tree(document)
@@ -30,6 +32,6 @@ def main():
     print(f"\nsequence breaks ({len(breaks)}), first 30:")
     for node in breaks[:30]:
         print(f"  level {node['level']} {node['label']:<10} {node['how']:<8} | {node['title'][:60]}")
-
+        
 if __name__ == "__main__":
     main()
