@@ -1,0 +1,406 @@
+{
+  "run_id": "P1-P2-KN02-20261103-1",
+  "created_at": "2026-11-03T11:48:08+00:00",
+  "code": {
+    "commit": "b8a0212b99dbae3cf476a8817826b3d40edb7d81",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    }
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "98b3c56f05bf",
+    "python": "3.13.16",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "/kaggle/working/heldout_pdfs/cuad_gooseheadinsurance_inc_04_02_2018_ex_10_6_franchise_agreement.pdf",
+      "sha256": "578e5bc41ea4a37cdf1d1b3cfb7a1c3265acdb071239157abf228a0bc3121683"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/financebench_americanexpress_2022_10k.pdf",
+      "sha256": "d3bbc7ab23d6160e07eab50a359e4d68c40efff9fde3baa168e7c40e06f568e6"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/ohr_academic_2409_16145v1.pdf",
+      "sha256": "a4744442ada036bfa50ffdee11dc01b58c65acd6c9a2c770f6ae83442ca18b26"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/ohr_administration_dude_2d071d2a3ef2e812c45e5c3fff0b502a.pdf",
+      "sha256": "acc222b3e2155afa16e3da94170d4a1ff8646b792342823f67e63877307ecab5"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/ohr_finance_jpmorgan_2022q2_10q.pdf",
+      "sha256": "7d715f552d4eeb6b2a1ea8ae02237b5767306907e761270ac23d74ac5b7e44b5"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/ohr_law_fibrogeninc_10_01_2014_ex_10_11_collaboration_agreement.pdf",
+      "sha256": "e4bd78f0b944b611bfdf98b708d4f30468c80930a5d9c29c1335d8c1eda70723"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/ohr_manual_dude_e3da4ec33b853c7078243375728ba545.pdf",
+      "sha256": "fedec1f1ebb849fd39dca5495fca449e7f4f5ff7c08e373c0890f622ed2cef01"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/ohr_news_dude_62ba680b413005aa9f018454c4ab4c43.pdf",
+      "sha256": "48981bbfdaf170bfc2ffceae813f17b49e528cb3cde75bac3b48b532b30e4274"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/ohr_textbook_dude_0da5da2608ed89cdddd52bd078beced8.pdf",
+      "sha256": "7435d897a02dbddb259f85933f4d20380b5e8ea3315545380796ba49a091fab2"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/qasper_1601_02403.pdf",
+      "sha256": "0366d7449aff5a067f3b2c6f9680989dd3b9c2063f8a8f70c46b8c2dc75e22b6"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_commerce_manufacturing_2114245.pdf",
+      "sha256": "4429ecf55aa8fa6c73a1e41f6ce43662631c35a79b336b96cb33219ad03fea94"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_construction_4005140.pdf",
+      "sha256": "8140a724025cc6cd6eddba6f9ab9bbaf9a2e12151c657e996f30aae353ae8311"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_crm_5963931.pdf",
+      "sha256": "c073f308d8a517685f7c8c47f2878ceab7771d0d5906325538d84d150fb01a03"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_education_5375571.pdf",
+      "sha256": "ad7b2dd7704fe47468cdf1d2e24793d0b4a91cec4287f768412444e487f2faf6"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_energy_4343531.pdf",
+      "sha256": "8c2d84351334e8093be6088cce0aa4434a5062e40596979d1a29bdec1426f973"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_finance_3702924.pdf",
+      "sha256": "777c05a4e9abfbb93323cb9ab85626e436d6f413c22fbff686959994ed837b6d"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_healthcare_2456459.pdf",
+      "sha256": "4f3dcf668056aa2bc3510b7e2fae6101f8b2f99452c2314b3a1f5b9b9270b07c"
+    },
+    {
+      "path": "/kaggle/working/heldout_pdfs/unidoc_legal_2922673.pdf",
+      "sha256": "5e490be9a9a2718a4bd3cb0e63d35bdfa7646f5e128937647381c38f8384b707"
+    }
+  ],
+  "outputs": [
+    "/kaggle/working/extracted_docling/cuad_gooseheadinsurance_inc_04_02_2018_ex_10_6_franchise_agreement.json",
+    "/kaggle/working/extracted_docling/financebench_americanexpress_2022_10k.json",
+    "/kaggle/working/extracted_docling/ohr_academic_2409_16145v1.json",
+    "/kaggle/working/extracted_docling/ohr_administration_dude_2d071d2a3ef2e812c45e5c3fff0b502a.json",
+    "/kaggle/working/extracted_docling/ohr_finance_jpmorgan_2022q2_10q.json",
+    "/kaggle/working/extracted_docling/ohr_law_fibrogeninc_10_01_2014_ex_10_11_collaboration_agreement.json",
+    "/kaggle/working/extracted_docling/ohr_manual_dude_e3da4ec33b853c7078243375728ba545.json",
+    "/kaggle/working/extracted_docling/ohr_news_dude_62ba680b413005aa9f018454c4ab4c43.json",
+    "/kaggle/working/extracted_docling/ohr_textbook_dude_0da5da2608ed89cdddd52bd078beced8.json",
+    "/kaggle/working/extracted_docling/qasper_1601_02403.json",
+    "/kaggle/working/extracted_docling/unidoc_commerce_manufacturing_2114245.json",
+    "/kaggle/working/extracted_docling/unidoc_construction_4005140.json",
+    "/kaggle/working/extracted_docling/unidoc_crm_5963931.json",
+    "/kaggle/working/extracted_docling/unidoc_education_5375571.json",
+    "/kaggle/working/extracted_docling/unidoc_energy_4343531.json",
+    "/kaggle/working/extracted_docling/unidoc_finance_3702924.json",
+    "/kaggle/working/extracted_docling/unidoc_healthcare_2456459.json",
+    "/kaggle/working/extracted_docling/unidoc_legal_2922673.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:cuad_gooseheadinsurance_inc_04_02_2018_ex_10_6_franchise_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 425979,
+        "empty_pages": 0,
+        "elements": 911,
+        "wall_seconds": 47.421,
+        "peak_ram_mb": 4320.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1631.1
+      },
+      {
+        "stage": "parse:financebench_americanexpress_2022_10k",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 1106763,
+        "empty_pages": 0,
+        "elements": 2364,
+        "wall_seconds": 138.603,
+        "peak_ram_mb": 7079.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2722.8
+      },
+      {
+        "stage": "parse:ohr_academic_2409_16145v1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 56995,
+        "empty_pages": 0,
+        "elements": 163,
+        "wall_seconds": 10.596,
+        "peak_ram_mb": 6789.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1545.7
+      },
+      {
+        "stage": "parse:ohr_administration_dude_2d071d2a3ef2e812c45e5c3fff0b502a",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 381045,
+        "empty_pages": 1,
+        "elements": 2130,
+        "wall_seconds": 47.642,
+        "peak_ram_mb": 7545.0,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2519.7
+      },
+      {
+        "stage": "parse:ohr_finance_jpmorgan_2022q2_10q",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 1554768,
+        "empty_pages": 1,
+        "elements": 2490,
+        "wall_seconds": 273.309,
+        "peak_ram_mb": 7603.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2265.3
+      },
+      {
+        "stage": "parse:ohr_law_fibrogeninc_10_01_2014_ex_10_11_collaboration_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 166358,
+        "empty_pages": 0,
+        "elements": 513,
+        "wall_seconds": 11.957,
+        "peak_ram_mb": 6574.9,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1541.2
+      },
+      {
+        "stage": "parse:ohr_manual_dude_e3da4ec33b853c7078243375728ba545",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 590625,
+        "empty_pages": 2,
+        "elements": 2933,
+        "wall_seconds": 97.952,
+        "peak_ram_mb": 6550.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2972.7
+      },
+      {
+        "stage": "parse:ohr_news_dude_62ba680b413005aa9f018454c4ab4c43",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 55425,
+        "empty_pages": 0,
+        "elements": 374,
+        "wall_seconds": 26.133,
+        "peak_ram_mb": 5135.2,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2708.2
+      },
+      {
+        "stage": "parse:ohr_textbook_dude_0da5da2608ed89cdddd52bd078beced8",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 35733,
+        "empty_pages": 1,
+        "elements": 89,
+        "wall_seconds": 13.559,
+        "peak_ram_mb": 5072.2,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2068.3
+      },
+      {
+        "stage": "parse:qasper_1601_02403",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 224113,
+        "empty_pages": 0,
+        "elements": 614,
+        "wall_seconds": 21.191,
+        "peak_ram_mb": 5570.9,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1568.4
+      },
+      {
+        "stage": "parse:unidoc_commerce_manufacturing_2114245",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 92787,
+        "empty_pages": 0,
+        "elements": 373,
+        "wall_seconds": 16.073,
+        "peak_ram_mb": 5628.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1861.0
+      },
+      {
+        "stage": "parse:unidoc_construction_4005140",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 48158,
+        "empty_pages": 0,
+        "elements": 138,
+        "wall_seconds": 5.349,
+        "peak_ram_mb": 5561.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1543.8
+      },
+      {
+        "stage": "parse:unidoc_crm_5963931",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 100842,
+        "empty_pages": 0,
+        "elements": 535,
+        "wall_seconds": 33.137,
+        "peak_ram_mb": 5718.7,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2594.9
+      },
+      {
+        "stage": "parse:unidoc_education_5375571",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 28591,
+        "empty_pages": 1,
+        "elements": 176,
+        "wall_seconds": 13.34,
+        "peak_ram_mb": 5748.2,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2051.2
+      },
+      {
+        "stage": "parse:unidoc_energy_4343531",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 77333,
+        "empty_pages": 0,
+        "elements": 205,
+        "wall_seconds": 12.658,
+        "peak_ram_mb": 5857.2,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1539.8
+      },
+      {
+        "stage": "parse:unidoc_finance_3702924",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 33617,
+        "empty_pages": 0,
+        "elements": 132,
+        "wall_seconds": 4.163,
+        "peak_ram_mb": 5964.7,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1542.8
+      },
+      {
+        "stage": "parse:unidoc_healthcare_2456459",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 115537,
+        "empty_pages": 1,
+        "elements": 130,
+        "wall_seconds": 16.054,
+        "peak_ram_mb": 6055.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1785.0
+      },
+      {
+        "stage": "parse:unidoc_legal_2922673",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 88734,
+        "empty_pages": 0,
+        "elements": 248,
+        "wall_seconds": 16.584,
+        "peak_ram_mb": 6147.9,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1771.6
+      }
+    ],
+    "totals": {
+      "wall_seconds": 805.721,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 7603.5,
+      "gpu_peak_mb": 2972.7
+    }
+  }
+}
