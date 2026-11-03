@@ -1,0 +1,666 @@
+{'cuad': 8, 'indian': 3, 'ohr': 15, 'qasper': 5, 'rti': 2, 'unidoc': 4} | budget 1024
+
+document                                    tokens headers proven nodes levels break% pieces largest conf_lbl  conf
+cuad_bizzingoinc_20120322_8_k_ex_10_17_750    5434      13      3    50      4     0%     25     606     1.00  1.00
+cuad_changepointcorp_03_08_2000_ex_10_6_li   29169      53      6   135      6     0%     71    1016     0.43  1.00
+cuad_cooltechnologies_inc_10_25_2017_ex_10    3200      13      1    11      2     0%      8     989     0.22  1.00
+cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_    4953      11      5    48      4     0%     18     999     1.00  1.00
+cuad_intersectent_inc_05_11_2020_ex_10_1_s    8832       8      4    92      5     0%     41     865     1.00  1.00
+cuad_sporthaleyinc_09_29_1997_ex_10_2_10_e    2160       1      2    19      3     0%     15     456     1.00  1.00
+cuad_tomonlineinc_20060501_20_f_ex_4_46_74   25240      46      8    69      5     0%     61     990     0.40  1.00
+cuad_vitaminshoppecominc_09_13_1999_ex_10_   13619      24      3    83      4     1%     42     999     0.78  1.00
+indian_d1                                    35886     100      8   448      7     4%    136    1247     0.91  0.96
+indian_d3_fundamental_rules                  26515      33     11   285     14     4%    165     858     0.95  1.00
+indian_d4_rti_act                            39357     132      7   534      6     7%    178    1000     0.95  1.00
+ohr_academic_2310_11511v1                    29152      43      3    40      3     0%     54    1534     0.41  0.95
+ohr_academic_2405_14831v1                    27406      59      3    55      3     0%     56    1011     0.48  1.00
+ohr_academic_dude_1c6061aa2d4c3167592fff8e   10968      26      2    47      4     4%     39    1005     0.82  1.00
+ohr_administration_dude_0efb341dfb77bee6be   10727       8      2    58      5    10%     25    1424     0.21  0.52
+ohr_administration_dude_e79deb02a0c0e87511    7241      32      1    59      2     0%     21    1017     1.00  1.00
+ohr_administration_dude_eefcc78eed46846c09   58679     221      3   574      3     1%    315    1099     0.80  0.98
+ohr_finance_aes_2022_10k                    243542     308      6   271      4     1%    402    3115     0.28  0.92
+ohr_finance_amazon_2017_10k                  75136     211      4   269      4     0%    225    1072     0.75  0.99
+ohr_finance_jpmorgan_2023q2_10q             252087     423      2   948      6     0%    796    2595     0.61  0.80
+ohr_law_asiandragongroupinc_08_11_2005_ex_   10539     113      3   106      4     0%     35     984     0.88  1.00
+ohr_law_energyxxiltd_05_08_2015_ex_10_13_t   16432      51      3    60      4     7%     38    2129     0.58  0.87
+ohr_law_mplxlp_06_17_2015_ex_10_1_transpor   17795      32      4    47      4     6%     40    1010     0.75  1.00
+ohr_manual_2021_apple_catalog                10796     178      0   131      1     0%    131     396     1.00  1.00
+ohr_manual_mi_phone                           7761     137      1   131      3     1%    117     627     1.00  1.00
+ohr_manual_nova_y70                          14970     207      0   164      1     0%    164     562     1.00  1.00
+qasper_1806_03369                            10844      15      0    14      1     0%     21    1756     0.30  0.72
+qasper_1910_03355                             9289      17      2    17      2     0%     17     992     0.59  1.00
+qasper_1911_01680                             5750      18      2    18      2     0%     19     972     0.80  1.00
+qasper_2001_01269                             8222      17      3    40      3     0%     36     973     1.00  1.00
+qasper_2001_09899                            10477      18      4    67      3     0%     64    1014     0.90  1.00
+rti_act_en                                   15290      35      4   281      6     1%     47     980     1.00  1.00
+rti_act_hi                                   25161      30      2   152      6     3%     90    1752     0.67  0.93
+unidoc_finance_0458505                       14201      50      2    46      3     7%     45    1117     0.62  0.92
+unidoc_finance_6941304                       14439      17      2    17      4     0%     28    1013     0.14  1.00
+unidoc_healthcare_3428789                    10214      15      0    14      1     0%     19     999     0.39  1.00
+unidoc_healthcare_4671258                     6474      11      1    57      2     0%     52    1002     0.78  1.00
+
+=== cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement | {'page_numbers_skipped': 0, 'styles_proven': 3, 'margin_titles': 0, 'inline_labels': 0, 'headings': 6, 'headings_merged': 1, 'resumed': 0, 'sequence_breaks': 0} | styles [("('dotted', 1, '.')", 22), ("('letter.', 'letter', 'lower')", 15), ("('letter.', 'roman', 'lower')", 7)]
+  [start]
+    [heading]    | CELEBRITY ENDORSEMENT AGREEMENT
+    [heading]    | WITNESSETH:
+      1.           | GRANT OF RIGHTS. Subject to the terms and conditions set for
+      2.           | TERM. Unless sooner terminated under the provisions hereof, 
+  [middle]
+        a.           | Theismann shall have the right to terminate this Agreement u
+          i.           | Bizzingo is adjudicated insolvent, declares bankruptcy, or
+          ii.          | Bizzingo fails to continue its business of selling the Netwo
+          iii.         | Bizzingo fails to make payment to Theismann of any Royalties
+  [end]
+    [heading]    | II Royalty and Initial Bonus
+      1.           | Royalty. The Royalty payable under the Agreement shall be in
+      2.           | Initial Bonus. Concurrent with the execution hereof, Bizzing
+      3.           | Restrictive Legend. The restricted legend for purposes of an
+
+=== cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement | {'page_numbers_skipped': 30, 'styles_proven': 6, 'margin_titles': 1, 'inline_labels': 0, 'headings': 14, 'headings_merged': 2, 'resumed': 4, 'sequence_breaks': 0} | styles [("('paren', 'letter', 'lower')", 37), ("('heading', 2)", 35), ("('paren', 'letter', 'upper')", 21)]
+  [start]
+    [heading]    | CONFIDENTIAL TREATMENT - REDACTED VERSION · CORIO INC. · LIC
+      A.           | Changepoint is the owner or has the right to license certain
+      B.           | Corio wishes to obtain a license to use and host the Softwar
+      C.           | The parties further wish to jointly market and promote the o
+  [middle]
+          (a)          | Customer shall pay (and Changepoint shall have no liability 
+          (b)          | All overdue payments shall bear interest at a rate of 12% pe
+      ARTICLE 5    | PROPRIETARY RIGHTS AND CONFIDENTIAL INFORMATION
+        5.1          | TITLE TO LICENSED MATERIALS
+  [end]
+    [heading]    | CONFIDENTIAL TREATMENT
+      (b)          | Customer agrees to pay Changepoint for any Installation Serv
+      (c)          | Changepoint does not guarantee that all services will be pro
+      (d)          | Customer shall reimburse Changepoint for reasonable travel e
+
+=== cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement | {'page_numbers_skipped': 2, 'styles_proven': 1, 'margin_titles': 0, 'inline_labels': 0, 'headings': 2, 'headings_merged': 2, 'resumed': 1, 'sequence_breaks': 0} | styles [("('letter.', 'letter', 'upper')", 9), ("('heading', 1)", 2)]
+  [all]
+    [heading]    | May 04, 2017 · Strategic Alliance Agreement
+      A.           | Entire Agreement: This Agreement together with all documents
+      B.           | Conflict: In the event of any conflict, ambiguity or inconsi
+      C.           | Assignment and Delegation: Neither party shall assign or del
+      D.           | Notices: Any notice required or permitted to be given under 
+    [heading]    | If to VET TECH: · If to COOL TECH:
+      E.           | Severability: If any provision of this Agreement is declared
+      F.           | Governing Law: This Agreement shall be governed by and const
+      G.           | Paragraph Headings: The paragraph headings set forth in this
+      H.           | Counterparts: This Agreement may be executed in two or more 
+      I.           | Exhibits: The Exhibits attached hereto are made a part of th
+
+=== cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement | {'page_numbers_skipped': 2, 'styles_proven': 5, 'margin_titles': 0, 'inline_labels': 8, 'headings': 8, 'headings_merged': 1, 'resumed': 1, 'sequence_breaks': 0} | styles [("('paren', 'letter', 'lower')", 17), ("('dotted', 1, '.')", 11), ("('heading', 1)", 8)]
+  [start]
+    [heading]    | STRATEGIC ALLIANCE AGREEMENT
+      1.           | Services
+        (a)          | General. Consultant shall use all best efforts to provide se
+    [heading]    | ● Branding
+  [middle]
+          (2)          | Termination by Company or Consultant for any material breach
+          (3)          | By the Company, at its option, if at least two Milestones (e
+      4.           | Relationship of Parties. Consultant is an independent contra
+      5.           | Confidential Information. Consultant acknowledges that, in c
+  [end]
+        (j)          | Remedies and Enforcement. The parties acknowledge and agree 
+        (k)          | Construction. This Agreement shall be construed within the f
+    [heading]    | REMAINDER OF PAGE LEFT INTENTIONALLY BLANK
+    [heading]    | GIGGLES N' HUGS, INC. · KIDDO, INC.
+
+=== cuad_intersectent_inc_05_11_2020_ex_10_1_supply_agreement | {'page_numbers_skipped': 1, 'styles_proven': 4, 'margin_titles': 0, 'inline_labels': 3, 'headings': 1, 'headings_merged': 0, 'resumed': 0, 'sequence_breaks': 0} | styles [("('dotted', 2, '.')", 63), ("('dotted', 1, '.')", 14), ("('paren', 'letter', 'lower')", 10)]
+  [start]
+    [heading]    | SUPPLY AGREEMENT
+      1.           | Definitions
+        1.1.         | "Active Pharmaceutical Ingredient" or "API" shall have the m
+        1.2.         | "Affiliate" means any entity controlling, controlled by or u
+  [middle]
+          (a)          | It has the full right and power to enter into this Agreement
+          (b)          | That it will purchase the API in strict compliance with the 
+        6.3.         | DISCLAIMER. EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT,
+        6.4.         | Mutual Warranties. Each party represents and warrants to the
+  [end]
+        14.11.       | Counterparts. This Agreement may be executed in multiple cou
+        14.12.       | Subcontractors. Any work that is to be done by any Party und
+        14.13.       | Schedules and Exhibits. All Schedules and Exhibits reference
+        14.14.       | Currency. All sums set forth in this Agreement and ay append
+
+=== cuad_sporthaleyinc_09_29_1997_ex_10_2_10_endorsement_agreement | {'page_numbers_skipped': 0, 'styles_proven': 2, 'margin_titles': 1, 'inline_labels': 0, 'headings': 1, 'headings_merged': 0, 'resumed': 0, 'sequence_breaks': 0} | styles [("('dotted', 1, '.')", 14), ("('letter.', 'letter', 'lower')", 4), ("('heading', 1)", 1)]
+  [start]
+    [heading]    | ENDORSEMENT AGREEMENT
+      1.           | SERVICES OF THE PROFESSIONAL. The Professional agrees to per
+        a.           | The Professional agrees that, with respect to men's apparel,
+        b.           | The Professional grants to the Company the exclusive worldwi
+  [middle]
+      3.           | COMPENSATION OF THE PROFESSIONAL. In consideration of the ri
+      4.           | PAYMENTS. All payments to be made to the Professional pursua
+      5.           | RETENTION OF ENDORSEMENT RIGHTS. Except with respect to endo
+      6.           | TERM. The term of this Agreement shall extend from the date 
+  [end]
+      11.          | GOVERNING LAW. This Agreement shall be construed and enforce
+      12.          | COUNTERPARTS. This Agreement may be executed simultaneously 
+      13.          | HEADINGS. The headings in this Agreement are for purposes of
+      14.          | affect the meaning hereof.
+
+=== cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement | {'page_numbers_skipped': 1, 'styles_proven': 8, 'margin_titles': 0, 'inline_labels': 0, 'headings': 15, 'headings_merged': 1, 'resumed': 2, 'sequence_breaks': 0} | styles [("('dotted', 1, '.')", 21), ("('heading', 1)", 15), ("('dotted', 2, '.')", 9)]
+  [start]
+    [heading]    | CO-BRANDING AGREEMENT
+    [heading]    | RECITALS
+      A.           | Each of Skype, Skype Holding, Online BVI, and Tom Holding ar
+      B.           | The parties to this Agreement are parties to that certain Sh
+  [middle]
+            4.2.3.2.3.   | if such rights comprise (i) analysis prepared for or on beha
+            4.2.3.2.4.   | Notwithstanding the foregoing, the Company may use the Skype
+      5.           | PAYMENTS AND REPORTING
+        5.3          | Statements; Payments
+  [end]
+    [heading]    | SKYPE TECHNOLOGIES , S.A.
+    [heading]    | TOM ONLINE (BVI) LIMITED
+    [heading]    | TOM ONLINE INC.
+    [heading]    | TEL-ONLINE LIMITED
+
+=== cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement | {'page_numbers_skipped': 33, 'styles_proven': 3, 'margin_titles': 0, 'inline_labels': 0, 'headings': 19, 'headings_merged': 0, 'resumed': 0, 'sequence_breaks': 1} | styles [("('letter)', 'letter', 'lower')", 50), ("('heading', 1)", 19), ("('letter)', 'roman', 'lower')", 9)]
+  [start]
+    [heading]    | SPONSORSHIP AGREEMENT
+    [heading]    | RECITALS
+      1.           | SPONSORSHIP ON THE WEBCRAWLER HEALTH CHANNEL
+        a)           | Client will be promoted as the preferred and dominant resell
+  [middle]
+      b)           | Either party may terminate this Agreement if the other party
+      c)           | All undisputed payments that have accrued prior to the termi
+      d)           | The provisions of Section 12 (Confidentiality and User Data)
+      e)           | Excite guarantees to deliver the annual impressions totals s
+  [end]
+    [heading]    | LANDSCAPE(sm)
+    [heading]    | TRUESELECT(sm)
+    [heading]    | DELIVERE(sm)
+    [heading]    | CLIENT'S COMPETITORS
+
+=== indian_d1 | {'page_numbers_skipped': 2, 'styles_proven': 8, 'margin_titles': 5, 'inline_labels': 1, 'headings': 11, 'headings_merged': 2, 'resumed': 18, 'sequence_breaks': 16} | styles [("('paren', 'digit')", 143), ("('paren', 'letter', 'lower')", 114), ("('dotted', 1, '.')", 95)]
+  [start]
+    [heading]    | (LEAVE) RULES, 1972.
+    [heading]    | TABLE OF CONTENT
+    [heading]    | LEAVE RULES
+      CHAPTER I    | Preliminary
+  [middle]
+        39-A.        | Cash equivalent of leave salary in case of death in service
+        39-B.        | Cash equivalent of leave salary in case of invalidation from
+          (1)          | A Government servant who is declared by a Medical Authority 
+          (2)          | A Government servant not in permanent employ or quasi perman
+  [end]
+            2.           | …………………………
+              1.           | Witnesses
+              2.           | ……………………………
+      FORM 10      | BOND TO BE EXECUTED BY A GOVERNMENT, SERVANT NOT IN PERMANEN
+
+=== indian_d3_fundamental_rules | {'page_numbers_skipped': 0, 'styles_proven': 11, 'margin_titles': 1, 'inline_labels': 54, 'headings': 7, 'headings_merged': 3, 'resumed': 11, 'sequence_breaks': 10} | styles [("('word', 'FR')", 78), ("('paren', 'letter', 'lower')", 70), ("('paren', 'roman', 'lower')", 50)]
+  [start]
+    [heading]    | CONTENTS
+      PART I       | Chapter
+        I.           | Extent Of application
+        II.          | Definitions
+  [middle]
+          F.R. 45      | The Central Government may make rules or issue orders laying
+          F.R. 45-A    | I. Deleted
+            I.           | Deleted
+            II.          | For the purpose of the assessment of licence fee, the capita
+  [end]
+          F.R. 127     | When an addition is made to a regular establishment on the c
+            (a)          | The amount to be recovered shall be the gross sanctioned cos
+            (b)          | The cost of the service shall include contributions at such 
+            (c)          | The Central Government may reduce the amount of recoveries o
+
+=== indian_d4_rti_act | {'page_numbers_skipped': 13, 'styles_proven': 7, 'margin_titles': 6, 'inline_labels': 108, 'headings': 84, 'headings_merged': 16, 'resumed': 15, 'sequence_breaks': 39} | styles [("('paren', 'letter', 'lower')", 129), ("('paren', 'digit')", 115), ("('paren', 'roman', 'lower')", 98)]
+  [start]
+    [heading]    | PUBLISHED BY AUTHORITY
+    [heading]    | MINISTRY OF LAW AND JUSTICE · (Legislative Department)
+    [heading]    | THE RIGHT TO INFORMATION ACT, 2005
+    [heading]    | [15th June, 2005.]
+  [middle]
+          (2)          | Every rule made under this Act by a State Government shall b
+        30.          | (1) If any difficulty arises in giving effect to the provisi
+          (1)          | If any difficulty arises in giving effect to the provisions 
+          (2)          | Every order made under this section shall, as soon as may be
+  [end]
+    [heading]    | Part V · FOR FIRST APPELLATE AUTHORITIES
+    [heading]    | First Appeal
+    [heading]    | Disposal of Appeal
+    [heading]    | Time limit for disposal of appeal
+
+=== ohr_academic_2310_11511v1 | {'page_numbers_skipped': 0, 'styles_proven': 3, 'margin_titles': 0, 'inline_labels': 0, 'headings': 24, 'headings_merged': 3, 'resumed': 1, 'sequence_breaks': 0} | styles [("('heading', 1)", 30), ("('heading', 2)", 8), ("('heading', 3)", 2)]
+  [start]
+    [heading]    | SELF-RAG: LEARNING TO RETRIEVE, GENERATE, AND CRITIQUE THROU
+    [heading]    | ABSTRACT
+    1            | INTRODUCTION
+    2            | RELATED WORK
+  [middle]
+    6            | CONCLUSION
+    [heading]    | ETHICAL CONCERNS
+    [heading]    | ACKNOWLEDGMENTS
+    [heading]    | REFERENCES
+  [end]
+    [heading]    | Instructions
+    [heading]    | Instructions
+    [heading]    | Instructions
+    [heading]    | Perceived utility 3
+
+=== ohr_academic_2405_14831v1 | {'page_numbers_skipped': 0, 'styles_proven': 3, 'margin_titles': 0, 'inline_labels': 0, 'headings': 26, 'headings_merged': 6, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 33), ("('dotted', 1, '.')", 12), ("('heading', 2)", 10)]
+  [start]
+    [heading]    | HippoRAG: Neurobiologically Inspired Long-Term Memory for La
+    [heading]    | Yiheng Shu
+    [heading]    | Michihiro Yasunaga
+    [heading]    | Abstract
+  [middle]
+      1.           | Alhandra (footballer)
+      2.           | Vila Franca de Xira
+        1.           | Chirakkalkulam
+        2.           | Frank T. and Polly Lewis House
+  [end]
+    [heading]    | G Cost and Efficiency Comparison
+    [heading]    | H Implementation Details &Compute Requirements
+    [heading]    | I LLMPrompts
+    [heading]    | Open Information Extraction
+
+=== ohr_academic_dude_1c6061aa2d4c3167592fff8e35e5100a | {'page_numbers_skipped': 0, 'styles_proven': 2, 'margin_titles': 10, 'inline_labels': 0, 'headings': 25, 'headings_merged': 1, 'resumed': 0, 'sequence_breaks': 2} | styles [("('heading', 1)", 25), ("('dotted', 1, '.')", 20), ("('dotted', 1, ')')", 2)]
+  [start]
+    [heading]    | Human Mars Transportation Applications Using Solar Electric 
+    [heading]    | Abstract
+    [heading]    | Introduction
+    [heading]    | SEP Key Technology Elements
+  [middle]
+      3.           | The debris population at MEO is less than at LEO
+      4.           | The Iocal g-level at 15,000 km altitude is 0.871 mJs2, an or
+      5.           | Earth spiral out time is reduced compared to LEO departure  
+    [heading]    | Disadvantage of MEO Departure
+  [end]
+          5.           | Figure
+          6.           | Figure
+          7.           | Figure
+    [heading]    | uo!_epeJ_l uoBe!pe_l £e.uv SA O3111A11 oP!q_A d_lg "0t; omSl
+
+=== ohr_administration_dude_0efb341dfb77bee6be16348a534eb9db | {'page_numbers_skipped': 7, 'styles_proven': 2, 'margin_titles': 0, 'inline_labels': 0, 'headings': 7, 'headings_merged': 1, 'resumed': 1, 'sequence_breaks': 6} | styles [("('dotted', 1, '.')", 31), ("('letter.', 'letter', 'lower')", 20), ("('heading', 1)", 7)]
+  [start]
+    [heading]    | Section A: Overview (All Capital Assets)
+      1.           | Date of Submission: 9/10/2007 2. Agency: Department of State
+    [heading]    | ID system.)
+      6.           | What kind of investment will this be in FY2009? (Please Mixe
+  [middle]
+      19.          | Is this a financial management system? No
+        a.           | If "yes," does this investment address a FFMIA compliance ar
+          1.           | If "yes," which compliance area
+          2.           | If "no," what does it address?
+  [end]
+      2.           | If there currently is no plan, will a plan be developed?
+        a.           | If "yes," what is the planned completion date?
+        b.           | If "no," what is the strategy for managing the risks?
+      3.           | Briefly describe how investment risks are reflected in the l
+
+=== ohr_administration_dude_e79deb02a0c0e87511080836c5d4347b | {'page_numbers_skipped': 3, 'styles_proven': 1, 'margin_titles': 0, 'inline_labels': 0, 'headings': 21, 'headings_merged': 11, 'resumed': 0, 'sequence_breaks': 0} | styles [("('dotted', 1, '.')", 38), ("('heading', 1)", 21)]
+  [start]
+    [heading]    | Florida Department of Health · Division of Medical Quality A
+    [heading]    | Version 1.3 Revised May 2016 · Produced by: Florida Departme
+    [heading]    | Executive Summary
+    [heading]    | Mission - Why do we exist?
+  [middle]
+      7.           | Florida Board of Athletic Training Twitter
+      8.           | Florida Board of Chiropractic Medicine Twitter
+      9.           | Florida Board of Clinical Laboratory Personnel Twitter
+      10.          | Florida Board of Dentistry Twitter
+  [end]
+      35.          | Florida Strategic Plan for Economic Development
+      36.          | Healthiest Weight State Profile
+      37.          | Physician Workforce Annual Report 2014
+      38.          | State Monthly Economic Updates
+
+=== ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb | {'page_numbers_skipped': 2, 'styles_proven': 3, 'margin_titles': 1, 'inline_labels': 0, 'headings': 203, 'headings_merged': 17, 'resumed': 8, 'sequence_breaks': 3} | styles [("('dotted', 1, '.')", 350), ("('heading', 1)", 203), ("('letter.', 'letter', 'lower')", 17)]
+  [start]
+    [heading]    | Commonwealth of Massachusetts Commonwealth of Massachusetts
+    [heading]    | Fallon Health Select Care Network
+    [heading]    | MASSACHUSETTS REQUIREMENT TO PURCHASE HEALTH INSURANCE:
+    [heading]    | Fallon Community Health Plan, Inc.
+  [middle]
+    [heading]    | Inpatient services
+    [heading]    | Covered services
+      1.           | Inpatient hospital care for as many days as your conditions 
+      2.           | Professional services provided by physicians or other health
+  [end]
+      94.          | Any clinical research trial other than a qualified clinical 
+      95.          | Interspinous process decompression (or the X-Stop interspino
+    [heading]    | Cosmetic services
+    [heading]    | Index
+
+=== ohr_finance_aes_2022_10k | {'page_numbers_skipped': 2, 'styles_proven': 6, 'margin_titles': 3, 'inline_labels': 10, 'headings': 209, 'headings_merged': 24, 'resumed': 4, 'sequence_breaks': 2} | styles [("('heading', 1)", 209), ("('paren', 'digit')", 19), ("('dotted', 1, '.')", 18)]
+  [start]
+    [heading]    | Securities registered pursuant to Section 12(g) of the Act: 
+    [heading]    | DOCUMENTS INCORPORATED BY REFERENCE
+    [heading]    | UNITED STATES · SECURITIES AND EXCHANGE COMMISSION
+    [heading]    | The AES Corporation Fiscal Year 2022 Form 10-K · Table of Co
+  [middle]
+    [heading]    | Net income (loss) attributable to noncontrolling interests a
+    [heading]    | Net income (loss) attributable to The AES Corporation
+    [heading]    | SBU Performance Analysis · Segments
+    [heading]    | Non-GAAP Measures
+  [end]
+      (2)          | information contained in the Periodic Report fairly presents
+    [heading]    | CERTIFICATION OF PERIODIC FINANCIAL REPORTS
+      (1)          | the Form 10-K for the year ended December 31, 2022, (the "Pe
+      (2)          | information contained in the Periodic Report fairly presents
+
+=== ohr_finance_amazon_2017_10k | {'page_numbers_skipped': 0, 'styles_proven': 4, 'margin_titles': 2, 'inline_labels': 7, 'headings': 164, 'headings_merged': 16, 'resumed': 2, 'sequence_breaks': 0} | styles [("('heading', 1)", 164), ("('paren', 'digit')", 65), ("('paren', 'letter', 'lower')", 24)]
+  [start]
+    [heading]    | UNITED STATES SECURITIES AND EXCHANGE COMMISSION
+    [heading]    | DOCUMENTS INCORPORATED BY REFERENCE
+    [heading]    | AMAZON.COM, INC.
+    [heading]    | AMAZON.COM, INC. FORM 10-K · For the Fiscal Year Ended Decem
+  [middle]
+    [heading]    | Other Assets
+    [heading]    | Video and Music Content
+    [heading]    | Investments
+    [heading]    | Long-Lived Assets
+  [end]
+      (1)          | The Report fully complies with the requirements of Section 1
+      (2)          | The information contained in the Report fairly presents, in 
+        (1)          | The Report fully complies with the requirements of Section 1
+        (2)          | The information contained in the Report fairly presents, in 
+
+=== ohr_finance_jpmorgan_2023q2_10q | {'page_numbers_skipped': 75, 'styles_proven': 2, 'margin_titles': 10, 'inline_labels': 21, 'headings': 377, 'headings_merged': 33, 'resumed': 3, 'sequence_breaks': 0} | styles [("('paren', 'letter', 'lower')", 551), ("('heading', 1)", 377), ("('dotted', 1, '.')", 20)]
+  [start]
+    [heading]    | UNITED STATES SECURITIES AND EXCHANGE COMMISSION
+    [heading]    | Quarterly report pursuant to Section 13 or 15(d) of the Secu
+    [heading]    | JPMorgan Chase & Co.
+    [heading]    | TABLE OF CONTENTS
+  [middle]
+      (e)          | Changes in fair value for MSRs are reported in mortgage fees
+      (f)          | Realized (gains)/losses due to DVA for fair value option ele
+      (g)          | Loan originations are included in purchases
+      (h)          | Includes financial assets and liabilities that have matured,
+  [end]
+    [heading]    | /s/ Jeremy Barnum
+    [heading]    | Exhibit 32
+      1.           | The Report fully complies with the requirements of Section 1
+      2.           | The information contained in the Report fairly presents, in 
+
+=== ohr_law_asiandragongroupinc_08_11_2005_ex_10_5_reseller_agreement | {'page_numbers_skipped': 0, 'styles_proven': 3, 'margin_titles': 0, 'inline_labels': 0, 'headings': 22, 'headings_merged': 1, 'resumed': 4, 'sequence_breaks': 0} | styles [("('heading', 2)", 62), ("('heading', 1)", 22), ("('dotted', 1, '.')", 16)]
+  [start]
+    [heading]    | Reseller Agreement
+    [heading]    | WHEREAS:
+      1.           | DEFINITIONS AND INTERPRETATION
+        1.1          | Definitions
+  [middle]
+      9.           | USE OF NAME, LOGOS, TRADEMARKS AND LICENSED MATERIALS
+        9.1          | News Releases
+        9.2          | Ownership and Use of Galaxy Trade Marks
+        9.3          | Review and Approval of Uses
+  [end]
+    [heading]    | Short Form Emergency Services, E911 and 911
+    [heading]    | Theft
+    [heading]    | Service Termination
+    [heading]    | Privacy
+
+=== ohr_law_energyxxiltd_05_08_2015_ex_10_13_transportation_agreement | {'page_numbers_skipped': 0, 'styles_proven': 3, 'margin_titles': 1, 'inline_labels': 0, 'headings': 6, 'headings_merged': 4, 'resumed': 0, 'sequence_breaks': 4} | styles [("('paren', 'letter', 'lower')", 27), ("('word', 'ARTICLE')", 17), ("('heading', 2)", 10)]
+  [start]
+    [heading]    | TRANSPORTATION AGREEMENT · TABLE OF CONTENTS
+      ARTICLE 1    | |
+    [heading]    | TRANSPORTATION AGREEMENT
+    [heading]    | WITNESSETH:
+  [middle]
+      ARTICLE 7    | MEASUREMENT AND TESTING
+        7.3          | Losses
+          (a)          | All shipments of Crude Petroleum of 50 degrees A.P.I. gravit
+          (b)          | The quantity of Crude Petroleum deliverable shall be the net
+  [end]
+        (e)          | The provisions of this Section 16.8 shall survive any termin
+    [heading]    | EXHIBIT A TABLE OF RATES · FROM ESTABLISHED RECEPTION POINTS
+    [heading]    | EXHIBIT B · ADJUSTMENT AUTHORIZATION · TABLES OF DIFFERENTIA
+    [heading]    | GRAND ISLE GATHERING SYSTEM COMMON STREAM HLS CRUDE
+
+=== ohr_law_mplxlp_06_17_2015_ex_10_1_transportation_services_agreement | {'page_numbers_skipped': 0, 'styles_proven': 4, 'margin_titles': 0, 'inline_labels': 6, 'headings': 11, 'headings_merged': 2, 'resumed': 1, 'sequence_breaks': 3} | styles [("('dotted', 1, '.')", 17), ("('heading', 1)", 11), ("('paren', 'letter', 'lower')", 9)]
+  [start]
+    [heading]    | TRANSPORTATION SERVICES AGREEMENT
+    [heading]    | WITNESSETH
+      1.           | Definitions
+        (a)          | volume per day multiplied by; (b) the number of Days in such
+  [middle]
+      10.          | Termination and Amendment
+      11.          | Conditions Precedent
+      12.          | Offer
+      13.          | Notices
+  [end]
+      (2)          | Assumes shipper transports a different volume on a per day b
+    [heading]    | Notes:
+    [heading]    | Appendix 5 - Capacity Request Form (CRF) - Non-Ratable Volum
+      (2)          | Assumes shipper transports a different volume on a per day b
+
+=== ohr_manual_2021_apple_catalog | {'page_numbers_skipped': 0, 'styles_proven': 0, 'margin_titles': 0, 'inline_labels': 0, 'headings': 131, 'headings_merged': 46, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 131)]
+  [start]
+    [heading]    | Apple Solutions
+    [heading]    | Contents
+    [heading]    | An intelligent, connected, security and merchandising techno
+    [heading]    | BEST-IN-CLASS SECURITY
+  [middle]
+    [heading]    | HomePod Solutions · Standard Solution: Clean and inviting so
+    [heading]    | Fixed Display Solution: Optimized experience with a secure c
+    [heading]    | Universal display platform for all connected home devices.
+    [heading]    | At a glance: · FEATURES AND BENEFITS
+  [end]
+    [heading]    | HONG KONG
+    [heading]    | Phone:
+    [heading]    | SOUTH KOREA
+    [heading]    | Phone:
+
+=== ohr_manual_mi_phone | {'page_numbers_skipped': 0, 'styles_proven': 1, 'margin_titles': 0, 'inline_labels': 0, 'headings': 117, 'headings_merged': 20, 'resumed': 0, 'sequence_breaks': 1} | styles [("('heading', 1)", 117), ("('dotted', 1, '.')", 14)]
+  [start]
+    [heading]    | Mi Phone User Guide
+    [heading]    | Welcome
+    [heading]    | Table of Contents
+    [heading]    | Chapter 1: Overview · Overview
+  [middle]
+    [heading]    | Recognising Strangers' Phone Numbers
+    [heading]    | Sending An SMS · Editing An SMS
+      1.           | Tap "Compose" button
+      2.           | Add a recipient
+  [end]
+    [heading]    | Hotline service
+    [heading]    | Online support
+    [heading]    | Learn more
+    [heading]    | Mi Phone User Guide
+
+=== ohr_manual_nova_y70 | {'page_numbers_skipped': 0, 'styles_proven': 0, 'margin_titles': 0, 'inline_labels': 0, 'headings': 164, 'headings_merged': 42, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 164)]
+  [start]
+    [heading]    | User Guide HUAWEI nova Y7O · Contents · Essentials
+    [heading]    | Essentials · Basic Gestures · Basic Gestures and Shortcuts ·
+    [heading]    | Return to the previous screen
+    [heading]    | Back to home screen
+  [middle]
+    [heading]    | Scan to Learn More with AI Voice
+    [heading]    | Scan and Count Calories with AI Voice
+    [heading]    | Scan Codes with AI Voice
+    [heading]    | AI Lens · Scan to Translate
+  [end]
+    [heading]    | Set Face Unlock
+    [heading]    | Access App Lock with Face Recognition
+    [heading]    | Disable or Delete Facial Data
+    [heading]    | About Phone
+
+=== qasper_1806_03369 | {'page_numbers_skipped': 0, 'styles_proven': 0, 'margin_titles': 0, 'inline_labels': 0, 'headings': 14, 'headings_merged': 1, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 14)]
+  [start]
+    [heading]    | #SarcasmDetection is soooo general! Towards a Domain-Indepen
+    [heading]    | Abstract
+    [heading]    | Introduction
+    [heading]    | Related Work
+  [middle]
+    [heading]    | Sarcasm Detection on Amazon Reviews
+    [heading]    | Methods · Data Collection
+    [heading]    | Features
+    [heading]    | Evaluation
+  [end]
+    [heading]    | Discussion
+    [heading]    | Conclusions
+    [heading]    | Acknowledgments
+    [heading]    | References
+
+=== qasper_1910_03355 | {'page_numbers_skipped': 0, 'styles_proven': 2, 'margin_titles': 0, 'inline_labels': 0, 'headings': 3, 'headings_merged': 0, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 9), ("('heading', 2)", 8)]
+  [start]
+    [heading]    | An Interactive Machine Translation Framework for Modernizing
+    1            | Introduction
+    2            | RelatedWork
+    3            | Interactive Machine Translation
+  [middle]
+      3.3          | Prefix-based Interactive Neural Machine Translation
+    4            | Experiments
+      4.1          | MT Systems
+      4.2          | Corpora
+  [end]
+      5.1          | Qualitative Analysis
+    6            | Conclusions and FutureWork
+    [heading]    | Acknowledgments
+    [heading]    | Bibliography
+
+=== qasper_1911_01680 | {'page_numbers_skipped': 0, 'styles_proven': 2, 'margin_titles': 0, 'inline_labels': 0, 'headings': 6, 'headings_merged': 0, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 11), ("('heading', 2)", 7)]
+  [start]
+    [heading]    | Improving Slot Filling by Utilizing Contextual Information
+    [heading]    | Abstract
+    1            | Introduction
+    2            | RelatedWork
+  [middle]
+      3.3          | Prediction by Contextual Information
+    [heading]    | Predicting Word Label
+    [heading]    | Predicting Sentence Labels
+    4            | Experiments
+  [end]
+      4.4          | Ablation Study
+    5            | Conclusion
+    [heading]    | References
+    [heading]    | A Dataset Statistics
+
+=== qasper_2001_01269 | {'page_numbers_skipped': 0, 'styles_proven': 3, 'margin_titles': 4, 'inline_labels': 0, 'headings': 3, 'headings_merged': 0, 'resumed': 1, 'sequence_breaks': 0} | styles [("('dotted', 1, '.')", 23), ("('heading', 1)", 9), ("('heading', 2)", 8)]
+  [start]
+    [heading]    | Generating Word and Document Embeddings for Sentiment Analys
+    1            | Introduction
+    2            | RelatedWork
+    3            | Methodology
+  [middle]
+    6            | Conclusion
+    [heading]    | Acknowledgments
+    [heading]    | References
+      1.           | Goldberg, Y.: A primer on neural network models for natural 
+  [end]
+      16.          | Akın, A.A., Akın, M.D.: Zemberek, an open source nlp framewo
+      17.          | Sak, H., G¨ung¨or, T., Sarac¸lar, M.: Morphological disambig
+      18.          | Sak, H., G¨ung¨or, T., Sarac¸lar, M.: Turkish language resou
+      19.          | ˇReh˚uˇrek, R., Sojka, P.: Software Framework for Topic Mode
+
+=== qasper_2001_09899 | {'page_numbers_skipped': 0, 'styles_proven': 4, 'margin_titles': 0, 'inline_labels': 0, 'headings': 8, 'headings_merged': 0, 'resumed': 0, 'sequence_breaks': 0} | styles [("('dotted', 1, '.')", 45), ("('heading', 1)", 13), ("('heading', 2)", 5)]
+  [start]
+    [heading]    | Vocabulary-based Method for Quantifying Controversy in Socia
+    1            | Introduction
+    2            | Related work
+    3            | Method
+  [middle]
+      11.          | Devlin, J., Chang, M.W., Lee, K., Toutanova, K.: Bert: Pre-t
+      12.          | Doshi-Velez, F., Kim, B.: Towards a rigorous science of inte
+      13.          | Easley, D., Kleinberg, J., et al.: Networks, crowds, and mar
+      14.          | Feng, W., Wang, J.: Retweet or not?: personalized tweet re-r
+  [end]
+      43.          | Yardi, S., Boyd, D.: Dynamic debates: An analysis of group p
+      44.          | Zachary, W.W.: An information flow model for conflict and fi
+      45.          | Zhur, X., Ghahramanirh, Z.: Learning from labeled and unlabe
+    [heading]    | Appendix A Details on the discussions
+
+=== rti_act_en | {'page_numbers_skipped': 0, 'styles_proven': 4, 'margin_titles': 9, 'inline_labels': 0, 'headings': 10, 'headings_merged': 2, 'resumed': 16, 'sequence_breaks': 2} | styles [("('dotted', 1, '.')", 108), ("('paren', 'letter', 'lower')", 100), ("('paren', 'roman', 'lower')", 51)]
+  [start]
+    [heading]    | The Right to Information Act, 2005
+    [heading]    | LIST OF AMENDING ACTS
+      1.           | The Right to Information (Amendment) Act, 2019 (24 of 2019)
+      2.           | The Jammu and Kashmir Reorganisation Act, 2019 (34 of 2019)
+  [middle]
+        (e)          | his or her rights with respect to review of the decision reg
+      11.          | Third party information.-(1) Where a Central Public Informat
+        1.           | Subs. by Act 22 of 2023, s. 44 for clause (j) (w.e.f. 13-11-
+      CHAPTER III  | THE CENTRAL INFORMATION COMMISSION
+  [end]
+        8.           | Added by notification No. G.S.R. 726(E), dated 8-10-2008
+        9.           | Added by notification No. G.S.R. 442(E), dated 9-6-2011
+        10.          | Ins. by notification No. G.S.R. 673(E) dated 8-7-2016
+    [heading]    | STATEMENT OF OBJECTS AND REASONS
+
+=== rti_act_hi | {'page_numbers_skipped': 1, 'styles_proven': 2, 'margin_titles': 4, 'inline_labels': 0, 'headings': 16, 'headings_merged': 13, 'resumed': 5, 'sequence_breaks': 4} | styles [("('dotted', 1, '.')", 85), ("('paren', 'roman', 'lower')", 51), ("('heading', 1)", 16)]
+  [start]
+    [heading]    | सू चना का अधिकार अधिधनयम, 2005
+    [heading]    | िाराओं का क्रम
+    [heading]    | िााराएं
+      1.           | सं धिप् त नाम, धिस्तार और प्रारं ि ।
+  [middle]
+      5.           | लोक सू चना अधिकाररयों का पदनाम--(1) प्रत्ये क लोक प्राधिकारी
+      6.           | सू चना अधिप्राप् त करने के धलए अनु रोि--(1) कोई व् यधक् त, ज
+        (i)          | जो ककसी अन्द्य लोक प्राधिकारी द्वारा िाररत है ; या
+        (ii)         | धजसकी धिषय-िस्तु ककसी अन्द्य लोक प्राधिकारी के कृ त्यों से अ
+  [end]
+      23.          | 4 ["
+      24.          | राष् रीय अन्द् िे षण अधिकरण ।
+      25.          | राष् रीय आसू चना धग्रड ।"]
+    [heading]    | दू सरी अनु सू ची · (िारा 24 दे धखए) · के न्द् रीय सरकार द्वा
+
+=== unidoc_finance_0458505 | {'page_numbers_skipped': 0, 'styles_proven': 2, 'margin_titles': 0, 'inline_labels': 0, 'headings': 33, 'headings_merged': 1, 'resumed': 2, 'sequence_breaks': 3} | styles [("('heading', 1)", 33), ("('dotted', 1, '.')", 12), ("('letter)', 'letter', 'lower')", 1)]
+  [start]
+    [heading]    | Vision
+    [heading]    | Mission
+    [heading]    | Company Information · Board of Directors
+    [heading]    | Chief Financial Officer
+  [middle]
+    [heading]    | Condensed Interim Balance Sheet
+    [heading]    | Condensed Interim Profit and Loss Account (Unaudited)
+    [heading]    | Condensed Interim Statement of Comprehensive Income (Unaudit
+    [heading]    | Condensed Interim Cash Flow Statement (Unaudited)
+  [end]
+    [heading]    | Notes to the Condensed Interim Financial Statements (Unaudit
+      19.          | GENERAL
+      20.          | DATE OF AUTHORISATION FOR ISSUE
+    [heading]    | Pak Suzuki Motor Company Limited
+
+=== unidoc_finance_6941304 | {'page_numbers_skipped': 0, 'styles_proven': 2, 'margin_titles': 1, 'inline_labels': 0, 'headings': 6, 'headings_merged': 1, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 6), ("('heading', 2)", 6), ("('dotted', 1, '.')", 5)]
+  [start]
+    [heading]    | JCER Working Paper · AEPR series No. 2019-1-5
+    [heading]    | Trade Blocs and Trade Wars During the Interwar Period
+    [heading]    | To authors
+    [heading]    | Abstract
+  [middle]
+      2.           | Historical background
+        2.1          | Pre-war integration and the first great trade collapse
+      3.           | Gravity in the interwar period
+        3.1          | Basic framework and previous literature
+  [end]
+        3.4          | Gravity regressions
+        3.5          | Variance decomposition
+      4.           | The lessons and limits of historical parallels
+    [heading]    | References
+
+=== unidoc_healthcare_3428789 | {'page_numbers_skipped': 1, 'styles_proven': 0, 'margin_titles': 0, 'inline_labels': 0, 'headings': 14, 'headings_merged': 1, 'resumed': 0, 'sequence_breaks': 0} | styles [("('heading', 1)", 14)]
+  [start]
+    [heading]    | ORIGINAL ARTICLE · Effects of a low-energy diet on sexual fu
+    [heading]    | Introduction
+    [heading]    | Materials and methods
+    [heading]    | Questionnaires
+  [middle]
+    [heading]    | Plasma biochemistry
+    [heading]    | Follow-up
+    [heading]    | Statistical analysis
+    [heading]    | Results
+  [end]
+    [heading]    | Discussion
+    [heading]    | Conflict of interest
+    [heading]    | Acknowledgements
+    [heading]    | References
+
+=== unidoc_healthcare_4671258 | {'page_numbers_skipped': 0, 'styles_proven': 1, 'margin_titles': 6, 'inline_labels': 0, 'headings': 9, 'headings_merged': 2, 'resumed': 3, 'sequence_breaks': 0} | styles [("('dotted', 1, '.')", 48), ("('heading', 1)", 9)]
+  [start]
+    [heading]    | JOURNAL OF · REHABILITATION MEDICINE CLINICAL COMMUNICATIONS
+    [heading]    | CASE REPORT · ELECTROACUPUNCTURE FOR ALLEVIATION OF PHANTOM 
+    [heading]    | LAY ABSTRACT
+    [heading]    | CASE REPORT
+  [middle]
+      12.          | Alviar MJ, Hale T, Dungca M. Pharmacologic interventions for
+      13.          | Finnerup NB, Sindrup SH, Jensen TS. The evidence for pharmac
+      14.          | Flor H. Phantom limb pain: characteristics, causes and treat
+      15.          | Erlenwein J, Diers M, Ernst J, Schulz F, Petzka F. Clinical 
+  [end]
+      39.          | Li Y, North RY, Rhines DL, Tatsui CE, Rao G, Edwards DD, et 
+      40.          | Shan A, Qi-Lang M-Y, Hong C, Tingting L, Mei H, Haili P, et 
+      41.          | Moon JY, Lee C-S, Yoo Y, Lee S, Lee SH, Lee S. Evaluation of
+      42.          | Cummings M. Safety aspects of electroacupuncture. Acupunct M
