@@ -12,9 +12,10 @@ from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_
 from src.common.pdf_catalog import PDF_MANIFEST
 from src.common.validate import layer1_report, load_validator
 from src.chunk.base import SPEC_VERSION
+from src.common.split import tuning_ids
 
 EXTRACTED, CHUNKS = PROJECT_ROOT / "data" / "extracted", PROJECT_ROOT / "data" / "chunks"
-INDIAN = ["indian_d1", "indian_d2_ccs_conduct_rules", "indian_d3_fundamental_rules", "indian_d4_rti_act"]
+
 
 
 def parse_settings(pairs):
@@ -31,11 +32,17 @@ def main():
     arg_parser.add_argument("--set", nargs="*", default=[], help="chunker settings as key=value, e.g. size=512 overlap=0")
     arg_parser.add_argument("--heading-prefix", action="store_true")
     arg_parser.add_argument("--parsers", nargs="+", default=["docling", "pdfplumber"])
-    arg_parser.add_argument("--docs", nargs="+", default=INDIAN)
+    arg_parser.add_argument("--docs", nargs="+", help="doc ids; default: every tuning document in pdfs/split.csv")
+    arg_parser.add_argument("--final", action="store_true", help="allow held-out documents (final evaluation only)")
     arg_parser.add_argument("--machine", default="laptop")
     arg_parser.add_argument("--run-source", default="LOCAL", help="run id source, e.g. LOCAL or KN01 for a Kaggle notebook")
     args = arg_parser.parse_args()
 
+    tuning = tuning_ids()
+    docs = args.docs or sorted(tuning)
+    sealed = [doc_id for doc_id in docs if doc_id not in tuning]
+    if sealed and not args.final:
+        raise PermissionError(f"held-out documents need --final (final evaluation only): {sealed}")
     settings = parse_settings(args.set)
     chunker = {"name": args.chunker, "version": CHUNKERS[args.chunker]["version"],
                "settings": {**settings, "heading_prefix": args.heading_prefix}}
@@ -44,7 +51,7 @@ def main():
     run_id, logger, validator = new_run_id(2, args.run_source), CostLogger(), load_validator()
     rows, inputs, outputs = [], [], []
     for parser in args.parsers:
-        for doc_id in args.docs:
+        for doc_id in docs:
             extracted_path = EXTRACTED / parser / f"{doc_id}.json"
             document = json.loads(extracted_path.read_text(encoding="utf-8"))
             source = {"sha256": catalog.loc[doc_id, "sha256"], "file": Path(catalog.loc[doc_id, "file"]).name}
