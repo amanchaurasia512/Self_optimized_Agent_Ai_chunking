@@ -37,3 +37,21 @@ ohr_law_mplxlp_06_17_2015_ex_10_1_transportation_services_agreement,OHR-Bench v2
 ohr_manual_nova_y70,OHR-Bench v2,held_out,B
 ohr_manual_mi_phone,OHR-Bench v2,tuning,B
 ohr_manual_2021_apple_catalog,OHR-Bench v2,tuning,B
+cuad_gooseheadinsurance_inc_04_02_2018_ex_10_6_franchise_agreement,CUAD v1,held_out_c,C
+qasper_1601_02403,QASPER,held_out_c,C
+ohr_academic_2409_16145v1,OHR-Bench v2,held_out_c,C
+ohr_administration_dude_2d071d2a3ef2e812c45e5c3fff0b502a,OHR-Bench v2,held_out_c,C
+ohr_finance_jpmorgan_2022q2_10q,OHR-Bench v2,held_out_c,C
+ohr_law_fibrogeninc_10_01_2014_ex_10_11_collaboration_agreement,OHR-Bench v2,held_out_c,C
+ohr_manual_dude_e3da4ec33b853c7078243375728ba545,OHR-Bench v2,held_out_c,C
+ohr_news_dude_62ba680b413005aa9f018454c4ab4c43,OHR-Bench v2,held_out_ood,OOD
+ohr_textbook_dude_0da5da2608ed89cdddd52bd078beced8,OHR-Bench v2,held_out_ood,OOD
+unidoc_finance_3702924,UniDoc-Bench,held_out_c,C
+unidoc_healthcare_2456459,UniDoc-Bench,held_out_c,C
+unidoc_commerce_manufacturing_2114245,UniDoc-Bench,held_out_ood,OOD
+unidoc_construction_4005140,UniDoc-Bench,held_out_ood,OOD
+unidoc_crm_5963931,UniDoc-Bench,held_out_ood,OOD
+unidoc_education_5375571,UniDoc-Bench,held_out_ood,OOD
+unidoc_energy_4343531,UniDoc-Bench,held_out_ood,OOD
+unidoc_legal_2922673,UniDoc-Bench,held_out_ood,OOD
+financebench_americanexpress_2022_10k,FinanceBench,held_out_ood,OOD

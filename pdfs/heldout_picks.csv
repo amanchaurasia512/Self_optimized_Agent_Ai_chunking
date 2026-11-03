@@ -1,0 +1,19 @@
+set,source_dataset,domain,source_title,doc_id,measure,value,eligible
+C,CUAD v1,contracts,"GOOSEHEADINSURANCE,INC_04_02_2018-EX-10.6-Franchise Agreement",cuad_gooseheadinsurance_inc_04_02_2018_ex_10_6_franchise_agreement,words,47733.0,377
+C,QASPER,papers,1601.02403,qasper_1601_02403,words,14394.0,191
+C,OHR-Bench v2,academic,academic/2409.16145v1,ohr_academic_2409_16145v1,pages,22.0,7
+C,OHR-Bench v2,administration,administration/DUDE_2d071d2a3ef2e812c45e5c3fff0b502a,ohr_administration_dude_2d071d2a3ef2e812c45e5c3fff0b502a,pages,118.0,17
+C,OHR-Bench v2,finance,finance/JPMORGAN_2022Q2_10Q,ohr_finance_jpmorgan_2022q2_10q,pages,197.0,4
+C,OHR-Bench v2,law,law/FIBROGENINC_10_01_2014-EX-10.11-COLLABORATION AGREEMENT,ohr_law_fibrogeninc_10_01_2014_ex_10_11_collaboration_agreement,pages,53.0,8
+C,OHR-Bench v2,manual,manual/DUDE_e3da4ec33b853c7078243375728ba545,ohr_manual_dude_e3da4ec33b853c7078243375728ba545,pages,184.0,9
+OOD,OHR-Bench v2,news,news/DUDE_62ba680b413005aa9f018454c4ab4c43,ohr_news_dude_62ba680b413005aa9f018454c4ab4c43,pages,20.0,97
+OOD,OHR-Bench v2,textbook,textbook/DUDE_0da5da2608ed89cdddd52bd078beced8,ohr_textbook_dude_0da5da2608ed89cdddd52bd078beced8,pages,20.0,47
+C,UniDoc-Bench,finance,3702924,unidoc_finance_3702924,pages,20.0,6
+C,UniDoc-Bench,healthcare,2456459,unidoc_healthcare_2456459,pages,27.0,5
+OOD,UniDoc-Bench,commerce_manufacturing,2114245,unidoc_commerce_manufacturing_2114245,pages,30.0,8
+OOD,UniDoc-Bench,construction,4005140,unidoc_construction_4005140,pages,22.0,7
+OOD,UniDoc-Bench,crm,5963931,unidoc_crm_5963931,pages,28.0,20
+OOD,UniDoc-Bench,education,5375571,unidoc_education_5375571,pages,27.0,21
+OOD,UniDoc-Bench,energy,4343531,unidoc_energy_4343531,pages,25.0,17
+OOD,UniDoc-Bench,legal,2922673,unidoc_legal_2922673,pages,21.0,7
+OOD,FinanceBench,finance_reports,AMERICANEXPRESS_2022_10K,financebench_americanexpress_2022_10k,pages,260.0,15
