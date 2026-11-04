@@ -43,10 +43,11 @@ def main():
     sealed = [doc_id for doc_id in docs if doc_id not in tuning]
     if sealed and not args.final:
         raise PermissionError(f"held-out documents need --final (final evaluation only): {sealed}")
+    entry = CHUNKERS[args.chunker]
     settings = parse_settings(args.set)
-    chunker = {"name": args.chunker, "version": CHUNKERS[args.chunker]["version"],
-               "settings": {**settings, "heading_prefix": args.heading_prefix}}
+    chunker = {"name": args.chunker, "version": entry["version"], "settings": {**settings, "heading_prefix": args.heading_prefix}}
     name = setting_name(args.chunker, settings, args.heading_prefix)
+    prefix_budget = int(entry["prefix_share"] * settings["T"]) if "prefix_share" in entry else None
     catalog = pd.read_csv(PDF_MANIFEST).set_index("doc_id")
     run_id, logger, validator = new_run_id(2, args.run_source), CostLogger(), load_validator()
     rows, inputs, outputs = [], [], []
@@ -56,11 +57,12 @@ def main():
             document = json.loads(extracted_path.read_text(encoding="utf-8"))
             source = {"sha256": catalog.loc[doc_id, "sha256"], "file": Path(catalog.loc[doc_id, "file"]).name}
             with logger.stage(f"chunk:{parser}:{doc_id}") as stage:
-                spans = CHUNKERS[args.chunker]["function"](document, **settings)
+                spans = entry["function"](document, **settings)
                 calls = take_calls()
                 for call in calls:
                     logger.record_llm_call(call["input_tokens"], call["output_tokens"] + call["thinking_tokens"])
-                chunk_doc = chunk_document(document, spans, chunker, run_id, source, args.heading_prefix)
+                nodes = entry["nodes"](document) if "nodes" in entry else None
+                chunk_doc = chunk_document(document, spans, chunker, run_id, source, args.heading_prefix, nodes, prefix_budget)
                 stage["chunks"] = len(chunk_doc["chunks"])
                 stage["index_tokens"] = sum(chunk["token_count"] + chunk["prefix_token_count"] for chunk in chunk_doc["chunks"])
                 stage["llm"] = calls
@@ -80,7 +82,7 @@ def main():
                          "seconds": stage["wall_seconds"]})
 
     stack = {"chunker": chunker, "tokenizer": TOKENIZER, "parsers": args.parsers,
-             "llm": llm_info() if CHUNKERS[args.chunker].get("llm") else None}
+             "llm": llm_info() if entry.get("llm") else None}
     manifest_path = write_manifest(build_manifest(run_id, SPEC_VERSION, stack, inputs, outputs, logger.summary(), args.machine))
     pd.set_option("display.width", 220)
     print(f"{name} | run {run_id}\n{pd.DataFrame(rows).to_string(index=False)}\nmanifest: {manifest_path}")

@@ -8,7 +8,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 import torch
 import asyncio
-
+from src.chunk.method1 import method1_tree, tree_nodes
 from src.chunk.llm import complete
 from src.chunk.vendor.adaptive_llm_regex import LLMRegexSplitter, _build_few_shot_prompt
 
@@ -121,4 +121,5 @@ CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "langchain_default": {"function": langchain_default, "version": "1.0+langchain-text-splitters-1.1.3"},
             "langchain_recursive": {"function": langchain_recursive, "version": "1.0+langchain-text-splitters-1.1.3"},
             "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"},
-            "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True}}
+            "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True},
+            "method1_tree": {"function": method1_tree, "version": "1.0+tree-v4", "nodes": tree_nodes, "prefix_share": 0.10}}

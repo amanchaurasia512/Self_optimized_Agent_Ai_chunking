@@ -95,6 +95,30 @@ def owner_node(start, nodes, node_starts):
     position = bisect_right(node_starts, start)
     return nodes[position - 1] if position else None
 
+def node_path(owner, by_id):
+    """Nodes from the top ancestor down to the owner node (one node for flat parser sections)."""
+    path = []
+    while owner:
+        path.insert(0, owner)
+        owner = by_id.get(owner["parent_id"])
+    return path
+
+
+def table_header(span, elements, text):
+    """The header row of a table the span starts inside (not at its start), repeated so a table piece stays readable."""
+    table = next((element for element in elements
+                  if element["label"] == "table" and element["start_char"] < span[0] < element["end_char"]), None)
+    return text[table["start_char"]:table["end_char"]].strip().split("\n", 1)[0] if table else None
+
+
+def make_prefix(path, header, budget):
+    """The path joined by ' > ' (farthest ancestors dropped first while over the budget) and a table header, or None."""
+    parts = list(path)
+    while budget and len(parts) > 1 and token_counts([" > ".join(parts)])[0] > budget:
+        parts.pop(0)
+    lines = ([" > ".join(parts)] if parts else []) + ([header] if header else [])
+    return "\n".join(lines) + "\n" if lines else None
+
 
 def content_type(span, elements):
     covered = {"table": 0, "list": 0}
@@ -116,22 +140,26 @@ def error_codes(text, tokens, pages):
     return codes + ([] if pages else ["C6"])
 
 
-def build_chunks(spans, document, nodes, heading_prefix=False):
+def build_chunks(spans, document, nodes, heading_prefix=False, prefix_budget=None):
     text, elements = document["text"], document.get("elements", [])
     final = post_process(spans, text)
     texts = [text[span[0]:span[1]] for span in final]
     node_starts = [node["start_char"] for node in nodes]
+    by_id = {node["node_id"]: node for node in nodes}
     owners = [owner_node(span[0], nodes, node_starts) for span in final]
-    paths = [[owner["title"]] if owner else [] for owner in owners]
-    prefixes = [" > ".join(path) + "\n" if heading_prefix and path else None for path in paths]
+    paths = [node_path(owner, by_id) for owner in owners]
+    shared = len(text) / 2
+    prefixes = [make_prefix([node["title"] for node in path if node["end_char"] - node["start_char"] <= shared],
+                            table_header(span, elements, text), prefix_budget) if heading_prefix else None
+                for path, span in zip(paths, final)]
     counts, prefix_counts = token_counts(texts), token_counts([prefix or "" for prefix in prefixes])
     ids = [f"c{index:05d}" for index in range(len(final))]
     chunks = []
     for index, span in enumerate(final):
         pages = pages_of(span, document["pages"])
         chunks.append({"chunk_id": ids[index], "text": texts[index], "start_char": span[0], "end_char": span[1],
-                       "pages": pages, "section_path": paths[index], "token_count": counts[index],
-                       "prefix": prefixes[index], "prefix_token_count": prefix_counts[index],
+                       "pages": pages, "section_path": [node["title"] for node in paths[index]],
+                       "token_count": counts[index], "prefix": prefixes[index], "prefix_token_count": prefix_counts[index],
                        "prev_id": ids[index - 1] if index else None,
                        "next_id": ids[index + 1] if index + 1 < len(ids) else None,
                        "parent_node_id": owners[index]["node_id"] if owners[index] else None,
@@ -139,9 +167,8 @@ def build_chunks(spans, document, nodes, heading_prefix=False):
                        "errors": error_codes(texts[index], counts[index], pages)})
     return chunks
 
-
-def chunk_document(document, spans, chunker, run_id, source, heading_prefix=False):
-    nodes = section_nodes(document)
+def chunk_document(document, spans, chunker, run_id, source, heading_prefix=False, nodes=None, prefix_budget=None):
+    nodes = nodes if nodes is not None else section_nodes(document)
     return {
         "schema_version": "1.0",
         "document": {"doc_id": document["doc_id"], "file_hash": source["sha256"], "source_file": source["file"],
@@ -149,6 +176,6 @@ def chunk_document(document, spans, chunker, run_id, source, heading_prefix=Fals
                      "parser": {"name": document["parser"]["name"], "version": document["parser"]["version"]}},
         "run": {"run_id": run_id, "chunker": chunker, "spec_version": SPEC_VERSION, "tokenizer": TOKENIZER,
                 "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds")},
-        "nodes": nodes, "chunks": build_chunks(spans, document, nodes, heading_prefix),
+        "nodes": nodes, "chunks": build_chunks(spans, document, nodes, heading_prefix, prefix_budget),
         "quality": {"layer1": {}, "layer2": {}}, "edges": [],
     }

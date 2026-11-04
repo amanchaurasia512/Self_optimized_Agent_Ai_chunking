@@ -1,0 +1,71 @@
+{
+  "run_id": "P2-TEST-20261104-1",
+  "created_at": "2026-11-04T07:08:25+00:00",
+  "code": {
+    "commit": "55038747271b7c81d4c84bffa0e45e2787c0fab5",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.0+tree-v4",
+      "settings": {
+        "T": 512,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling"
+    ],
+    "llm": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling/indian_d4_rti_act.json",
+      "sha256": "c9baf1c9d040d6950f9db46525b8d8ed238302e48e97fbb3adf5bf63f7de9a3b"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling/method1_tree_T512_noprefix/indian_d4_rti_act.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling:indian_d4_rti_act",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 103,
+        "index_tokens": 39357,
+        "llm": [],
+        "wall_seconds": 0.991,
+        "peak_ram_mb": 1048.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.991,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1048.7,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
