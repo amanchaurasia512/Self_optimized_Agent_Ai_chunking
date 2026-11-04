@@ -1,0 +1,611 @@
+{
+  "run_id": "P3-LOCAL-20261104-1",
+  "created_at": "2026-11-04T17:33:58+00:00",
+  "code": {
+    "commit": "6a823b75d3c55e4d4c015717e6096faa80b6a04a",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "scorer": {
+      "version": "scorer_v1-dev",
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75,
+        "idf": "log((N - n + 0.5) / (n + 0.5) + 1)",
+        "words": "lower-cased [\\w Devanagari]+"
+      },
+      "hybrid": {
+        "method": "reciprocal rank fusion",
+        "k": 60
+      },
+      "characters": "gold characters counted without whitespace"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "budgets": [
+      750,
+      1250,
+      2000
+    ],
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ],
+    "page_level_gold_left_out": {
+      "docling": 14,
+      "pdfplumber": 14
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "9b245ff0d6a1a7a661b0a0603e84108ce8ffe26116d6b02f52c5389f682d895c"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "a787362a42857b692a36291b9b0312918d71b514a1af473bec439df4fe63e1e2"
+    }
+  ],
+  "outputs": [
+    "data/results/p3/P3-LOCAL-20261104-1.csv.gz"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "score:docling:fixed_token_size1024_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 13.021,
+        "peak_ram_mb": 1155.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 4.748,
+        "peak_ram_mb": 1164.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 7.309,
+        "peak_ram_mb": 1168.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_default_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 14.402,
+        "peak_ram_mb": 1173.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size1024_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 11.315,
+        "peak_ram_mb": 1178.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.644,
+        "peak_ram_mb": 1183.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:llm_regex_run1_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.842,
+        "peak_ram_mb": 1187.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:llm_regex_run2_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 11.062,
+        "peak_ram_mb": 1192.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:llm_regex_run3_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.808,
+        "peak_ram_mb": 1197.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T1024_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.404,
+        "peak_ram_mb": 1205.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T1024_prefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.075,
+        "peak_ram_mb": 1210.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T512_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.48,
+        "peak_ram_mb": 1217.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T512_prefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.107,
+        "peak_ram_mb": 1222.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:page_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 8.807,
+        "peak_ram_mb": 1226.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size1024_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 12.314,
+        "peak_ram_mb": 1231.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 7.192,
+        "peak_ram_mb": 1236.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size512_overlap32_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 13.885,
+        "peak_ram_mb": 1240.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size512_overlap64_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 13.944,
+        "peak_ram_mb": 1245.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size512_overlap8_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 13.614,
+        "peak_ram_mb": 1250.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size600_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 8.018,
+        "peak_ram_mb": 1255.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:semantic_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 11.581,
+        "peak_ram_mb": 1259.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:sentence_sentences5_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 7.198,
+        "peak_ram_mb": 1265.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size1024_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 12.738,
+        "peak_ram_mb": 1279.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 4.862,
+        "peak_ram_mb": 1286.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.86,
+        "peak_ram_mb": 1289.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_default_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 9.797,
+        "peak_ram_mb": 1294.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size1024_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 11.505,
+        "peak_ram_mb": 1298.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.979,
+        "peak_ram_mb": 1304.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:llm_regex_run1_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.096,
+        "peak_ram_mb": 1308.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:llm_regex_run2_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 9.995,
+        "peak_ram_mb": 1312.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:llm_regex_run3_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.063,
+        "peak_ram_mb": 1317.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T1024_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 12.042,
+        "peak_ram_mb": 1322.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T1024_prefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 11.987,
+        "peak_ram_mb": 1327.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T512_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.407,
+        "peak_ram_mb": 1332.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T512_prefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.426,
+        "peak_ram_mb": 1336.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:page_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 7.997,
+        "peak_ram_mb": 1341.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size1024_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 11.127,
+        "peak_ram_mb": 1345.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.156,
+        "peak_ram_mb": 1350.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size512_overlap32_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.596,
+        "peak_ram_mb": 1356.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size512_overlap64_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 11.148,
+        "peak_ram_mb": 1361.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size512_overlap8_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.384,
+        "peak_ram_mb": 1365.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size600_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.667,
+        "peak_ram_mb": 1369.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:semantic_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 10.117,
+        "peak_ram_mb": 1374.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:sentence_sentences5_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 5.978,
+        "peak_ram_mb": 1380.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 419.697,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1380.3,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

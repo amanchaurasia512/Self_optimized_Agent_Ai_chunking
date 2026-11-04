@@ -1,0 +1,16 @@
+rows 350,064
+PASS  recall between 0 and 1
+PASS  full => recall 1
+PASS  recall 1 => full
+PASS  hit <=> recall > 0
+PASS  ndcg between 0 and 1
+PASS  geom = sqrt(ndcg x recall)
+PASS  hit5 => hit10
+PASS  hit5 <=> mrr >= 1/5
+PASS  first-hit tokens known <=> mrr > 0
+PASS  tokens read <= budget
+PASS  coverage same for every retriever and budget
+PASS  ranking metrics same for every budget
+PASS  budget filled unless the whole document was read (0 short rows, 0 unexplained)
+PASS  BM25 top 10 equals the textbook loop for 50 questions (0 differ)
+PASS  dense clearly above a random ranking (method1_tree_T512_noprefix, docling, 1,250): dense 0.797 vs random 0.062
