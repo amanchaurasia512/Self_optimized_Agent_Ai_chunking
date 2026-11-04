@@ -1,0 +1,174 @@
+
+===== case 1 (full) | docling | method1_tree_T512_noprefix | indian_d1
+question: Who may the authority competent to grant leave request to secure a second medical opinion?
+gold [29978-30243]: 'The authority competent to grant leave may, at its discretion, secure a second medical opinion by requesting a Government Medical Officer not below the rank of a Civil Surgeon or Staff Surgeon, to hav'
+  read #1 [28678-31193] 2515 chars | gold chars inside: 223 | 'The authority competent to grant leave may, at its discretion, secure a second medical opinion by requesting a Governmen'
+  read #2 [136566-138502] 1936 chars | gold chars inside: 0
+  read #3 [117219-120049] 2830 chars | gold chars inside: 0
+scorer: recall 1.000 hit True full True tokens 1250 | recount: recall 1.000 | MATCH
+
+===== case 2 (full) | docling | method1_tree_T512_noprefix | ohr_administration_dude_e79deb02a0c0e87511080836c5d4347b
+question: What is the frequency of the meetings held by the Division of Medical Quality Assurance leadership team to monitor progress on the strategic plan?
+gold [29600-29750]: 'The team meets quarterly to discuss recommendations about tools and methods that integrate performance management into sustainable business practices.'
+  read #1 [29137-30517] 1380 chars | gold chars inside: 132 | 'The team meets quarterly to discuss recommendations about tools and methods that integrate performance management into s'
+  read #2 [13912-16551] 2639 chars | gold chars inside: 0
+  read #3 [24691-26456] 1765 chars | gold chars inside: 0
+  read #4 [26458-27486] 1028 chars | gold chars inside: 0
+scorer: recall 1.000 hit True full True tokens 1250 | recount: recall 1.000 | MATCH
+
+===== case 3 (full) | docling | method1_tree_T512_noprefix | indian_d4_rti_act
+question: What does the RTI Act give the right to information only to?
+gold [139367-139436]: 'The Act gives the right to information only to the citizens of India.'
+  read #1 [139001-139930] 929 chars | gold chars inside: 57 | 'The Act gives the right to information only to the citizens of India.'
+  read #2 [130256-131534] 1278 chars | gold chars inside: 0
+  read #3 [146888-149435] 2547 chars | gold chars inside: 0
+  read #4 [1808-2303] 495 chars | gold chars inside: 0
+  read #5 [71134-71726] 592 chars | gold chars inside: 0
+scorer: recall 1.000 hit True full True tokens 1250 | recount: recall 1.000 | MATCH
+
+===== case 4 (full) | docling | method1_tree_T512_noprefix | indian_d3_fundamental_rules
+question: When is the option for pay fixation admissible in cases where ad hoc promotion is followed by regular appointment without break?
+gold [20276-20512]: 'In cases where an ad hoc promotion is followed by regular appointment without break, the option is admissible from the date of initial appointment or promotion, to be exercised within one month from t'
+  read #1 [20513-21937] 1424 chars | gold chars inside: 0
+  read #2 [18277-20512] 2235 chars | gold chars inside: 198 | 'In cases where an ad hoc promotion is followed by regular appointment without break, the option is admissible from the d'
+  read #3 [24191-26179] 1988 chars | gold chars inside: 0
+scorer: recall 1.000 hit True full True tokens 1250 | recount: recall 1.000 | MATCH
+
+===== case 5 (full) | docling | method1_tree_T512_noprefix | ohr_finance_amazon_2017_10k
+question: What was Amazon.com, Inc.'s net income for the year ended December 31, 2016?
+gold [183428-183626]: 'Net income                                                                                                             | $ 596                            | $ 2,371                          | $ 3,033'
+  read #1 [182888-185539] 2651 chars | gold chars inside: 28 | 'Net income                                                                                                             |'
+  read #2 [177978-181592] 3614 chars | gold chars inside: 0
+  read #3 [166182-170449] 4267 chars | gold chars inside: 0
+scorer: recall 1.000 hit True full True tokens 1250 | recount: recall 1.000 | MATCH
+
+===== case 6 (full) | docling | method1_tree_T512_noprefix | ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb
+question: What are the copayment amounts for specialists not tiered by Fallon Health?
+gold [64859-64917]: 'All other specialists are not tiered and have a $60 copay.'
+  read #1 [64302-66244] 1942 chars | gold chars inside: 48 | 'All other specialists are not tiered and have a $60 copay.'
+  read #2 [73473-75303] 1830 chars | gold chars inside: 0
+  read #3 [48626-50192] 1566 chars | gold chars inside: 0
+scorer: recall 1.000 hit True full True tokens 1250 | recount: recall 1.000 | MATCH
+
+===== case 7 (full) | docling | method1_tree_T512_noprefix | indian_d1
+question: To which Government servants may Departmental Leave be granted?
+gold [92665-92704]: 'Departmental leave may be granted to :-'
+gold [92706-92897]: '(a) Class III Government servants (other than Division I staff and Clerks) and to Class IV Government servants in the Survey of India, attached to Survey Parties with field and recess duties:'
+gold [92899-93058]: '(b) members of the seasonal staff in the Posts and Telegraphs Department, whose duties are not continuous but are limited to certain fixed period in each year.'
+  read #1 [92637-94404] 1767 chars | gold chars inside: 326 | 'Departmental leave may be granted to :-'
+  read #2 [94406-95779] 1373 chars | gold chars inside: 0
+  read #3 [95781-97025] 1244 chars | gold chars inside: 0
+  read #4 [53989-54896] 907 chars | gold chars inside: 0
+scorer: recall 1.000 hit True full True tokens 1250 | recount: recall 1.000 | MATCH
+
+===== case 8 (partial) | docling | fixed_token_size512_overlap0_noprefix | indian_d3_fundamental_rules
+question: To which funds may a Government servant be required to subscribe?
+gold [15171-15356]: 'A Government servant may be required to subscribe to a provident fund, a family pension fund or other similar fund in accordance with such rules as the President may by order prescribe.'
+  read #1 [13288-15345] 2057 chars | gold chars inside: 144 | 'A Government servant may be required to subscribe to a provident fund, a family pension fund or other similar fund in ac'
+  read #2 [64471-66655] 2184 chars | gold chars inside: 0
+  read #3 [114389-115467] 1078 chars | gold chars inside: 0
+scorer: recall 0.935 hit True full False tokens 1250 | recount: recall 0.935 | MATCH
+
+===== case 9 (partial) | docling | fixed_token_size512_overlap0_noprefix | cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement
+question: Highlight the parts (if any) of this contract related to "License Grant" that should be reviewed by a lawyer. Details: Does the contract contain a license granted by one party to its counterparty?
+gold [1339-2301]: 'Subject to the terms and conditions set forth herein, Theismann hereby grants to Bizzingo and its affiliates the unlimited right and privilege during the Term (as defined herein) and within the Territ'
+  read #1 [15197-17460] 2263 chars | gold chars inside: 0
+  read #2 [21982-23382] 1400 chars | gold chars inside: 0
+  read #3 [2120-3837] 1717 chars | gold chars inside: 159 | 'hereunder and all related rights worldwide, including, without limitation, copyright, trademark and intellectual propert'
+scorer: recall 0.195 hit True full False tokens 1250 | recount: recall 0.195 | MATCH
+
+===== case 10 (partial) | docling | fixed_token_size512_overlap0_noprefix | indian_d1
+question: What is the leave salary for a Government servant on earned leave?
+gold [77163-77346]: 'Except as provided in sub-rule (7), a Government servant who proceeds on earned leave is entitled to leave salary equal to the pay drawn immediately before proceeding on earned leave.'
+  read #1 [44909-47026] 2117 chars | gold chars inside: 0
+  read #2 [66445-68645] 2200 chars | gold chars inside: 0
+  read #3 [76364-77260] 896 chars | gold chars inside: 82 | 'Except as provided in sub-rule (7), a Government servant who proceeds on earned leave is entitled'
+scorer: recall 0.532 hit True full False tokens 1250 | recount: recall 0.532 | MATCH
+
+===== case 11 (partial) | docling | fixed_token_size512_overlap0_noprefix | indian_d3_fundamental_rules
+question: What initial pay is drawn when appointment to a new post does not involve assumption of duties and responsibilities of greater importance?
+gold [21942-22323]: 'When the appointment to the new post does not involve such assumption of duties and responsibilities of greater importance, he shall draw as initial pay, the stage of the time-scale which is equal to '
+gold [22327-22511]: 'Provided that where the minimum pay of the time-scale of the new post is higher than his pay in respect of the post held by him regularly, he shall draw the minimum as the initial pay;'
+  read #1 [22207-24333] 2126 chars | gold chars inside: 241 | 'or, if there is no such stage, the stage next above his pay in respect of the old post held by him on regular basis:'
+  read #2 [17580-19804] 2224 chars | gold chars inside: 0
+  read #3 [26651-27655] 1004 chars | gold chars inside: 0
+scorer: recall 0.526 hit True full False tokens 1250 | recount: recall 0.526 | MATCH
+
+===== case 12 (partial) | docling | fixed_token_size512_overlap0_noprefix | cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement
+question: Highlight the parts (if any) of this contract related to "Non-Transferable License" that should be reviewed by a lawyer. Details: Does the contract limit the ability of a party to transfer the license
+gold [35333-35985]: 'Subject to the terms and conditions of this Agreement, Online BVI hereby grants to Skype and the Company a limited, non-exclusive, non-sublicensable (except as set forth herein), non-transferable, non'
+gold [36458-38702]: 'Skype hereby grants to Online BVI and the Company a limited, non-exclusive, non-sublicensable (except as set forth herein), non-transferable, non-assignable (except as provided in Section 14.4), royal'
+gold [40300-40702]: 'Except as provided herein, no member of the Online Group or the Group may in any manner (i) modify the Skype Software, Skype Toolbar, Company-Skype Toolbar and/or Company-Skype Branded Application or '
+gold [41085-41171]: 'Except as provided herein, no member of the Skype Group or the Group may in any manner'
+gold [41259-41426]: '(ii) distribute, sell, transfer, encumber, sublicense, rent, loan, lend or lease any Online BVI Intellectual Property, and/or any component thereof to any third party.'
+  read #1 [85990-88207] 2217 chars | gold chars inside: 0
+  read #2 [38598-40846] 2248 chars | gold chars inside: 430 | ''
+  read #3 [103043-104039] 996 chars | gold chars inside: 0
+scorer: recall 0.142 hit True full False tokens 1250 | recount: recall 0.142 | MATCH
+
+===== case 13 (partial) | docling | fixed_token_size512_overlap0_noprefix | indian_d3_fundamental_rules
+question: What is Presumptive pay of a post?
+gold [8775-9149]: 'Presumptive pay of a post, when used with reference to any particular Government servant, means the pay to which he would be entitled if he held the post substantively and were performing its duties; '
+  read #1 [26651-28892] 2241 chars | gold chars inside: 0
+  read #2 [8891-11024] 2133 chars | gold chars inside: 218 | 'would be entitled if he held the post substantively and were performing its duties; but it does not include special pay '
+  read #3 [28893-29895] 1002 chars | gold chars inside: 0
+scorer: recall 0.694 hit True full False tokens 1250 | recount: recall 0.694 | MATCH
+
+===== case 14 (partial) | docling | fixed_token_size512_overlap0_noprefix | cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement
+question: Highlight the parts (if any) of this contract related to "Notice Period To Terminate Renewal" that should be reviewed by a lawyer. Details: What is the notice period required to terminate renewal?
+gold [3974-4185]: 'This Agreement shall be automatically renewed for successive one year periods unless either party gives written notice of termination to the other party at least thirty (30) days prior to the date of '
+  read #1 [4136-6375] 2239 chars | gold chars inside: 41 | 'thirty (30) days prior to the date of expiration.'
+  read #2 [10814-13024] 2210 chars | gold chars inside: 0
+  read #3 [2066-2953] 887 chars | gold chars inside: 0
+scorer: recall 0.230 hit True full False tokens 1250 | recount: recall 0.230 | MATCH
+
+===== case 15 (miss) | docling | method1_tree_T512_noprefix | cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement
+question: Highlight the parts (if any) of this contract related to "Renewal Term" that should be reviewed by a lawyer. Details: What is the renewal term after the initial term expires? This includes automatic e
+gold [50676-51001]: 'Thereafter, this Agreement shall automatically renew for subsequent one (1) year periods unless either party provides the other party with written notification at least thirty (30) days prior to the e'
+  read #1 [168893-170727] 1834 chars | gold chars inside: 0
+  read #2 [165176-166991] 1815 chars | gold chars inside: 0
+  read #3 [180835-182256] 1421 chars | gold chars inside: 0
+  read #4 [52566-52958] 392 chars | gold chars inside: 0
+scorer: recall 0.000 hit False full False tokens 1250 | recount: recall 0.000 | MATCH
+
+===== case 16 (miss) | docling | fixed_token_size512_overlap0_noprefix | ohr_finance_jpmorgan_2023q2_10q
+question: How much was the total gross charge-offs for loans originated prior to 2019 as of June 30, 2023?
+gold [1252771-1253340]: 'Gross charge-offs                                     | $ -                                                         | $ -                                                         | $ -                 '
+  read #1 [589882-592816] 2934 chars | gold chars inside: 0
+  read #2 [502551-504521] 1970 chars | gold chars inside: 0
+  read #3 [597781-599940] 2159 chars | gold chars inside: 0
+scorer: recall 0.000 hit False full False tokens 1250 | recount: recall 0.000 | MATCH
+
+===== case 17 (miss) | docling | fixed_token_size512_overlap0_noprefix | indian_d1
+question: For what period may maternity leave be granted to a female Government servant with less than two surviving children?
+gold [80009-80234]: 'A female Government servant (including an apprentice) with less than two surviving children may be granted maternity leave by an authority competent to grant leave for a period of (180 days) from the '
+  read #1 [80328-82283] 1955 chars | gold chars inside: 0
+  read #2 [84379-86599] 2220 chars | gold chars inside: 0
+  read #3 [86600-87453] 853 chars | gold chars inside: 0
+scorer: recall 0.000 hit False full False tokens 1250 | recount: recall 0.000 | MATCH
+
+===== case 18 (miss) | docling | method1_tree_T512_noprefix | indian_d1
+question: What is Form 4 used for?
+gold [136522-136598]: 'MEDICAL CERTIFICATE FOR LEAVE OR EXTENSION\n\nOF LEAVE OR COMMUTATION OF LEAVE'
+  read #1 [26530-28676] 2146 chars | gold chars inside: 0
+  read #2 [21970-23481] 1511 chars | gold chars inside: 0
+  read #3 [129016-131252] 2236 chars | gold chars inside: 0
+scorer: recall 0.000 hit False full False tokens 1250 | recount: recall 0.000 | MATCH
+
+===== case 19 (miss) | docling | fixed_token_size512_overlap0_noprefix | indian_d1
+question: What percentage of salary is paid for the next 365 days of child care leave after the first 365 days?
+gold [87822-88108]: 'During the period of child care leave, a female Government servant and a single male Government servant shall be paid one hundred per cent of the salary for the first three hundred and sixty-five days'
+  read #1 [80328-82283] 1955 chars | gold chars inside: 0
+  read #2 [44909-47026] 2117 chars | gold chars inside: 0
+  read #3 [82284-83188] 904 chars | gold chars inside: 0
+scorer: recall 0.000 hit False full False tokens 1250 | recount: recall 0.000 | MATCH
+
+===== case 20 (miss) | docling | method1_tree_T512_noprefix | ohr_law_asiandragongroupinc_08_11_2005_ex_10_5_reseller_agreement
+question: Does the agreement between Galaxy and Telnet create a partnership or joint venture?
+gold [5449-5752]: 'This Agreement does not and shall not be construed to create a partnership, joint venture, agency or any other business relationship which would authorize either Party to act on behalf of the other or'
+  read #1 [405-1036] 631 chars | gold chars inside: 0
+  read #2 [17823-20267] 2444 chars | gold chars inside: 0
+  read #3 [0-403] 403 chars | gold chars inside: 0
+  read #4 [9430-10861] 1431 chars | gold chars inside: 0
+  read #5 [6167-7018] 851 chars | gold chars inside: 0
+scorer: recall 0.000 hit False full False tokens 1250 | recount: recall 0.000 | MATCH
