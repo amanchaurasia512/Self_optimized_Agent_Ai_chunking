@@ -73,3 +73,7 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   goes with what follows it, not with the previous chunk.
 - A12 (2026-11-04, from the D4 test run, before any result) The prefix leaves out ancestors spanning more than half of
   the document text: they are shared by most chunks and do not tell chunks apart (cover titles, dates).
+
+- S5b (2026-11-04) bge-m3 dense vectors in float32 (the rule used for the semantic baseline), normalised; texts are
+  unique chunk texts (prefix + text) and certain span-level questions, keyed by SHA-256. Before the full embedding, a
+  2% code check runs on the first, middle and last thirds of the texts into a separate test cache.
