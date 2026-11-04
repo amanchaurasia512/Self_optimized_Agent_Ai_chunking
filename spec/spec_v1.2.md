@@ -49,7 +49,8 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   Checked 2026-11-03: paper "coming soon", HuggingFace and GitHub pages not reachable.
 - Possible uses once public: an Indian-language parser test (P1 question), or an extra Indian held-out test if it
   contains multi-page documents with answers locatable in the text. Any use needs its own spec entry first.
-  
+
+
 ## Own method 1: the structure-tree cutter (A1-A11), written 2026-11-04 before any method-1 result
 - A1 Input: the tree (src/chunk/tree.py v4, rules R1-R22), the parser blocks, a budget T in {512, 1024}.
 - A2 Output: spans of the original text, passed through the shared base (post_process, Layer 1, chunk.json, run
@@ -67,3 +68,8 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
 - A10 A tree with no usable nodes (only the root) reduces to paragraph packing (A6); no threshold decides this.
 - A11 Cross-references (spec v1.1 step 6) are not in this version; they are a later, separate variant.
 - Settings: method1_tree_T512_noprefix, method1_tree_T512_prefix, method1_tree_T1024_noprefix, method1_tree_T1024_prefix.
+- A5b (2026-11-04, from the D4 test run, before any result) A piece under the shared minimum (100 tokens) that comes
+  right before an opened child is joined to that child's first piece when the result fits T: a heading or opening line
+  goes with what follows it, not with the previous chunk.
+- A12 (2026-11-04, from the D4 test run, before any result) The prefix leaves out ancestors spanning more than half of
+  the document text: they are shared by most chunks and do not tell chunks apart (cover titles, dates).
