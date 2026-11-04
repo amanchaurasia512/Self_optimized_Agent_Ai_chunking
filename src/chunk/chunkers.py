@@ -37,18 +37,25 @@ def bge_tokens(text):
     """bge-m3 count for the vendored splitter, which asks for the same piece many times while it splits and merges."""
     return token_counts([text])[0]
 
+def overlap_start(piece, text, previous_start, previous_end):
+    """Where an overlapping piece starts: overlap repeats a short end of the previous piece, so take the latest copy that
+    starts inside the previous piece and ends after it (text printed twice in a row has several copies); else the first
+    copy after it."""
+    best, start = -1, text.find(piece, previous_start)
+    while 0 <= start <= previous_end:
+        if start + len(piece) > previous_end:
+            best = start
+        start = text.find(piece, start + 1)
+    return best if best >= 0 else start
 
 def locate(pieces, text, overlapping=False):
-    """Exact offsets of a splitter's chunk strings, which are substrings of the text in order. Without overlap a chunk starts
-    at or after the previous chunk's end; with overlap it starts after the previous start and must end after the previous
-    end. Either way a repeated phrase earlier in the text can't be mistaken for the chunk."""
-    spans, previous_start, previous_end = [], -1, 0
+    """(start, end) of each piece in the text, in order: without overlap a piece starts after the previous end; with
+    overlap see overlap_start."""
+    spans, previous_start, previous_end = [], 0, 0
     for piece in (piece for piece in pieces if piece.strip()):
-        start = text.find(piece, previous_start + 1 if overlapping else previous_end)
-        while start >= 0 and start + len(piece) <= previous_end:
-            start = text.find(piece, start + 1)
+        start = overlap_start(piece, text, previous_start, previous_end) if overlapping else text.find(piece, previous_end)
         if start < 0:
-            raise ValueError(f"chunk {len(spans)} not found in the text after offset {previous_end}")
+            raise ValueError(f"chunk {len(spans)} not found in the text after offset {previous_start if overlapping else previous_end}")
         spans.append((start, start + len(piece)))
         previous_start, previous_end = start, start + len(piece)
     return spans
