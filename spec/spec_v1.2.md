@@ -49,3 +49,21 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   Checked 2026-11-03: paper "coming soon", HuggingFace and GitHub pages not reachable.
 - Possible uses once public: an Indian-language parser test (P1 question), or an extra Indian held-out test if it
   contains multi-page documents with answers locatable in the text. Any use needs its own spec entry first.
+  
+## Own method 1: the structure-tree cutter (A1-A11), written 2026-11-04 before any method-1 result
+- A1 Input: the tree (src/chunk/tree.py v4, rules R1-R22), the parser blocks, a budget T in {512, 1024}.
+- A2 Output: spans of the original text, passed through the shared base (post_process, Layer 1, chunk.json, run
+  record) like every baseline. No LLM; cost = index tokens (span + prefix).
+- A3 A node whose subtree fits T is one piece.
+- A4 A node that does not fit is opened into its own text (before its first child) and its children, in order.
+- A5 Consecutive pieces under the same parent are packed in order while the total fits T. Pieces of different
+  parents are never packed together; an opened (too large) child is never packed with its neighbours.
+- A6 A region without children that does not fit is packed from whole parser blocks in order (as R22).
+- A7 A single block larger than T: text is cut between sentences, a sentence still larger by token count (the base's
+  split_long); a table is cut between rows, with its header row repeated in each piece's prefix.
+- A8 Two variants: noprefix (text only, as the baselines) and prefix (text plus its path).
+- A9 Prefix = labels and short titles of the ancestors; the farthest are dropped first if it exceeds 10% of T
+  (a fixed design setting). Stored in the chunk prefix field; prefix tokens count in the index cost.
+- A10 A tree with no usable nodes (only the root) reduces to paragraph packing (A6); no threshold decides this.
+- A11 Cross-references (spec v1.1 step 6) are not in this version; they are a later, separate variant.
+- Settings: method1_tree_T512_noprefix, method1_tree_T512_prefix, method1_tree_T1024_noprefix, method1_tree_T1024_prefix.
