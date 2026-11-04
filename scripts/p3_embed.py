@@ -13,7 +13,8 @@ from sentence_transformers import SentenceTransformer
 from src.common.manifest import PROJECT_ROOT
 from src.common.split import tuning_ids
 from src.eval.embed import EMBEDDER, chunk_texts, load_cache, question_texts, sample_windows, save_part
-
+from src.common.cost_logger import CostLogger
+from src.common.manifest import build_manifest, new_run_id, write_manifest
 
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
@@ -23,6 +24,8 @@ def main():
     arg_parser.add_argument("--name", required=True, help="part name, e.g. P3-KN01-full")
     arg_parser.add_argument("--share", type=float, default=1.0)
     arg_parser.add_argument("--batch-size", type=int, default=16)
+    arg_parser.add_argument("--machine", default="kaggle")
+    arg_parser.add_argument("--run-source", default="KN01", help="run id source, e.g. KN01")
     args = arg_parser.parse_args()
 
     docs = tuning_ids()
@@ -36,14 +39,16 @@ def main():
     print(f"unique chunk texts {len(chunks):,} | questions {len(questions):,} | already cached {len(cached):,} | "
           f"to embed now {len(keys):,} ({sum(todo[key]['tokens'] for key in keys):,} tokens)")
 
+    run_id, logger = new_run_id(3, args.run_source), CostLogger()
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = SentenceTransformer(EMBEDDER["name"], revision=EMBEDDER["revision"], device=device,
                                 model_kwargs={"dtype": torch.float32})
     model.max_seq_length = EMBEDDER["max_length"]
-    started = time.perf_counter()
-    vectors = model.encode([todo[key]["text"] for key in keys], batch_size=args.batch_size, normalize_embeddings=True,
-                           convert_to_numpy=True, show_progress_bar=True)
-    seconds = time.perf_counter() - started
+    with logger.stage("embed") as stage:
+        vectors = model.encode([todo[key]["text"] for key in keys], batch_size=args.batch_size, normalize_embeddings=True,
+                               convert_to_numpy=True, show_progress_bar=True)
+        stage["texts"] = len(keys)
+        stage["tokens"] = sum(todo[key]["tokens"] for key in keys)
 
     norms = np.linalg.norm(vectors, axis=1)
     repeat = model.encode([todo[key]["text"] for key in keys[:8]], batch_size=args.batch_size, normalize_embeddings=True,
@@ -52,11 +57,15 @@ def main():
           f"norms {norms.min():.4f}-{norms.max():.4f} | repeat max difference {np.abs(repeat - vectors[:8]).max():.2e}")
     save_part(args.cache, args.name, keys, vectors)
 
-    done_tokens, all_tokens = sum(todo[key]["tokens"] for key in keys), sum(item["tokens"] for item in todo.values())
-    speed = done_tokens / seconds
-    print(f"embedded {len(keys):,} texts ({done_tokens:,} tokens) in {seconds:.0f} s = {speed:,.0f} tokens/s | "
+    seconds, all_tokens = stage["wall_seconds"], sum(item["tokens"] for item in todo.values())
+    speed = stage["tokens"] / seconds
+    print(f"embedded {len(keys):,} texts ({stage['tokens']:,} tokens) in {seconds:.0f} s = {speed:,.0f} tokens/s | "
           f"all {len(todo):,} texts ({all_tokens:,} tokens) would take about {all_tokens / speed / 60:.0f} min | saved to {args.cache}")
-
+    stack = {"embedder": EMBEDDER, "device": device, "share": args.share, "batch_size": args.batch_size}
+    outputs = [args.cache / f"{args.name}.npy", args.cache / f"{args.name}.keys.json", args.cache / "embedder.json"]
+    inputs = sorted(args.gold.glob("spans_*.jsonl"))
+    manifest_path = write_manifest(build_manifest(run_id, "v1.2", stack, inputs, outputs, logger.summary(), args.machine))
+    print(f"run {run_id} | manifest: {manifest_path}")
 
 if __name__ == "__main__":
     main()
