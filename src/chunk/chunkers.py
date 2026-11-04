@@ -122,4 +122,4 @@ CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "langchain_recursive": {"function": langchain_recursive, "version": "1.0+langchain-text-splitters-1.1.3"},
             "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"},
             "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True},
-            "method1_tree": {"function": method1_tree, "version": "1.0+tree-v4", "nodes": tree_nodes, "prefix_share": 0.10}}
+            "method1_tree": {"function": method1_tree, "version": "1.1+tree-v4+A13-line-blocks", "nodes": tree_nodes, "prefix_share": 0.10}}

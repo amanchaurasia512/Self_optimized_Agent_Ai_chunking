@@ -5,7 +5,7 @@ between table rows or sentences, and a part still too large by tokens."""
 import re
 from bisect import bisect_left, bisect_right
 from collections import defaultdict
-
+import re
 from src.chunk.base import MIN_TOKENS,token_counts, token_windows
 from src.chunk.tree import build_tree, subtree_tokens
 
@@ -24,6 +24,12 @@ def pack(units, sizes, budget):
             current, used = unit, size
     return pieces + ([current] if current else [])
 
+def with_blocks(document):
+    """A13: a document without parser blocks gets its non-empty lines as blocks (label 'text')."""
+    if document.get("elements"):
+        return document
+    lines = [match.span() for match in re.finditer(r"[^\n]+", document["text"]) if match.group().strip()]
+    return {**document, "elements": [{"start_char": start, "end_char": end, "label": "text"} for start, end in lines]}
 
 def split_block(start, end, text, is_table, budget):
     """A7: a block larger than the budget, cut between table rows or sentences; a part still too large by tokens."""
@@ -37,6 +43,7 @@ def split_block(start, end, text, is_table, budget):
 
 def method1_tree(document, T):
     """Spans of the document cut along its tree at budget T (A3-A7, A5b)."""
+    document = with_blocks(document)
     text = document["text"]
     nodes, stats = build_tree(document)
     sizes = dict(zip((node["node_id"] for node in nodes), subtree_tokens(nodes, text)))
@@ -89,7 +96,7 @@ def method1_tree(document, T):
 
 def tree_nodes(document):
     """The tree in the chunk.json node format (as base.section_nodes), titles = label + title, without the root."""
-    nodes, stats = build_tree(document)
+    nodes, stats = build_tree(with_blocks(document))
     return [{"node_id": node["node_id"], "parent_id": None if node["parent_id"] == "n0000" else node["parent_id"],
              "level": node["level"], "title": f"{node['label']} {node['title']}".strip(),
              "start_char": node["start_char"], "end_char": node["end_char"]} for node in nodes[1:]]

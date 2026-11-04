@@ -77,3 +77,10 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
 - S5b (2026-11-04) bge-m3 dense vectors in float32 (the rule used for the semantic baseline), normalised; texts are
   unique chunk texts (prefix + text) and certain span-level questions, keyed by SHA-256. Before the full embedding, a
   2% code check runs on the first, middle and last thirds of the texts into a separate test cache.
+
+- A13 (2026-11-04, after the first dev scores; reason written before the change) When a parser gives no blocks
+  (pdfplumber), the text's non-empty lines are the blocks (label "text"). Reason: the scorer sanity checks showed that
+  method 1 never built a tree on pdfplumber (0 blocks, 0 nodes, no prefixes), so it fell back to sentence packing and
+  its pdfplumber rows did not test the method at all; the change is not made because of its score. Method 1 version
+  1.0 is kept and reported next to version 1.1 under the setting names method1_tree_*_v10. Parsers that give blocks
+  (Docling) produce identical chunks under 1.0 and 1.1.
