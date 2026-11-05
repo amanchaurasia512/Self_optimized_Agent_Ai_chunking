@@ -134,3 +134,20 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   ancestors first, then the table header, then the nearest heading.
 - Old prefix outputs kept as *_prefix_v11; the 14 prefix settings are re-made on Kaggle and re-scored with the same
   frozen scorer_v1. P4 leaves out superseded *_vNN folders.
+
+## P4 analysis rules, amended after the first dev run (2026-11-05)
+- Dev run P4-LOCAL-20261105-1 (kept in runs/tests/) showed two flaws in "tie goes to the cheaper setup":
+  (a) index tokens are nearly equal for all no-overlap settings (same text), so the cheapest tied setup was chosen by
+  differences of 0.1 token per document (best single became pdfplumber sentence-8, 0.748, while the top was 0.802);
+  (b) per-document tie tests have no power on documents with few questions (98 of 100 setups tied at 4 questions),
+  so the "cheapest tied" oracle was below the best single on 8 documents.
+- Amended rules:
+  1. Best single: setups clearly worse than the top (paired document bootstrap, S10) are ejected; among the survivors
+     the top by mean recall is the best single; the survivors are reported as statistically tied. Cost does not
+     break quality ties.
+  2. Oracle per document: split-half cross-fitting, 200 random splits: choose the best setup on half the document's
+     questions, measure it on the other half. Gap = mean over documents of (oracle - best single), with a 95%
+     document bootstrap interval. The raw maximum is reported for reference only (inflated by selection).
+  3. Cost on two Pareto fronts: index tokens, and chunk count (vectors stored and searched). LLM tokens of LLM
+     chunkers are to be added; until then their cost is a lower bound.
+  4. Questions and documents left out (not scored by every setup) are listed with the parser that lacks them.

@@ -1,0 +1,118 @@
+{
+  "run_id": "P4-LOCAL-20261105-1",
+  "created_at": "2026-11-05T17:46:36+00:00",
+  "code": {
+    "commit": "d38e0723b1d4d8cb806cc03eeeac1fcbeb0699f7",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "p4_v2",
+    "scores_run": "P3-LOCAL-20261105-4",
+    "original_run": "P3-LOCAL-20261105-2",
+    "retriever": "hybrid",
+    "budget": 1250,
+    "metric": "recall",
+    "resamples": 2000,
+    "level": 0.95,
+    "seed": 42,
+    "splits": 200,
+    "cost": "index tokens (chunk + prefix) and chunk count per document; LLM tokens not included",
+    "summary": {
+      "full": {
+        "setups": 100,
+        "documents": 19,
+        "questions": 860,
+        "questions_left_out": 44,
+        "documents_left_out": [],
+        "best_single": "docling/langchain_recursive_size256_overlap0_noprefix",
+        "best_single_recall": 0.8021709267168573,
+        "tied_with_best": 32,
+        "oracle": 0.7873855559546147,
+        "raw_max_oracle": 0.884094185569374,
+        "gap": -0.014785370762242657,
+        "gap_interval": [
+          -0.046307588341760395,
+          0.01649395736872556
+        ],
+        "raw_gap": 0.08192325885251668
+      },
+      "original": {
+        "setups": 44,
+        "documents": 19,
+        "questions": 860,
+        "questions_left_out": 44,
+        "documents_left_out": [],
+        "best_single": "docling/langchain_recursive_size512_overlap0_noprefix",
+        "best_single_recall": 0.8010011479237608,
+        "tied_with_best": 7,
+        "oracle": 0.7665540451302383,
+        "raw_max_oracle": 0.861706356362826,
+        "gap": -0.034447102793522505,
+        "gap_interval": [
+          -0.06638500844188565,
+          -0.003111930869930719
+        ],
+        "raw_gap": 0.06070520843906522
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-LOCAL-20261105-4.csv.gz",
+      "sha256": "10f2c1e6c436392d00992cc8bc2bade11bfda8b0ef33cd164a92da2aa1fa9889"
+    }
+  ],
+  "outputs": [
+    "data/results/p4/P4-LOCAL-20261105-1_full_documents.csv",
+    "data/results/p4/P4-LOCAL-20261105-1_full_setups.csv",
+    "data/results/p4/P4-LOCAL-20261105-1_full_left_out.csv",
+    "data/results/p4/P4-LOCAL-20261105-1_original_documents.csv",
+    "data/results/p4/P4-LOCAL-20261105-1_original_setups.csv",
+    "data/results/p4/P4-LOCAL-20261105-1_original_left_out.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "analyse:full",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.496,
+        "peak_ram_mb": 1006.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "analyse:original",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.082,
+        "peak_ram_mb": 955.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 3.578,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1006.3,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
