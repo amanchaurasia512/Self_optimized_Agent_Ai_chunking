@@ -170,3 +170,7 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   page on both parsers (what an out-of-the-box setup loses).
 - Reasons for the primary choice set (from tuning): sizes above 512 were worse for every method; the prefix gave no
   measurable gain after the A9 fix; overlap gave no gain at 512; semantic and llm_regex ranked lowest.
+
+- Correction (2026-11-06): H1 = held_out (11) + held_out_hindi (2). The Hindi pair has no gold yet; it is chunked and
+  embedded with the rest, and scored only once gold exists (its own spec entry). pdfplumber extractions for H2 and H3
+  were made on 2026-11-06 with the unchanged P1 script (P1-R03).

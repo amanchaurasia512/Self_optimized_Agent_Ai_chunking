@@ -1,0 +1,153 @@
+{
+  "run_id": "P1-LOCAL-20261106-1",
+  "created_at": "2026-11-05T19:00:39+00:00",
+  "code": {
+    "commit": "040075d3054d1becbc84487602714fdc384adc79",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/heldout/unidoc_commerce_manufacturing_2114245.pdf",
+      "sha256": "4429ecf55aa8fa6c73a1e41f6ce43662631c35a79b336b96cb33219ad03fea94"
+    },
+    {
+      "path": "data/raw/heldout/unidoc_construction_4005140.pdf",
+      "sha256": "8140a724025cc6cd6eddba6f9ab9bbaf9a2e12151c657e996f30aae353ae8311"
+    },
+    {
+      "path": "data/raw/heldout/unidoc_crm_5963931.pdf",
+      "sha256": "c073f308d8a517685f7c8c47f2878ceab7771d0d5906325538d84d150fb01a03"
+    },
+    {
+      "path": "data/raw/heldout/unidoc_education_5375571.pdf",
+      "sha256": "ad7b2dd7704fe47468cdf1d2e24793d0b4a91cec4287f768412444e487f2faf6"
+    },
+    {
+      "path": "data/raw/heldout/unidoc_energy_4343531.pdf",
+      "sha256": "8c2d84351334e8093be6088cce0aa4434a5062e40596979d1a29bdec1426f973"
+    },
+    {
+      "path": "data/raw/heldout/unidoc_legal_2922673.pdf",
+      "sha256": "5e490be9a9a2718a4bd3cb0e63d35bdfa7646f5e128937647381c38f8384b707"
+    }
+  ],
+  "outputs": [
+    "data/extracted/pdfplumber/unidoc_commerce_manufacturing_2114245.json",
+    "data/extracted/pdfplumber/unidoc_construction_4005140.json",
+    "data/extracted/pdfplumber/unidoc_crm_5963931.json",
+    "data/extracted/pdfplumber/unidoc_education_5375571.json",
+    "data/extracted/pdfplumber/unidoc_energy_4343531.json",
+    "data/extracted/pdfplumber/unidoc_legal_2922673.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:unidoc_commerce_manufacturing_2114245",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 88004,
+        "empty_pages": 0,
+        "wall_seconds": 2.425,
+        "peak_ram_mb": 803.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_construction_4005140",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 37834,
+        "empty_pages": 0,
+        "wall_seconds": 1.125,
+        "peak_ram_mb": 882.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_crm_5963931",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 67416,
+        "empty_pages": 0,
+        "wall_seconds": 1.678,
+        "peak_ram_mb": 975.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_education_5375571",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 29368,
+        "empty_pages": 0,
+        "wall_seconds": 1.32,
+        "peak_ram_mb": 967.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_energy_4343531",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 50439,
+        "empty_pages": 0,
+        "wall_seconds": 1.606,
+        "peak_ram_mb": 967.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:unidoc_legal_2922673",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 86500,
+        "empty_pages": 0,
+        "wall_seconds": 2.109,
+        "peak_ram_mb": 962.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 10.263,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 975.2,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
