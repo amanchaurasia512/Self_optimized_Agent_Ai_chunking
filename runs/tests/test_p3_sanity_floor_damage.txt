@@ -1,0 +1,14 @@
+TEST 1 floor: random cut vs the best setting (Recall@1,250, mean [95% interval])
+  FAIL docling    bm25   random 0.635 [0.540-0.731] vs best sentence_sentences5_noprefix 0.790 [0.706-0.863]
+  FAIL docling    dense  random 0.568 [0.481-0.650] vs best fixed_token_size256_overlap0_noprefix 0.737 [0.634-0.838]
+  FAIL docling    hybrid random 0.651 [0.559-0.736] vs best langchain_recursive_size512_overlap0_noprefix 0.803 [0.725-0.876]
+  FAIL pdfplumber bm25   random 0.602 [0.490-0.716] vs best fixed_token_size256_overlap0_noprefix 0.739 [0.647-0.827]
+  FAIL pdfplumber dense  random 0.603 [0.501-0.703] vs best fixed_token_size256_overlap0_noprefix 0.744 [0.656-0.829]
+  FAIL pdfplumber hybrid random 0.636 [0.543-0.727] vs best fixed_token_size256_overlap0_noprefix 0.781 [0.695-0.864]
+
+TEST 2 damage: table questions on Docling: 112 (documents: 11)
+  PASS bm25   table questions: split 0.703 vs method 1 0.786 | other questions: split 0.822 vs method 1 0.821
+  PASS dense  table questions: split 0.663 vs method 1 0.759 | other questions: split 0.800 vs method 1 0.802
+  PASS hybrid table questions: split 0.707 vs method 1 0.804 | other questions: split 0.849 vs method 1 0.841
+
+floor FAIL | damage PASS

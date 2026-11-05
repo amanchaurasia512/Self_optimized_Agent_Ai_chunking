@@ -84,3 +84,16 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   its pdfplumber rows did not test the method at all; the change is not made because of its score. Method 1 version
   1.0 is kept and reported next to version 1.1 under the setting names method1_tree_*_v10. Parsers that give blocks
   (Docling) produce identical chunks under 1.0 and 1.1.
+
+- S14 floor, result and amendment (2026-11-05): by the rule written before the run (non-overlapping separate 95%
+  intervals) the floor test FAILED in all 6 parser x retriever cases (run P3-LOCAL-20261105-1), although random cut was
+  lower by 0.14-0.17 everywhere. Reason: separate intervals over 19 documents mainly measure how much documents differ,
+  not how much setups differ, and ignore that both setups are scored on the same documents. Amended rule: the paired
+  per-document difference (random cut - best setting) has a 95% clustered-bootstrap interval entirely below 0. Result
+  under the amended rule: PASS in all 6 cases (upper ends -0.079 to -0.111; random lower in 16-18 of 19 documents).
+  Both results are reported.
+- S10 amendment (2026-11-05, before any P4 result): for the same reason, ties are judged on paired differences: two
+  setups tie on a set of documents when the 95% clustered-bootstrap interval of their per-document difference contains
+  0 (same resamples for every setup). oracle(d) and the tie rule (a tie goes to the cheaper setup) otherwise unchanged.
+- S14 damage (2026-11-05): PASS. On 112 table questions (11 Docling documents) splitting every table lowered
+  Recall@1,250 by 0.08-0.10 for every retriever; other questions changed by at most 0.01.
