@@ -1,0 +1,107 @@
+{
+  "run_id": "P3-TEST-20261105-1",
+  "created_at": "2026-11-05T05:43:47+00:00",
+  "code": {
+    "commit": "a89b9ff4068d3e9651633faa59d20891b09caedf",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "scorer": {
+      "version": "scorer_v1-dev",
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75,
+        "idf": "log((N - n + 0.5) / (n + 0.5) + 1)",
+        "words": "lower-cased [\\w Devanagari]+"
+      },
+      "hybrid": {
+        "method": "reciprocal rank fusion",
+        "k": 60
+      },
+      "characters": "gold characters counted without whitespace"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "budgets": [
+      750,
+      1250,
+      2000
+    ],
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ],
+    "page_level_gold_left_out": {
+      "docling": 14,
+      "pdfplumber": 14
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "9b245ff0d6a1a7a661b0a0603e84108ce8ffe26116d6b02f52c5389f682d895c"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "a787362a42857b692a36291b9b0312918d71b514a1af473bec439df4fe63e1e2"
+    }
+  ],
+  "outputs": [
+    "data/results/p3/P3-TEST-20261105-1.csv.gz"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "score:docling:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 7.942,
+        "peak_ram_mb": 1193.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 7.033,
+        "peak_ram_mb": 1209.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 14.975,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1209.0,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

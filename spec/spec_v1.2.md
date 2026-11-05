@@ -105,3 +105,9 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   tuning documents and tested once on the held-out documents; (a) needs new Docling extractions with other settings
   (e.g. OCR off, forced full-page OCR, table modes). RQ5 compares one global tuned setting with the default; the main
   question compares choosing per document (oracle, agent).
+
+## scorer_v1 frozen (2026-11-05)
+- All checks passed: gold alignment; 20 hand-checked cases (S13); 15 checks against code mistakes; sanity tests
+  floor (paired rule, see S14 amendment), damage, ceiling, stability (identical chunks and scores across Kaggle and
+  laptop) and budget. From here the scorer is not changed; any change means a new scorer version and a full re-run,
+  reported openly. Runs before this point (scorer_v1-dev) are development runs, not results.

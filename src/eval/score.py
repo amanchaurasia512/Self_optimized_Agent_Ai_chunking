@@ -12,7 +12,7 @@ import numpy as np
 
 from src.chunk.base import token_counts, tokenizer
 
-SCORER = {"version": "scorer_v1-dev",
+SCORER = {"version": "scorer_v1",
           "bm25": {"k1": 1.5, "b": 0.75, "idf": "log((N - n + 0.5) / (n + 0.5) + 1)", "words": "lower-cased [\\w Devanagari]+"},
           "hybrid": {"method": "reciprocal rank fusion", "k": 60},
           "characters": "gold characters counted without whitespace"}
