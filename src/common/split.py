@@ -10,3 +10,6 @@ SPLIT_FILE = PROJECT_ROOT / "pdfs" / "split.csv"
 def tuning_ids():
     split = pd.read_csv(SPLIT_FILE)
     return set(split.loc[split["split"] == "tuning", "doc_id"])
+
+def all_ids():
+    return set(pd.read_csv(SPLIT_FILE)["doc_id"])

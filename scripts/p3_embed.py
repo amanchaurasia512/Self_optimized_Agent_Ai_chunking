@@ -15,6 +15,7 @@ from src.common.split import tuning_ids
 from src.eval.embed import EMBEDDER, chunk_texts, load_cache, question_texts, sample_windows, save_part
 from src.common.cost_logger import CostLogger
 from src.common.manifest import build_manifest, new_run_id, write_manifest
+from src.common.split import all_ids, tuning_ids
 
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
@@ -26,9 +27,10 @@ def main():
     arg_parser.add_argument("--batch-size", type=int, default=16)
     arg_parser.add_argument("--machine", default="kaggle")
     arg_parser.add_argument("--run-source", default="KN01", help="run id source, e.g. KN01")
+    arg_parser.add_argument("--final", action="store_true", help="include held-out documents (final evaluation only)")    
     args = arg_parser.parse_args()
 
-    docs = tuning_ids()
+    docs = all_ids() if args.final else tuning_ids()
     chunks, questions = chunk_texts(args.chunks, docs), question_texts(args.gold, docs)
     cached, cache_vectors = load_cache(args.cache)
     todo = {key: item for key, item in {**chunks, **questions}.items() if key not in cached}
