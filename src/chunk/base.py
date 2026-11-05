@@ -111,13 +111,20 @@ def table_header(span, elements, text):
     return text[table["start_char"]:table["end_char"]].strip().split("\n", 1)[0] if table else None
 
 
-def make_prefix(path, header, budget):
-    """The path joined by ' > ' (farthest ancestors dropped first while over the budget) and a table header, or None."""
-    parts = list(path)
-    while budget and len(parts) > 1 and token_counts([" > ".join(parts)])[0] > budget:
-        parts.pop(0)
-    lines = ([" > ".join(parts)] if parts else []) + ([header] if header else [])
+def prefix_text(path, header):
+    """The path joined by ' > ' and a table header on its own line, or None when both are empty."""
+    lines = ([" > ".join(path)] if path else []) + ([header] if header else [])
     return "\n".join(lines) + "\n" if lines else None
+
+
+def make_prefix(path, header, budget):
+    """The heading path and table header, kept within the budget as a whole (A9): farthest ancestors are dropped first,
+    then the table header, then the nearest heading; None when nothing fits."""
+    tails = [list(path[start:]) for start in range(len(path))] or [[]]
+    steps = [(tail, header) for tail in tails] + ([(tails[-1], None)] if header else [])
+    texts = [prefix_text(tail, row) for tail, row in steps]
+    counts = token_counts([text or "" for text in texts])
+    return next((text for text, count in zip(texts, counts) if text and (not budget or count <= budget)), None)
 
 
 def content_type(span, elements):

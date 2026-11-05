@@ -1,4 +1,6 @@
 """P2 chunkers: each takes a frozen document plus its settings and returns character spans, before shared post-processing."""
+from typer import Option
+
 from src.chunk.base import token_windows
 from functools import lru_cache
 from src.chunk.base import token_counts, token_windows
@@ -123,6 +125,7 @@ CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "langchain_recursive": {"function": langchain_recursive, "version": "1.0+langchain-text-splitters-1.1.3"},
             "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"},
             "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True},
-            "method1_tree": {"function": method1_tree, "version": "1.1+tree-v4+A13-line-blocks", "nodes": tree_nodes, "prefix_share": 0.10},
+            "method1_tree": {"function": method1_tree, "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix", "nodes": tree_nodes, "prefix_share": 0.10},
             "sanity_random_cut": {"function": sanity_random_cut, "version": "1.0", "sanity": True},
             "sanity_table_split": {"function": sanity_table_split, "version": "1.0+method1-1.1", "sanity": True}}
+            

@@ -1,0 +1,71 @@
+{
+  "run_id": "P2-TEST-20261105-2",
+  "created_at": "2026-11-05T11:42:20+00:00",
+  "code": {
+    "commit": "7ffefe93864f27539ced6dc2c3d26828ec2c91df",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 256,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling"
+    ],
+    "llm": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling/indian_d1.json",
+      "sha256": "5612acea5da28bb5054d82133bbc2413dab36a23067f4297e311bf4b546b3725"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling/method1_tree_T256_noprefix/indian_d1.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 173,
+        "index_tokens": 35886,
+        "llm": [],
+        "wall_seconds": 0.936,
+        "peak_ram_mb": 1060.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.936,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1060.0,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

@@ -121,3 +121,16 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   recursive overlap 64 at 256 and 1,024. 28 new settings per parser, both parsers.
 - Same frozen scorer_v1. Sizes 768 and 896 are left out at budget 750 by Option C, like 1,024.
 - P4 reports the original 22 settings and the full grid side by side, since more settings can only raise the oracle.
+
+
+## Method 1 v1.2: A9 cap on the whole prefix (2026-11-05)
+- Found by: method1_tree_T256_prefix (Docling) left out at budget 750 (Option C) although T = 256. A read-only check
+  showed the 10%-of-T cap leaked twice in make_prefix: the table header was added outside the cap (D1's table of
+  contents is one table whose first row is 1,062 tokens), and the nearest heading was always kept even when longer
+  than the cap. Over-cap prefixes: e.g. 782 of 3,486 chunks (Docling, T256); all 14 prefix settings affected.
+- Not affected: every no-prefix setting (0 over-cap prefixes) and every other chunker (no prefix). Chunk cuts are
+  unchanged; only the prefix text changes.
+- Fix (A9 as written): the whole prefix, path and table header together, must fit within 10% of T; drop farthest
+  ancestors first, then the table header, then the nearest heading.
+- Old prefix outputs kept as *_prefix_v11; the 14 prefix settings are re-made on Kaggle and re-scored with the same
+  frozen scorer_v1. P4 leaves out superseded *_vNN folders.
