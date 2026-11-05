@@ -151,3 +151,22 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   3. Cost on two Pareto fronts: index tokens, and chunk count (vectors stored and searched). LLM tokens of LLM
      chunkers are to be added; until then their cost is a lower bound.
   4. Questions and documents left out (not scored by every setup) are listed with the parser that lacks them.
+  
+## Held-out evaluation plan, frozen before opening (2026-11-05)
+- Sets: H1 (13), H2 / Set C (9), H3 / OOD (9): 31 documents, read only with --final. Scored once with the frozen
+  scorer_v1 and analysed with P4 v2 (scripts/p4_analyse.py as committed today). No change to chunkers, scorer or
+  analysis after opening; any change means a new version, reported openly, with the earlier held-out results kept.
+- Gold for H2 and H3 is built with the P1 rules before scoring; questions that cannot be located are left out and
+  counted, as on tuning.
+- Run: every benchmark setting of the tuning grid (method 1 v1.2) on both parsers; all three retrievers and budgets.
+- Primary analysis (the headline): hybrid, Recall@1,250. Choice set: recursive, langchain_recursive, fixed_token and
+  method1_tree (no prefix) at 256, 384 and 512 (overlap 0), and sentence 5: 13 settings x 2 parsers = 26 setups.
+  Reported: (a) the setup chosen on tuning, applied unchanged: docling/langchain_recursive_size256_overlap0_noprefix
+  (top by mean on tuning); (b) the best single on held-out with its tied set; (c) the split-half oracle and the gap,
+  with a 95% document bootstrap interval.
+- Go / no-go (decided now): go for a per-document chooser over the primary choice set if the lower end of the 95%
+  interval of the primary gap is above 0; otherwise no-go, and the fixed setup is the recommendation.
+- Secondary: the full grid (all benchmark setups), and budgets 750 and 2,000. Reference only: langchain_default and
+  page on both parsers (what an out-of-the-box setup loses).
+- Reasons for the primary choice set (from tuning): sizes above 512 were worse for every method; the prefix gave no
+  measurable gain after the A9 fix; overlap gave no gain at 512; semantic and llm_regex ranked lowest.
