@@ -111,3 +111,13 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   floor (paired rule, see S14 amendment), damage, ceiling, stability (identical chunks and scores across Kaggle and
   laptop) and budget. From here the scorer is not changed; any change means a new scorer version and a full re-run,
   reported openly. Runs before this point (scorer_v1-dev) are development runs, not results.
+
+## Grid extension after the first official run (2026-11-05)
+- Reason: run P3-LOCAL-20261105-2 showed size as the strongest factor, but the curve between 512 and 1,024 and below
+  512 was measured for only one method (fixed 256). Decided after seeing tuning results; this is allowed tuning-set
+  work (RQ5b) and is reported as such.
+- Size grid 256, 384, 512, 640, 768, 896, 1,024 (overlap 0) for recursive, langchain_recursive, fixed_token and
+  method1_tree (no prefix); method1_tree with prefix at the same new sizes; sentence chunking at 3 and 8 sentences;
+  recursive overlap 64 at 256 and 1,024. 28 new settings per parser, both parsers.
+- Same frozen scorer_v1. Sizes 768 and 896 are left out at budget 750 by Option C, like 1,024.
+- P4 reports the original 22 settings and the full grid side by side, since more settings can only raise the oracle.
