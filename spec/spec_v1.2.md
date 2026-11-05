@@ -97,3 +97,11 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   0 (same resamples for every setup). oracle(d) and the tie rule (a tie goes to the cheaper setup) otherwise unchanged.
 - S14 damage (2026-11-05): PASS. On 112 table questions (11 Docling documents) splitting every table lowered
   Recall@1,250 by 0.08-0.10 for every retriever; other questions changed by at most 0.01.
+
+## Research question added 2026-11-05 (scope and method decided after P3 is complete)
+- RQ5. Does tuning improve retrieval: (a) tuning the parser's settings, and (b) tuning the chunker's settings,
+  compared with their defaults?
+  Notes for the later discussion: (b) can reuse the existing chunker variants (size, overlap, T, prefix) chosen on the
+  tuning documents and tested once on the held-out documents; (a) needs new Docling extractions with other settings
+  (e.g. OCR off, forced full-page OCR, table modes). RQ5 compares one global tuned setting with the default; the main
+  question compares choosing per document (oracle, agent).
