@@ -1,0 +1,75 @@
+{
+  "run_id": "P3-LOCAL-20261106-1",
+  "created_at": "2026-11-06T06:46:36+00:00",
+  "code": {
+    "commit": "82ee83dc74c2b0ad999a23768500ee7f9c1bdf6b",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "device": "cpu",
+    "share": 1.0,
+    "batch_size": 16
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "9b245ff0d6a1a7a661b0a0603e84108ce8ffe26116d6b02f52c5389f682d895c"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "a787362a42857b692a36291b9b0312918d71b514a1af473bec439df4fe63e1e2"
+    }
+  ],
+  "outputs": [
+    "data/embeddings/bge-m3/LOCAL-heldout-missing.npy",
+    "data/embeddings/bge-m3/LOCAL-heldout-missing.keys.json",
+    "data/embeddings/bge-m3/embedder.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "texts": 313,
+        "tokens": 19310,
+        "wall_seconds": 82.624,
+        "peak_ram_mb": 7515.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 82.624,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 7515.1,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

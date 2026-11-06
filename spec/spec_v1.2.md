@@ -174,3 +174,9 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
 - Correction (2026-11-06): H1 = held_out (11) + held_out_hindi (2). The Hindi pair has no gold yet; it is chunked and
   embedded with the rest, and scored only once gold exists (its own spec entry). pdfplumber extractions for H2 and H3
   were made on 2026-11-06 with the unchanged P1 script (P1-R03).
+- P4-KN01 (2026-11-06): 49 of 50 settings complete on all 31 held-out documents, both parsers. semantic failed with
+  CUDA out of memory on the largest held-out documents (Docling 21 of 31, pdfplumber 0). Decision: semantic is left
+  out of the held-out evaluation (not in the primary choice set; secondary grid without it). The incomplete folder is
+  kept and is not scored (the scorer only scores complete settings).
+- The P3-KD01 gold on Kaggle held tuning questions only, so the 292 H1 questions (and 21 chunk texts) were embedded on
+  the laptop CPU (P3-LOCAL-20261106-1) with the same model, revision and fp32.
