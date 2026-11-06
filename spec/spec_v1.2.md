@@ -180,3 +180,13 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   kept and is not scored (the scorer only scores complete settings).
 - The P3-KD01 gold on Kaggle held tuning questions only, so the 292 H1 questions (and 21 chunk texts) were embedded on
   the laptop CPU (P3-LOCAL-20261106-1) with the same model, revision and fp32.
+
+## Held-out gold (2026-11-06), made before any held-out scoring
+- Same P1 code and rules (P1-R06, src/gold/matching.py, the frozen drop rule): CUAD answers kept only if they occur
+  once in the contract (p1_cuad_select.gold_spans, occurrences == 1); OHR-Bench text and table evidence only
+  (p1_ohr_select.USABLE_SOURCES); QASPER union of annotators, text evidence; UniDoc page-level (not scored, D3).
+- FinanceBench (new source, OOD): evidence_text of each evidence item as the gold; searched in the whole document
+  (no page guide, like CUAD and QASPER, so no assumption about its page numbering); certain by the same P1 rule.
+- Tuning gold must be byte-identical after the re-run (checked); held-out rows are appended after the tuning rows.
+- Left out of held-out scoring: the Hindi pair (rti_act_en duplicates tuning D4; rti_act_hi has no question source)
+  and, by D3, the 8 UniDoc documents (page-level gold only). Kept for later tests.

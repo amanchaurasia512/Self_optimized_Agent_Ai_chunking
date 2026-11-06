@@ -12,6 +12,10 @@ from src.common.pdf_catalog import safe_id
 from src.gold.matching import normalise_with_map, place
 from src.gold.matching import DROP_RULE_FILE, missing_words, UNCERTAIN
 
+from scripts.p1_cuad_select import CUAD_JSON, gold_spans
+from scripts.p1_ohr_select import USABLE_SOURCES
+from scripts.p2_heldout_select import PICKS_FILE
+
 EXTERNAL = PROJECT_ROOT / "data" / "external"
 EXTRACTED = PROJECT_ROOT / "data" / "extracted"
 GOLD_DIR = PROJECT_ROOT / "data" / "gold"
@@ -27,8 +31,8 @@ def heading_or_text(evidence):
     """QASPER marks section-title evidence as a heading path 'A ::: B'; only the last heading appears on the page."""
     return evidence.split(" ::: ")[-1]
 
-def cuad_questions():
-    spans = pd.read_csv(EXTERNAL / "cuad" / "selected_gold_spans.csv")
+def cuad_questions(spans=None):
+    spans = pd.read_csv(EXTERNAL / "cuad" / "selected_gold_spans.csv") if spans is None else spans
     return [question("CUAD", f"cuad::{contract}::{category}", safe_id("cuad", contract), group["question"].iloc[0],
                      group["answer_text"].tolist())
             for (contract, category), group in spans.groupby(["contract", "category"])]
@@ -45,8 +49,9 @@ def indian_questions():
     return records
 
 
-def qasper_questions():
-    selected = set(pd.read_csv(EXTERNAL / "qasper" / "selected_papers.csv", dtype={"paper_id": str})["paper_id"])
+def qasper_questions(selected=None):
+    selected = (set(pd.read_csv(EXTERNAL / "qasper" / "selected_papers.csv", dtype={"paper_id": str})["paper_id"])
+                if selected is None else selected)
     papers = pd.concat([pd.read_parquet(path) for path in sorted((EXTERNAL / "qasper" / "qasper").glob("*/0000.parquet"))])
     records = []
     for paper in papers[papers["id"].isin(selected)].to_dict("records"):
@@ -58,20 +63,20 @@ def qasper_questions():
     return records
 
 
-def unidoc_questions():
+def unidoc_questions(chosen=None):
     rows = pd.read_csv(EXTERNAL / "unidoc" / "usable_questions.csv", dtype={"doc_id": str})
-    chosen = {path.stem for path in (PROJECT_ROOT / "data" / "raw" / "unidoc").glob("*.pdf")}
+    chosen = {path.stem for path in (PROJECT_ROOT / "data" / "raw" / "unidoc").glob("*.pdf")} if chosen is None else chosen
     return [question("UniDoc", f"unidoc::{index}", f"unidoc_{row.domain}_{row.doc_id}", row.question, [],
                      gold_pages=json.loads(row.gold_pages), kind="page")
             for index, row in enumerate(rows.itertuples(index=False)) if f"unidoc_{row.domain}_{row.doc_id}" in chosen]
-
 
 def as_list(value):
     return list(value) if isinstance(value, (list, tuple)) else [value]
 
 
-def ohr_questions():
-    items = json.loads((EXTERNAL / "ohr_bench" / "selected_questions.json").read_text(encoding="utf-8"))
+def ohr_questions(items=None):
+    items = (json.loads((EXTERNAL / "ohr_bench" / "selected_questions.json").read_text(encoding="utf-8"))
+             if items is None else items)
     records = [question("OHR-Bench", item["ID"], safe_id("ohr", item["doc_name"]), item["questions"],
                         [str(context) for context in as_list(item["evidence_context"])],
                         int(as_list(item["evidence_page_no"])[0]) + 1) for item in items]
@@ -79,6 +84,27 @@ def ohr_questions():
     print(f"OHR-Bench: {len(records)} questions, {multi_page} with evidence on several pages")
     return records
 
+def financebench_questions(documents):
+    """FinanceBench (held-out OOD): evidence_text of each evidence item, searched in the whole document (no page guide)."""
+    records = [json.loads(line) for line in
+               (EXTERNAL / "financebench" / "financebench_merged.jsonl").read_text(encoding="utf-8").splitlines()]
+    return [question("FinanceBench", record["financebench_id"], documents[record["doc_name"]], record["question"],
+                     [item["evidence_text"] for item in record["evidence"]])
+            for record in records if record["doc_name"] in documents]
+
+
+def heldout_questions():
+    """Questions of the held-out picks, by the same P1 question rules; appended after the tuning questions."""
+    picks = pd.read_csv(PICKS_FILE, dtype={"source_title": str})
+    titles = {source: dict(zip(group["source_title"], group["doc_id"])) for source, group in picks.groupby("source_dataset")}
+    cuad = gold_spans(json.loads(CUAD_JSON.read_text(encoding="utf-8"))["data"])
+    ohr = json.loads((EXTERNAL / "ohr_bench" / "qas_v2.json").read_text(encoding="utf-8"))
+    return (cuad_questions(cuad[(cuad["occurrences"] == 1) & cuad["contract"].isin(titles["CUAD v1"])])
+            + qasper_questions(set(titles["QASPER"]))
+            + ohr_questions([item for item in ohr if item["doc_name"] in titles["OHR-Bench v2"]
+                             and item["evidence_source"] in USABLE_SOURCES])
+            + unidoc_questions(set(titles["UniDoc-Bench"].values()))
+            + financebench_questions(titles["FinanceBench"]))
 
 def load_document(parser, doc_id):
     path = EXTRACTED / parser / f"{doc_id}.json"
@@ -129,7 +155,7 @@ def main():
     args = arg_parser.parse_args()
 
     splits = pd.read_csv(PROJECT_ROOT / "pdfs" / "split.csv").set_index("doc_id")["split"].to_dict()
-    records = cuad_questions() + indian_questions() + qasper_questions() + unidoc_questions() + ohr_questions()
+    records = cuad_questions() + indian_questions() + qasper_questions() + unidoc_questions() + ohr_questions() + heldout_questions()
     GOLD_DIR.mkdir(parents=True, exist_ok=True)
     for parser in args.parsers:
         documents, rows = {}, []
