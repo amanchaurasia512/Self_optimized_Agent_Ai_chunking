@@ -1,0 +1,75 @@
+{
+  "run_id": "P3-LOCAL-20261106-2",
+  "created_at": "2026-11-06T08:45:08+00:00",
+  "code": {
+    "commit": "a2c87c69d457f6c3410ee59ff1cd7269a29edd05",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "device": "cpu",
+    "share": 1.0,
+    "batch_size": 16
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "2b43d010c71f2f1fc7f82b8138fa54b059ef45d5d97f363748f6417553278f80"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "4543bd22099df6fbb501ccfa9dceceae25cc66357f8806f94dce57f1a5053370"
+    }
+  ],
+  "outputs": [
+    "data/embeddings/bge-m3/LOCAL-heldout-questions.npy",
+    "data/embeddings/bge-m3/LOCAL-heldout-questions.keys.json",
+    "data/embeddings/bge-m3/embedder.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "texts": 293,
+        "tokens": 8408,
+        "wall_seconds": 29.612,
+        "peak_ram_mb": 5952.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 29.612,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 5952.3,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

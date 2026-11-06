@@ -190,3 +190,17 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
 - Tuning gold must be byte-identical after the re-run (checked); held-out rows are appended after the tuning rows.
 - Left out of held-out scoring: the Hindi pair (rti_act_en duplicates tuning D4; rti_act_hi has no question source)
   and, by D3, the 8 UniDoc documents (page-level gold only). Kept for later tests.
+
+- Held-out scored once: P3-FINAL-20261106-1 (scorer_v1, --final; H1, Set C and OOD; Hindi pair left out).
+  After scoring, p4_analyse got a --settings option that only names the pre-registered primary choice set (scope
+  "primary"); the analysis functions (ties, best single, split-half oracle, gap, Pareto) are unchanged.
+## Held-out result (2026-11-06), P4-FINAL-20261106-1 on P3-FINAL-20261106-1
+- Primary (26 setups, 17 documents, 530 questions; hybrid, Recall@1,250): best single pdfplumber/method1_tree_T384
+  0.772 (15 of 26 tied); split-half oracle 0.765; gap -0.007 [-0.045, 0.023]; raw gap 0.058.
+- Decision by the frozen rule: NO-GO for a per-document chooser over the primary choice set (lower end of the
+  interval below 0). Recommendation: one fixed setup.
+- Tuning winner applied unchanged (docling/langchain_recursive_size256): 0.715, rank 20 of 26, tied with the best.
+- Secondary: full grid (98 setups) gap -0.056 [-0.108, -0.010]; original grid -0.042 [-0.084, 0.002]. More choices
+  make per-document choice worse (selection on few questions per document).
+- Limits: 17 scorable documents, some with very few questions; Hindi (no gold), UniDoc (page-level) and semantic
+  (out of memory) not covered.

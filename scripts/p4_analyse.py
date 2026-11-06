@@ -116,6 +116,7 @@ def main():
     arg_parser.add_argument("--budget", type=int, default=1250)
     arg_parser.add_argument("--machine", default="laptop")
     arg_parser.add_argument("--run-source", default="LOCAL")
+    arg_parser.add_argument("--settings", nargs="*", help="setting names of the pre-registered primary choice set")
     args = arg_parser.parse_args()
 
     scores = RESULTS / "p3" / f"{args.run}.csv.gz"
@@ -125,7 +126,11 @@ def main():
     original = set(in_scope(pd.read_csv(RESULTS / "p3" / f"{args.original_run}.csv.gz", usecols=["setting"])["setting"].unique()))
     full = in_scope(frame["setting"].unique())
     scopes = {"full": full, "original": [setting for setting in full if setting in original]}
-
+    if args.settings:
+        unknown = sorted(set(args.settings) - set(full))
+        if unknown:
+            raise ValueError(f"primary settings not in this run: {unknown}")
+        scopes["primary"] = [setting for setting in full if setting in set(args.settings)]
     run_id, logger, rng, outputs, summary = new_run_id(4, args.run_source), CostLogger(), np.random.default_rng(SEED), [], {}
     output = RESULTS / "p4"
     output.mkdir(parents=True, exist_ok=True)
