@@ -204,3 +204,11 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   make per-document choice worse (selection on few questions per document).
 - Limits: 17 scorable documents, some with very few questions; Hindi (no gold), UniDoc (page-level) and semantic
   (out of memory) not covered.
+
+## RQ5(a) scanned sample, rule frozen before selection (2026-11-07)
+- Source: MP-DocVQA (Tito et al., original licence MIT), validation split, read from the Hugging Face copy
+  lmms-lab/MP-DocVQA (the official repo holds only a card). Test split not used (answers not public).
+- Rule: documents whose page list is identical across all their questions; at least 10 pages; the 10 with the most
+  questions; ties by doc_id. One PDF per document, built losslessly from its page images in page-list order.
+- Role: a separate scanned set for screening parser settings (RQ5a); not part of the sealed held-out set.
+  pdfplumber is expected to read nothing (no text layer); the test is Docling's OCR settings.
