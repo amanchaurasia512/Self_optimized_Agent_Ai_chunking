@@ -55,3 +55,13 @@ unidoc_education_5375571,UniDoc-Bench,held_out_ood,OOD
 unidoc_energy_4343531,UniDoc-Bench,held_out_ood,OOD
 unidoc_legal_2922673,UniDoc-Bench,held_out_ood,OOD
 financebench_americanexpress_2022_10k,FinanceBench,held_out_ood,OOD
+mpdocvqa_hqvd0227,,scanned_rq5,
+mpdocvqa_kmhx0227,,scanned_rq5,
+mpdocvqa_mgbv0228,,scanned_rq5,
+mpdocvqa_mybv0228,,scanned_rq5,
+mpdocvqa_nfdg0072,,scanned_rq5,
+mpdocvqa_npvw0217,,scanned_rq5,
+mpdocvqa_npwx0225,,scanned_rq5,
+mpdocvqa_nrcj0037,,scanned_rq5,
+mpdocvqa_ntvw0217,,scanned_rq5,
+mpdocvqa_ysmc0228,,scanned_rq5,
