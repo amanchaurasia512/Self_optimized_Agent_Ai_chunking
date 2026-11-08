@@ -212,3 +212,21 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   questions; ties by doc_id. One PDF per document, built losslessly from its page images in page-list order.
 - Role: a separate scanned set for screening parser settings (RQ5a); not part of the sealed held-out set.
   pdfplumber is expected to read nothing (no text layer); the test is Docling's OCR settings.
+## RQ5(a) parser settings test, design frozen before running (2026-11-08)
+- Question: does tuning a parser's settings beat its defaults? Each parser variant is its own "parser" (own
+  extraction folder, gold file and scores); the default variant must reproduce the frozen extraction exactly (checked
+  on one tuning PDF before any variant is run).
+- Samples: digital = per source, the tuning PDF with the most certain span questions on both parsers (CUAD, Indian,
+  OHR finance, OHR administration or manual, OHR academic; QASPER and UniDoc left out), 5 PDFs; scanned = the 10
+  MP-DocVQA val documents (scanned_rq5).
+- Variants, digital: Docling default, OCR off, table mode ACCURATE, heading hierarchy on, replace broken text layer;
+  pdfplumber default, layout=True, wider tolerance (x_tolerance 3 -> 5). Scanned: Docling default, OCR engine
+  Tesseract, OCR engine RapidOCR, higher image resolution (scale 2x the default); pdfplumber default only.
+- Chunkers: method1_tree T256 and T384 (no prefix), recursive 256, langchain_recursive 256, fixed_token 256.
+- Scanned gold: of the accepted answers, the longest; searched on its answer page with the P1 matching and certain
+  rules (short answers found more than once are uncertain and dropped).
+- Scoring and decision: scorer_v1, hybrid, Recall@1,250. A variant beats its default if the paired document
+  bootstrap interval of (variant - default), averaged over the 5 chunkers, lies above 0; Holm correction over the
+  variants of each parser and sample.
+- Stage 2, only for a winning variant: run it on all tuning PDFs, then compare with the default once on the held-out
+  set (a pre-registered second use of the held-out set, reported as such).
