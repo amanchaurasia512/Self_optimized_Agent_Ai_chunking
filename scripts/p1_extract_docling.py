@@ -8,6 +8,7 @@ import pandas as pd
 from src.common.cost_logger import CostLogger
 from src.common.manifest import build_manifest, new_run_id, write_manifest
 from src.parse.docling_parser import make_converter, parse_pdf
+from src.parse.docling_parser import VARIANTS, make_converter, parse_pdf
 
 SPEC_VERSION = "v1"
 
@@ -21,9 +22,10 @@ def main():
     arg_parser.add_argument("--force-full-page-ocr", action="store_true")
     arg_parser.add_argument("--ocr-lang", nargs="+")
     arg_parser.add_argument("--only", nargs="+", help="doc ids to run; default: all PDFs under --input")
+    arg_parser.add_argument("--variant", default="default", choices=list(VARIANTS), help="RQ5a parser variant")
     args = arg_parser.parse_args()
-
-    converter, parser_info = make_converter(args.force_full_page_ocr, args.ocr_lang)
+    
+    converter, parser_info = make_converter(args.force_full_page_ocr, args.ocr_lang, args.variant)
     args.output.mkdir(parents=True, exist_ok=True)
     logger = CostLogger()
     inputs, outputs = [], []

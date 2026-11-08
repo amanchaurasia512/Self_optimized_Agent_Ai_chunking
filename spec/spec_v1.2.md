@@ -230,3 +230,7 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   variants of each parser and sample.
 - Stage 2, only for a winning variant: run it on all tuning PDFs, then compare with the default once on the held-out
   set (a pre-registered second use of the held-out set, reported as such).
+
+- Correction before running (2026-11-08): the table-mode variant switches Docling's default table mode to the other
+  mode (FAST if the default is ACCURATE, and the reverse), because the default may already be ACCURATE; the mode used
+  is recorded in each variant extraction.
