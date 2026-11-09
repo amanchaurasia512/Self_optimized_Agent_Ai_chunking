@@ -1,0 +1,229 @@
+{
+  "run_id": "P1-LOCAL-20261109-1",
+  "created_at": "2026-11-09T06:39:18+00:00",
+  "code": {
+    "commit": "0b0a180b1ae2941ac30aa783565a9aef5258adae",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_hqvd0227.pdf",
+      "sha256": "41665dbed48e8ef4655104e4978ac73a975d193f097978bb58292bdfa4b28fea"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_kmhx0227.pdf",
+      "sha256": "176609709486beb1d460d23cd4a0355ab18ca81e8927ff4c80e6420d7389ba57"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_mgbv0228.pdf",
+      "sha256": "baf38af5aace35725b89953adaeeda00018be0e91f288d2166912952436c656c"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_mybv0228.pdf",
+      "sha256": "ae0eee49eb2f9f23698281926851fdbe25590403e767836c082dd7e5ff8eb40f"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_nfdg0072.pdf",
+      "sha256": "ed0fec683c189fd5b5ab75c1383b348a4ab1b5fc8950e4af9c2886e86dc3a558"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_npvw0217.pdf",
+      "sha256": "ccf2a9c234090d8dc1fce28263623613a3c48e6244494967d66d2a3d27b5a750"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_npwx0225.pdf",
+      "sha256": "3899857ac28067212443dc3b875be0eb342c7a9ad6b493f9c081d24d7dcfa61f"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_nrcj0037.pdf",
+      "sha256": "ca5e62233970f5e3c5b12f27778f8814ddd9eb8b953d1380848eb9cd12efae68"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_ntvw0217.pdf",
+      "sha256": "ba3078a094a230d25ed3a36f5a9d02114623c45eaed2a527a7be9dc5708b36d4"
+    },
+    {
+      "path": "data/raw/mpdocvqa/mpdocvqa_ysmc0228.pdf",
+      "sha256": "0e0aa7075bd6f503cd37044de73a83593c80ea3d9eabf96d48e473a025d8e65a"
+    }
+  ],
+  "outputs": [
+    "data/extracted/pdfplumber/mpdocvqa_hqvd0227.json",
+    "data/extracted/pdfplumber/mpdocvqa_kmhx0227.json",
+    "data/extracted/pdfplumber/mpdocvqa_mgbv0228.json",
+    "data/extracted/pdfplumber/mpdocvqa_mybv0228.json",
+    "data/extracted/pdfplumber/mpdocvqa_nfdg0072.json",
+    "data/extracted/pdfplumber/mpdocvqa_npvw0217.json",
+    "data/extracted/pdfplumber/mpdocvqa_npwx0225.json",
+    "data/extracted/pdfplumber/mpdocvqa_nrcj0037.json",
+    "data/extracted/pdfplumber/mpdocvqa_ntvw0217.json",
+    "data/extracted/pdfplumber/mpdocvqa_ysmc0228.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:mpdocvqa_hqvd0227",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 18,
+        "empty_pages": 10,
+        "wall_seconds": 0.02,
+        "peak_ram_mb": 618.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_kmhx0227",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 24,
+        "empty_pages": 13,
+        "wall_seconds": 0.01,
+        "peak_ram_mb": 619.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_mgbv0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 24,
+        "empty_pages": 13,
+        "wall_seconds": 0.011,
+        "peak_ram_mb": 624.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_mybv0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 24,
+        "empty_pages": 13,
+        "wall_seconds": 0.011,
+        "peak_ram_mb": 629.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_nfdg0072",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 22,
+        "empty_pages": 12,
+        "wall_seconds": 0.009,
+        "peak_ram_mb": 632.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_npvw0217",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 22,
+        "empty_pages": 12,
+        "wall_seconds": 0.009,
+        "peak_ram_mb": 635.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_npwx0225",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 22,
+        "empty_pages": 12,
+        "wall_seconds": 0.011,
+        "peak_ram_mb": 640.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_nrcj0037",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 18,
+        "empty_pages": 10,
+        "wall_seconds": 0.008,
+        "peak_ram_mb": 643.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_ntvw0217",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 24,
+        "empty_pages": 13,
+        "wall_seconds": 0.012,
+        "peak_ram_mb": 649.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:mpdocvqa_ysmc0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 38,
+        "empty_pages": 20,
+        "wall_seconds": 0.015,
+        "peak_ram_mb": 654.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.116,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 654.4,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

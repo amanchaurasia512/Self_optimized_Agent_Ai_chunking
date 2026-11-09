@@ -106,6 +106,13 @@ def heldout_questions():
             + unidoc_questions(set(titles["UniDoc-Bench"].values()))
             + financebench_questions(titles["FinanceBench"]))
 
+def mpdocvqa_questions():
+    """MP-DocVQA scanned sample (RQ5a): the longest accepted answer (first if tied), searched on its answer page."""
+    path = EXTERNAL / "mpdocvqa" / "selected_questions.json"
+    items = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    return [question("MP-DocVQA", item["question_id"], item["doc_id"], item["question"], [max(item["answers"], key=len)],
+                     item["answer_page"]) for item in items]
+
 def load_document(parser, doc_id):
     path = EXTRACTED / parser / f"{doc_id}.json"
     if not path.exists():
@@ -155,7 +162,8 @@ def main():
     args = arg_parser.parse_args()
 
     splits = pd.read_csv(PROJECT_ROOT / "pdfs" / "split.csv").set_index("doc_id")["split"].to_dict()
-    records = cuad_questions() + indian_questions() + qasper_questions() + unidoc_questions() + ohr_questions() + heldout_questions()
+    records = (cuad_questions() + indian_questions() + qasper_questions() + unidoc_questions() + ohr_questions()
+               + heldout_questions() + mpdocvqa_questions())
     GOLD_DIR.mkdir(parents=True, exist_ok=True)
     for parser in args.parsers:
         documents, rows = {}, []

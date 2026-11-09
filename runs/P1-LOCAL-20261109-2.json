@@ -1,0 +1,138 @@
+{
+  "run_id": "P1-LOCAL-20261109-2",
+  "created_at": "2026-11-09T06:39:47+00:00",
+  "code": {
+    "commit": "0b0a180b1ae2941ac30aa783565a9aef5258adae",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10",
+      "variant": "layout",
+      "settings": {
+        "layout": true
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/cuad/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.pdf",
+      "sha256": "38c558681f151ce76793fef1dd5637b713bbdf9165d28b2b6c475021b9a0b521"
+    },
+    {
+      "path": "data/raw/indian_regulatory/indian_d3_fundamental_rules.pdf",
+      "sha256": "b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d"
+    },
+    {
+      "path": "data/raw/ohr/ohr_academic_2310_11511v1.pdf",
+      "sha256": "d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978"
+    },
+    {
+      "path": "data/raw/ohr/ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb.pdf",
+      "sha256": "8dd92564c277d2ad836b2727942dd62be38efbc05a2615ce683c5497e9ded9f4"
+    },
+    {
+      "path": "data/raw/ohr/ohr_finance_amazon_2017_10k.pdf",
+      "sha256": "f8af08ff6c4147351ec3a6e5e2c74e104678ce68fb0d6d476b1e43f685c09a3f"
+    }
+  ],
+  "outputs": [
+    "data/extracted/pdfplumber_layout/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.json",
+    "data/extracted/pdfplumber_layout/indian_d3_fundamental_rules.json",
+    "data/extracted/pdfplumber_layout/ohr_academic_2310_11511v1.json",
+    "data/extracted/pdfplumber_layout/ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb.json",
+    "data/extracted/pdfplumber_layout/ohr_finance_amazon_2017_10k.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 203753,
+        "empty_pages": 0,
+        "wall_seconds": 3.21,
+        "peak_ram_mb": 932.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 324029,
+        "empty_pages": 0,
+        "wall_seconds": 3.551,
+        "peak_ram_mb": 1173.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_academic_2310_11511v1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 177726,
+        "empty_pages": 0,
+        "wall_seconds": 4.15,
+        "peak_ram_mb": 1253.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 645252,
+        "empty_pages": 0,
+        "wall_seconds": 6.198,
+        "peak_ram_mb": 1250.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:ohr_finance_amazon_2017_10k",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 543739,
+        "empty_pages": 0,
+        "wall_seconds": 9.358,
+        "peak_ram_mb": 1479.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 26.467,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1479.7,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
