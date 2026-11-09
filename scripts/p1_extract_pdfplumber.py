@@ -7,7 +7,7 @@ import pandas as pd
 from src.common.cost_logger import CostLogger
 from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
 from src.common.pdf_catalog import PDF_MANIFEST
-from src.parse.pdfplumber_parser import PARSER, parse_pdf, variant, VARIANTS
+from src.parse.pdfplumber_parser import PARSER, VARIANTS, parse_pdf
 
 
 OUTPUT_DIR = PROJECT_ROOT / "data" / "extracted" / "pdfplumber"
