@@ -1,5 +1,6 @@
 """Docling parser: layout-aware extraction into the same frozen format as pdfplumber (text + page offsets),
-plus every recognised element (label, depth, page, character range) for the structure profile."""
+plus every recognised element (label, depth, page, character range) for the structure profile.
+Named variants (RQ5a) change only their own settings; the default is the frozen P1 converter."""
 from importlib.metadata import version
 from itertools import accumulate
 
@@ -7,18 +8,10 @@ from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import (EasyOcrOptions, PdfPipelineOptions, RapidOcrOptions, TableFormerMode,
                                                 TesseractCliOcrOptions)
 from docling.document_converter import DocumentConverter, PdfFormatOption
-from docling_core.types.doc import ListItem, TableItemom importlib.metadata import version
-from itertools import accumulate
-
-from docling.datamodel.base_models import InputFormat
-from docling.datamodel.pipeline_options import EasyOcrOptions, PdfPipelineOptions
-from docling.document_converter import DocumentConverter, PdfFormatOption
-from docling_core.types.doc import TableItem
 from docling_core.types.doc import ListItem, TableItem
 
 PAGE_SEPARATOR = "\n\n"
 ELEMENT_SEPARATOR = "\n\n"
-
 VARIANTS = {"default": {}, "ocr_off": {"do_ocr": False}, "table_mode_switched": {"switch_table_mode": True},
             "headings": {"heading_hierarchy": True}, "replace_broken_text": {"replace_broken_text_layer": True},
             "ocr_tesseract": {"ocr_engine": TesseractCliOcrOptions}, "ocr_rapidocr": {"ocr_engine": RapidOcrOptions},
@@ -70,6 +63,7 @@ def item_text(item, document):
     text = getattr(item, "text", "") or ""
     marker = item.marker if isinstance(item, ListItem) and item.enumerated else ""
     return f"{marker} {text}" if marker and not text.startswith(marker) else text
+
 
 def page_entries(document):
     entries = {page_number: [] for page_number in sorted(document.pages)}
