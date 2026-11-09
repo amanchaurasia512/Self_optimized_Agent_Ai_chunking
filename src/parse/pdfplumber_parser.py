@@ -1,10 +1,12 @@
-"""pdfplumber parser: per-page text joined into one frozen document text, with each page's character offsets."""
+"""pdfplumber parser: per-page text joined into one frozen document text, with each page's character offsets.
+Named variants (RQ5a) pass extra extract_text options; the default passes none."""
 from importlib.metadata import version
 from itertools import accumulate
 
 import pdfplumber
 
 PAGE_SEPARATOR = "\n\n"
+PARSER = {"name": "pdfplumber", "version": version("pdfplumber")}
 VARIANTS = {"default": {}, "layout": {"layout": True}, "tolerance_wide": {"x_tolerance": 5}}
 
 
