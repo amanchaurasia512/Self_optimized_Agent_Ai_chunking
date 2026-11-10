@@ -1,0 +1,66 @@
+{
+  "run_id": "P1-RQ5-KN01-check-20261109-1",
+  "created_at": "2026-11-09T07:51:24+00:00",
+  "code": {
+    "commit": "518ec88c43ef0b9ce0cbc7f0e9032f3fdd1e8eba",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    }
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "ce7e1a65e458",
+    "python": "3.13.16",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "/kaggle/working/rq5_pdfs/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.pdf",
+      "sha256": "38c558681f151ce76793fef1dd5637b713bbdf9165d28b2b6c475021b9a0b521"
+    }
+  ],
+  "outputs": [
+    "/kaggle/working/identity_check/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 183613,
+        "empty_pages": 0,
+        "elements": 564,
+        "wall_seconds": 24.842,
+        "peak_ram_mb": 2881.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1431.1
+      }
+    ],
+    "totals": {
+      "wall_seconds": 24.842,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 2881.1,
+      "gpu_peak_mb": 1431.1
+    }
+  }
+}

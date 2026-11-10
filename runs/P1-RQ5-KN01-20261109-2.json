@@ -1,0 +1,149 @@
+{
+  "run_id": "P1-RQ5-KN01-20261109-2",
+  "created_at": "2026-11-09T07:55:32+00:00",
+  "code": {
+    "commit": "518ec88c43ef0b9ce0cbc7f0e9032f3fdd1e8eba",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": [],
+        "variant": "table_mode_switched",
+        "table_mode": "TableFormerMode.FAST",
+        "ocr_scale": 3.0
+      }
+    }
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "ce7e1a65e458",
+    "python": "3.13.16",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "/kaggle/working/rq5_pdfs/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.pdf",
+      "sha256": "38c558681f151ce76793fef1dd5637b713bbdf9165d28b2b6c475021b9a0b521"
+    },
+    {
+      "path": "/kaggle/working/rq5_pdfs/indian_d3_fundamental_rules.pdf",
+      "sha256": "b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d"
+    },
+    {
+      "path": "/kaggle/working/rq5_pdfs/ohr_academic_2310_11511v1.pdf",
+      "sha256": "d9eaa1398abac0df67a9d0933a5bf8b6d9d83d2e72da2a486073cd842dd52978"
+    },
+    {
+      "path": "/kaggle/working/rq5_pdfs/ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb.pdf",
+      "sha256": "8dd92564c277d2ad836b2727942dd62be38efbc05a2615ce683c5497e9ded9f4"
+    },
+    {
+      "path": "/kaggle/working/rq5_pdfs/ohr_finance_amazon_2017_10k.pdf",
+      "sha256": "f8af08ff6c4147351ec3a6e5e2c74e104678ce68fb0d6d476b1e43f685c09a3f"
+    }
+  ],
+  "outputs": [
+    "data/extracted/docling_table_mode_switched/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.json",
+    "data/extracted/docling_table_mode_switched/indian_d3_fundamental_rules.json",
+    "data/extracted/docling_table_mode_switched/ohr_academic_2310_11511v1.json",
+    "data/extracted/docling_table_mode_switched/ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb.json",
+    "data/extracted/docling_table_mode_switched/ohr_finance_amazon_2017_10k.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 170477,
+        "empty_pages": 0,
+        "elements": 564,
+        "wall_seconds": 11.63,
+        "peak_ram_mb": 2837.8,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1367.8
+      },
+      {
+        "stage": "parse:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 116319,
+        "empty_pages": 4,
+        "elements": 394,
+        "wall_seconds": 11.37,
+        "peak_ram_mb": 3866.6,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1353.2
+      },
+      {
+        "stage": "parse:ohr_academic_2310_11511v1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 118288,
+        "empty_pages": 0,
+        "elements": 315,
+        "wall_seconds": 45.821,
+        "peak_ram_mb": 4477.0,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1364.4
+      },
+      {
+        "stage": "parse:ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 292297,
+        "empty_pages": 0,
+        "elements": 1534,
+        "wall_seconds": 41.873,
+        "peak_ram_mb": 5668.9,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1353.2
+      },
+      {
+        "stage": "parse:ohr_finance_amazon_2017_10k",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 395545,
+        "empty_pages": 0,
+        "elements": 897,
+        "wall_seconds": 30.092,
+        "peak_ram_mb": 5126.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 1377.8
+      }
+    ],
+    "totals": {
+      "wall_seconds": 140.786,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 5668.9,
+      "gpu_peak_mb": 1377.8
+    }
+  }
+}

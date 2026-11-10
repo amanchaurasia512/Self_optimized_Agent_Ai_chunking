@@ -1,0 +1,252 @@
+{
+  "run_id": "P2-RQ5-KN01-20261109-34",
+  "created_at": "2026-11-09T10:01:20+00:00",
+  "code": {
+    "commit": "518ec88c43ef0b9ce0cbc7f0e9032f3fdd1e8eba",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "langchain_recursive",
+      "version": "1.0+langchain-text-splitters-1.1.3",
+      "settings": {
+        "size": 256,
+        "overlap": 0,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling_ocr_tesseract"
+    ],
+    "llm": null
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "ce7e1a65e458",
+    "python": "3.13.16",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_hqvd0227.json",
+      "sha256": "49cd71e3733d83492741b9a5b7a97d19800a548ad231eabaac9599fd48d46789"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_kmhx0227.json",
+      "sha256": "099c638d0a90bf72b1bb690841574e3a3641ac0f600bb51e15a821271447c718"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_mgbv0228.json",
+      "sha256": "714c9ff6ebc6690b6f35af97ac23c76f7c8ea2e62ebf384d2d28ee974ec4412b"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_mybv0228.json",
+      "sha256": "ed31a1f24fc38869c5f42d702bc09cdddea5a5f5ab349a62e43313cc2aa55257"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_nfdg0072.json",
+      "sha256": "e4e01296b0da96f215af42d8ecdd024c868f28b16e8b9a11cc6c1a4680a3fbe6"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_npvw0217.json",
+      "sha256": "1f0695ea60e8051b926d122b0fc8bb0ca02bbeba8bf21359753fe1f5f9b1586d"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_npwx0225.json",
+      "sha256": "4df30e6e69e91d0850172be664986f4c50cf08c6b1b6a48eff413ed8edde0b3e"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_nrcj0037.json",
+      "sha256": "38bd5a3bcadc7390b2939bd50a26530f600e03f4faa6f14b4f355b7a845d6f13"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_ntvw0217.json",
+      "sha256": "4b8ffd812e44aaa4239f8551a896e0bef4abaa3f9b989506a0df25474b63a24f"
+    },
+    {
+      "path": "data/extracted/docling_ocr_tesseract/mpdocvqa_ysmc0228.json",
+      "sha256": "f7d5fe8bba90b45b66e59940390f7605824a687042fd5ee39da7906441a9d1a4"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_hqvd0227.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_kmhx0227.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_mgbv0228.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_mybv0228.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_nfdg0072.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_npvw0217.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_npwx0225.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_nrcj0037.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_ntvw0217.json",
+    "data/chunks/docling_ocr_tesseract/langchain_recursive_size256_overlap0_noprefix/mpdocvqa_ysmc0228.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_hqvd0227",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 18,
+        "index_tokens": 3478,
+        "llm": [],
+        "wall_seconds": 0.707,
+        "peak_ram_mb": 999.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_kmhx0227",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 12,
+        "index_tokens": 2515,
+        "llm": [],
+        "wall_seconds": 0.028,
+        "peak_ram_mb": 999.8,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_mgbv0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 19,
+        "index_tokens": 4015,
+        "llm": [],
+        "wall_seconds": 0.042,
+        "peak_ram_mb": 1000.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_mybv0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 31,
+        "index_tokens": 6584,
+        "llm": [],
+        "wall_seconds": 0.076,
+        "peak_ram_mb": 1002.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_nfdg0072",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 14,
+        "index_tokens": 2986,
+        "llm": [],
+        "wall_seconds": 0.031,
+        "peak_ram_mb": 1002.6,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_npvw0217",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 12,
+        "index_tokens": 2699,
+        "llm": [],
+        "wall_seconds": 0.032,
+        "peak_ram_mb": 1002.6,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_npwx0225",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 27,
+        "index_tokens": 5654,
+        "llm": [],
+        "wall_seconds": 0.066,
+        "peak_ram_mb": 1002.8,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_nrcj0037",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 34,
+        "index_tokens": 7805,
+        "llm": [],
+        "wall_seconds": 0.109,
+        "peak_ram_mb": 1004.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_ntvw0217",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 27,
+        "index_tokens": 6124,
+        "llm": [],
+        "wall_seconds": 0.12,
+        "peak_ram_mb": 1004.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_tesseract:mpdocvqa_ysmc0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 29,
+        "index_tokens": 6867,
+        "llm": [],
+        "wall_seconds": 0.098,
+        "peak_ram_mb": 1004.7,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1.309,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1004.7,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

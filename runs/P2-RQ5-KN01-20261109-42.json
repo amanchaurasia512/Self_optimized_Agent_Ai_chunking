@@ -1,0 +1,251 @@
+{
+  "run_id": "P2-RQ5-KN01-20261109-42",
+  "created_at": "2026-11-09T10:02:45+00:00",
+  "code": {
+    "commit": "518ec88c43ef0b9ce0cbc7f0e9032f3fdd1e8eba",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling_ocr_scale_double"
+    ],
+    "llm": null
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "ce7e1a65e458",
+    "python": "3.13.16",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_hqvd0227.json",
+      "sha256": "5a26fe9330162fbc473dcec97e247dab0938659253a0972b71a89815c2fef533"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_kmhx0227.json",
+      "sha256": "e4aee845a0717d7770dff8a8f760c852717dd6e0700db9a035da1ab465bbd8d1"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_mgbv0228.json",
+      "sha256": "e67902a22886045c4bb2e306aae74ce325724fcf2f3df4d91d6ece45b3087877"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_mybv0228.json",
+      "sha256": "858e204c7ae685b6f8da896c5612a04a1ded3253398300d8e7c61e37ea4315d6"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_nfdg0072.json",
+      "sha256": "261f430b31424ce111e9e36e9ddde6ba65dc1905df2385d62b390a737aa7dd86"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_npvw0217.json",
+      "sha256": "f7fbfe281652b40ffeee2649fd45ab1160c220ae64be63366eee85de202ca1e4"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_npwx0225.json",
+      "sha256": "87a22ed1919c5ed5a42c799f3a22eb5c588730f6efdda1e897b044aea28d88f0"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_nrcj0037.json",
+      "sha256": "0335ab0c46751e139418d5ce9ad2a70f354385da212e1a9e412c9085a1676ea6"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_ntvw0217.json",
+      "sha256": "0417bf0c7173f58f5ad9feb63e74d53456bf4e94b417255350c91a5e58365a47"
+    },
+    {
+      "path": "data/extracted/docling_ocr_scale_double/mpdocvqa_ysmc0228.json",
+      "sha256": "8b08d69bf8d6fad1867ba6df5d34f51129a0f4ed7f038908b714a3daa6dbf662"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_hqvd0227.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_kmhx0227.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_mgbv0228.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_mybv0228.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_nfdg0072.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_npvw0217.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_npwx0225.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_nrcj0037.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_ntvw0217.json",
+    "data/chunks/docling_ocr_scale_double/method1_tree_T384_noprefix/mpdocvqa_ysmc0228.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_hqvd0227",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 10,
+        "index_tokens": 3020,
+        "llm": [],
+        "wall_seconds": 0.709,
+        "peak_ram_mb": 1001.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_kmhx0227",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 10,
+        "index_tokens": 2551,
+        "llm": [],
+        "wall_seconds": 0.026,
+        "peak_ram_mb": 1001.8,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_mgbv0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 14,
+        "index_tokens": 3977,
+        "llm": [],
+        "wall_seconds": 0.05,
+        "peak_ram_mb": 1003.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_mybv0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 24,
+        "index_tokens": 6746,
+        "llm": [],
+        "wall_seconds": 0.085,
+        "peak_ram_mb": 1006.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_nfdg0072",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 10,
+        "index_tokens": 2851,
+        "llm": [],
+        "wall_seconds": 0.031,
+        "peak_ram_mb": 1006.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_npvw0217",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 9,
+        "index_tokens": 2686,
+        "llm": [],
+        "wall_seconds": 0.035,
+        "peak_ram_mb": 1006.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_npwx0225",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 17,
+        "index_tokens": 5586,
+        "llm": [],
+        "wall_seconds": 0.078,
+        "peak_ram_mb": 1006.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_nrcj0037",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 24,
+        "index_tokens": 7774,
+        "llm": [],
+        "wall_seconds": 0.088,
+        "peak_ram_mb": 1011.3,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_ntvw0217",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 26,
+        "index_tokens": 6969,
+        "llm": [],
+        "wall_seconds": 0.123,
+        "peak_ram_mb": 1011.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_ocr_scale_double:mpdocvqa_ysmc0228",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 22,
+        "index_tokens": 6530,
+        "llm": [],
+        "wall_seconds": 0.087,
+        "peak_ram_mb": 1012.4,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1.312,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1012.4,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

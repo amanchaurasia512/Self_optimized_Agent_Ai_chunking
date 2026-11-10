@@ -1,0 +1,152 @@
+{
+  "run_id": "P2-RQ5-KN01-20261109-15",
+  "created_at": "2026-11-09T09:57:20+00:00",
+  "code": {
+    "commit": "518ec88c43ef0b9ce0cbc7f0e9032f3fdd1e8eba",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "fixed_token",
+      "version": "1.0",
+      "settings": {
+        "size": 256,
+        "overlap": 0,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling_headings"
+    ],
+    "llm": null
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "ce7e1a65e458",
+    "python": "3.13.16",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39"
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling_headings/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.json",
+      "sha256": "12fd3a178b36799f248f16046d48e2ff7cc2e2b37106b5d17a010e27edd47539"
+    },
+    {
+      "path": "data/extracted/docling_headings/indian_d3_fundamental_rules.json",
+      "sha256": "fba2ba29cd507d04f2060567bba5c86abf5fdfb6271c95f228e6b338061c9ac7"
+    },
+    {
+      "path": "data/extracted/docling_headings/ohr_finance_amazon_2017_10k.json",
+      "sha256": "a6995324a74b7dcd2c15bebbc727186454925fa7cc7ad90888246ef6152913da"
+    },
+    {
+      "path": "data/extracted/docling_headings/ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb.json",
+      "sha256": "04053b1911280ef7b4ebc8651579c6fccefa004a34107b4ef0d8c098efa7fe38"
+    },
+    {
+      "path": "data/extracted/docling_headings/ohr_academic_2310_11511v1.json",
+      "sha256": "05a72a0f66fa1a271fc03a897d06a122133c7c249014872e5dfa280c64c4e7a0"
+    }
+  ],
+  "outputs": [
+    "data/chunks/docling_headings/fixed_token_size256_overlap0_noprefix/cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement.json",
+    "data/chunks/docling_headings/fixed_token_size256_overlap0_noprefix/indian_d3_fundamental_rules.json",
+    "data/chunks/docling_headings/fixed_token_size256_overlap0_noprefix/ohr_finance_amazon_2017_10k.json",
+    "data/chunks/docling_headings/fixed_token_size256_overlap0_noprefix/ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb.json",
+    "data/chunks/docling_headings/fixed_token_size256_overlap0_noprefix/ohr_academic_2310_11511v1.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling_headings:cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 114,
+        "index_tokens": 29169,
+        "llm": [],
+        "wall_seconds": 0.965,
+        "peak_ram_mb": 1027.0,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_headings:indian_d3_fundamental_rules",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 104,
+        "index_tokens": 26515,
+        "llm": [],
+        "wall_seconds": 0.226,
+        "peak_ram_mb": 1028.1,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_headings:ohr_finance_amazon_2017_10k",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 294,
+        "index_tokens": 75136,
+        "llm": [],
+        "wall_seconds": 0.759,
+        "peak_ram_mb": 1056.0,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_headings:ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 230,
+        "index_tokens": 58778,
+        "llm": [],
+        "wall_seconds": 0.869,
+        "peak_ram_mb": 1058.2,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:docling_headings:ohr_academic_2310_11511v1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 114,
+        "index_tokens": 29147,
+        "llm": [],
+        "wall_seconds": 0.362,
+        "peak_ram_mb": 1058.0,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 3.181,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1058.2,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
