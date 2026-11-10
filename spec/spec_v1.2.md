@@ -234,3 +234,16 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
 - Correction before running (2026-11-08): the table-mode variant switches Docling's default table mode to the other
   mode (FAST if the default is ACCURATE, and the reverse), because the default may already be ACCURATE; the mode used
   is recorded in each variant extraction.
+
+## RQ5(a) result (2026-11-10)
+- Docling default reproduced the frozen extraction exactly on Kaggle (text, pages, elements, parser info).
+- replace_broken_text not run: OcrAutoOptions (the default OCR engine) has no replace_broken_text_layer option in
+  Docling 2.143.0; stopped by the option check, left out.
+- Digital sample (5 PDFs, 307-308 questions; P3-RQ5D-20261110-1, P5-LOCAL-20261110-1): no variant beats its default
+  (all differences below 0.01; every interval reaches 0; Holm p >= 0.29). No stage 2. Parser choice still matters
+  (Docling 0.827 vs pdfplumber 0.798 on this sample).
+- Scanned sample (10 MP-DocVQA PDFs): ocr_rapidocr and ocr_scale_double gave text identical to the default (the Auto
+  engine apparently uses RapidOCR; scale has no effect with it), so they are not distinct variants. Tesseract: 65
+  exact and 18 certain answer placements vs 26 and 0 for the default; pdfplumber reads no text. The planned recall
+  comparison cannot be computed (no certain gold with the default OCR), because gold is placed in each parser's own
+  text; a parser-independent gold (e.g. MP-DocVQA word boxes) is future work. Reported descriptively.

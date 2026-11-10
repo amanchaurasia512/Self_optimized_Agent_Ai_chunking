@@ -1,0 +1,107 @@
+{
+  "run_id": "P3-LOCAL-20261110-1",
+  "created_at": "2026-11-10T05:32:43+00:00",
+  "code": {
+    "commit": "ddeecd2b735436fcbfebb097c0923513dd71ec1e",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "device": "cpu",
+    "share": 1.0,
+    "batch_size": 16
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "1d01a3939cf00d8ccb936ef4976635ca1b63ffa590a3edaefe94d96cabb84003"
+    },
+    {
+      "path": "data/gold/spans_docling_headings.jsonl",
+      "sha256": "f4edb642890a82e953fbc158b15870ad678eb6574945c4132e53b80bebd1eb93"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_off.jsonl",
+      "sha256": "be5d5d29705792992517e1ef744b7f73a4a868a72f54dc45753d405b1592bf62"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_rapidocr.jsonl",
+      "sha256": "5893ba6d2b485fbdcd7ac96ec1ccfd4283c1497326dbba19e90e7803227fb7e8"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_scale_double.jsonl",
+      "sha256": "91676eae1259836928c1614bf00cab1c01c6fa070248c35b12122091e3479622"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_tesseract.jsonl",
+      "sha256": "79551ee1bcf18d7520e85866bad9a938f5e6b12dcf0b24b788f673b5c290a2db"
+    },
+    {
+      "path": "data/gold/spans_docling_table_mode_switched.jsonl",
+      "sha256": "e15ac2b6b30d1261d5da0035adeb3114db1d12629633a252eba54b20b526e59b"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "5940562d737d5d1a8f51bfd5c58a4f61aeee8bbb105271d92ff535d1c4ec9c98"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_layout.jsonl",
+      "sha256": "4637d4833abe473b34da463558d1b5ccc374f5ae85187b10fb1e893b18dd5b6a"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_tolerance_wide.jsonl",
+      "sha256": "27804cbb129386c81202ce39a6a2a30247bb082e91614581b7cda563a09fe478"
+    }
+  ],
+  "outputs": [
+    "data/embeddings/bge-m3/LOCAL-rq5-questions.npy",
+    "data/embeddings/bge-m3/LOCAL-rq5-questions.keys.json",
+    "data/embeddings/bge-m3/embedder.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "texts": 18,
+        "tokens": 190,
+        "wall_seconds": 7.032,
+        "peak_ram_mb": 5439.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 7.032,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 5439.5,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

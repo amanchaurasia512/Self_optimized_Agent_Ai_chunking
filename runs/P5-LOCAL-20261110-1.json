@@ -1,0 +1,60 @@
+{
+  "run_id": "P5-LOCAL-20261110-1",
+  "created_at": "2026-11-10T05:36:04+00:00",
+  "code": {
+    "commit": "ddeecd2b735436fcbfebb097c0923513dd71ec1e",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "rq5a_compare",
+    "scores_run": "P3-RQ5D-20261110-1",
+    "sample": "digital",
+    "retriever": "hybrid",
+    "budget": 1250,
+    "resamples": 2000,
+    "level": 0.95,
+    "seed": 42
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-RQ5D-20261110-1.csv.gz",
+      "sha256": "b4e477ec4650adf54adb67a21d351095247e5cecec538874e1f7b312152ad7f3"
+    }
+  ],
+  "outputs": [
+    "data/results/rq5/P5-LOCAL-20261110-1_digital.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "compare:digital",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.034,
+        "peak_ram_mb": 746.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.034,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 746.5,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
