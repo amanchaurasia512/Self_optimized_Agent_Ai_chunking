@@ -265,3 +265,23 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   (closest: method1_tree pdfplumber +0.047 [-0.000, 0.104]; fixed_token pdfplumber +0.035 [-0.001, 0.070]).
 - RQ5 answer: tuning gains much where the default is far off (LangChain default chunks); little beyond a sensible
   size; parser settings give no gain on digital PDFs (RQ5a).
+
+## Answer-quality check (AQ), design frozen before running (2026-11-10)
+- Question: does answer quality from the retrieved chunks rank setups the way Recall@1,250 does? (Recall measures
+  whether the gold text is read, not whether an LLM can answer from it.) Uses the held-out set a third time, for this
+  new question only; disclosed.
+- Sample: 20% of each PDF's questions (rounded up, at least 1), seed 42; tuning and held-out: the main certain span
+  questions shared by both parsers; scanned: all 112 MP-DocVQA questions (no located gold needed).
+- Setups, digital (Docling): method1_tree T256 and T384, langchain_recursive 256 and 512, recursive 512,
+  fixed_token 1024, langchain_default (no prefix, overlap 0). Scanned: the 5 RQ5 settings on docling (default OCR)
+  and docling_ocr_tesseract.
+- Context: hybrid retrieval, chunks read in rank order up to 1,250 tokens, exactly as the scorer reads them.
+- Answer: gemini-3.5-flash-lite (src/chunk/llm.py), temperature 0, one fixed prompt: answer only from the context,
+  or reply "not found".
+- Reference: each source's own answer (CUAD gold span text, QASPER answers, OHR-Bench answers, Indian answers,
+  FinanceBench answer, MP-DocVQA accepted answers).
+- Judge: the same model, temperature 0, a fixed guide: correct (all key facts of the reference) = 1, partly = 0.5,
+  wrong or not found = 0. Checked first on 20 cases labelled by hand without seeing the judge's label; used only if
+  agreement is at least 80%; otherwise the guide is revised once and re-checked on 20 new cases.
+- Analysis: mean answer score per setup (document means first), paired document bootstrap against the best setup,
+  and the rank correlation (Spearman) between setups' answer scores and their Recall@1,250.
