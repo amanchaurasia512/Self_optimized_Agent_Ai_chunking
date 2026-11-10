@@ -247,3 +247,21 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   exact and 18 certain answer placements vs 26 and 0 for the default; pdfplumber reads no text. The planned recall
   comparison cannot be computed (no certain gold with the default OCR), because gold is placed in each parser's own
   text; a parser-independent gold (e.g. MP-DocVQA word boxes) is future work. Reported descriptively.
+## RQ5(b) design, written before the analysis (2026-11-10)
+- Question: does tuning a chunker's size beat its default? Specified after the held-out scores existed (disclosed);
+  the rule is mechanical so that no choice depends on held-out results.
+- Tuned: per chunker family (langchain_recursive, recursive, fixed_token, method1_tree; overlap 0, no prefix) and
+  parser, the size with the highest mean document recall on the tuning run P3-LOCAL-20261105-4 (hybrid,
+  Recall@1,250, main questions).
+- Default: LangChain = its library default (langchain_default); the other families have no outside default, so the
+  spec v1 starting size 512 is used.
+- Test on the held-out run P3-FINAL-20261106-1: paired document bootstrap of (tuned - default) on the questions both
+  have; Holm over all 8 comparisons. Tuned beats default if the interval lies above 0 and Holm p < 0.05.
+## RQ5(b) result (2026-11-10), P5-LOCAL-20261110-2
+- LangChain library default vs tuned size (chosen on tuning), held-out: Docling 0.610 -> 0.733 (+0.123 [0.057,
+  0.196]); pdfplumber 0.648 -> 0.748 (+0.100 [0.038, 0.186]); both significant after Holm (p < 0.001, bootstrap
+  resolution 1/2000).
+- Own chunkers, spec v1 start 512 vs tuned (256 or 384): differences -0.015 to +0.047; none significant after Holm
+  (closest: method1_tree pdfplumber +0.047 [-0.000, 0.104]; fixed_token pdfplumber +0.035 [-0.001, 0.070]).
+- RQ5 answer: tuning gains much where the default is far off (LangChain default chunks); little beyond a sensible
+  size; parser settings give no gain on digital PDFs (RQ5a).
