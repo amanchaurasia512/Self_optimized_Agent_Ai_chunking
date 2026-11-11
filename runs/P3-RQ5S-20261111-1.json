@@ -1,0 +1,235 @@
+{
+  "run_id": "P3-RQ5S-20261111-1",
+  "created_at": "2026-11-11T17:38:23+00:00",
+  "code": {
+    "commit": "e5a924a5d281057e2792aa20b018c2c8a4e0d921",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "scorer": {
+      "version": "scorer_v1",
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75,
+        "idf": "log((N - n + 0.5) / (n + 0.5) + 1)",
+        "words": "lower-cased [\\w Devanagari]+"
+      },
+      "hybrid": {
+        "method": "reciprocal rank fusion",
+        "k": 60
+      },
+      "characters": "gold characters counted without whitespace"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "budgets": [
+      750,
+      1250,
+      2000
+    ],
+    "parsers": [
+      "docling",
+      "docling_ocr_tesseract"
+    ],
+    "page_level_gold_left_out": {
+      "docling": 0,
+      "docling_ocr_tesseract": 0
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "3af34b14a28ad2cb02bd32219f0f36d100524e84463219811913b0512aae892c"
+    },
+    {
+      "path": "data/gold/spans_docling_headings.jsonl",
+      "sha256": "f4edb642890a82e953fbc158b15870ad678eb6574945c4132e53b80bebd1eb93"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_off.jsonl",
+      "sha256": "be5d5d29705792992517e1ef744b7f73a4a868a72f54dc45753d405b1592bf62"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_rapidocr.jsonl",
+      "sha256": "ad42658902873774b3bc2299522e09e55f4208d5260e31de14f09d3f5271ba5f"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_scale_double.jsonl",
+      "sha256": "5e3660bb7a9316f534b7e5fa5974ca40c0f8cecd9b708b0944eac0689a6392a4"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_tesseract.jsonl",
+      "sha256": "8756b9b9c06abe89ec5e76647fad037c49fa216fcb0c8051a9c495bc95b738db"
+    },
+    {
+      "path": "data/gold/spans_docling_table_mode_switched.jsonl",
+      "sha256": "e15ac2b6b30d1261d5da0035adeb3114db1d12629633a252eba54b20b526e59b"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "8024a0f2d2bc691645173a90069ca25c4442a1457aa0e62b6137d48ac7e09239"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_layout.jsonl",
+      "sha256": "4637d4833abe473b34da463558d1b5ccc374f5ae85187b10fb1e893b18dd5b6a"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_tolerance_wide.jsonl",
+      "sha256": "27804cbb129386c81202ce39a6a2a30247bb082e91614581b7cda563a09fe478"
+    }
+  ],
+  "outputs": [
+    "data/results/p3/P3-RQ5S-20261111-1.csv.gz"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "score:docling:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.721,
+        "peak_ram_mb": 2464.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.169,
+        "peak_ram_mb": 2464.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.158,
+        "peak_ram_mb": 2465.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T384_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.21,
+        "peak_ram_mb": 2465.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.166,
+        "peak_ram_mb": 2465.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling_ocr_tesseract:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.175,
+        "peak_ram_mb": 2465.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling_ocr_tesseract:langchain_recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.171,
+        "peak_ram_mb": 2466.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling_ocr_tesseract:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.16,
+        "peak_ram_mb": 2466.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling_ocr_tesseract:method1_tree_T384_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.203,
+        "peak_ram_mb": 2466.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling_ocr_tesseract:recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.163,
+        "peak_ram_mb": 2466.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 2.296,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 2466.8,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

@@ -6,6 +6,7 @@ import json
 import img2pdf
 import pandas as pd
 import pyarrow.parquet as pq
+import ast
 
 from scripts.rq5_scanned_select import PICKS_FILE, page_list
 from src.common.manifest import PROJECT_ROOT, file_sha256, project_path
@@ -26,6 +27,9 @@ def label_names(path, column):
     features = json.loads(metadata.get(b"huggingface", b"{}")).get("info", {}).get("features", {})
     return features.get(column, {}).get("names")
 
+def answer_list(value):
+    """The accepted answers of a question, whether stored as a list/array or as the text form of a list."""
+    return [str(answer) for answer in (ast.literal_eval(value) if isinstance(value, str) else value)]
 
 def picked_questions(picks):
     wanted, frames = set(picks["doc_id"]), []
@@ -57,7 +61,7 @@ def main():
                         "source_path": "lmms-lab/MP-DocVQA val", "licence": LICENCE, "file": project_path(target),
                         "sha256": file_sha256(target), "set": "scanned", **pdf_stats(target)})
         saved += [{"question_id": f"mpdocvqa::{row.questionId}", "doc_id": f"mpdocvqa_{doc}", "question": row.question,
-                   "answers": [str(answer) for answer in row.answers], "answer_page": int(row.answer_page_idx) + 1,
+                   "answers": answer_list(row.answers), "answer_page": int(row.answer_page_idx) + 1,
                    "page_ids": list(pages)} for row in doc_questions.itertuples(index=False)]
         print(f"{doc}: {len(pages)} pages | {len(doc_questions)} questions | {target.stat().st_size / 1e6:.1f} MB")
 

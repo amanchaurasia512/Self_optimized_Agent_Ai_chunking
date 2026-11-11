@@ -285,3 +285,13 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
   agreement is at least 80%; otherwise the guide is revised once and re-checked on 20 new cases.
 - Analysis: mean answer score per setup (document means first), paired document bootstrap against the best setup,
   and the rank correlation (Spearman) between setups' answer scores and their Recall@1,250.
+
+## Correction to RQ5(a) scanned results (2026-11-11)
+- Bug: rq5_scanned_build stored each MP-DocVQA answer list as its text form split into characters, so the scanned
+  gold (longest accepted answer) was a single character. Found through the answer-quality check (F1 near 0 while
+  the answers were visibly right). Fixed (answer_list), selected_questions.json rebuilt (110 questions, not 112 as
+  written earlier), gold re-matched; all non-scanned gold rows byte-identical.
+- Withdrawn: "Docling default 0 of 112 located exactly, Tesseract 65 / 18 certain".
+- Corrected: Docling default (Auto OCR) 49 exact / 47 certain; Tesseract 41 / 43; pdfplumber 0. Answer F1 on the 25
+  sampled scanned questions: Docling default 0.45-0.55, Tesseract 0.30-0.41. Docling's default OCR is kept for scans.
+- The planned recall comparison (variant vs default) is now computable on the scanned sample; result recorded below.
