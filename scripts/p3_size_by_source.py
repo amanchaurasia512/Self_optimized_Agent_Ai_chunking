@@ -6,7 +6,8 @@ import argparse
 import pandas as pd
 
 from scripts.p4_analyse import in_scope, index_cost, question_matrix
-from src.common.manifest import PROJECT_ROOT
+from src.common.cost_logger import CostLogger
+from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
 
 RESULTS = PROJECT_ROOT / "data" / "results" / "p3"
 SEALED = "held_out"
@@ -51,20 +52,31 @@ def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
     arg_parser.add_argument("--run", default="P3-LOCAL-20261105-4", help="P3 run whose scores are read")
     arg_parser.add_argument("--final", action="store_true", help="allow a run holding held-out documents")
+    arg_parser.add_argument("--machine", default="laptop")
     args = arg_parser.parse_args()
 
-    splits = pd.read_csv(PROJECT_ROOT / "pdfs" / "split.csv").set_index("doc_id")["split"]
-    frame = pd.read_csv(RESULTS / f"{args.run}.csv.gz", usecols=COLUMNS)
+    split_file, scores = PROJECT_ROOT / "pdfs" / "split.csv", RESULTS / f"{args.run}.csv.gz"
+    splits = pd.read_csv(split_file).set_index("doc_id")["split"]
+    frame = pd.read_csv(scores, usecols=COLUMNS)
     frame = frame[(frame["retriever"] == "hybrid") & ~frame["source"].isin(EXCLUDED)]
     if frame["doc_id"].map(splits).fillna("").str.startswith(SEALED).any() and not args.final:
         raise SystemExit(f"{args.run} holds held-out documents: rerun with --final")
 
-    results = [parser_curves(frame, parser) for parser in sorted(frame["parser"].unique())]
+    logger = CostLogger()
+    with logger.stage("size_by_source"):
+        results = [parser_curves(frame, parser) for parser in sorted(frame["parser"].unique())]
     rows = pd.DataFrame([row for parser_rows, parser_summary in results for row in parser_rows])
     summary = pd.DataFrame([row for parser_rows, parser_summary in results for row in parser_summary])
-    rows.to_csv(RESULTS / f"size_by_source_{args.run}.csv", index=False)
-    summary.to_csv(RESULTS / f"size_by_source_summary_{args.run}.csv", index=False)
+    outputs = [RESULTS / f"size_by_source_{args.run}.csv", RESULTS / f"size_by_source_summary_{args.run}.csv"]
+    rows.to_csv(outputs[0], index=False)
+    summary.to_csv(outputs[1], index=False)
+    run_id = new_run_id(3, "SIZESRC")
+    stack = {"analysis": "size_by_source", "scores_run": args.run, "retriever": "hybrid",
+             "excluded_sources": sorted(EXCLUDED), "final": args.final}
+    manifest_path = write_manifest(build_manifest(run_id, "v1.2", stack, [split_file, scores], outputs,
+                                                  logger.summary(), args.machine))
     print(summary.sort_values(["parser", "budget", "source"]).to_string(index=False))
+    print(f"\nrun {run_id} | manifest: {manifest_path}")
 
 
 if __name__ == "__main__":

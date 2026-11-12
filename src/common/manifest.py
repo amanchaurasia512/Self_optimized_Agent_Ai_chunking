@@ -4,10 +4,13 @@ import json
 import platform
 import subprocess
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RUNS_DIR = PROJECT_ROOT / "runs"
+PACKAGES = ["docling", "pdfplumber", "torch", "sentence-transformers", "transformers", "langchain-text-splitters",
+            "pandas", "numpy"]
 
 
 def git_output(*args):
@@ -20,6 +23,16 @@ def code_version():
     which must not mark the next run in the same session as uncommitted."""
     status = git_output("status", "--porcelain", "--", ".", ":(exclude)runs")
     return {"commit": git_output("rev-parse", "HEAD"), "uncommitted_changes": None if status is None else bool(status)}
+
+
+def package_versions():
+    """Installed version of each tracked package; None when it is not installed in this environment."""
+    def installed(name):
+        try:
+            return version(name)
+        except PackageNotFoundError:
+            return None
+    return {name: installed(name) for name in PACKAGES}
 
 
 def file_sha256(path):
@@ -52,7 +65,8 @@ def build_manifest(run_id, spec_version, stack, inputs, outputs, costs, machine,
         "spec_version": spec_version,
         "config": {"path": project_path(config_path), "sha256": file_sha256(config_path)} if config_path else None,
         "stack": stack,
-        "environment": {"machine": machine, "host": platform.node(), "python": platform.python_version(), "os": platform.platform()},
+        "environment": {"machine": machine, "host": platform.node(), "python": platform.python_version(), "os": platform.platform(),
+                        "packages": package_versions()},
         "inputs": [{"path": project_path(path), "sha256": file_sha256(path)} for path in inputs],
         "outputs": [project_path(path) for path in outputs],
         "costs": costs,

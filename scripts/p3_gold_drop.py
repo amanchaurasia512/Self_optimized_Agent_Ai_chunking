@@ -7,7 +7,8 @@ import json
 import pandas as pd
 
 from scripts.p3_score import GOLD, gold_questions
-from src.common.manifest import PROJECT_ROOT
+from src.common.cost_logger import CostLogger
+from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
 
 OUT = PROJECT_ROOT / "data" / "results" / "p3"
 SEALED = "held_out"
@@ -39,13 +40,18 @@ def drop_table(name, docs):
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
     arg_parser.add_argument("--final", action="store_true", help="include held-out documents (counts only)")
+    arg_parser.add_argument("--machine", default="laptop")
     args = arg_parser.parse_args()
 
-    splits = pd.read_csv(PROJECT_ROOT / "pdfs" / "split.csv")
+    split_file = PROJECT_ROOT / "pdfs" / "split.csv"
+    splits = pd.read_csv(split_file)
     open_docs = splits.loc[~splits["split"].str.startswith(SEALED), "doc_id"]
     docs = set(splits["doc_id"] if args.final else open_docs)
-    names = sorted(path.stem.removeprefix("spans_") for path in GOLD.glob("spans_*.jsonl"))
-    questions = pd.concat([drop_table(name, docs) for name in names], ignore_index=True)
+    gold_files = sorted(GOLD.glob("spans_*.jsonl"))
+    names = [path.stem.removeprefix("spans_") for path in gold_files]
+    logger = CostLogger()
+    with logger.stage("gold_drop"):
+        questions = pd.concat([drop_table(name, docs) for name in names], ignore_index=True)
 
     counts = (questions.pivot_table(index=["gold_file", "split", "source"], columns="outcome", values="question_id",
                                     aggfunc="count", fill_value=0).reindex(columns=OUTCOMES, fill_value=0))
@@ -58,10 +64,16 @@ def main():
 
     label = "final" if args.final else "tuning"
     OUT.mkdir(parents=True, exist_ok=True)
-    counts.reset_index().to_csv(OUT / f"gold_drop_{label}.csv", index=False)
-    empty_docs.to_csv(OUT / f"gold_drop_empty_docs_{label}.csv", index=False)
+    outputs = [OUT / f"gold_drop_{label}.csv", OUT / f"gold_drop_empty_docs_{label}.csv"]
+    counts.reset_index().to_csv(outputs[0], index=False)
+    empty_docs.to_csv(outputs[1], index=False)
+    run_id = new_run_id(3, "GOLDDROP")
+    stack = {"analysis": "gold_drop", "documents": "all splits" if args.final else f"splits not starting with {SEALED}",
+             "final": args.final, "gold_files": names, "outcomes": OUTCOMES}
+    manifest_path = write_manifest(build_manifest(run_id, "v1.2", stack, [split_file, *gold_files], outputs,
+                                                  logger.summary(), args.machine))
     print(counts.to_string())
-    print(f"\ndocuments with no kept question:\n{empty_docs.to_string(index=False)}")
+    print(f"\ndocuments with no kept question:\n{empty_docs.to_string(index=False)}\n\nrun {run_id} | manifest: {manifest_path}")
 
 if __name__ == "__main__":
     main()

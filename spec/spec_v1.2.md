@@ -395,3 +395,44 @@ Left: held_out 8, held_out_c 6, held_out_ood 3 (FinanceBench 1 with 1 kept quest
 P3-FINAL-20261106-1 main questions and P4-FINAL-20261106-1 (documents_left_out: []). rti_act_en differs from tuning
 indian_d4_rti_act (SHA-256 and page count: 25 vs 78 pages); it may share text with it as an amended version of the
 same Act, but it was never scored.
+## RQ5 Hindi OCR check (parser-only, added 2026-11-12, after the final evaluation)
+
+Character error rate (CER) of OCR settings on the 51 page images in data/external/sarvam_ocr/hindi_small
+(IndicOCR-Bench test sample labelled Hindi; some pages may be other languages in Devanagari script). No chunking or
+retrieval, no question gold; not part of the held-out evaluation. Settings: Docling default (Auto OCR), Docling +
+Tesseract (lang hin, full-page OCR), Docling + EasyOCR (lang hi, full-page OCR), and plain Tesseract (hin) as a
+reference outside Docling. CER = Levenshtein distance / ground-truth length, both NFC-normalised with whitespace
+collapsed (can exceed 1). Docling 2.143.0 on Kaggle, as in RQ5(a). Reported: mean and median CER per setting, with a
+page-clustered bootstrap interval computed locally afterwards.
+
+## Scope: Hindi (decision, 2026-11-12)
+
+The held_out_hindi track has no question source and is not evaluated; no Hindi or multilingual claim is made in this
+study. Hindi PDFs need a recognised question set with answer spans, which we did not find; a multilingual evaluation is
+left to a separate study designed from the start. The Hindi OCR check (hindi_small) was drafted but not run.
+
+
+Result (P3-FIXEDK-20261112-1, tuning, main questions, no intervals): the best size depends on the measure. Recall@5:
+fixed_token 1024 best on both parsers (0.904); Recall@10: fixed_token 896 (Docling 0.964, pdfplumber 0.968). Hit@1 and
+MRR barely separate sizes (Docling Hit@1 range about 0.53-0.62; best Hit@1 Docling method1_tree T512 0.624, pdfplumber
+recursive 1024 0.632; best MRR Docling method1_tree T1024 0.743, pdfplumber recursive 1024 0.748). Recall@4,000 tokens:
+small chunks best (Docling method1_tree T384 0.932, pdfplumber sentence 5 0.928; best sizes about 220-380 tokens).
+Under a fixed number of chunks, larger chunks read more text (5 x 1024 vs 5 x 256 tokens), so fixed-k favours them;
+at an equal token budget the ranking reverses. This matches the disagreement on chunk size in related work. Descriptive
+only: no intervals or tests.
+
+## Errata (2026-11-12)
+
+Corrections to earlier notes; the earlier notes are left as written.
+- RQ5(b) result (2026-11-10): "both significant after Holm (p < 0.001, bootstrap resolution 1/2000)" should read
+  "Holm p < 0.01". With 2,000 resamples a two-sided bootstrap p of 0 only means p < 2/2000 = 0.001, and Holm over
+  the 8 comparisons multiplies that bound by 8 (< 0.008).
+- AQ result (2026-11-12): "Holm p < 0.001" (held-out, method1_tree T256 vs fixed_token 1024) should read
+  "Holm p < 0.01" (2,000 resamples, Holm over 6 comparisons: < 0.006). Its closing line "p = 0.000 means ... (p <
+  1/2000)" should read p < 2/2000 = 0.001 for a two-sided p, before Holm.
+- Held-out gold (2026-11-06): "rti_act_en duplicates tuning D4" is wrong. rti_act_en and indian_d4_rti_act are
+  different files (SHA-256 8956eaba... vs 7eed541c..., 25 vs 78 pages); rti_act_en may share text as an amended
+  version of the same Act. It was never scored (see "Held-out document accounting", 2026-11-12).
+- RQ5(a) result (2026-11-10), scanned sample: the placement counts and "the planned recall comparison cannot be
+  computed" are superseded by "Correction to RQ5(a) scanned results" (2026-11-11): Docling default 49 exact / 47
+  certain, Tesseract 41 / 43; recall comparison computed (+0.02 [-0.05, 0.08], Holm p 0.50).
