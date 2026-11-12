@@ -1,0 +1,148 @@
+{
+  "run_id": "P6-LOCAL-20261110-1",
+  "created_at": "2026-11-10T11:28:56+00:00",
+  "code": {
+    "commit": "e5a924a5d281057e2792aa20b018c2c8a4e0d921",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "aq_answer",
+    "llm": {
+      "provider": "google",
+      "model": "gemini-3.5-flash-lite",
+      "sdk": "google-genai-2.34.0",
+      "temperature_requested": 0
+    },
+    "answer_prompt": "Answer the question using only the context below, which comes from one document. If the context does not contain the answer, reply exactly: not found\n\nContext:\n{context}\n\nQuestion: {question}\nAnswer (briefly):",
+    "budget": 1250,
+    "retriever": "hybrid",
+    "digital_setups": [
+      [
+        "docling",
+        "method1_tree_T256_noprefix"
+      ],
+      [
+        "docling",
+        "method1_tree_T384_noprefix"
+      ],
+      [
+        "docling",
+        "langchain_recursive_size256_overlap0_noprefix"
+      ],
+      [
+        "docling",
+        "langchain_recursive_size512_overlap0_noprefix"
+      ],
+      [
+        "docling",
+        "recursive_size512_overlap0_noprefix"
+      ],
+      [
+        "docling",
+        "fixed_token_size1024_overlap0_noprefix"
+      ],
+      [
+        "docling",
+        "langchain_default_noprefix"
+      ]
+    ],
+    "scanned_setups": [
+      [
+        "docling",
+        "method1_tree_T256_noprefix"
+      ],
+      [
+        "docling",
+        "method1_tree_T384_noprefix"
+      ],
+      [
+        "docling",
+        "recursive_size256_overlap0_noprefix"
+      ],
+      [
+        "docling",
+        "langchain_recursive_size256_overlap0_noprefix"
+      ],
+      [
+        "docling",
+        "fixed_token_size256_overlap0_noprefix"
+      ],
+      [
+        "docling_ocr_tesseract",
+        "method1_tree_T256_noprefix"
+      ],
+      [
+        "docling_ocr_tesseract",
+        "method1_tree_T384_noprefix"
+      ],
+      [
+        "docling_ocr_tesseract",
+        "recursive_size256_overlap0_noprefix"
+      ],
+      [
+        "docling_ocr_tesseract",
+        "langchain_recursive_size256_overlap0_noprefix"
+      ],
+      [
+        "docling_ocr_tesseract",
+        "fixed_token_size256_overlap0_noprefix"
+      ]
+    ],
+    "seconds_between_requests": 4.285714285714286
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43"
+  },
+  "inputs": [
+    {
+      "path": "data/results/aq/sample.csv",
+      "sha256": "3abd903276dd122b723ce9436374a526f7a9f66752f231129f33044e5f9b11da"
+    }
+  ],
+  "outputs": [
+    "data/results/aq/answers.jsonl"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 38.422,
+        "peak_ram_mb": 4305.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "answer",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 347616,
+        "output_tokens": 10304,
+        "paid_credits": 0.0,
+        "calls": 269,
+        "wall_seconds": 1612.08,
+        "peak_ram_mb": 4308.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1650.502,
+      "llm_calls": 0,
+      "input_tokens": 347616,
+      "output_tokens": 10304,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 4308.5,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
