@@ -1,0 +1,8 @@
+parser,setting,f1,contained,not_found,judge_secondary,recall
+docling,fixed_token_size1024_overlap0_noprefix,0.4131,0.3857,0.3088,0.6305,0.5969
+docling,langchain_default_noprefix,0.4316,0.3704,0.3044,0.6504,0.6592
+docling,langchain_recursive_size256_overlap0_noprefix,0.4881,0.4084,0.2333,0.7302,0.7583
+docling,langchain_recursive_size512_overlap0_noprefix,0.4892,0.395,0.2398,0.7328,0.7572
+docling,method1_tree_T256_noprefix,0.4811,0.4516,0.2175,0.7208,0.7292
+docling,method1_tree_T384_noprefix,0.4888,0.3756,0.2377,0.7316,0.7379
+docling,recursive_size512_overlap0_noprefix,0.4731,0.3931,0.2212,0.7115,0.7441

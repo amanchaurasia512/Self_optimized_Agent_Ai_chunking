@@ -22,6 +22,9 @@ import pandas as pd
 from google.genai import errors
 
 from scripts.p3_score import CHUNKS, EXTRACTED, GOLD, load_chunks
+from scripts.p4_analyse import resampled_means
+from scripts.rq5_parser_compare import holm
+from src.eval.stats import LEVEL
 from src.chunk.llm import complete, llm_info, take_calls
 from src.common.cost_logger import CostLogger
 from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
@@ -32,6 +35,7 @@ from src.eval.score import BM25, dense_ranking, hybrid_ranking, read_ranking
 EXTERNAL = PROJECT_ROOT / "data" / "external"
 OUTPUT = PROJECT_ROOT / "data" / "results" / "aq"
 SAMPLE_FILE, ANSWERS_FILE, F1_FILE = OUTPUT / "sample.csv", OUTPUT / "answers.jsonl", OUTPUT / "answers_f1.csv"
+JUDGE_JOBS, JUDGEMENTS = OUTPUT / "judge_jobs.jsonl", OUTPUT / "judgements.jsonl"
 CHECK_FILE, CHECK_KEYS, CHECK_SCORED = OUTPUT / "judge_check.csv", OUTPUT / "judge_check_keys.csv", OUTPUT / "judge_check_scored.csv"
 SHARE, SEED, BUDGET, CHECK_CASES = 0.20, 42, 1250, 40
 INTERVAL = 60 / 14  # free tier allows 15 requests per minute per model; one start every 4.3 s stays under it
@@ -54,7 +58,18 @@ JUDGE_PROMPT = ("You are grading an answer against a reference answer to the sam
                 "Reply with only the number: 1, 0.5 or 0.\n\n"
                 "Question: {question}\nReference answer: {reference}\nAnswer to grade: {answer}\nScore:")
 ARTICLES = {"a", "an", "the"}
+RECALL_RUNS = {"tuning": "P3-LOCAL-20261105-4", "held_out": "P3-FINAL-20261106-1", "scanned": "P3-RQ5S-20261111-1"}
+RESULTS = PROJECT_ROOT / "data" / "results"
 
+
+def export_judge_jobs():
+    """Every answer with its question and reference, plus the ready-made judge prompt, for the Kaggle judge."""
+    rows = answered()
+    with JUDGE_JOBS.open("w", encoding="utf-8") as output:
+        for row in rows.to_dict("records"):
+            record = {key: row[key] for key in ["set", "doc_id", "question_id", "parser", "setting"]}
+            output.write(json.dumps({**record, "prompt": judge_prompt(row)}, ensure_ascii=False) + "\n")
+    print(f"{len(rows):,} judge jobs written to {JUDGE_JOBS}")
 
 def gold_rows(parser):
     return [json.loads(line) for line in (GOLD / f"spans_{parser}.jsonl").read_text(encoding="utf-8").splitlines()]
@@ -212,6 +227,54 @@ def score_f1():
     print(f"Answer scores, document means then setup means\n{table.to_string()}\n\nsaved {F1_FILE}")
 
 
+def analyse_answers():
+    """Per set and setup: answer F1, contained, not-found, the secondary judge score and Recall@1,250 on the same questions
+    (document means first); Spearman rank correlation between setups' answer scores and Recall, on the answers that have a
+    Recall score; paired document bootstrap of the best F1 setup against every other setup, with a two-sided bootstrap
+    p-value, Holm-corrected over the comparisons of each set."""
+    keys = ["parser", "setting", "doc_id", "question_id"]
+    answers = pd.read_csv(F1_FILE, dtype={"question_id": str})
+    judged = pd.DataFrame([json.loads(line) for line in JUDGEMENTS.read_text(encoding="utf-8").splitlines()]).rename(columns={"score": "judge_secondary"})
+    answers = answers.merge(judged[keys + ["judge_secondary"]], on=keys, how="left")
+    pd.set_option("display.width", 220)
+    rng = np.random.default_rng(SEED)
+    for name, run in RECALL_RUNS.items():
+        part = answers[answers["set"] == name]
+        recall = pd.read_csv(RESULTS / "p3" / f"{run}.csv.gz", usecols=keys + ["retriever", "budget", "recall"], dtype={"question_id": str})
+        recall = recall[(recall["retriever"] == "hybrid") & (recall["budget"] == BUDGET)]
+        merged = part.merge(recall[keys + ["recall"]], on=keys, how="left")
+        measures = ["f1", "contained", "not_found", "judge_secondary", "recall"]
+        docs = merged.groupby(["parser", "setting", "doc_id"])[measures].mean()
+        setups = docs.groupby(["parser", "setting"]).mean()
+        # Spearman on the answers that have a Recall score only, so both columns cover the same questions
+        scored = merged[merged["recall"].notna()]
+        scored_setups = scored.groupby(["parser", "setting", "doc_id"])[measures].mean().groupby(["parser", "setting"]).mean()
+        spearman = scored_setups[["f1", "contained", "judge_secondary", "recall"]].corr(method="spearman").loc["recall"]
+        print(f"\n=== {name}: {part['question_id'].nunique()} questions | {docs.index.get_level_values('doc_id').nunique()} documents | "
+              f"answers with a Recall score: {len(scored):,} of {len(merged):,}\n"
+              f"All questions (recall: on the answers that have one)\n{setups.round(3).to_string()}\n"
+              f"Spearman with Recall@{BUDGET} across setups, on the {len(scored):,} answers with a Recall score "
+              f"({scored['question_id'].nunique()} questions): F1 {spearman['f1']:.2f} | contained {spearman['contained']:.2f} | "
+              f"judge {spearman['judge_secondary']:.2f}")
+        best = setups["f1"].idxmax()
+        by_doc = docs["f1"].unstack(["parser", "setting"])
+        rows = []
+        for rival in [setup for setup in setups.index if setup != best]:
+            pair = by_doc[[best, rival]].dropna()
+            difference = pair[best] - pair[rival]
+            means = resampled_means(difference.to_numpy()[:, None], rng)[:, 0]
+            low, high = np.quantile(means, [(1 - LEVEL) / 2, (1 + LEVEL) / 2])
+            rows.append({"parser": rival[0], "setting": rival[1], "documents": len(pair), "difference": difference.mean(),
+                         "low": low, "high": high, "p": min(1.0, 2 * min((means <= 0).mean(), (means >= 0).mean()))})
+        comparisons = pd.DataFrame(rows)
+        comparisons["holm_p"] = holm(comparisons["p"].to_numpy())
+        print(f"\nF1, best setup {best[1]} ({best[0]}) minus each other setup, paired document bootstrap, "
+              f"{LEVEL:.0%} CI, two-sided p, Holm over {len(comparisons)} comparisons\n"
+              f"{comparisons.set_index(['parser', 'setting']).round(3).to_string()}")
+        setups.round(4).to_csv(OUTPUT / f"analysis_{name}.csv")
+        comparisons.round(4).to_csv(OUTPUT / f"analysis_{name}_vs_best.csv", index=False)
+    print(f"\nsaved analysis_<set>.csv in {OUTPUT}")
+
 def parse_score(text):
     match = re.search(r"(?<![\d.])(1|0\.5|0)(?![\d.])", text.strip())
     return float(match.group(1)) if match else None
@@ -233,23 +296,39 @@ def draw_check_cases():
     cases[["question", "reference", "answer"]].assign(human="").to_csv(CHECK_FILE)
     print(f"{len(cases)} cases written to {CHECK_FILE}\nFill the 'human' column with 1, 0.5 or 0 for every case, save, then run --stage judge-check-score")
 
+def label_cases():
+    """Terminal labelling of the check cases: shows question, reference and answer; saves after every label; resumable."""
+    cases = pd.read_csv(CHECK_FILE, index_col="case")
+    pending = cases[cases["human"].isna()]
+    print(f"{len(pending)} of {len(cases)} cases to label | type 1, 0.5 or 0 (s = skip, q = quit)")
+    for case, row in pending.iterrows():
+        print(f"\n--- case {case} ---\nQ:   {row['question']}\nREF: {row['reference']}\nANS: {row['answer']}")
+        while True:
+            label = input("human [1 / 0.5 / 0 / s / q]: ").strip().lower()
+            if label in {"1", "0.5", "0", "s", "q"}:
+                break
+        if label == "q":
+            break
+        if label != "s":
+            cases.loc[case, "human"] = float(label)
+            cases.to_csv(CHECK_FILE)
+    print(f"\nlabelled {int(cases['human'].notna().sum())} of {len(cases)} | saved {CHECK_FILE}")
 
 def judge_prompt(row):
     return JUDGE_PROMPT.format(question=row["question"], reference=row["reference"], answer=row["answer"])
 
 
 def score_check():
-    """Judge the 40 cases and compare with the human labels: agreement, Cohen's kappa, confusion table."""
+    """Compare the judge's scores on the 40 check cases with the human labels: agreement, Cohen's kappa, confusion table."""
+    keys = ["parser", "setting", "doc_id", "question_id"]
     cases = pd.read_csv(CHECK_FILE, index_col="case").join(pd.read_csv(CHECK_KEYS, index_col="case"))
     assert cases["human"].notna().all(), "every case needs a human label first"
-    CHECK_SCORED.unlink(missing_ok=True)
-    keys = ["parser", "setting", "doc_id", "question_id"]
-    asyncio.run(paced(cases.reset_index().to_dict("records"), judge_prompt, CHECK_SCORED, keys, "judge_reply", parse_score, "judged"))
-    judged = pd.DataFrame([json.loads(line) for line in CHECK_SCORED.read_text(encoding="utf-8").splitlines()])
+    judged = pd.DataFrame([json.loads(line) for line in JUDGEMENTS.read_text(encoding="utf-8").splitlines()])
     compared = cases.reset_index().merge(judged, on=keys)
+    assert len(compared) == len(cases), f"only {len(compared)} of {len(cases)} check cases found in {JUDGEMENTS}"
     human, judge = compared["human"].astype(float).tolist(), compared["score"].astype(float).tolist()
     agreed = sum(one == two for one, two in zip(human, judge))
-    print(f"\nagreement {agreed / len(human):.0%} ({agreed} of {len(human)}) | Cohen's kappa {cohen_kappa(human, judge):.2f} | "
+    print(f"agreement {agreed / len(human):.0%} ({agreed} of {len(human)}) | Cohen's kappa {cohen_kappa(human, judge):.2f} | "
           f"unparsed judge replies: {int(compared['score'].isna().sum())}")
     print(pd.crosstab(compared["human"].astype(float), compared["score"].astype(float), rownames=["human"], colnames=["judge"]).to_string())
     print("\nPASS: judge may be used" if agreed / len(human) >= 0.80 else "\nFAIL: revise the guide once (spec) and re-check on 40 new cases")
@@ -285,7 +364,8 @@ def run_answers():
 
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
-    arg_parser.add_argument("--stage", required=True, choices=["sample", "answer", "f1", "judge-check", "judge-check-score"])
+    arg_parser.add_argument("--stage", required=True,
+                            choices=["sample", "answer", "f1", "judge-check", "label", "judge-export", "judge-check-score", "analyse"])
     args = arg_parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
     if args.stage == "sample":
@@ -299,8 +379,14 @@ def main():
         score_f1()
     elif args.stage == "judge-check":
         draw_check_cases()
-    else:
+    elif args.stage == "label":
+        label_cases()
+    elif args.stage == "judge-export":
+        export_judge_jobs()
+    elif args.stage == "judge-check-score":
         score_check()
+    elif args.stage == "analyse":
+        analyse_answers()
 
 
 if __name__ == "__main__":

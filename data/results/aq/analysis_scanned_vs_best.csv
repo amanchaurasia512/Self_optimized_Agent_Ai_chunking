@@ -1,0 +1,10 @@
+parser,setting,documents,difference,low,high,p,holm_p
+docling,fixed_token_size256_overlap0_noprefix,10,0.0621,-0.0606,0.1911,0.332,0.996
+docling,langchain_recursive_size256_overlap0_noprefix,10,0.0123,-0.0849,0.145,0.918,1.0
+docling,method1_tree_T256_noprefix,10,0.0946,-0.0193,0.2336,0.113,0.678
+docling,method1_tree_T384_noprefix,10,0.0108,-0.093,0.1569,0.95,1.0
+docling_ocr_tesseract,fixed_token_size256_overlap0_noprefix,10,0.2431,0.0648,0.4205,0.004,0.036
+docling_ocr_tesseract,langchain_recursive_size256_overlap0_noprefix,10,0.1317,-0.0521,0.3385,0.211,0.844
+docling_ocr_tesseract,method1_tree_T256_noprefix,10,0.1612,-0.0134,0.3593,0.083,0.581
+docling_ocr_tesseract,method1_tree_T384_noprefix,10,0.1924,0.001,0.3913,0.049,0.392
+docling_ocr_tesseract,recursive_size256_overlap0_noprefix,10,0.1496,-0.0428,0.3643,0.135,0.678

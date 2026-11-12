@@ -295,3 +295,29 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
 - Corrected: Docling default (Auto OCR) 49 exact / 47 certain; Tesseract 41 / 43; pdfplumber 0. Answer F1 on the 25
   sampled scanned questions: Docling default 0.45-0.55, Tesseract 0.30-0.41. Docling's default OCR is kept for scans.
 - The planned recall comparison (variant vs default) is now computable on the scanned sample; result recorded below.
+- Scanned recall comparison (P3-RQ5S-20261111-1, P5-LOCAL-20261111-1): Tesseract vs Docling default on 8 PDFs / 34
+  shared questions: 0.786 vs 0.765, +0.02 [-0.05, 0.08], Holm p 0.50, no difference. RQ5(a) conclusion for scans:
+  defaults fine; the decisive parser choice is scan detection (pdfplumber reads nothing), not OCR settings.
+
+- AQ judge amendment (2026-11-11): the judge is an open-weight model run on Kaggle (Qwen3-8B, 4-bit, greedy, thinking
+  off; exact weights revision recorded in the run output), not gemini-3.5-flash-lite. Reasons: the free-tier daily cap
+  (500 calls) would take 5 days, and a judge different from the answering model avoids self-grading. Same judge prompt,
+  same 40-case human check with the 80% pass mark and kappa.
+
+- AQ judge check (2026-11-12): Qwen3-8B judge vs human on 40 cases. First pass 70% agreement, kappa 0.48 (FAIL);
+  11 of 12 disagreements were long-but-correct answers the human scored 0.5 and the judge 1, as the guide prescribes.
+  The human re-read those 12 against the guide (not blind: the first confusion table had been seen) and the second
+  pass gave 95%, kappa 0.86. Because the frozen rule asked for 40 new cases, the judge is used as a SECONDARY measure
+  only; the primary answer-quality measures are token F1 and 'gold contained'.
+
+## AQ result (2026-11-12)
+- Primary measure token F1 (document means; paired document bootstrap of the best setup against every other setup,
+  Holm-corrected per set). Held-out (114 q, 17 docs): method1_tree T256 best (F1 0.393); vs fixed_token 1024 +0.123
+  [0.050, 0.210], Holm p < 0.001; vs method1_tree T384 +0.065 [0.010, 0.137], Holm p 0.025 (opposite to the recall tie;
+  reported, not claimed); vs langchain_default +0.047 [0.001, 0.099], Holm p 0.176 (not significant; recall showed
+  +0.10 to +0.12, significant); all other small-chunk setups Holm p 1.0. Tuning: no significant differences.
+- Spearman (F1 vs Recall@1,250 across setups): tuning 0.75, held-out 0.43; judge (secondary) 0.75 / 0.64. Answers
+  confirm the large-chunk penalty; they do not separate the small-chunk setups.
+- Scanned (25 q, 10 docs): Docling default OCR beats Tesseract in all 5 pairings, significant after Holm in one
+  (+0.243, Holm p 0.036). Consistent with the corrected RQ5(a): Docling default kept for scans.
+- p = 0.000 means no bootstrap resample crossed zero (p < 1/2000).

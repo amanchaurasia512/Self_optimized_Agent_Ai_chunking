@@ -1,0 +1,7 @@
+parser,setting,documents,difference,low,high,p,holm_p
+docling,fixed_token_size1024_overlap0_noprefix,17,0.1235,0.05,0.2102,0.0,0.0
+docling,langchain_default_noprefix,17,0.0475,0.0015,0.099,0.044,0.176
+docling,langchain_recursive_size256_overlap0_noprefix,17,0.035,-0.0215,0.1175,0.36,1.0
+docling,langchain_recursive_size512_overlap0_noprefix,17,0.0103,-0.0327,0.0509,0.597,1.0
+docling,method1_tree_T384_noprefix,17,0.0651,0.0097,0.137,0.005,0.025
+docling,recursive_size512_overlap0_noprefix,17,0.0304,-0.0282,0.1131,0.426,1.0
