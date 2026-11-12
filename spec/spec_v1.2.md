@@ -321,3 +321,52 @@ Written on 2026-11-03, before any new document is opened. Everything in v1.1 sta
 - Scanned (25 q, 10 docs): Docling default OCR beats Tesseract in all 5 pairings, significant after Holm in one
   (+0.243, Holm p 0.036). Consistent with the corrected RQ5(a): Docling default kept for scans.
 - p = 0.000 means no bootstrap resample crossed zero (p < 1/2000).
+
+## P3 fixed-k re-scoring (diagnostic), design written before running (2026-11-12)
+- Question: does the best chunk size depend on the measure? Recall@1,250 fixes the tokens read; fixed-k measures fix
+  the number of chunks read, which favours large chunks by construction. Diagnostic only; no decision is changed.
+- Data: the tuning run's settings (P3-LOCAL-20261105-4), Docling and pdfplumber, tuning documents only, certain
+  span-level main questions (QASPER excluded), same gold, chunks and bge-m3 cache. scorer_v1 unchanged.
+- Ranking: hybrid only (scorer_v1 BM25 + dense, reciprocal rank fusion).
+- Measures: Recall@k, k = 5 and 10 (gold characters inside the top-k chunks over all gold characters, no token budget,
+  overlapping text counted once via read_ranking); Hit@1 (top chunk holds gold); MRR; Recall@4,000 tokens (read_ranking).
+- Analysis: document means then setting means; one table per parser sorted by measured chunk size (mean tokens per
+  chunk, prefix included); the best setting under each measure overall and within each size-swept family.
+- Script: scripts/p3_fixedk.py; output data/results/p3/fixedk_tuning.csv.
+
+## Gold drop rate (reporting, added 2026-11-12)
+
+For every gold file (each parser and RQ5 variant), each question is classed as: kept (scored by
+p3_score.gold_questions), page_level (page gold, left out by design), placed_not_certain (placed but not
+certain), or not_placed (gold text not found). Drop rate = (placed_not_certain + not_placed) / (total - page_level),
+reported per gold file, split and source, plus documents left with no kept question. Comparisons already use only
+questions kept by every compared parser (P4 question_matrix, RQ5 paired dropna), so this table reports coverage;
+it does not change any result. By default, documents in any split starting with held_out (held_out, held_out_c,
+held_out_ood, held_out_hindi) are excluded; --final adds them (counts only, after the final evaluation).
+Limitation: a question with no placement row at all is not in the gold file and is not counted.
+
+Result (main questions, QASPER and UniDoc excluded): tuning, Docling 84/970 lost (8.7%), pdfplumber 92/970 (9.5%);
+held-out, Docling 121/742 (16.3%), pdfplumber 205/742 (27.6%), the gap mostly from Indian (2% vs 14%) and
+OHR-Bench held_out_c (22% vs 37%). Recall comparisons on shared questions therefore do not show Docling's coverage
+advantage on held-out. FinanceBench keeps 1 of 7 questions on either parser; held_out_hindi has no gold rows.
+Scanned (scanned_rq5): pdfplumber loses 110/110, Docling default 64/110 (58%), Tesseract 67/110 (61%).
+Tuning has 25 documents, 20 with a kept question (19 without QASPER), matching the P3 tuning and fixed-k runs.
+Files: data/results/p3/gold_drop_{tuning,final}.csv and gold_drop_empty_docs_{tuning,final}.csv.
+
+## Size curve by source (reporting, added 2026-11-12)
+
+Checks whether the pooled result (smaller chunks best at a token budget) holds within each source. Scores from an
+existing P3 run: hybrid retriever, main questions (QASPER excluded), in-scope settings (p4_analyse.in_scope),
+questions scored by every setting of a parser (p4_analyse.question_matrix), per parser and budget. Recall is the
+mean over a source's documents of each document's question mean. Chunk size is measured: mean over documents of
+index tokens / chunk count (prefix included; p4_analyse.index_cost). Reported per source: best setting, its size,
+and the Spearman correlation between size and recall across settings, with the number of documents. Descriptive
+only, no tests (few documents per source). A run holding held-out documents needs --final.
+
+Result: tuning (P3-LOCAL-20261105-4), every source and parser has a negative size-recall correlation at every budget
+(rho -0.61 to -0.97; CUAD 6, Indian 3, OHR-Bench 10 documents), best sizes 209-439 tokens. Held-out
+(P3-FINAL-20261106-1): OHR-Bench (12 documents) rho -0.84 to -0.93, best sizes 216-318; CUAD (3 documents) weakens
+with budget (Docling -0.74/-0.65/-0.52, pdfplumber -0.59/-0.51/-0.26, best sizes up to 699 at 2,000 on pdfplumber);
+Indian has 1 document; FinanceBench (1 document, 1 question) is not interpretable (recall 0 for every setting at 750
+and 1,250, so rho is undefined and the best setting arbitrary). Files: data/results/p3/size_by_source_{run}.csv and
+size_by_source_summary_{run}.csv
