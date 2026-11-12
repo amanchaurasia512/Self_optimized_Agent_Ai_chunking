@@ -370,3 +370,28 @@ with budget (Docling -0.74/-0.65/-0.52, pdfplumber -0.59/-0.51/-0.26, best sizes
 Indian has 1 document; FinanceBench (1 document, 1 question) is not interpretable (recall 0 for every setting at 750
 and 1,250, so rho is undefined and the best setting arbitrary). Files: data/results/p3/size_by_source_{run}.csv and
 size_by_source_summary_{run}.csv
+
+## RQ5(a) scanned variants: two variants are copies of the default (correction, 2026-11-12)
+- Check: on all 10 scanned_rq5 documents, the extracted text of ocr_rapidocr and ocr_scale_double is byte-identical
+  to the Docling default (character difference 0). The extractions record different settings (default OcrAutoOptions;
+  RapidOcrOptions, scale 3.0; OcrAutoOptions, scale 6.0) but the settings changed nothing. Install: Docling 2.143.0,
+  run on Kaggle (Python 3.13.16; recorded in the P1-RQ5-KN01 run records and each extraction file); Docling is not
+  installed in the local venv.
+- Consequence: they are not separate settings and are removed from the scanned comparison family. The family frozen
+  on 2026-11-08 (Tesseract, RapidOCR, scale 2x) shrinks to Tesseract alone.
+- Result unchanged: the scored run P3-RQ5S-20261111-1 already held only docling and docling_ocr_tesseract, so the
+  earlier comparison (P5-LOCAL-20261111-1) was already Holm over one variant. Rerun without them
+  (P5-LOCAL-20261112-1): identical, Tesseract vs default +0.02 [-0.05, 0.08], p 0.504, Holm p 0.504, 8 documents,
+  34 questions.
+- Not checked: whether Docling's Auto OCR already selects RapidOCR on that install (which would explain the identity).
+
+## Held-out document accounting (reporting, added 2026-11-12)
+
+31 held-out documents (held_out 11, held_out_c 9, held_out_ood 9, held_out_hindi 2) -> 17 in the main evaluation:
+no gold source -2 (rti_act_en, rti_act_hi; held_out_hindi); page-level gold only -9 (UniDoc: held_out 1,
+held_out_c 2, held_out_ood 6); QASPER only -3 (held_out 2, held_out_c 1; scored separately, outside main questions).
+No document lost its last kept question on either parser, and none is missing from the scores for another reason.
+Left: held_out 8, held_out_c 6, held_out_ood 3 (FinanceBench 1 with 1 kept question, OHR-Bench 2), matching
+P3-FINAL-20261106-1 main questions and P4-FINAL-20261106-1 (documents_left_out: []). rti_act_en differs from tuning
+indian_d4_rti_act (SHA-256 and page count: 25 vs 78 pages); it may share text with it as an amended version of the
+same Act, but it was never scored.
