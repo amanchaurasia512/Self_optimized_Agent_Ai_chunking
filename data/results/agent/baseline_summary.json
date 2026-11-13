@@ -1,0 +1,123 @@
+{
+  "run_record": "runs/A-LOCAL-20261113-10.json",
+  "timing_seconds": {
+    "load_embedder_seconds": 5.473,
+    "index_per_document": {
+      "total": {
+        "n": 13,
+        "median": 98.047,
+        "p95": 402.966,
+        "max": 669.784
+      },
+      "scan_check": {
+        "n": 13,
+        "median": 2.22,
+        "p95": 13.818,
+        "max": 21.587
+      },
+      "load_index": {
+        "n": 13,
+        "median": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "parse": {
+        "n": 13,
+        "median": 3.903,
+        "p95": 30.191,
+        "max": 39.666
+      },
+      "chunk": {
+        "n": 13,
+        "median": 0.376,
+        "p95": 2.203,
+        "max": 3.809
+      },
+      "embed": {
+        "n": 13,
+        "median": 93.324,
+        "p95": 371.881,
+        "max": 620.42
+      },
+      "load_vectors": {
+        "n": 13,
+        "median": 0.003,
+        "p95": 0.042,
+        "max": 0.093
+      }
+    },
+    "per_question": {
+      "retrieve": {
+        "n": 60,
+        "median": 0.159,
+        "p95": 0.235,
+        "max": 0.295
+      },
+      "pace": {
+        "n": 60,
+        "median": 2.226,
+        "p95": 2.995,
+        "max": 3.026
+      },
+      "answer": {
+        "n": 60,
+        "median": 1.899,
+        "p95": 11.547,
+        "max": 77.028
+      },
+      "retrieve_and_answer": {
+        "n": 60,
+        "median": 2.078,
+        "p95": 11.719,
+        "max": 77.323
+      }
+    }
+  },
+  "agent": {
+    "questions": 60,
+    "f1": 0.521,
+    "contained": 0.417
+  },
+  "aq_nearest": {
+    "setup": "docling/method1_tree_T384_noprefix",
+    "note": "parser differs (docling vs pdfplumber); same chunker, budget, prompt and answer model",
+    "questions": 60,
+    "agent": {
+      "f1": 0.521,
+      "contained": 0.417
+    },
+    "aq": {
+      "f1": 0.556,
+      "contained": 0.45
+    }
+  },
+  "aq_exact_docling_fallback": {
+    "questions": 2,
+    "agent": {
+      "f1": 0.643,
+      "contained": 0.5
+    },
+    "aq": {
+      "f1": 0.534,
+      "contained": 0.5
+    }
+  },
+  "by_source": {
+    "CUAD": {
+      "f1": 0.218,
+      "contained": 0.0
+    },
+    "Indian": {
+      "f1": 0.582,
+      "contained": 0.381
+    },
+    "OHR-Bench": {
+      "f1": 0.46,
+      "contained": 0.75
+    }
+  },
+  "answers_by_entry": {
+    "gemini-a": 60
+  },
+  "answers_by_other_model": 0
+}

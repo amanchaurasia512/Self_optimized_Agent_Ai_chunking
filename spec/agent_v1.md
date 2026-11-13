@@ -63,6 +63,7 @@ document is catalogued (as in the study), otherwise from the PDF's file name and
 - ask: `python -m src.agent ask <pdf> "<question>" [--budget 750|1250|2000] [--fast] [--from-extraction <file>]
   [--context-only] [--record-text]`
   The index is built once per file and cached by SHA-256; later questions reuse it.
+- chat and batch: see Chat and batch modes.
 - providers: `python -m src.agent providers add --name <name> --provider gemini|groq --model <model>` asks for the
   key with hidden input, saves it to ~/.config/pdf-agent/keys/<name> (owner-only) and appends the entry to
   providers.json; `providers list` shows names, models and status, never keys.
@@ -86,6 +87,40 @@ document is catalogued (as in the study), otherwise from the PDF's file name and
   chunks read (ids and pages), provider entry and model, time and peak memory per step (scan_check, load_index or
   parse / chunk / embed, retrieve, answer), package versions. The question and answer are stored as SHA-256 and
   length only; their text only with --record-text (run records are committed; PDFs may be private).
+
+## Chat and batch modes (added 2026-11-13)
+- chat: `python -m src.agent chat <pdf> [--budget] [--fast] [--record-text]` opens the index (built or cached) and
+  loads bge-m3 once, then answers questions typed one per line until an empty line. One run record per question,
+  as ask; the first one also holds the opening steps (load_embedder, scan_check, load_index or parse / chunk /
+  embed, load_vectors).
+- batch: `python -m src.agent batch <questions.csv> -o <answers.csv> [--budget] [--fast] [--cache-root <folder>]`.
+  Columns pdf, question, gold (other columns are kept). It loads bge-m3 once, builds or loads every document's index
+  first, then answers every question. The output CSV holds per question: the answer, the provider entry and model,
+  tokens read, the document's index time, retrieve, pace and answer time, token F1 and contained against gold
+  (scripts/aq_run.token_f1 and contained). One run record for the whole batch; each step is tagged with its document
+  or question number. Answer calls start at least 60/14 s apart (scripts/aq_run.INTERVAL, the free-tier rate); that
+  wait is the step "pace" and is not answer time. A PDF whose SHA-256 is a study document with a split other than
+  tuning (pdfs/catalog.csv, pdfs/split.csv) is refused before anything runs.
+- Steps: retrieve is the question embedding plus hybrid ranking and reading; load_vectors reads the cached chunk
+  vectors. In ask, bge-m3 loads inside the first embedding call (embed or retrieve), as before.
+
+## Baseline before the app (added 2026-11-13)
+Measured before any app work, so later speed changes have a reference.
+- Questions: 60 drawn from data/results/aq/sample.csv with seed 42 (pandas sample), from documents whose split in
+  pdfs/split.csv is tuning only; every question's split is checked again before the run. Gold = the sample's
+  reference. The draw gives 42 Indian, 12 OHR-Bench and 6 CUAD questions from 13 documents.
+- Run: batch mode, fast mode, budget 1,250, one process, laptop CPU, the provider list in its configured order.
+  One document (1 of 18 pages without text) falls back to Docling in fast mode, so the run uses the Docling
+  environment (.venv-docling). A fresh cache folder, so every index is really built.
+- Timing, reported as median, 95th percentile and max: bge-m3 load (once); index building per document (scan_check,
+  parse, chunk, embed, load_vectors), timed separately from answering; per question retrieve, answer and pace.
+- Quality: mean token F1 and contained over the 60 questions. AQ comparison: AQ has no pdfplumber answers, so the
+  nearest AQ setup is shown next to it: docling/method1_tree_T384_noprefix on the same 60 questions (same chunker,
+  budget, prompt and answer model; the parser differs). Questions from the document that falls back to Docling are
+  an exact setup match and are also reported on their own. Answers from another provider entry's model are counted.
+- Also reported: how many questions each provider entry answered.
+- Code: src/agent/baseline.py; output data/results/agent/ (questions, answers CSV, summary JSON) and the batch run
+  record.
 
 ## chunk.json
 chunk.json follows spec/chunk.schema.json unchanged, the same format as the study's chunk files (every chunk has
