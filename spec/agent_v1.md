@@ -33,6 +33,13 @@ Docling setup above, docling/method1_tree_T384_noprefix; fast (--fast) uses the 
 pdfplumber/method1_tree_T384_noprefix, which loses more answer text (held-out 27.6% vs 16.3% of questions). The
 agent does not pick the parser per document: P4 found per-document choice no better than one fixed setup.
 
+Scan rule (added 2026-11-13): a page has no text layer when pdfplumber finds no characters on it. In fast mode, if
+any page has no text layer, the whole document goes to Docling (pdfplumber reads nothing from scans), and the reason
+is recorded. Every run record stores the parser used, the reason, the page count and the numbers of the pages
+without a text layer. --from-extraction starts from an existing extraction file instead of parsing (tests and
+reproduction): the parser and doc_id come from that file, and the source fields come from pdfs/catalog.csv when the
+document is catalogued (as in the study), otherwise from the PDF's file name and SHA-256.
+
 ## Modes
 - chunk: `python -m src.agent chunk <pdf> -o <chunks.json> [--fast]`
 - ask: `python -m src.agent ask <pdf> "<question>" [--budget 1250] [--fast]`
