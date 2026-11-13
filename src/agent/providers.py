@@ -92,7 +92,14 @@ def load_entries(config_file, adapters):
     problems += [f"duplicate name '{name}'" for name in sorted({name for name in names if names.count(name) > 1})]
     if not entries or problems:
         raise ProviderError(f"provider list {config_file} is not usable: {'; '.join(problems) or 'it is empty'}")
-    return entries
+    return [{**entry, "key_path": key_path(entry, config_file)} for entry in entries]
+
+
+def key_path(entry, config_file):
+    """The entry's key file: absolute or ~ paths as given, others relative to the providers.json folder (so the same
+    list works inside a container that mounts the folder elsewhere)."""
+    path = Path(entry["key_file"]).expanduser()
+    return path if path.is_absolute() else Path(config_file).parent / path
 
 
 def load_state(state_file):
@@ -113,7 +120,7 @@ def next_reset(moment):
 
 
 def read_key(entry):
-    path = Path(entry["key_file"]).expanduser()
+    path = entry["key_path"]
     if not path.is_file():
         raise ProviderError(f"provider entry '{entry['name']}': key file {entry['key_file']} not found")
     return path.read_text(encoding="utf-8").strip()
@@ -195,7 +202,8 @@ def add_entry(name, provider, model, config_file=CONFIG_FILE, keys_dir=CONFIG_DI
     with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
         handle.write(key + "\n")
     key_file.chmod(0o600)
-    entry = {"name": name, "provider": provider, "model": model, "key_file": str(key_file)}
+    stored = key_file.relative_to(config_file.parent) if key_file.is_relative_to(config_file.parent) else key_file
+    entry = {"name": name, "provider": provider, "model": model, "key_file": str(stored)}
     config_file.parent.mkdir(parents=True, exist_ok=True)
     config_file.write_text(json.dumps(entries + [entry], indent=2), encoding="utf-8")
     return entry
@@ -205,7 +213,7 @@ def list_entries(config_file=CONFIG_FILE, state_file=STATE_FILE, now=lambda: dat
     """One row per entry, in order: name, provider, model, whether its key file exists, status. Never the key."""
     entries, state = load_entries(config_file, ADAPTERS), load_state(state_file)
     return [{"position": position, "name": entry["name"], "provider": entry["provider"], "model": entry["model"],
-             "key_file_found": Path(entry["key_file"]).expanduser().is_file(),
+             "key_file_found": entry["key_path"].is_file(),
              "status": (f"exhausted until {state[entry['name']]}"
                         if entry["name"] in state and datetime.fromisoformat(state[entry["name"]]) > now() else "ready")}
             for position, entry in enumerate(entries, start=1)]

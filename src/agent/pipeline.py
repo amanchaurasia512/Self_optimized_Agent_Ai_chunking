@@ -2,6 +2,7 @@
 -> chunk.json, plus a run record. Reuses the study's parsers, chunker, chunk builder, validator and run manifest."""
 import json
 from datetime import datetime
+from functools import cache
 from pathlib import Path
 
 import pandas as pd
@@ -39,6 +40,13 @@ def choose_parser(fast, empty_pages, page_count):
     return "pdfplumber", "fast mode, every page has a text layer"
 
 
+@cache
+def docling_converter():
+    """The study's default Docling converter and its parser info, built once per process (its models load once)."""
+    from src.parse.docling_parser import make_converter
+    return make_converter()
+
+
 def parse(pdf_path, parser, doc_id, reason_needs_docling="Docling is needed"):
     """A document in the study's extraction format (as the P1 extraction scripts write it)."""
     if parser == "pdfplumber":
@@ -46,10 +54,10 @@ def parse(pdf_path, parser, doc_id, reason_needs_docling="Docling is needed"):
         text, pages = parse_pdf(pdf_path)
         return {"doc_id": doc_id, "parser": PARSER, "text": text, "pages": pages}
     try:
-        from src.parse.docling_parser import make_converter, parse_pdf
+        from src.parse.docling_parser import parse_pdf
     except ModuleNotFoundError as error:
         raise SystemExit(f"{reason_needs_docling}: install the docling extra, pip install -e \".[docling]\" ({error})")
-    converter, parser_info = make_converter()
+    converter, parser_info = docling_converter()
     text, pages, elements = parse_pdf(pdf_path, converter)
     return {"doc_id": doc_id, "parser": parser_info, "text": text, "pages": pages, "elements": elements}
 

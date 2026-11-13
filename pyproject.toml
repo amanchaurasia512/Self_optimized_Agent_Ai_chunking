@@ -37,6 +37,8 @@ dependencies = [
 # Docling runs on Kaggle only (not installed in the laptop venv); version as in docs/environment.md.
 docling = ["docling==2.143.0"]
 test = ["pytest==9.1.1", "jsonschema==4.26.0"]
+# The local app (spec/agent_v1.md, App v1); installed in .venv-docling with the docling extra.
+app = ["streamlit==1.67.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]

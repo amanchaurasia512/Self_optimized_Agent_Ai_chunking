@@ -1,0 +1,19 @@
+# Only what the image needs; never keys, data, run records, PDFs or environments.
+.git
+.venv
+.venv-docling
+**/__pycache__
+**/*.pyc
+*.egg-info
+.env
+**/api_key
+**/keys
+.config
+data
+runs
+tests
+pdfs
+!pdfs/catalog.csv
+!pdfs/split.csv
+notebooks
+*.ipynb

@@ -1,0 +1,186 @@
+{
+  "run_id": "A-LOCAL-20261113-9",
+  "created_at": "2026-11-13T08:44:53+00:00",
+  "code": {
+    "commit": "dd7e397a699391e8f2bb9b6dca98e1fcc5d926fd",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "ask",
+    "parser_mode": "fast",
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    },
+    "parser_reason": "fast mode, every page has a text layer",
+    "from_extraction": null,
+    "pages": 63,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": true,
+      "folder": "data/agent_cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix"
+    },
+    "budget": 1250,
+    "tokens_read": 1250,
+    "chunks_read": [
+      {
+        "chunk_id": "c00064",
+        "pages": [
+          41,
+          42
+        ]
+      },
+      {
+        "chunk_id": "c00065",
+        "pages": [
+          42
+        ]
+      },
+      {
+        "chunk_id": "c00056",
+        "pages": [
+          35
+        ]
+      },
+      {
+        "chunk_id": "c00074",
+        "pages": [
+          46,
+          47
+        ]
+      },
+      {
+        "chunk_id": "c00076",
+        "pages": [
+          47,
+          48
+        ]
+      }
+    ],
+    "question": {
+      "sha256": "ec19ec0da3daacd76636737aa5be5507703de44cfda3873cfc4214b330700c5b",
+      "characters": 72
+    },
+    "context_only": false,
+    "answer": {
+      "sha256": "ee658dedee3406f00c3ff6696ee165742c702b7755a67a2372ca957108871584",
+      "characters": 527
+    },
+    "answer_provider": {
+      "entry": "gemini-a",
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite"
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/raw/indian_regulatory/indian_d3_fundamental_rules.pdf",
+      "sha256": "b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d"
+    }
+  ],
+  "outputs": [
+    "data/agent_cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix/extraction.json",
+    "data/agent_cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix/chunks.json",
+    "data/agent_cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.001,
+        "peak_ram_mb": 724.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.003,
+        "peak_ram_mb": 725.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 5.755,
+        "peak_ram_mb": 2765.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "answer",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.338,
+        "peak_ram_mb": 2765.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 7.097,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 2765.4,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "run_id": "A-LOCAL-20261113-12",
+  "created_at": "2026-11-13T11:20:38+00:00",
+  "code": {
+    "commit": "5c7bb603ddbff9bec8b2ba2c5d51d67de3a9f8c8",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "app_ask",
+    "parser_mode": "thorough",
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    },
+    "parser_reason": "thorough mode: Docling for every document",
+    "from_extraction": null,
+    "pages": 6,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": false,
+      "folder": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix"
+    },
+    "budget": 1250,
+    "tokens_read": 1250,
+    "chunks_read": [
+      {
+        "chunk_id": "c00003",
+        "pages": [
+          2,
+          3
+        ]
+      },
+      {
+        "chunk_id": "c00007",
+        "pages": [
+          4,
+          5
+        ]
+      },
+      {
+        "chunk_id": "c00009",
+        "pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "chunk_id": "c00008",
+        "pages": [
+          5
+        ]
+      },
+      {
+        "chunk_id": "c00000",
+        "pages": [
+          1
+        ]
+      }
+    ],
+    "question": {
+      "sha256": "5944c4b7287b4ce9ffaa3089d6e15ebca873af5be2d3d0d454651d2f08ce0de4",
+      "characters": 34
+    },
+    "context_only": false,
+    "answer": {
+      "sha256": "9f0402ee3c32ba14e9094afd92928002bea450c5e3208e992d33dad9eaefa3b0",
+      "characters": 496
+    },
+    "answer_provider": {
+      "entry": "gemini-a",
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite"
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": "2.143.0",
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/uploads/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.pdf",
+      "sha256": "29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64"
+    }
+  ],
+  "outputs": [
+    "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix/extraction.json",
+    "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix/chunks.json",
+    "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.115,
+        "peak_ram_mb": 3910.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "answer",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.803,
+        "peak_ram_mb": 3910.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1.918,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 3910.2,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

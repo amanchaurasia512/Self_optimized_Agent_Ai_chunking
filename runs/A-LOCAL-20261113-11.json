@@ -1,0 +1,168 @@
+{
+  "run_id": "A-LOCAL-20261113-11",
+  "created_at": "2026-11-13T11:20:36+00:00",
+  "code": {
+    "commit": "5c7bb603ddbff9bec8b2ba2c5d51d67de3a9f8c8",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "app_index",
+    "parser_mode": "thorough",
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    },
+    "parser_reason": "thorough mode: Docling for every document",
+    "from_extraction": null,
+    "pages": 6,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": false,
+      "folder": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix"
+    },
+    "chunks": 10
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": "2.143.0",
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/uploads/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.pdf",
+      "sha256": "29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64"
+    }
+  ],
+  "outputs": [
+    "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix/extraction.json",
+    "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix/chunks.json",
+    "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7ad626cd-2604-4b4f-b905-fcb6215a39db/scratchpad/app_real_cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.285,
+        "peak_ram_mb": 1451.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.0,
+        "peak_ram_mb": 1451.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 13.25,
+        "peak_ram_mb": 2830.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.596,
+        "peak_ram_mb": 2703.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 10,
+        "wall_seconds": 10.618,
+        "peak_ram_mb": 4083.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_vectors",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.001,
+        "peak_ram_mb": 3909.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 24.75,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 4083.7,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

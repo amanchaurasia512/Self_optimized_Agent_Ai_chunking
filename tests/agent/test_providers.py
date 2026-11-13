@@ -132,7 +132,7 @@ def test_add_entry_saves_key_owner_only_and_never_shows_it(tmp_path, capsys):
     entry = add_entry("gemini-a", "gemini", "gemini-3.5-flash-lite", config, keys_dir, read_secret=lambda prompt: f"  {secret}\n")
     add_entry("groq-a", "groq", "some-model", config, keys_dir, read_secret=lambda prompt: "FAKE-SECRET-KEY-add-groq")
     key_file = keys_dir / "gemini-a"
-    assert entry == {"name": "gemini-a", "provider": "gemini", "model": "gemini-3.5-flash-lite", "key_file": str(key_file)}
+    assert entry == {"name": "gemini-a", "provider": "gemini", "model": "gemini-3.5-flash-lite", "key_file": "keys/gemini-a"}
     assert key_file.read_text(encoding="utf-8") == secret + "\n"
     assert key_file.stat().st_mode & 0o777 == 0o600 and keys_dir.stat().st_mode & 0o777 == 0o700
     assert [item["name"] for item in json.loads(config.read_text(encoding="utf-8"))] == ["gemini-a", "groq-a"]
@@ -144,6 +144,22 @@ def test_add_entry_saves_key_owner_only_and_never_shows_it(tmp_path, capsys):
     captured = capsys.readouterr()
     for text in [config.read_text(encoding="utf-8"), json.dumps(rows), json.dumps(entry), captured.out, captured.err]:
         assert secret not in text and "FAKE-SECRET-KEY-add-groq" not in text
+
+
+def test_relative_key_file_follows_the_config_folder(tmp_path):
+    """A list written by add_entry still works when its folder is mounted elsewhere (as in the Docker image)."""
+    import shutil
+    from src.agent.providers import add_entry, answer, list_entries
+    home = tmp_path / "host" / "pdf-agent"
+    add_entry("fake-a", "gemini", "model-ok", home / "providers.json", home / "keys", read_secret=lambda prompt: "FAKE-KEY-moved")
+    mounted = tmp_path / "container" / "pdf-agent"
+    shutil.copytree(home, mounted)
+    shutil.rmtree(home)
+    keys_seen = []
+    adapter = lambda model, key, prompt: keys_seen.append(key) or "an answer"
+    assert list_entries(mounted / "providers.json", mounted / "state.json")[0]["key_file_found"]
+    reply = answer("q", "c", mounted / "providers.json", mounted / "state.json", adapters={"gemini": adapter})
+    assert reply["answer"] == "an answer" and keys_seen == ["FAKE-KEY-moved"]
 
 
 def test_add_entry_refuses_duplicate_empty_key_and_unknown_provider(tmp_path):

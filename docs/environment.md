@@ -100,7 +100,14 @@ Every install held the other packages at their `.venv` versions (a constraints f
 Ask mode (Part B, 2026-11-13) added sentence-transformers 6.2.0 for bge-m3, with cloudpickle 3.1.2, joblib 1.6.0,
 narwhals 2.28.0, scikit-learn 1.9.1 and threadpoolctl 3.7.0, all at their `.venv` versions.
 
-Exact versions (175 packages, `pip freeze`), given relative to `requirements.txt`:
+App v1 (2026-11-13) added streamlit 1.67.0 (the `app` extra) with altair 6.3.0, itsdangerous 2.2.0, pydeck 0.9.3,
+python-multipart 0.0.33, starlette 1.10.0, uvicorn 0.54.0 and watchdog 7.1.0; pyarrow stays at the `.venv` version
+26.0.0 (streamlit first pulled 26.0.1, which was put back). pytest 9.1.1 (the `test` extra, as `.venv`) runs the app
+tests. The project is installed editable (`pip install -e . --no-deps`), so `src` and `scripts` import from any
+folder. `docs/constraints-app.txt` is this environment's `pip freeze` (without the editable line and the CUDA-only
+packages) and is what the Docker image installs, with CPU torch.
+
+Exact versions before App v1 (175 packages, `pip freeze`), given relative to `requirements.txt`:
 - **Same version as `requirements.txt`:** 128 packages, including torch 2.15.0, transformers 5.22.1, tokenizers
   0.23.3, pdfplumber 0.11.10, pandas 3.1.0, numpy 2.5.4, langchain-text-splitters 1.1.3, langchain-experimental
   0.4.2, stanza 1.15.0, google-genai 2.34.0, pypdf 6.21.2, psutil 7.2.2, jsonschema 4.26.0 and sentence-transformers

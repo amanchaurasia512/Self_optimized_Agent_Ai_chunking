@@ -16,6 +16,7 @@ from src.eval.score import BM25, dense_ranking, hybrid_ranking, read_ranking
 
 BUDGETS = (750, 1250, 2000)
 BATCH_SIZE = 16  # as scripts/p3_embed.py
+PROGRESS_SLICE = 64  # texts per progress step, a multiple of BATCH_SIZE
 PARSER_PACKAGES = {"docling": "docling", "pdfplumber": "pdfplumber"}
 FILES = ("extraction.json", "chunks.json", "index.json")
 
@@ -67,10 +68,22 @@ def encoder():
     return model
 
 
-def embed(texts):
-    """Normalised float32 vectors, one row per text."""
-    return encoder().encode(list(texts), batch_size=BATCH_SIZE, normalize_embeddings=True, convert_to_numpy=True,
-                            show_progress_bar=False).astype(np.float32)
+def embed(texts, progress=None, slice_size=PROGRESS_SLICE):
+    """Normalised float32 vectors, one row per text. With progress, texts are embedded in slices and
+    progress(done, total) is called after each (spec/agent_v1.md, App v1: quality guard on the top-ranked chunks)."""
+    texts = list(texts)
+    encode = lambda part: encoder().encode(part, batch_size=BATCH_SIZE, normalize_embeddings=True, convert_to_numpy=True,
+                                           show_progress_bar=False).astype(np.float32)
+    if progress is None or len(texts) <= slice_size:
+        vectors = encode(texts)
+        if progress:
+            progress(len(texts), len(texts))
+        return vectors
+    parts = []
+    for start in range(0, len(texts), slice_size):
+        parts.append(encode(texts[start:start + slice_size]))
+        progress(min(start + slice_size, len(texts)), len(texts))
+    return np.concatenate(parts)
 
 
 def save_index(folder, document, chunk_doc, info, embed_texts):

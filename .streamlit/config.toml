@@ -1,0 +1,6 @@
+# App v1 (spec/agent_v1.md): upload limit in MB, also checked in app/streamlit_app.py
+[server]
+maxUploadSize = 50
+
+[browser]
+gatherUsageStats = false

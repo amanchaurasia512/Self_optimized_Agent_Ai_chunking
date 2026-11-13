@@ -54,7 +54,39 @@ python -m pytest tests/agent -v
 
 The output follows `spec/chunk.schema.json`, the same format as the study's chunk files. Each run writes a run record
 `A-LOCAL-…` with the parser used and why, pages without a text layer, time and peak memory per step, and package
-versions. The `ask` mode (RAG question answering) is Part B and not built yet.
+versions.
+
+Question answering uses the answer-provider list in `~/.config/pdf-agent/` (`python -m src.agent providers add …`;
+keys are asked for with hidden input and never printed):
+
+```bash
+python -m src.agent ask <pdf> "<question>" [--fast] [--budget 750|1250|2000] [--context-only] [--record-text]
+python -m src.agent chat <pdf>                                   # questions until an empty line
+python -m src.agent batch <questions.csv> -o <answers.csv>       # columns pdf, question, gold
+```
+
+### Local app
+
+A Streamlit app (`app/streamlit_app.py`, spec section "App v1"): upload a PDF (up to 50 MB), watch the index build
+step by step, ask questions (answer, provider, time per step, sources with snippets), download the chunk.json.
+
+```bash
+.venv-docling/bin/pip install streamlit==1.67.0      # the app extra; see docs/environment.md
+.venv-docling/bin/streamlit run app/streamlit_app.py  # from the repo root; http://localhost:8501
+```
+
+Docker (CPU; bge-m3 and Docling's models are in the image, keys are not). Mount the provider folder read-write (the
+daily-limit state is written there); key files listed relative to it (`keys/<name>`, as `providers add` writes them)
+are found inside the container:
+
+```bash
+docker build -t pdf-agent .
+docker run --rm -p 8501:8501 \
+  -v ~/.config/pdf-agent:/home/app/.config/pdf-agent \
+  -v "$PWD/data/agent_cache:/app/data/agent_cache" \
+  -v "$PWD/runs:/app/runs" \
+  pdf-agent
+```
 
 Checks so far: for 3 tuning documents × 2 parsers, the agent's chunks equal the study's files exactly; thorough mode on
 a laptop CPU reproduces the study's Kaggle GPU extraction exactly; `--fast` on a scanned PDF falls back to Docling.

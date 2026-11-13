@@ -2,6 +2,7 @@
 hybrid retrieval within the budget -> answer from the provider list. One run record per question; the question and
 answer text only with record_text."""
 import hashlib
+from contextlib import contextmanager
 
 from src.agent import index, providers
 from src.agent.pipeline import SPEC, agent_run_id, build, chunker_info, plan, plan_inputs, plan_stack
@@ -16,6 +17,21 @@ SETTING = "method1_tree_T384_noprefix"
 def text_record(text, record_text):
     record = {"sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "characters": len(text)}
     return {**record, "text": text} if record_text else record
+
+
+class ProgressLogger(CostLogger):
+    """A CostLogger that also reports each step as it starts and ends: on_step(name, "start" or "done", seconds)."""
+
+    def __init__(self, on_step):
+        super().__init__()
+        self.on_step = on_step
+
+    @contextmanager
+    def stage(self, name):
+        self.on_step(name, "start", None)
+        with super().stage(name) as record:
+            yield record
+        self.on_step(name, "done", record["wall_seconds"])
 
 
 def load_embedder(embed, logger):
@@ -75,6 +91,16 @@ def write_ask_record(run_id, session, question, result, logger, budget, context_
     outputs = [folder / name for name in index.FILES]
     return manifest.write_manifest(manifest.build_manifest(run_id, SPEC, stack, plan_inputs(planned), outputs,
                                                            logger.summary(), machine))
+
+
+def write_index_record(run_id, session, logger, machine, mode):
+    """The run record for opening an index on its own (the app): parser and reason, pages, cache hit, step times."""
+    planned, folder = session["planned"], session["folder"]
+    stack = {"agent_mode": mode, **plan_stack(planned, session["document"]), "embedder": EMBEDDER,
+             "cache": {"hit": session["cache_hit"], "folder": manifest.project_path(folder)},
+             "chunks": len(session["chunks"])}
+    return manifest.write_manifest(manifest.build_manifest(run_id, SPEC, stack, plan_inputs(planned),
+                                                           [folder / name for name in index.FILES], logger.summary(), machine))
 
 
 def ask_pdf(pdf_path, question, budget=1250, fast=False, from_extraction=None, context_only=False, record_text=False,

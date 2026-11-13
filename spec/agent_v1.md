@@ -122,6 +122,37 @@ Measured before any app work, so later speed changes have a reference.
 - Code: src/agent/baseline.py; output data/results/agent/ (questions, answers CSV, summary JSON) and the batch run
   record.
 
+## App v1 (added 2026-11-13)
+A local Streamlit app over the same pipeline: app/streamlit_app.py, run in the Docling environment
+(`streamlit run app/streamlit_app.py`) or the Docker image. It calls src/agent/ask.open_index and ask_index; it has
+no pipeline code of its own.
+- Screens (one page): a sidebar with the settings (thorough or fast; budget 750 / 1,250 / 2,000; "record text";
+  the provider entries with their status, never keys); upload and index (a progress line per step: scan check,
+  parse, chunk, embed, with embedding progress by chunks); ask (the answer, provider entry and model, time per step,
+  and the sources: chunk id, pages and the first 300 characters of each chunk read); a download button for the
+  PDF's chunk.json.
+- Loading: bge-m3 and the Docling converter load once per server process (st.cache_resource; the converter is also
+  cached per process in src/agent/pipeline.docling_converter, so batch and chat reuse it). The index is cached by
+  PDF SHA-256 as in ask mode; the cache folder is AGENT_CACHE_DIR when set, else data/agent_cache.
+- Embedding progress: chunks are embedded in slices of 64 (a multiple of the batch size 16) to report progress.
+  Quality guard (Performance): on the 3 test documents the sliced vectors must give the same top-ranked chunks as
+  one-shot embedding; otherwise progress is per step only. Checked 2026-11-13 (laptop CPU, pdfplumber chunks, slices
+  of 64, 16 for the 11-chunk CUAD document): the same chunks are read for every gold question (CUAD 10/10, OHR 20/20,
+  Indian 198/198); max abs difference 4.2e-07, min cosine 0.9999999. Kept.
+- Limits: one PDF at a time per browser session; at most 50 MB (Streamlit server.maxUploadSize and a check in the
+  app, shown next to the upload); PDFs only. One server process.
+- Uploads: kept at <cache folder>/uploads/<SHA-256>/<file name> (git-ignored), so the index and chunk.json can name
+  their source.
+- Keys: only from the provider list in ~/.config/pdf-agent/ (in Docker, mounted at run time, never in the image),
+  read only through src/agent/providers.py. A key_file may be relative to the providers.json folder; `providers add`
+  writes it that way, so the same list works inside a container.
+- Logged: one run record when an index is opened (agent_mode app_index: parser and reason, pages, cache hit, step
+  times), and one per question (app_ask: as ask mode). Question and answer text only when "record text" is ticked.
+  Nothing else is stored; the app shows errors but never key text (providers redacts it).
+- Docker: python:3.14-slim, installs the docling and app extras with docs/constraints-app.txt (the Docling
+  environment's versions, CPU torch), downloads bge-m3 (pinned revision) and Docling's models at build time, runs as
+  a non-root user. Run records written in the container have code.commit null (no .git in the image).
+
 ## chunk.json
 chunk.json follows spec/chunk.schema.json unchanged, the same format as the study's chunk files (every chunk has
 pages). Agent-only facts (pages OCR'd, step timings, parser mode) go in the run record, not in chunk.json.
