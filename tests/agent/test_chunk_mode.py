@@ -1,5 +1,5 @@
 """Agent chunk mode (spec/agent_v1.md, tests 1 and 2), on tuning documents only, from their existing extractions
-(no Docling needed). Run records go to runs/tests/agent/, never to runs/."""
+(no Docling needed). Run records go to pytest's temporary folder (tests/agent/conftest.py)."""
 import json
 
 import pandas as pd
@@ -7,7 +7,6 @@ import pytest
 from jsonschema import Draft202012Validator
 
 from src.agent.pipeline import choose_parser, chunk_pdf
-from src.common import manifest
 from src.common.paths import CHUNKS, EXTRACTED, PROJECT_ROOT
 from src.common.pdf_catalog import PDF_MANIFEST
 from src.common.split import tuning_ids
@@ -17,14 +16,6 @@ DOCS = ["cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreem
 PARSERS = ["docling", "pdfplumber"]
 STUDY_SETTING = "method1_tree_T384_noprefix"
 SCHEMA = json.loads((PROJECT_ROOT / "spec" / "chunk.schema.json").read_text(encoding="utf-8"))
-
-
-@pytest.fixture(autouse=True)
-def test_runs_dir(monkeypatch):
-    runs = PROJECT_ROOT / "runs" / "tests" / "agent"
-    runs.mkdir(parents=True, exist_ok=True)
-    monkeypatch.setattr(manifest, "RUNS_DIR", runs)
-    return runs
 
 
 def pdf_path(doc_id):

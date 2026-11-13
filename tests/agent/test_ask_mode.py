@@ -1,6 +1,6 @@
 """Agent ask mode (spec/agent_v1.md, Ask mode) on tuning documents only. No API calls: answers come from fake
 providers. Retrieval is checked against scripts/aq_run.contexts with the study's cached bge-m3 vectors. The index cache
-lives in pytest's temporary folder; run records go to runs/tests/agent/."""
+and run records live in pytest's temporary folder (tests/agent/conftest.py)."""
 import json
 from functools import partial
 
@@ -14,7 +14,6 @@ from scripts.p3_score import gold_questions, load_chunks
 from src.agent import index, providers
 from src.agent.ask import SETTING, ask_pdf
 from src.agent.pipeline import chunk_pdf
-from src.common import manifest
 from src.common.paths import CHUNKS, EMBEDDINGS, EXTRACTED, PROJECT_ROOT
 from src.common.pdf_catalog import PDF_MANIFEST
 from src.common.split import tuning_ids
@@ -25,13 +24,6 @@ DOCS = ["cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreem
 PARSERS = ["docling", "pdfplumber"]
 QUESTIONS_PER_DOC = 5
 STUDY_CACHE = EMBEDDINGS / "bge-m3"
-
-
-@pytest.fixture(autouse=True)
-def test_runs_dir(monkeypatch):
-    runs = PROJECT_ROOT / "runs" / "tests" / "agent"
-    runs.mkdir(parents=True, exist_ok=True)
-    monkeypatch.setattr(manifest, "RUNS_DIR", runs)
 
 
 def pdf_path(doc_id):
