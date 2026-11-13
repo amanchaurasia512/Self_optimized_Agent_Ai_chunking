@@ -1,0 +1,5 @@
+[
+  {"name": "gemini-a", "provider": "gemini", "model": "gemini-3.5-flash-lite", "key_file": "~/.config/pdf-agent/keys/gemini_a"},
+  {"name": "gemini-b", "provider": "gemini", "model": "gemini-3.5-flash-lite", "key_file": "~/.config/pdf-agent/keys/gemini_b"},
+  {"name": "groq-a", "provider": "groq", "model": "MODEL_NAME", "key_file": "~/.config/pdf-agent/keys/groq_a"}
+]

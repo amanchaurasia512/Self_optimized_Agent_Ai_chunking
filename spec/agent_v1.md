@@ -24,8 +24,26 @@ The agent adapts where the study showed it matters, and fixes what the study sho
 - Retrieval: hybrid BM25 + bge-m3, reciprocal rank fusion k = 60 (scorer_v1), reading by token budget
   (read_ranking). Default budget 1,250 tokens; allowed 750 / 1,250 / 2,000.
 - Answering (ask mode only): the AQ answer prompt (answers only from the retrieved text, "not found" when absent),
-  model gemini-3.5-flash-lite. The API key is read through src/chunk/llm.py (~/.config/gemini/api_key), as
-  CLAUDE.md requires; deployment key handling belongs to the app spec. The model can be swapped.
+  default model gemini-3.5-flash-lite. Providers, models and keys come from the answer-provider list (see Answer
+  providers); keys are read only through src/agent/providers.py. src/chunk/llm.py stays the study's client.
+  Deployment key handling belongs to the app spec.
+
+## Answer providers (added 2026-11-13, Part B prerequisite)
+- List: ~/.config/pdf-agent/providers.json, an ordered list of entries {name, provider (gemini or groq), model,
+  key_file}. Example with placeholder paths: docs/providers.example.json. Keys are read only from key_file, at call
+  time, and are never printed, logged or stored; error messages are checked for the key text and redacted.
+- Prompt: the AQ answer prompt (scripts/aq_run.ANSWER_PROMPT), imported unchanged. Temperature 0.
+- Order: entries are tried in list order; an entry marked exhausted is skipped until its reset.
+- Daily limit (a 429 whose quota or message says "per day", as in aq_run's paced()): the entry is marked exhausted
+  in ~/.config/pdf-agent/state.json until its reset (now + the provider's retry delay when given, else the next
+  midnight US Pacific), and the next entry is tried. state.json holds entry names and reset times only.
+- Per-minute limit (any other 429) or overload (503): wait and retry the same entry, using the provider's retry
+  delay when given, else 15 / 30 / 60 / 120 / 240 s (as src/chunk/llm.py); after the last wait, try the next entry
+  without marking this one exhausted.
+- Any other error (e.g. a rejected key): stop with a message naming the entry and its key_file path, not the key.
+- All entries exhausted or rate-limited: stop with a message listing each entry and its reset time.
+- Result: the answer plus the entry name, provider and model, recorded in the ask run record.
+- Transport: Gemini through google-genai; Groq through its OpenAI-compatible HTTP API (httpx), no extra SDK.
 
 ## Parser choice
 Scan detection is automatic per page. The parser for digital pages is a user setting: thorough (default) uses the
@@ -42,8 +60,32 @@ document is catalogued (as in the study), otherwise from the PDF's file name and
 
 ## Modes
 - chunk: `python -m src.agent chunk <pdf> -o <chunks.json> [--fast]`
-- ask: `python -m src.agent ask <pdf> "<question>" [--budget 1250] [--fast]`
+- ask: `python -m src.agent ask <pdf> "<question>" [--budget 750|1250|2000] [--fast] [--from-extraction <file>]
+  [--context-only] [--record-text]`
   The index is built once per file and cached by SHA-256; later questions reuse it.
+- providers: `python -m src.agent providers add --name <name> --provider gemini|groq --model <model>` asks for the
+  key with hidden input, saves it to ~/.config/pdf-agent/keys/<name> (owner-only) and appends the entry to
+  providers.json; `providers list` shows names, models and status, never keys.
+
+## Ask mode (Part B, added 2026-11-13)
+- Index cache: data/agent_cache/<PDF SHA-256>/<parser>_method1_tree_T384_noprefix/ (a from-extraction index gets
+  its own folder, suffixed with the extraction file's hash): extraction.json (the document text the chunk offsets
+  point into), chunks.json (the chunk.json), the bge-m3 vectors saved with src/eval/embed.save_part (its
+  embedder.json check refuses another embedder), and index.json (parser and version, chunker, tokenizer, embedder).
+  In fast mode the scan check runs first, so the cache is keyed by the parser actually used; its result is
+  cached per PDF (<SHA-256>/scan.json), so later questions skip it. A cache whose
+  index.json does not match the current chunker, tokenizer, embedder or installed parser version is rebuilt.
+- Embedding: as scripts/p3_embed.py (bge-m3 pinned revision, float32, normalised, max length 8,192, batch 16;
+  CUDA when available, else CPU). On a cache hit only the question is embedded.
+- Retrieval: exactly as scripts/aq_run.contexts: scripts/p3_score.load_chunks, BM25 on prefix + text, dense cosine,
+  hybrid_ranking (RRF k = 60), read_ranking within the budget; the context is the read parts joined by blank lines.
+  Budgets: 750, 1,250 (default) or 2,000 only.
+- Answer: src/agent/providers.answer (see Answer providers); --context-only stops before any API call.
+- Output: the answer, the chunks read (ids and pages) and the provider entry and model.
+- Run record (one per ask): mode, parser and reason, pages and pages without text, cache hit, budget, tokens read,
+  chunks read (ids and pages), provider entry and model, time and peak memory per step (scan_check, load_index or
+  parse / chunk / embed, retrieve, answer), package versions. The question and answer are stored as SHA-256 and
+  length only; their text only with --record-text (run records are committed; PDFs may be private).
 
 ## chunk.json
 chunk.json follows spec/chunk.schema.json unchanged, the same format as the study's chunk files (every chunk has

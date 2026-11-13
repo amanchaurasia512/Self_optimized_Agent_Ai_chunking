@@ -1,0 +1,208 @@
+{
+  "run_id": "A-LOCAL-20261113-309",
+  "created_at": "2026-11-13T06:58:09+00:00",
+  "code": {
+    "commit": "0b3aabedf264142b4a4582381f62fde9e40a1187",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "ask",
+    "parser_mode": "thorough",
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    },
+    "parser_reason": "from existing extraction data/extracted/docling/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+    "from_extraction": "data/extracted/docling/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+    "pages": 6,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": false,
+      "folder": "/tmp/pytest-of-chaurasia008/pytest-9/test_cache_reused_and_rebuilt_0/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix_extraction-460b998e5c22"
+    },
+    "budget": 1250,
+    "tokens_read": 1250,
+    "chunks_read": [
+      {
+        "chunk_id": "c00003",
+        "pages": [
+          2,
+          3
+        ]
+      },
+      {
+        "chunk_id": "c00009",
+        "pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "chunk_id": "c00008",
+        "pages": [
+          5
+        ]
+      },
+      {
+        "chunk_id": "c00004",
+        "pages": [
+          3
+        ]
+      }
+    ],
+    "question": {
+      "sha256": "dfaec905455a739437c3df7c45afa848feacbf5e5f7f9f409317e2a758af474c",
+      "characters": 144
+    },
+    "context_only": true,
+    "answer": null,
+    "answer_provider": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/raw/cuad/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.pdf",
+      "sha256": "29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64"
+    },
+    {
+      "path": "data/extracted/docling/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+      "sha256": "460b998e5c228264353e5f6ba8e9a4c66fe78b404b280414c6e3e7d1bd3d66e6"
+    }
+  ],
+  "outputs": [
+    "/tmp/pytest-of-chaurasia008/pytest-9/test_cache_reused_and_rebuilt_0/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix_extraction-460b998e5c22/extraction.json",
+    "/tmp/pytest-of-chaurasia008/pytest-9/test_cache_reused_and_rebuilt_0/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix_extraction-460b998e5c22/chunks.json",
+    "/tmp/pytest-of-chaurasia008/pytest-9/test_cache_reused_and_rebuilt_0/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/docling_method1_tree_T384_noprefix_extraction-460b998e5c22/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.259,
+        "peak_ram_mb": 1942.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.0,
+        "peak_ram_mb": 1942.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.002,
+        "peak_ram_mb": 1942.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.053,
+        "peak_ram_mb": 1942.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 10,
+        "wall_seconds": 0.002,
+        "peak_ram_mb": 1942.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.003,
+        "peak_ram_mb": 1942.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.319,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1942.1,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

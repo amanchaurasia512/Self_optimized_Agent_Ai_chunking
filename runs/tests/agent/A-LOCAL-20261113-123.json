@@ -1,0 +1,209 @@
+{
+  "run_id": "A-LOCAL-20261113-123",
+  "created_at": "2026-11-13T06:48:45+00:00",
+  "code": {
+    "commit": "0b3aabedf264142b4a4582381f62fde9e40a1187",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "ask",
+    "parser_mode": "thorough",
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    },
+    "parser_reason": "from existing extraction data/extracted/docling/indian_d3_fundamental_rules.json",
+    "from_extraction": "data/extracted/docling/indian_d3_fundamental_rules.json",
+    "pages": 63,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": false,
+      "folder": "/tmp/pytest-of-chaurasia008/pytest-7/test_retrieval_equals_aq_run_c4/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/docling_method1_tree_T384_noprefix_extraction-415a85d7fb27"
+    },
+    "budget": 1250,
+    "tokens_read": 1250,
+    "chunks_read": [
+      {
+        "chunk_id": "c00000",
+        "pages": [
+          1,
+          2
+        ]
+      },
+      {
+        "chunk_id": "c00001",
+        "pages": [
+          2,
+          3
+        ]
+      },
+      {
+        "chunk_id": "c00011",
+        "pages": [
+          10
+        ]
+      },
+      {
+        "chunk_id": "c00074",
+        "pages": [
+          49,
+          50
+        ]
+      }
+    ],
+    "question": {
+      "sha256": "c52e4404a11cb393b2df28e24890d7c345ff32c6b8e70b29168f9117b89144a3",
+      "characters": 72
+    },
+    "context_only": true,
+    "answer": null,
+    "answer_provider": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/raw/indian_regulatory/indian_d3_fundamental_rules.pdf",
+      "sha256": "b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d"
+    },
+    {
+      "path": "data/extracted/docling/indian_d3_fundamental_rules.json",
+      "sha256": "415a85d7fb273c28f0c40cb6741e86b930e6a547c5eda55b246dcda3dd6c1386"
+    }
+  ],
+  "outputs": [
+    "/tmp/pytest-of-chaurasia008/pytest-7/test_retrieval_equals_aq_run_c4/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/docling_method1_tree_T384_noprefix_extraction-415a85d7fb27/extraction.json",
+    "/tmp/pytest-of-chaurasia008/pytest-7/test_retrieval_equals_aq_run_c4/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/docling_method1_tree_T384_noprefix_extraction-415a85d7fb27/chunks.json",
+    "/tmp/pytest-of-chaurasia008/pytest-7/test_retrieval_equals_aq_run_c4/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/docling_method1_tree_T384_noprefix_extraction-415a85d7fb27/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 3.503,
+        "peak_ram_mb": 1715.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.0,
+        "peak_ram_mb": 1712.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.002,
+        "peak_ram_mb": 1712.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.374,
+        "peak_ram_mb": 1744.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 92,
+        "wall_seconds": 0.006,
+        "peak_ram_mb": 1744.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.01,
+        "peak_ram_mb": 1744.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 3.895,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1744.7,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

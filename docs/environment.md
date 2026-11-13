@@ -87,7 +87,7 @@ date are unchanged and have no `packages` block. Kaggle notebooks pick up the ch
 
 ## Agent / Docling environment
 
-Added 2026-11-13. A second venv, `.venv-docling/` (gitignored), runs the agent's chunk mode with Docling on the
+Added 2026-11-13. A second venv, `.venv-docling/` (gitignored), runs the agent's chunk and ask modes with Docling on the
 laptop. It is separate because Docling 2.143.0 needs huggingface_hub < 2, typer < 0.27 and websockets < 17, which
 conflict with the study venv's pins. `.venv` and `requirements.txt` are unchanged.
 
@@ -97,10 +97,14 @@ Built with: Python 3.14.4 (`/usr/bin/python3.14 -m venv .venv-docling`), pip 26.
 Every install held the other packages at their `.venv` versions (a constraints file made from `pip freeze` of
 `.venv`, without the three conflicting pins).
 
-Exact versions (169 packages, `pip freeze`), given relative to `requirements.txt`:
-- **Same version as `requirements.txt`:** 122 packages, including torch 2.15.0, transformers 5.22.1, tokenizers
+Ask mode (Part B, 2026-11-13) added sentence-transformers 6.2.0 for bge-m3, with cloudpickle 3.1.2, joblib 1.6.0,
+narwhals 2.28.0, scikit-learn 1.9.1 and threadpoolctl 3.7.0, all at their `.venv` versions.
+
+Exact versions (175 packages, `pip freeze`), given relative to `requirements.txt`:
+- **Same version as `requirements.txt`:** 128 packages, including torch 2.15.0, transformers 5.22.1, tokenizers
   0.23.3, pdfplumber 0.11.10, pandas 3.1.0, numpy 2.5.4, langchain-text-splitters 1.1.3, langchain-experimental
-  0.4.2, stanza 1.15.0, google-genai 2.34.0, pypdf 6.21.2, psutil 7.2.2 and jsonschema 4.26.0.
+  0.4.2, stanza 1.15.0, google-genai 2.34.0, pypdf 6.21.2, psutil 7.2.2, jsonschema 4.26.0 and sentence-transformers
+  6.2.0.
 - **Different version:** huggingface_hub 1.33.0 (2.3.0 in `.venv`), typer 0.26.8 (0.27.3), websockets 16.1.1 (17.4).
 - **Only in `.venv-docling`:** accelerate 1.15.0, beautifulsoup4 4.15.0, colorlog 6.12.0, defusedxml 0.7.1,
   dill 0.4.1, doclang 0.9.0, docling 2.143.0, docling-core 2.106.0, docling-ibm-models 4.0.4, docling-parse 7.25.0,
@@ -111,12 +115,12 @@ Exact versions (169 packages, `pip freeze`), given relative to `requirements.txt
   semchunk 3.2.5, shapely 2.2.0, soupsieve 4.1, tabulate 0.10.0, torchvision 0.29.2, tree-sitter 0.26.1,
   tree-sitter-c 0.24.2, tree-sitter-javascript 0.25.0, tree-sitter-python 0.25.0, tree-sitter-typescript 0.23.2,
   xlsxwriter 3.3.1.
-- **In `requirements.txt` but not installed here** (not needed by chunk mode): asttokens, bleach, cloudpickle, comm,
+- **In `requirements.txt` but not installed here** (not needed by chunk or ask mode): asttokens, bleach, comm,
   debugpy, executing, fastjsonschema, fonttools, img2pdf, iniconfig, ipykernel, ipython, ipython_pygments_lexers,
-  jedi, joblib, jupyter_client, jupyter_core, jupytext, kaggle, kagglesdk, llama_cloud, matplotlib-inline,
-  mdit-py-plugins, narwhals, nbformat, nest-asyncio2, parso, pexpect, pikepdf, prompt_toolkit, ptyprocess,
-  pure_eval, pyarrow, pytest, python-slugify, pyzmq, RapidFuzz, scikit-learn, sentence-transformers, stack-data,
-  text-unidecode, threadpoolctl, tornado, traitlets, wcwidth, webencodings.
+  jedi, jupyter_client, jupyter_core, jupytext, kaggle, kagglesdk, llama_cloud, matplotlib-inline,
+  mdit-py-plugins, nbformat, nest-asyncio2, parso, pexpect, pikepdf, prompt_toolkit, ptyprocess,
+  pure_eval, pyarrow, pytest, python-slugify, pyzmq, RapidFuzz, stack-data,
+  text-unidecode, tornado, traitlets, wcwidth, webencodings.
 
 Check (2026-11-13, laptop CPU): thorough mode on the 6-page tuning PDF
 cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement gave extracted text, pages, elements and

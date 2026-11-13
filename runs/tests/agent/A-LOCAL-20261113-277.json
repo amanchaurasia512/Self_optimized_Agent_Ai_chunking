@@ -1,0 +1,165 @@
+{
+  "run_id": "A-LOCAL-20261113-277",
+  "created_at": "2026-11-13T06:57:54+00:00",
+  "code": {
+    "commit": "0b3aabedf264142b4a4582381f62fde9e40a1187",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "ask",
+    "parser_mode": "thorough",
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    },
+    "parser_reason": "from existing extraction data/extracted/pdfplumber/indian_d3_fundamental_rules.json",
+    "from_extraction": "data/extracted/pdfplumber/indian_d3_fundamental_rules.json",
+    "pages": 63,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": true,
+      "folder": "/tmp/pytest-of-chaurasia008/pytest-9/test_retrieval_equals_aq_run_c5/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix_extraction-963a71b27ebd"
+    },
+    "budget": 1250,
+    "tokens_read": 1250,
+    "chunks_read": [
+      {
+        "chunk_id": "c00000",
+        "pages": [
+          1,
+          2
+        ]
+      },
+      {
+        "chunk_id": "c00058",
+        "pages": [
+          36,
+          37
+        ]
+      },
+      {
+        "chunk_id": "c00001",
+        "pages": [
+          2,
+          3
+        ]
+      },
+      {
+        "chunk_id": "c00072",
+        "pages": [
+          45
+        ]
+      }
+    ],
+    "question": {
+      "sha256": "f69e7aba8f1c68c72fd520af2544c7185e6b07e68784b75ca0be0fd86fe47f1a",
+      "characters": 104
+    },
+    "context_only": true,
+    "answer": null,
+    "answer_provider": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/raw/indian_regulatory/indian_d3_fundamental_rules.pdf",
+      "sha256": "b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d3_fundamental_rules.json",
+      "sha256": "963a71b27ebdb877225839abacd3e0087b54e203c220ee82121481bd4a1664da"
+    }
+  ],
+  "outputs": [
+    "/tmp/pytest-of-chaurasia008/pytest-9/test_retrieval_equals_aq_run_c5/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix_extraction-963a71b27ebd/extraction.json",
+    "/tmp/pytest-of-chaurasia008/pytest-9/test_retrieval_equals_aq_run_c5/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix_extraction-963a71b27ebd/chunks.json",
+    "/tmp/pytest-of-chaurasia008/pytest-9/test_retrieval_equals_aq_run_c5/cache/b3bf302f2b34479acc9e9e8e2570b16581bcf4e17cf47e571688617d6277188d/pdfplumber_method1_tree_T384_noprefix_extraction-963a71b27ebd/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.0,
+        "peak_ram_mb": 1753.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.003,
+        "peak_ram_mb": 1753.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.011,
+        "peak_ram_mb": 1753.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.014,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1753.0,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

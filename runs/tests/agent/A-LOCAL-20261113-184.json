@@ -1,0 +1,176 @@
+{
+  "run_id": "A-LOCAL-20261113-184",
+  "created_at": "2026-11-13T06:52:35+00:00",
+  "code": {
+    "commit": "0b3aabedf264142b4a4582381f62fde9e40a1187",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "ask",
+    "parser_mode": "thorough",
+    "parser": {
+      "name": "docling",
+      "version": "2.143.0",
+      "settings": {
+        "do_ocr": true,
+        "do_table_structure": true,
+        "force_full_page_ocr": false,
+        "ocr_engine": "OcrAutoOptions",
+        "ocr_lang": []
+      }
+    },
+    "parser_reason": "from existing extraction data/extracted/docling/ohr_academic_2405_14831v1.json",
+    "from_extraction": "data/extracted/docling/ohr_academic_2405_14831v1.json",
+    "pages": 28,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": true,
+      "folder": "/tmp/pytest-of-chaurasia008/pytest-8/test_retrieval_equals_aq_run_c2/cache/43413f14b75989b41574a783c3d854643db768c6842eb4ae71daa5d8baeb8b32/docling_method1_tree_T384_noprefix_extraction-49027267c119"
+    },
+    "budget": 1250,
+    "tokens_read": 1250,
+    "chunks_read": [
+      {
+        "chunk_id": "c00090",
+        "pages": [
+          25,
+          26
+        ]
+      },
+      {
+        "chunk_id": "c00091",
+        "pages": [
+          26
+        ]
+      },
+      {
+        "chunk_id": "c00022",
+        "pages": [
+          7
+        ]
+      },
+      {
+        "chunk_id": "c00027",
+        "pages": [
+          8
+        ]
+      },
+      {
+        "chunk_id": "c00092",
+        "pages": [
+          26
+        ]
+      }
+    ],
+    "question": {
+      "sha256": "800a8b5f7d62c65046d45c6ea49fcf87f39aee0c5b39c4175e99a40558152aa5",
+      "characters": 78
+    },
+    "context_only": true,
+    "answer": null,
+    "answer_provider": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/raw/ohr/ohr_academic_2405_14831v1.pdf",
+      "sha256": "43413f14b75989b41574a783c3d854643db768c6842eb4ae71daa5d8baeb8b32"
+    },
+    {
+      "path": "data/extracted/docling/ohr_academic_2405_14831v1.json",
+      "sha256": "49027267c11943b552a5990de547b3cf0802ac8a93cd527f63059f707a08226c"
+    }
+  ],
+  "outputs": [
+    "/tmp/pytest-of-chaurasia008/pytest-8/test_retrieval_equals_aq_run_c2/cache/43413f14b75989b41574a783c3d854643db768c6842eb4ae71daa5d8baeb8b32/docling_method1_tree_T384_noprefix_extraction-49027267c119/extraction.json",
+    "/tmp/pytest-of-chaurasia008/pytest-8/test_retrieval_equals_aq_run_c2/cache/43413f14b75989b41574a783c3d854643db768c6842eb4ae71daa5d8baeb8b32/docling_method1_tree_T384_noprefix_extraction-49027267c119/chunks.json",
+    "/tmp/pytest-of-chaurasia008/pytest-8/test_retrieval_equals_aq_run_c2/cache/43413f14b75989b41574a783c3d854643db768c6842eb4ae71daa5d8baeb8b32/docling_method1_tree_T384_noprefix_extraction-49027267c119/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.001,
+        "peak_ram_mb": 1239.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.002,
+        "peak_ram_mb": 1239.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.009,
+        "peak_ram_mb": 1239.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.012,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1239.0,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

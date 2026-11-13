@@ -1,0 +1,207 @@
+{
+  "run_id": "A-LOCAL-20261113-41",
+  "created_at": "2026-11-13T06:44:51+00:00",
+  "code": {
+    "commit": "0b3aabedf264142b4a4582381f62fde9e40a1187",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "ask",
+    "parser_mode": "thorough",
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    },
+    "parser_reason": "from existing extraction data/extracted/pdfplumber/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+    "from_extraction": "data/extracted/pdfplumber/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+    "pages": 6,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": false,
+      "folder": "/tmp/pytest-of-chaurasia008/pytest-6/test_retrieval_equals_aq_run_c1/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix_extraction-5085372c9244"
+    },
+    "budget": 1250,
+    "tokens_read": 1250,
+    "chunks_read": [
+      {
+        "chunk_id": "c00003",
+        "pages": [
+          2,
+          3
+        ]
+      },
+      {
+        "chunk_id": "c00009",
+        "pages": [
+          5
+        ]
+      },
+      {
+        "chunk_id": "c00004",
+        "pages": [
+          3
+        ]
+      },
+      {
+        "chunk_id": "c00010",
+        "pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "chunk_id": "c00008",
+        "pages": [
+          4
+        ]
+      }
+    ],
+    "question": {
+      "sha256": "dfaec905455a739437c3df7c45afa848feacbf5e5f7f9f409317e2a758af474c",
+      "characters": 144
+    },
+    "context_only": true,
+    "answer": null,
+    "answer_provider": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/raw/cuad/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.pdf",
+      "sha256": "29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64"
+    },
+    {
+      "path": "data/extracted/pdfplumber/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.json",
+      "sha256": "5085372c924461960928a973247af107f54920050a247daa7e2183f7f1a5e8f8"
+    }
+  ],
+  "outputs": [
+    "/tmp/pytest-of-chaurasia008/pytest-6/test_retrieval_equals_aq_run_c1/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix_extraction-5085372c9244/extraction.json",
+    "/tmp/pytest-of-chaurasia008/pytest-6/test_retrieval_equals_aq_run_c1/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix_extraction-5085372c9244/chunks.json",
+    "/tmp/pytest-of-chaurasia008/pytest-6/test_retrieval_equals_aq_run_c1/cache/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix_extraction-5085372c9244/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.245,
+        "peak_ram_mb": 1151.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.0,
+        "peak_ram_mb": 1151.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.003,
+        "peak_ram_mb": 1151.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.05,
+        "peak_ram_mb": 1152.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 11,
+        "wall_seconds": 0.002,
+        "peak_ram_mb": 1152.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "retrieve",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.003,
+        "peak_ram_mb": 1152.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.303,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1152.5,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
