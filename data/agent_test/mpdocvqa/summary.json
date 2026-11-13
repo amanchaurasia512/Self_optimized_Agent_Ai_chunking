@@ -1,0 +1,92 @@
+{
+  "run_record": "A-LOCAL-20261113-16",
+  "documents": [
+    {
+      "document": 1,
+      "doc_id": "mpdocvqa_fgvc0225",
+      "pages": 12,
+      "pages_without_text": 12,
+      "parser": "docling",
+      "scan_check_seconds_per_page": 0.001,
+      "parse_seconds_per_page": 52.561,
+      "chunk_seconds_per_page": 0.046,
+      "embed_seconds_per_page": 2.725
+    },
+    {
+      "document": 2,
+      "doc_id": "mpdocvqa_fmkp0227",
+      "pages": 12,
+      "pages_without_text": 12,
+      "parser": "docling",
+      "scan_check_seconds_per_page": 0.001,
+      "parse_seconds_per_page": 22.432,
+      "chunk_seconds_per_page": 0.005,
+      "embed_seconds_per_page": 0.939
+    },
+    {
+      "document": 3,
+      "doc_id": "mpdocvqa_hgwd0227",
+      "pages": 20,
+      "pages_without_text": 20,
+      "parser": "docling",
+      "scan_check_seconds_per_page": 0.001,
+      "parse_seconds_per_page": 33.784,
+      "chunk_seconds_per_page": 0.008,
+      "embed_seconds_per_page": 1.648
+    },
+    {
+      "document": 4,
+      "doc_id": "mpdocvqa_kggn0020",
+      "pages": 11,
+      "pages_without_text": 11,
+      "parser": "docling",
+      "scan_check_seconds_per_page": 0.001,
+      "parse_seconds_per_page": 25.429,
+      "chunk_seconds_per_page": 0.011,
+      "embed_seconds_per_page": 1.686
+    },
+    {
+      "document": 5,
+      "doc_id": "mpdocvqa_xgcb0228",
+      "pages": 11,
+      "pages_without_text": 11,
+      "parser": "docling",
+      "scan_check_seconds_per_page": 0.001,
+      "parse_seconds_per_page": 24.016,
+      "chunk_seconds_per_page": 0.006,
+      "embed_seconds_per_page": 0.693
+    }
+  ],
+  "seconds_per_page": {
+    "scan_check": {
+      "median": 0.001,
+      "max": 0.001
+    },
+    "parse": {
+      "median": 25.429,
+      "max": 52.561
+    },
+    "chunk": {
+      "median": 0.008,
+      "max": 0.046
+    },
+    "embed": {
+      "median": 1.648,
+      "max": 2.725
+    }
+  },
+  "answer_seconds_per_question": {
+    "median": 1.52,
+    "max": 2.738,
+    "mean": 1.6
+  },
+  "peak_ram_mb": 5550.3,
+  "total_wall_seconds": 2291.756,
+  "questions": 15,
+  "f1": 0.272,
+  "contained": 0.4,
+  "not_found": 3,
+  "answers_by_entry": {
+    "gemini-a": 15
+  }
+}

@@ -122,6 +122,28 @@ Measured before any app work, so later speed changes have a reference.
 - Code: src/agent/baseline.py; output data/results/agent/ (questions, answers CSV, summary JSON) and the batch run
   record.
 
+## Unseen scanned test (MP-DocVQA) (added 2026-11-13)
+A smoke test of thorough mode on scanned PDFs the study never used; not a research claim.
+- Documents: MP-DocVQA val (lmms-lab/MP-DocVQA), with the RQ5(a) rules of scripts/rq5_scanned_select.py (one page
+  list across a document's questions, 10-20 pages), at least 3 questions, and not among the study's documents
+  (pdfs/scanned_picks.csv, pdfs/split.csv). 5 documents drawn with seed 42 (pandas sample, from the eligible list
+  sorted by doc_id); in each, 3 questions drawn with seed 42 from its questions sorted by questionId. Drawn: fmkp0227,
+  xgcb0228, hgwd0227, fgvc0225, kggn0020 (66 pages, from 74 eligible).
+- These documents are in no split; they are used at the user's explicit request (2026-11-13) and never enter
+  pdfs/split.csv, pdfs/catalog.csv or the study's picks. Their list is pdfs/agent_test_picks.csv.
+- PDFs: built as scripts/rq5_scanned_build.py does (page images in page-list order, lossless img2pdf; page_list and
+  answer_list for list or text-form columns; class labels through the parquet names), reusing its functions, into
+  data/agent_test/mpdocvqa/ with the questions and their answer lists (questions.json). The val parquet files are
+  read from data/external/mpdocvqa/data/, where the missing ones are downloaded.
+- Run: batch mode, thorough, budget 1,250, laptop CPU, the provider list in order. Select, download and build run in
+  the study environment (img2pdf); the batch runs in the Docling environment.
+- Scoring: scripts/aq_run.token_f1 and contained against each answer in the list, keeping the best (the list is
+  passed as the " | " alternatives those functions take; the build stops if an answer itself holds " | ").
+- Reported: time per page for scan check, parse (OCR), chunk and embed (median and max over the 5 documents),
+  answer time per question, peak memory, mean F1, contained, the number of "not found" answers, and the questions
+  answered by each provider entry.
+- Code: src/agent/unseen_scanned.py (select, build, run).
+
 ## App v1 (added 2026-11-13)
 A local Streamlit app over the same pipeline: app/streamlit_app.py, run in the Docling environment
 (`streamlit run app/streamlit_app.py`) or the Docker image. It calls src/agent/ask.open_index and ask_index; it has
