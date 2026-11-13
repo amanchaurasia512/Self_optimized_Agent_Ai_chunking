@@ -47,8 +47,11 @@ def ask_gemini(model, key, prompt):
     from google import genai
     from google.genai import errors, types
     try:
-        response = genai.Client(api_key=key).models.generate_content(
-            model=model, contents=prompt, config=types.GenerateContentConfig(temperature=0))
+        # The client is held for the whole call: a temporary genai.Client is garbage-collected once .models is taken,
+        # and its __del__ closes the HTTP connection before the request is sent ("client has been closed").
+        with genai.Client(api_key=key) as client:
+            response = client.models.generate_content(model=model, contents=prompt,
+                                                      config=types.GenerateContentConfig(temperature=0))
     except errors.APIError as error:
         detail = f"{error.message} {error.details}"
         if error.code == 429:
@@ -62,8 +65,10 @@ def ask_gemini(model, key, prompt):
 
 def ask_groq(model, key, prompt):
     import httpx
-    response = httpx.post(GROQ_URL, headers={"Authorization": f"Bearer {key}"}, timeout=120,
-                          json={"model": model, "temperature": 0, "messages": [{"role": "user", "content": prompt}]})
+    with httpx.Client(timeout=120) as client:  # held open for the request and the reading of its response
+        response = client.post(GROQ_URL, headers={"Authorization": f"Bearer {key}"},
+                               json={"model": model, "temperature": 0, "messages": [{"role": "user", "content": prompt}]})
+        response.read()
     if response.status_code == 429:
         retry_after = response.headers.get("retry-after")
         raise RateLimit(limit_kind(response.text), float(retry_after) if retry_after else None)

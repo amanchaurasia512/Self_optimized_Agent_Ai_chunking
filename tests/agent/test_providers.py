@@ -160,3 +160,55 @@ def test_add_entry_refuses_duplicate_empty_key_and_unknown_provider(tmp_path):
         add_entry("../x", "gemini", "m", config, keys_dir, read_secret=lambda prompt: "FAKE-KEY")
     assert [entry["name"] for entry in json.loads(config.read_text(encoding="utf-8"))] == ["a"]
     assert sorted(path.name for path in keys_dir.iterdir()) == ["a"]
+
+
+class OpenCheckingSend:
+    """Replaces httpx.Client.send: records whether the client was still open when the request was sent, and returns a
+    canned response instead of touching the network. It records the host and whether a key header was set, never the key."""
+
+    def __init__(self, status, body, headers=None):
+        self.status, self.body, self.headers, self.seen = status, body, headers or {}, []
+
+    def __call__(self, client, request, **options):
+        import httpx
+        self.seen.append({"open": not client.is_closed, "host": request.url.host,
+                          "key_header": any(name in request.headers for name in ("x-goog-api-key", "authorization"))})
+        return httpx.Response(self.status, json=self.body, headers=self.headers, request=request)
+
+
+GEMINI_OK = {"candidates": [{"content": {"role": "model", "parts": [{"text": "five years"}]}, "finishReason": "STOP"}],
+             "usageMetadata": {"promptTokenCount": 10, "candidatesTokenCount": 2, "totalTokenCount": 12}}
+GROQ_OK = {"choices": [{"index": 0, "message": {"role": "assistant", "content": "five years"}, "finish_reason": "stop"}]}
+
+
+@pytest.mark.parametrize("adapter_name, body, host", [("ask_gemini", GEMINI_OK, "generativelanguage.googleapis.com"),
+                                                      ("ask_groq", GROQ_OK, "api.groq.com")])
+def test_real_client_is_open_when_the_request_is_sent(adapter_name, body, host, monkeypatch):
+    """Builds the real google-genai / httpx client with a fake key; only the network send is replaced."""
+    import httpx
+    from src.agent import providers
+    send = OpenCheckingSend(200, body)
+    monkeypatch.setattr(httpx.Client, "send", lambda client, request, **options: send(client, request, **options))
+    reply = getattr(providers, adapter_name)("some-model", "FAKE-KEY-not-real-0000", "What is the term?")
+    assert reply == "five years"
+    assert send.seen == [{"open": True, "host": host, "key_header": True}]
+
+
+@pytest.mark.parametrize("adapter_name, body, headers, kind, retry_after", [
+    ("ask_gemini", {"error": {"code": 429, "status": "RESOURCE_EXHAUSTED",
+                              "message": "Quota exceeded for quota metric 'Generate requests' per day.",
+                              "details": [{"@type": "type.googleapis.com/google.rpc.QuotaFailure",
+                                           "violations": [{"quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier"}]},
+                                          {"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "41s"}]}},
+     {}, "daily", 41.0),
+    ("ask_groq", {"error": {"message": "Rate limit reached for model `some-model` on tokens per minute (TPM): Limit 6000",
+                            "type": "tokens", "code": "rate_limit_exceeded"}}, {"retry-after": "7"}, "minute", 7.0)])
+def test_real_client_rate_limit_is_classified(adapter_name, body, headers, kind, retry_after, monkeypatch):
+    import httpx
+    from src.agent import providers
+    send = OpenCheckingSend(429, body, headers)
+    monkeypatch.setattr(httpx.Client, "send", lambda client, request, **options: send(client, request, **options))
+    with pytest.raises(RateLimit) as limit:
+        getattr(providers, adapter_name)("some-model", "FAKE-KEY-not-real-0000", "What is the term?")
+    assert (limit.value.kind, limit.value.retry_after) == (kind, retry_after)
+    assert send.seen and all(call["open"] for call in send.seen)
