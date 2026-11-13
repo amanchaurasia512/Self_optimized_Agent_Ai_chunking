@@ -15,8 +15,16 @@ RQ5, answer-quality check, corrections and results). **When this README and the 
   per-document best setup (split-half cross-fitted) minus the best single setup, on Recall@1,250 tokens with a 95%
   document bootstrap interval (spec v1.1, amended in spec v1.2 "P4 analysis rules"). The go/no-go rule for building
   a per-document chooser (agent) was frozen before the held-out set was opened.
-- **RQ5 (added 2026-11-05):** does tuning help compared with defaults? (a) parser settings; (b) chunker size.
+  *Answer:* no. The gap is −0.007 [−0.045, 0.023], so the decision is NO-GO and one fixed setup is recommended
+  (RESULTS.md §1).
+- **RQ5 (spec v1.2, added 2026-11-05):** "Does tuning improve retrieval: (a) tuning the parser's settings, and (b)
+  tuning the chunker's settings, compared with their defaults?"
+  *Answer:* (a) no variant beats the parser default, on digital or scanned PDFs (RESULTS.md §3). (b) Yes against
+  LangChain's default chunk size (+0.10 to +0.12, Holm p < 0.01); no significant gain beyond a sensible size
+  (RESULTS.md §2).
 - **AQ (answer quality):** do answers generated from the retrieved chunks rank setups the way Recall@1,250 does?
+  *Answer:* partly. Answers confirm the large-chunk penalty, but they don't separate the small-chunk setups
+  (Spearman 0.75 on tuning, 0.43 on held-out; RESULTS.md §5).
 
 Main metric: Recall@B, the share of gold-answer characters (whitespace ignored) inside the text read from the
 ranked chunks within a budget of B tokens (bge-m3 tokenizer), B ∈ {750, 1,250, 2,000}; retrievers BM25, dense

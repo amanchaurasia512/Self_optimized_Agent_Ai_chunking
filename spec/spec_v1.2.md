@@ -436,3 +436,6 @@ Corrections to earlier notes; the earlier notes are left as written.
 - RQ5(a) result (2026-11-10), scanned sample: the placement counts and "the planned recall comparison cannot be
   computed" are superseded by "Correction to RQ5(a) scanned results" (2026-11-11): Docling default 49 exact / 47
   certain, Tesseract 41 / 43; recall comparison computed (+0.02 [-0.05, 0.08], Holm p 0.50).
+
+## Agent spec (2026-11-13)
+The agent design is in spec/agent_v1.md.
