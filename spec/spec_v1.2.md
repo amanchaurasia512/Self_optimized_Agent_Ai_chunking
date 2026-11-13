@@ -439,3 +439,10 @@ Corrections to earlier notes; the earlier notes are left as written.
 
 ## Agent spec (2026-11-13)
 The agent design is in spec/agent_v1.md.
+
+## Question numbering (2026-11-13)
+
+For the README and the paper, existing work is labelled RQ1-RQ4; RQ5 keeps its spec number. RQ1 = the main question
+(P4); RQ2 = chunk size and chunker at a fixed budget, overall and per source (P3, size-by-source report); RQ3 = effect
+of the metric on the best size (fixed-k diagnostic); RQ4 = answer quality (AQ). These are labels for work already
+designed and run, not new questions; no analysis changes.
