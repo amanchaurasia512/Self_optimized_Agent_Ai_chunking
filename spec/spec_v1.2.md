@@ -609,3 +609,42 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
   batch-1 invalid count is 3 or more of 20 (Wilson lower bound above 5%). At most one expansion per document; the
   rule is checked by --stage expand, which refuses otherwise. Unsure labels do not trigger it.
 - No LLM call, no run record (reporting step, like the AQ judge check). Interpretation is left to the result note.
+
+## GOLDEN_200 reason review, added after batch 1 (2026-11-14)
+- Added after seeing all 60 batch-1 labels (20 invalid, 8 unsure); not part of the design written before labelling,
+  and reported as a later addition. Reason: the only note ("the retrieve chunk is not enough", D1-Q153) suggests that
+  some invalid or unsure labels reflect the length of the shown context (about 600 characters) rather than a defect
+  of the question.
+- The original labels (labels.csv) are kept unchanged and the original invalid rate is still reported. The review
+  adds a reason to each question labelled invalid or unsure; questions labelled valid are not re-checked, so the
+  review can only lower the rate (disclosed).
+- Review (scripts/golden_check.py --stage review): the same screen again plus about 2,000 characters of the Docling
+  extraction around the same placement; the author gives one reason: 1 question unclear, 2 evidence does not answer
+  the question, 3 gold answer wrong, 4 shown context too short (not a defect), 5 other (a note is required). Saved
+  after every reason to data/results/golden_check/reasons.csv; resumable.
+- Defect rate = questions with reason 1, 2 or 3 / labelled, per document and overall, with Wilson 95% intervals,
+  reported next to the original invalid rate. Reason 4 is not a defect. Reason 5 is listed with its notes and is not
+  counted; a sensitivity line counts it as a defect. While questions are still unreviewed, their number is shown.
+- Expansion: the rule fixed before labelling is followed on the original labels. All three documents have 3 or more
+  invalid in batch 1 (D1 3, D3 9, D4 8), so each gets batch 2 (the next 20 ids of the same permutation); the review
+  does not change this. In the label stage a key m shows about 2,000 characters of context before the label is given
+  (the label keys are unchanged); batch-2 labels can use it, batch-1 labels could not, so the report also shows the
+  rates by batch. Batch-2 questions labelled invalid or unsure also go to the review.
+- No LLM call, no run record.
+
+## Robustness: tuning results without the Indian documents (2026-11-14), read-only, descriptive
+- Question: do the tuning RQ1 and RQ2 results depend on the three Indian documents? They are 3 of 19 tuning
+  documents but 570 of 860 main questions (results average documents first, so they weigh 3/19).
+- scripts/robust_no_indian.py, on the tuning scores P3-LOCAL-20261105-4 only (hybrid, main questions, QASPER
+  excluded), each analysis with all documents and without source Indian, using the study's own functions: P4
+  (p4_analyse: full, original and primary scopes in that order, seed 42; the primary settings are the names in
+  P4-FINAL-20261106-1_primary_setups.csv; zero cost tables, since cost does not enter ties, best single, oracle or
+  gap); pooled size curve per parser and budget (Spearman of measured size and recall across settings); the RQ5(b)
+  tuned size per family (rq5_chunker_compare.tuned_setting). The per-source size rows for CUAD and OHR-Bench cannot
+  change. Writes a run record. No held-out document file is read, no frozen part or decision changes.
+- Result (P4-NOINDIAN-20261114-1): NO-GO in every scope with and without the Indian documents. Primary: best single
+  docling/langchain_recursive_size256 0.802, gap -0.001 [-0.032, 0.030] (19 documents) vs
+  docling/langchain_recursive_size512 0.791, gap -0.014 [-0.044, 0.014] (16 documents, 290 questions; size 256 ranks
+  3rd and stays tied). Without them the full-grid gap is below 0 (-0.034 [-0.066, -0.003]). Pooled size-recall rho
+  -0.92 to -0.97 vs -0.87 to -0.95; best sizes 215-404 vs 216-402 tokens; the RQ5(b) tuned size is the same in all 8
+  family-parser pairs, so RQ5(b) is unaffected.

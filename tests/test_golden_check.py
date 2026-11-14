@@ -18,7 +18,8 @@ def fake(tmp_path, monkeypatch):
         folder.mkdir(parents=True)
     spans = []
     for doc, stem in DOCS.items():
-        text = "".join(f"Rule {index}: the answer to item {index} is {index * 7}. " for index in range(60))
+        padding = "Preamble text. " * 100  # room for the 2,000-character context on both sides
+        text = padding + "".join(f"Rule {index}: the answer to item {index} is {index * 7}. " for index in range(60)) + padding
         items = [{"id": f"{stem}-Q{index:03d}", "question": f"What is item {index}?", "answer": str(index * 7),
                   "source_location": ["Page 1"], "required_evidence": [f"the answer to item {index} is {index * 7}"]}
                  for index in range(60)]
@@ -34,8 +35,11 @@ def fake(tmp_path, monkeypatch):
     monkeypatch.setattr(golden_check, "DOCS", DOCS)
     monkeypatch.setattr(golden_check, "tuning_ids", lambda: set(DOCS))
     for name, value in {"SOURCE": source, "EXTRACTED": extracted, "GOLD": gold, "OUTPUT": output,
-                        "SAMPLE_FILE": output / "sample.csv", "LABELS_FILE": output / "labels.csv"}.items():
+                        "SAMPLE_FILE": output / "sample.csv", "LABELS_FILE": output / "labels.csv",
+                        "REASONS_FILE": output / "reasons.csv"}.items():
         monkeypatch.setattr(golden_check, name, value)
+    leaking = [name for name in dir(golden_check) if name.endswith("_FILE") and output not in getattr(golden_check, name).parents]
+    assert not leaking, f"output files not redirected to the temporary folder: {leaking}"  # never touch the real labels
     return output
 
 
@@ -90,6 +94,54 @@ def test_label_saves_each_answer_stops_after_a_batch_and_resumes(fake, capsys):
     assert first[first.index(equals) + 1].startswith("CONTEXT") and first.count(equals) == 2
     golden_check.label(answers("x", "maybe", "s", "q"))  # unknown keys are asked again
     assert pd.read_csv(fake / "labels.csv")["label"].iloc[-1] == "unsure"
+
+
+def test_key_m_shows_a_longer_context_and_still_needs_a_label(fake, capsys):
+    golden_check.draw_sample()
+    golden_check.label(answers("m", "y", "q"))
+    shown = capsys.readouterr().out
+    longer = shown.split("LONGER CONTEXT, 2,000 characters")[1].split("=" * 80)[0]
+    assert ">>>the answer to item" in longer and len(longer) > 1500
+    assert pd.read_csv(fake / "labels.csv")["label"].tolist() == ["valid"]
+
+
+def reviewer(*steps):
+    """A fake input() for the review stage: each step is a key, or a (key, note...) tuple."""
+    script = iter([part for step in steps for part in ((step, "") if isinstance(step, str) and step != "q" else
+                                                       (step,) if step == "q" else step)])
+    return lambda prompt: next(script)
+
+
+def test_review_only_flagged_saves_each_resumes_and_needs_a_note_for_other(fake, capsys):
+    golden_check.draw_sample()
+    golden_check.label(answers(*(["n", "s", "y"] * 6 + ["y", "y"])))  # fake_a: 6 invalid, 6 unsure, 8 valid
+    labels_before = (fake / "labels.csv").read_bytes()
+    golden_check.review(reviewer("1", "4", "q"))
+    assert pd.read_csv(fake / "reasons.csv")["reason"].tolist() == [1, 4]
+    golden_check.review(reviewer("9", ("5", "", "", "too vague to tell"), "2", "3", "q"))  # 9 asked again; 5 needs a note
+    reasons = pd.read_csv(fake / "reasons.csv", dtype=str, keep_default_na=False)
+    assert reasons["reason"].tolist() == ["1", "4", "5", "2", "3"] and reasons["note"].iloc[2] == "too vague to tell"
+    assert reasons["question_id"].is_unique and (fake / "labels.csv").read_bytes() == labels_before
+    flagged = pd.read_csv(fake / "labels.csv", dtype=str).query("label != 'valid'")["question_id"]
+    assert set(reasons["question_id"]) <= set(flagged)
+    assert "LONGER CONTEXT, 2,000 characters" in capsys.readouterr().out
+
+
+def test_report_defect_rate_next_to_original_rate(fake, capsys):
+    golden_check.draw_sample()
+    golden_check.label(answers(*(["n"] * 4 + ["s"] * 2 + ["y"] * 14)))  # fake_a: 4 invalid, 2 unsure
+    golden_check.review(reviewer("1", "2", "4", "4", "3", ("5", "odd wording")))
+    labels = pd.read_csv(fake / "labels.csv", dtype=str, keep_default_na=False).merge(
+        pd.read_csv(fake / "sample.csv", dtype={"question_id": str}), on=["doc_id", "question_id"]).merge(
+        pd.read_csv(fake / "reasons.csv", dtype=str, keep_default_na=False)[["doc_id", "question_id", "reason"]],
+        how="left", on=["doc_id", "question_id"]).fillna({"reason": ""})
+    table = golden_check.defect_rates(labels)
+    assert table.loc["fake_a", ["invalid_rate", "defects", "defect_rate", "too_short", "other", "unreviewed"]].tolist() == [0.2, 3, 0.15, 2, 1, 0]
+    assert table.loc["fake_a", ["low", "high"]].tolist() == pytest.approx([0.0524, 0.3604], abs=1e-4)
+    assert table.loc["fake_a", "defect_or_other_rate"] == 0.2
+    golden_check.report()
+    shown = capsys.readouterr().out
+    assert "reason review" in shown and "by batch" in shown and "odd wording" in shown
 
 
 def test_expansion_only_when_the_rule_triggers(fake):

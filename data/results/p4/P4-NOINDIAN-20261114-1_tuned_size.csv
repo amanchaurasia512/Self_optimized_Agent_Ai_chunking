@@ -1,0 +1,17 @@
+variant,,family,parser,tuned
+all tuning,0,langchain_recursive,docling,langchain_recursive_size512_overlap0_noprefix
+all tuning,1,recursive,docling,recursive_size256_overlap0_noprefix
+all tuning,2,fixed_token,docling,fixed_token_size256_overlap0_noprefix
+all tuning,3,method1_tree,docling,method1_tree_T256_noprefix
+all tuning,4,langchain_recursive,pdfplumber,langchain_recursive_size256_overlap0_noprefix
+all tuning,5,recursive,pdfplumber,recursive_size384_overlap0_noprefix
+all tuning,6,fixed_token,pdfplumber,fixed_token_size256_overlap0_noprefix
+all tuning,7,method1_tree,pdfplumber,method1_tree_T256_noprefix
+without Indian,0,langchain_recursive,docling,langchain_recursive_size512_overlap0_noprefix
+without Indian,1,recursive,docling,recursive_size256_overlap0_noprefix
+without Indian,2,fixed_token,docling,fixed_token_size256_overlap0_noprefix
+without Indian,3,method1_tree,docling,method1_tree_T256_noprefix
+without Indian,4,langchain_recursive,pdfplumber,langchain_recursive_size256_overlap0_noprefix
+without Indian,5,recursive,pdfplumber,recursive_size384_overlap0_noprefix
+without Indian,6,fixed_token,pdfplumber,fixed_token_size256_overlap0_noprefix
+without Indian,7,method1_tree,pdfplumber,method1_tree_T256_noprefix

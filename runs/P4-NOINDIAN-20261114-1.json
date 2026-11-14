@@ -1,0 +1,152 @@
+{
+  "run_id": "P4-NOINDIAN-20261114-1",
+  "created_at": "2026-11-14T12:45:06+00:00",
+  "code": {
+    "commit": "b1cceb922037d08252cb5bb26e8d75a8d596c5b0",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "robust_no_indian",
+    "scores_run": "P3-LOCAL-20261105-4",
+    "original_run": "P3-LOCAL-20261105-2",
+    "retriever": "hybrid",
+    "budget_p4": 1250,
+    "excluded_source": "Indian",
+    "primary_settings_from": "P4-FINAL-20261106-1_primary_setups.csv",
+    "seed": 42,
+    "level": 0.95,
+    "summary": {
+      "all tuning / full": {
+        "documents": 19,
+        "questions": 860,
+        "best_single": "docling/langchain_recursive_size256_overlap0_noprefix",
+        "best_recall": 0.8021709267168573,
+        "tied": 32,
+        "gap": -0.014785370762242657,
+        "gap_interval": [
+          -0.046307588341760395,
+          0.01649395736872556
+        ]
+      },
+      "all tuning / original": {
+        "documents": 19,
+        "questions": 860,
+        "best_single": "docling/langchain_recursive_size512_overlap0_noprefix",
+        "best_recall": 0.8010011479237608,
+        "tied": 7,
+        "gap": -0.034447102793522505,
+        "gap_interval": [
+          -0.06638500844188565,
+          -0.003111930869930719
+        ]
+      },
+      "all tuning / primary": {
+        "documents": 19,
+        "questions": 860,
+        "best_single": "docling/langchain_recursive_size256_overlap0_noprefix",
+        "best_recall": 0.8021709267168573,
+        "tied": 20,
+        "gap": -0.0010717560786177055,
+        "gap_interval": [
+          -0.03240070590468831,
+          0.03003036765300931
+        ]
+      },
+      "without Indian / full": {
+        "documents": 16,
+        "questions": 290,
+        "best_single": "docling/langchain_recursive_size512_overlap0_noprefix",
+        "best_recall": 0.7905988396821286,
+        "tied": 24,
+        "gap": -0.03412725361055778,
+        "gap_interval": [
+          -0.06631554671829737,
+          -0.0029979133017847596
+        ]
+      },
+      "without Indian / original": {
+        "documents": 16,
+        "questions": 290,
+        "best_single": "docling/langchain_recursive_size512_overlap0_noprefix",
+        "best_recall": 0.7905988396821286,
+        "tied": 5,
+        "gap": -0.05495518692763187,
+        "gap_interval": [
+          -0.08578455198512151,
+          -0.024778974806250006
+        ]
+      },
+      "without Indian / primary": {
+        "documents": 16,
+        "questions": 290,
+        "best_single": "docling/langchain_recursive_size512_overlap0_noprefix",
+        "best_recall": 0.7905988396821286,
+        "tied": 15,
+        "gap": -0.013545706689918079,
+        "gap_interval": [
+          -0.04393533073604661,
+          0.014171113983699633
+        ]
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-LOCAL-20261105-4.csv.gz",
+      "sha256": "10f2c1e6c436392d00992cc8bc2bade11bfda8b0ef33cd164a92da2aa1fa9889"
+    },
+    {
+      "path": "data/results/p4/P4-FINAL-20261106-1_primary_setups.csv",
+      "sha256": "86ab5e793ed34e0a65fc39fca0ae649ed7009ff7a70ebd6594ad8b8516efef58"
+    }
+  ],
+  "outputs": [
+    "data/results/p4/P4-NOINDIAN-20261114-1_p4.csv",
+    "data/results/p4/P4-NOINDIAN-20261114-1_pooled_size.csv",
+    "data/results/p4/P4-NOINDIAN-20261114-1_tuned_size.csv",
+    "data/results/p4/P4-NOINDIAN-20261114-1_primary_setups.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "robust_no_indian",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.289,
+        "peak_ram_mb": 1137.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 6.289,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1137.8,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

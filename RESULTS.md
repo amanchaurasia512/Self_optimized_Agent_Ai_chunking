@@ -142,8 +142,8 @@ held-out counts are ⚠️ no run record (they need `--final`). Main questions, 
 ## 8. Supplementary tables
 
 Source: spec note "Supplementary analyses for the paper (2026-11-14)". Read-only and descriptive; no decision changes.
-Outputs and scripts: `data/results/supplementary-20261114/`. ⚠️ These analyses write no run record; their inputs are
-the run ids named in each table.
+Outputs and scripts: `data/results/supplementary-20261114/`. ⚠️ Sections 8.1–8.5 write no run record; their inputs
+are the run ids named in each table. Section 8.6 has a run record.
 
 ### 8.1 Index cost at 384 tokens (mean per document)
 
@@ -262,6 +262,25 @@ From 650 run records. Hours are wall-clock time of recorded stages, not core-hou
   budget, setups and context building are identical across both code versions.
 - The 500-call daily limit applies per API key. On 11-10 the author switched to further free-tier keys after keys hit
   the limit.
+
+### 8.6 Robustness: tuning results without the Indian documents
+
+Source: P4-NOINDIAN-20261114-1 ✅ (`scripts/robust_no_indian.py`, spec note "Robustness: tuning results without the
+Indian documents"), on the tuning scores P3-LOCAL-20261105-4, hybrid, Recall@1,250. The three Indian documents are 3
+of 19 tuning documents but 570 of 860 questions; results average documents first. The rows with all documents
+reproduce 8.2 exactly.
+
+| Scope | All tuning (19 docs, 860 q): best single, recall | Tied | Gap [95%] | Without Indian (16 docs, 290 q): best single, recall | Tied | Gap [95%] |
+|---|---|---|---|---|---|---|
+| Primary (26) | docling / langchain_recursive_256, 0.802 | 20 | −0.001 [−0.032, 0.030] | docling / langchain_recursive_512, 0.791 | 15 | −0.014 [−0.044, 0.014] |
+| Full (100) | docling / langchain_recursive_256, 0.802 | 32 | −0.015 [−0.046, 0.016] | docling / langchain_recursive_512, 0.791 | 24 | −0.034 [−0.066, −0.003] |
+| Original (44) | docling / langchain_recursive_512, 0.801 | 7 | −0.034 [−0.066, −0.003] | docling / langchain_recursive_512, 0.791 | 5 | −0.055 [−0.086, −0.025] |
+
+- RQ1: NO-GO in every scope either way. Without the Indian documents, langchain_recursive_256 ranks 3rd and stays
+  tied with the best; per-document choice looks worse, not better.
+- RQ2: the pooled size-recall correlation stays negative for both parsers at every budget (rho −0.92 to −0.97 with,
+  −0.87 to −0.95 without); best sizes 215–404 vs 216–402 tokens. The RQ5(b) tuned size is the same in all 8
+  family-parser pairs, so RQ5(b) is unaffected. The per-source rows for CUAD and OHR-Bench cannot change.
 
 ## Spec corrections
 
