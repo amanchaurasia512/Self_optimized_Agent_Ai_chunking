@@ -19,6 +19,7 @@ summary and `data/results/p4/P4-FINAL-20261106-1_primary_setups.csv`.
 |---|---|
 | Primary choice set | 26 setups, 17 documents, 530 questions |
 | Best single | pdfplumber / method1_tree_T384, **0.772** (15 of 26 setups statistically tied) |
+| Same chunker on Docling | docling / method1_tree_T384, 0.752, statistically tied with the best (the agent's thorough-mode setup) |
 | Split-half oracle | 0.765 |
 | Gap (oracle − best single) | **−0.007 [−0.045, 0.023]**; raw maximum gap 0.058 (inflated by selection, reference only) |
 | Decision (rule frozen before opening) | **NO-GO** for a per-document chooser; recommendation: one fixed setup |
@@ -52,7 +53,7 @@ More choices make per-document choice worse, because the selection rests on few 
 
 ## 3. RQ5(a): parser settings
 
-- **Digital** (5 PDFs, 307–308 questions; P3-RQ5D-20261110-1 ☑️, P5-LOCAL-20261110-1 ✅): no variant beats its
+- **Digital** (5 PDFs, 306–308 questions; P3-RQ5D-20261110-1 ☑️, P5-LOCAL-20261110-1 ✅): no variant beats its
   default. Every difference is below 0.01, every interval reaches 0, and every Holm p ≥ 0.29. Parser choice still
   matters: Docling 0.827 against pdfplumber 0.798 on this sample.
 - **Scanned** (10 MP-DocVQA PDFs):
@@ -144,5 +145,8 @@ The spec's Errata (2026-11-12) corrects:
 - "Holm p < 0.001" to "Holm p < 0.01" for RQ5(b) and AQ;
 - the 2026-11-06 claim that rti_act_en duplicates tuning D4 (different file by SHA-256 and page count);
 - the 2026-11-10 RQ5(a) scanned numbers, by pointing to the 2026-11-11 correction.
+
+The spec's Errata (2026-11-14) corrects the RQ5(a) digital sample size "307–308 questions" to "306–308"
+(docling_table_mode_switched has 306 shared questions; found by the reproduction check).
 
 Not yet corrected: spec v1.2 repeats the line "A document is picked at most once…" (lines 23–24 and 44–45).

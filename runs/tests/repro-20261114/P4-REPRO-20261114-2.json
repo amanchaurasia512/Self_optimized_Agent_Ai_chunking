@@ -1,0 +1,161 @@
+{
+  "run_id": "P4-REPRO-20261114-2",
+  "created_at": "2026-11-14T07:54:54+00:00",
+  "code": {
+    "commit": null,
+    "uncommitted_changes": null
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "p4_v2",
+    "scores_run": "P3-FINAL-20261106-1",
+    "original_run": "P3-LOCAL-20261105-2",
+    "retriever": "hybrid",
+    "budget": 1250,
+    "metric": "recall",
+    "resamples": 2000,
+    "level": 0.95,
+    "seed": 42,
+    "splits": 200,
+    "cost": "index tokens (chunk + prefix) and chunk count per document; LLM tokens not included",
+    "summary": {
+      "full": {
+        "setups": 98,
+        "documents": 17,
+        "questions": 530,
+        "questions_left_out": 98,
+        "documents_left_out": [],
+        "best_single": "pdfplumber/method1_tree_T256_prefix",
+        "best_single_recall": 0.7733829661479656,
+        "tied_with_best": 23,
+        "oracle": 0.7177486999966867,
+        "raw_max_oracle": 0.840164839986537,
+        "gap": -0.05563426615127899,
+        "gap_interval": [
+          -0.10830040150282544,
+          -0.009824637811663596
+        ],
+        "raw_gap": 0.06678187383857136
+      },
+      "original": {
+        "setups": 42,
+        "documents": 17,
+        "questions": 530,
+        "questions_left_out": 98,
+        "documents_left_out": [],
+        "best_single": "docling/sentence_sentences5_noprefix",
+        "best_single_recall": 0.7559354190909164,
+        "tied_with_best": 17,
+        "oracle": 0.7139748104206629,
+        "raw_max_oracle": 0.8292344541718568,
+        "gap": -0.04196060867025348,
+        "gap_interval": [
+          -0.08358295029393893,
+          0.002176830984519182
+        ],
+        "raw_gap": 0.07329903508094039
+      },
+      "primary": {
+        "setups": 26,
+        "documents": 17,
+        "questions": 530,
+        "questions_left_out": 98,
+        "documents_left_out": [],
+        "best_single": "pdfplumber/method1_tree_T384_noprefix",
+        "best_single_recall": 0.7715545034368948,
+        "tied_with_best": 15,
+        "oracle": 0.7646312692937679,
+        "raw_max_oracle": 0.8299099466938467,
+        "gap": -0.0069232341431268735,
+        "gap_interval": [
+          -0.04517088097143906,
+          0.02321577377703019
+        ],
+        "raw_gap": 0.05835544325695207
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-FINAL-20261106-1.csv.gz",
+      "sha256": "4ef21b75991e607a67848a1298d8f88aec1f7ee9e44560ed1b0764b1852da828"
+    }
+  ],
+  "outputs": [
+    "data/results/p4/P4-REPRO-20261114-2_full_documents.csv",
+    "data/results/p4/P4-REPRO-20261114-2_full_setups.csv",
+    "data/results/p4/P4-REPRO-20261114-2_full_left_out.csv",
+    "data/results/p4/P4-REPRO-20261114-2_original_documents.csv",
+    "data/results/p4/P4-REPRO-20261114-2_original_setups.csv",
+    "data/results/p4/P4-REPRO-20261114-2_original_left_out.csv",
+    "data/results/p4/P4-REPRO-20261114-2_primary_documents.csv",
+    "data/results/p4/P4-REPRO-20261114-2_primary_setups.csv",
+    "data/results/p4/P4-REPRO-20261114-2_primary_left_out.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "analyse:full",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 4.907,
+        "peak_ram_mb": 902.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "analyse:original",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.433,
+        "peak_ram_mb": 902.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "analyse:primary",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.09,
+        "peak_ram_mb": 871.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 7.43,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 902.6,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "run_id": "P5-LOCAL-20261114-3",
+  "created_at": "2026-11-14T07:31:56+00:00",
+  "code": {
+    "commit": null,
+    "uncommitted_changes": null
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "rq5b_chunker_compare",
+    "tuning_run": "P3-LOCAL-20261105-4",
+    "heldout_run": "P3-FINAL-20261106-1",
+    "retriever": "hybrid",
+    "budget": 1250,
+    "resamples": 2000,
+    "level": 0.95,
+    "seed": 42
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-LOCAL-20261105-4.csv.gz",
+      "sha256": "10f2c1e6c436392d00992cc8bc2bade11bfda8b0ef33cd164a92da2aa1fa9889"
+    },
+    {
+      "path": "data/results/p3/P3-FINAL-20261106-1.csv.gz",
+      "sha256": "4ef21b75991e607a67848a1298d8f88aec1f7ee9e44560ed1b0764b1852da828"
+    }
+  ],
+  "outputs": [
+    "data/results/rq5/P5-LOCAL-20261114-3_chunker.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "compare",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.176,
+        "peak_ram_mb": 1016.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.176,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1016.2,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

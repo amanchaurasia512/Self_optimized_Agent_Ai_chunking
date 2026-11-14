@@ -1,0 +1,36 @@
+bytes identical    p4/P4-REPRO-20261114-1_full_documents.csv  <->  p4/P4-LOCAL-20261105-1_full_documents.csv
+bytes identical    p4/P4-REPRO-20261114-1_full_setups.csv  <->  p4/P4-LOCAL-20261105-1_full_setups.csv
+bytes identical    p4/P4-REPRO-20261114-1_full_left_out.csv  <->  p4/P4-LOCAL-20261105-1_full_left_out.csv
+bytes identical    p4/P4-REPRO-20261114-1_original_documents.csv  <->  p4/P4-LOCAL-20261105-1_original_documents.csv
+bytes identical    p4/P4-REPRO-20261114-1_original_setups.csv  <->  p4/P4-LOCAL-20261105-1_original_setups.csv
+bytes identical    p4/P4-REPRO-20261114-1_original_left_out.csv  <->  p4/P4-LOCAL-20261105-1_original_left_out.csv
+bytes identical    rq5/P5-LOCAL-20261114-1_digital.csv  <->  rq5/P5-LOCAL-20261110-1_digital.csv
+bytes identical    rq5/P5-LOCAL-20261114-2_scanned.csv  <->  rq5/P5-LOCAL-20261111-1_scanned.csv
+bytes identical    rq5/P5-LOCAL-20261114-2_scanned.csv  <->  rq5/P5-LOCAL-20261112-1_scanned.csv
+bytes identical    rq5/P5-LOCAL-20261114-3_chunker.csv  <->  rq5/P5-LOCAL-20261110-2_chunker.csv
+bytes identical    aq/analysis_tuning.csv  <->  aq/analysis_tuning.csv
+bytes identical    aq/analysis_tuning_vs_best.csv  <->  aq/analysis_tuning_vs_best.csv
+bytes identical    aq/analysis_held_out.csv  <->  aq/analysis_held_out.csv
+bytes identical    aq/analysis_held_out_vs_best.csv  <->  aq/analysis_held_out_vs_best.csv
+bytes identical    aq/analysis_scanned.csv  <->  aq/analysis_scanned.csv
+bytes identical    aq/analysis_scanned_vs_best.csv  <->  aq/analysis_scanned_vs_best.csv
+bytes identical    p3/gold_drop_tuning.csv  <->  p3/gold_drop_tuning.csv
+bytes identical    p3/gold_drop_empty_docs_tuning.csv  <->  p3/gold_drop_empty_docs_tuning.csv
+bytes identical    p3/size_by_source_P3-LOCAL-20261105-4.csv  <->  p3/size_by_source_P3-LOCAL-20261105-4.csv
+bytes identical    p3/size_by_source_summary_P3-LOCAL-20261105-4.csv  <->  p3/size_by_source_summary_P3-LOCAL-20261105-4.csv
+bytes identical    p3/fixedk_tuning.csv  <->  p3/fixedk_tuning.csv
+bytes identical    p3/gold_drop_final.csv  <->  p3/gold_drop_final.csv
+bytes identical    p3/gold_drop_empty_docs_final.csv  <->  p3/gold_drop_empty_docs_final.csv
+bytes identical    p3/size_by_source_P3-FINAL-20261106-1.csv  <->  p3/size_by_source_P3-FINAL-20261106-1.csv
+bytes identical    p3/size_by_source_summary_P3-FINAL-20261106-1.csv  <->  p3/size_by_source_summary_P3-FINAL-20261106-1.csv
+bytes identical    p4/P4-REPRO-20261114-2_full_documents.csv  <->  p4/P4-FINAL-20261106-1_full_documents.csv
+bytes identical    p4/P4-REPRO-20261114-2_full_setups.csv  <->  p4/P4-FINAL-20261106-1_full_setups.csv
+bytes identical    p4/P4-REPRO-20261114-2_full_left_out.csv  <->  p4/P4-FINAL-20261106-1_full_left_out.csv
+bytes identical    p4/P4-REPRO-20261114-2_original_documents.csv  <->  p4/P4-FINAL-20261106-1_original_documents.csv
+bytes identical    p4/P4-REPRO-20261114-2_original_setups.csv  <->  p4/P4-FINAL-20261106-1_original_setups.csv
+bytes identical    p4/P4-REPRO-20261114-2_original_left_out.csv  <->  p4/P4-FINAL-20261106-1_original_left_out.csv
+bytes identical    p4/P4-REPRO-20261114-2_primary_documents.csv  <->  p4/P4-FINAL-20261106-1_primary_documents.csv
+bytes identical    p4/P4-REPRO-20261114-2_primary_setups.csv  <->  p4/P4-FINAL-20261106-1_primary_setups.csv
+bytes identical    p4/P4-REPRO-20261114-2_primary_left_out.csv  <->  p4/P4-FINAL-20261106-1_primary_left_out.csv
+
+34 of 34 match

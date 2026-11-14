@@ -1,0 +1,70 @@
+{
+  "run_id": "P5-LOCAL-20261114-1",
+  "created_at": "2026-11-14T07:31:45+00:00",
+  "code": {
+    "commit": null,
+    "uncommitted_changes": null
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "rq5a_compare",
+    "scores_run": "P3-RQ5D-20261110-1",
+    "sample": "digital",
+    "retriever": "hybrid",
+    "budget": 1250,
+    "resamples": 2000,
+    "level": 0.95,
+    "seed": 42
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-RQ5D-20261110-1.csv.gz",
+      "sha256": "b4e477ec4650adf54adb67a21d351095247e5cecec538874e1f7b312152ad7f3"
+    }
+  ],
+  "outputs": [
+    "data/results/rq5/P5-LOCAL-20261114-1_digital.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "compare:digital",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.031,
+        "peak_ram_mb": 752.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.031,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 752.4,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

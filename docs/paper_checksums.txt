@@ -1,0 +1,79 @@
+# SHA-256 of every result file the paper uses (RESULTS.md), written 2026-11-14 after the reproduction check
+# (spec/spec_v1.2.md, "Reproduction check (2026-11-14)"). These are the original files, not the re-run copies.
+# Check from the repo root: sha256sum -c docs/paper_checksums.txt   (the # lines are skipped with a warning)
+
+# Retrieval scores (P3)
+191c04ddedf846ca480dc33e373b05d3edbf48aa3c2885d394bbee84dabc1f40  data/results/p3/P3-LOCAL-20261105-2.csv.gz
+10f2c1e6c436392d00992cc8bc2bade11bfda8b0ef33cd164a92da2aa1fa9889  data/results/p3/P3-LOCAL-20261105-4.csv.gz
+4ef21b75991e607a67848a1298d8f88aec1f7ee9e44560ed1b0764b1852da828  data/results/p3/P3-FINAL-20261106-1.csv.gz
+b4e477ec4650adf54adb67a21d351095247e5cecec538874e1f7b312152ad7f3  data/results/p3/P3-RQ5D-20261110-1.csv.gz
+24fc555a1762e957bddcb33fd93b75be97839b73bee3a6a05084b558aa3272d0  data/results/p3/P3-RQ5S-20261111-1.csv.gz
+
+# Main question (P4, held-out)
+2d9b6d99e34451ce29707c0cd20ec485fdf9fbfa5506228d8c805e50cdde4d62  data/results/p4/P4-FINAL-20261106-1_full_documents.csv
+82ba87cc51c42a7134efdf24a1cee64fc48737ecc1fff199671f24ab99b35391  data/results/p4/P4-FINAL-20261106-1_full_left_out.csv
+1b9f31ce4f9b45b87e1cf67b97840040758aadb322fbae420a974cfbacc7cb25  data/results/p4/P4-FINAL-20261106-1_full_setups.csv
+18caa2c1635aa8ea0c7c07ff4886ad720af29770d23edc2ce4cc3401969a45fb  data/results/p4/P4-FINAL-20261106-1_original_documents.csv
+6f86a5a9c5b31e32d3909c6fe9789b39aa63163cce7f65ffb5c82ffd08cb6f62  data/results/p4/P4-FINAL-20261106-1_original_left_out.csv
+4e998228133cb8e205447162549385a0a876f4b0f9fc11d5cd72bd4c87b0d3a1  data/results/p4/P4-FINAL-20261106-1_original_setups.csv
+e4b73a76896548912d25db004b87c8e2fe607cba0d611a90491d0942d50af7c5  data/results/p4/P4-FINAL-20261106-1_primary_documents.csv
+4e5a4456478b501881a1783038e73c564d6e18829df6a9e72b8fa95cd8b3b8e2  data/results/p4/P4-FINAL-20261106-1_primary_left_out.csv
+86ab5e793ed34e0a65fc39fca0ae649ed7009ff7a70ebd6594ad8b8516efef58  data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
+
+# RQ5 (parser settings, chunk size)
+2381f08b15a8fab4518153e9136ff579437385bfbd9dd97e01b4d893791a11d6  data/results/rq5/P5-LOCAL-20261110-1_digital.csv
+4a8e76f2625759309bc77558dc10404a1243bbe9dd51b102323ae683ae53edb5  data/results/rq5/P5-LOCAL-20261111-1_scanned.csv
+4a8e76f2625759309bc77558dc10404a1243bbe9dd51b102323ae683ae53edb5  data/results/rq5/P5-LOCAL-20261112-1_scanned.csv
+256f17a4b7857f56c2bd9f6ef9e1ac92366dd8569441fb883bcaa2519c2eac30  data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
+
+# Answer quality (AQ)
+15c0e8009c657bb0f771d24c4948fac101fc462e4b218e46c36a4373f8861756  data/results/aq/sample.csv
+ea362cf1a68c9a248a3ca3b5b8631515404882eba675ef79a13ff6d010163b8c  data/results/aq/answers.jsonl
+e18fee2d809dacdcf1341a0b1ff37b75f68ea2681a1df25c359a423fa4efe8db  data/results/aq/answers_f1.csv
+d8664e3968c9aed0f9c073f17ff0b5e4e6016233c1df763736366a5e8e76934b  data/results/aq/judgements.jsonl
+d667e3dda1837997b337da57983491f464cb951ae7bd48aa515907443ce4e526  data/results/aq/judge_check.csv
+b64d6b1e41475e70ed0491a9165d103b671a0379e40b3c432d0310005d3c144d  data/results/aq/judge_check_keys.csv
+8b239792f12a69ba04a4ff57f5e00d48a17c2aab4fd276f70e55fba8ab3f3888  data/results/aq/analysis_held_out.csv
+369a2d1b7ccbac64e975b2c53fc0c82cbeccd6d30fde8700e26cfeaf1d4faf70  data/results/aq/analysis_held_out_vs_best.csv
+f7e06a86d1827e451f8d4a3cfcdc8589986fb4c57a1b61ba9277f8a585a12c1f  data/results/aq/analysis_scanned.csv
+d10f3f4dc95754f4e73ce006dd4c0b5620b89eb7eb1526f96774ef5c9eb9fc69  data/results/aq/analysis_scanned_vs_best.csv
+85ab5a4ad56d316aa2735977df0bdc4e7fac3944b7bf5de68d220867a7495a19  data/results/aq/analysis_tuning.csv
+8558b247fca9a1e9d4e84983e7d72352fa261965d5eb967e6d11a6ba9967be54  data/results/aq/analysis_tuning_vs_best.csv
+
+# Reporting and diagnostics (fixed-k, gold drop, size by source)
+aca2e6aec27322cfa4046cbd2c5c73e061db0ac079a89f8f7cab1fc4b9e17207  data/results/p3/fixedk_tuning.csv
+5e5bc4fdc012bdb921bf0c4a840e5f0f73bea617b7a508f7ecb897124793e690  data/results/p3/gold_drop_tuning.csv
+54e09a5b963e37a1ce0858b926f3eaa410e2600cd04af8813f5c5b450d2fe2a9  data/results/p3/gold_drop_empty_docs_tuning.csv
+ba42be5efeb08da46d9969ce77fd5fe4925c1bcef6fe41a9d50300d895a504d3  data/results/p3/gold_drop_final.csv
+cbaf06bb7d5b43c9f31561069715adb676a2fdcfeb5f82304c83425c59ddf811  data/results/p3/gold_drop_empty_docs_final.csv
+285bf5b50070c1c8a0998e1ea284b8e675244feb1fb5c1cb57405322f474c86a  data/results/p3/size_by_source_P3-LOCAL-20261105-4.csv
+58adfe6667005b17457e19ceaf2c5317540f599b7047e6518047a1939a4fbc25  data/results/p3/size_by_source_summary_P3-LOCAL-20261105-4.csv
+c3ca47f3d690b333f96f7fdc7047b98b28e0a0ca6a165b6f041599c171dd7f39  data/results/p3/size_by_source_P3-FINAL-20261106-1.csv
+1bddfda0b8a96af63b64d5842817354a6124518b126c02f7eb00d64253cf7f08  data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
+
+# Run records cited in RESULTS.md
+a6bf92420aaacbfb5b7450a34ad14f0cf165a77f79824d3a923066d8deb8585f  runs/P3-LOCAL-20261105-1.json
+72499feced2f93e579b293742910e7ecb41840df0c7af6c58c093f2a8757820b  runs/P3-LOCAL-20261105-2.json
+297df7dfc56e05762a898e5e02a758a5e72f883f1b81fbb0088dc676ccf05b04  runs/P3-LOCAL-20261105-4.json
+5e1800e2c143df43b274e3d4b0fda41d68e84f2d05acb2b5fcd3acd0101bfb88  runs/P3-FINAL-20261106-1.json
+c0d9846f8ea84ee2d562d64c4a9b3e6ebc85a10e897b1223982b9b585470908a  runs/P4-FINAL-20261106-1.json
+785930992a20fa7937b3030fa8ef799031cb2c6ad352b4e216a36d5619cc2a2a  runs/P3-RQ5D-20261110-1.json
+ee64449b3df272caa7f8e1b37d107cd57152ff878c35203a5f55eb9106dbff31  runs/P3-RQ5S-20261111-1.json
+155a81740f72cc93156d2fb9fcaa0f0fa51c5e512cd3219770314767de68c1d7  runs/P5-LOCAL-20261110-1.json
+45ea91718c1b467859eed30ca1978a22c9f42b22d114d43ddd7a174e257b4861  runs/P5-LOCAL-20261110-2.json
+4d5f16aeba0f113b46ade0db74e8de8c86e44a5189ae1f350a777ece9db5ffc9  runs/P5-LOCAL-20261111-1.json
+f540443a717177fda7ec30d02bcc98e331ddadfb62658e291ca86f123e3c7379  runs/P5-LOCAL-20261112-1.json
+ef1b47dafeaedc81cb64a103bda8a453960e9dd0bd24ed43c12f51704db4ecff  runs/P6-LOCAL-20261110-1.json
+8b720a18de805d69d4b4d674937f16d0462fcb95798218c4b3a55b28785597d7  runs/P6-LOCAL-20261110-2.json
+9426bdb539bb8a88c0bf4af518bc54ab9c7eaad672cf71c7e6a18ae44c12f5dc  runs/P6-LOCAL-20261110-3.json
+3da3b1d1e7cb6c9bda2c23c39a752cb4929b33819aa0c3f7bc0949ad75aa946a  runs/P3-FIXEDK-20261112-1.json
+0994a46cff24a61028b46ed769f0b097d08e9a733d3b84117d21787dd56cb550  runs/P3-GOLDDROP-20261112-1.json
+23b9cf6fcf83675cd070256033f49c7b714002c122a6b13a0f4ff499effd52c0  runs/P3-SIZESRC-20261112-1.json
+02f6c958347402048e1803d4100b719436e376cf4c74dd2e2b092e668cfbccd5  runs/P1-RQ5-KN01-20261109-1.json
+ebf882996986af8247a97fca33576df992b92a16f5c5ba20f52f98c4fe392a2f  runs/P1-RQ5-KN01-20261109-2.json
+337fba18b3c5031d788e22683b76b717f4235968d9d1eff1687cc2c95221cda2  runs/P1-RQ5-KN01-20261109-3.json
+07ae381f0dc82d94b789e6d806abee595aff15c05286f3314be512d4a5fc9f4b  runs/P1-RQ5-KN01-20261109-4.json
+27ca9f17138ba2cf9b5461102c0d9c82c26cacd8b2bbcb44bed03c2e75aca6a7  runs/P1-RQ5-KN01-20261109-5.json
+18112a0f0036ae8697ae65839dd119549b88d4cc38ca371443fa7da5637dc3b0  runs/P1-RQ5-KN01-20261109-6.json
+a1db4e167f56313dde27db47d330db9e5db5623db13d21e96a9a7c248532f88c  runs/P1-RQ5-KN01-20261109-7.json
+23a01f159b3e9dac63503045af195d738bfa4cc93102cc58fdac16f329e644fa  runs/tests/test_p3_sanity_floor_damage.txt

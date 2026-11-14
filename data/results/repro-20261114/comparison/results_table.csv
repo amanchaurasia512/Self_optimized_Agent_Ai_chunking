@@ -1,0 +1,76 @@
+section,number,recorded,reproduced,match
+§1,primary set,"26 setups, 17 documents, 530 questions","26 setups, 17 documents, 530 questions",yes
+§1,best single,"pdfplumber / method1_tree_T384, **0.772** (15 of 26 setups statistically tied)","pdfplumber / method1_tree_T384, **0.772** (15 of 26 setups statistically tied)",yes
+§1,same chunker on Docling,"docling / method1_tree_T384, 0.752, statistically tied","docling / method1_tree_T384, 0.752, statistically tied",yes
+§1,split-half oracle,| Split-half oracle | 0.765 |,| Split-half oracle | 0.765 |,yes
+§1,gap,"**−0.007 [−0.045, 0.023]**","**−0.007 [−0.045, 0.023]**",yes
+§1,raw maximum gap,raw maximum gap 0.058,raw maximum gap 0.058,yes
+§1,tuning winner on held-out,"docling / langchain_recursive_size256: 0.715, rank 20 of 26, tied with the best","docling / langchain_recursive_size256: 0.715, rank 20 of 26, tied with the best",yes
+§1,full grid,"| Full grid (98 setups) | gap −0.056 [−0.108, −0.010] |","| Full grid (98 setups) | gap −0.056 [−0.108, −0.010] |",yes
+§1,original grid,"| Original grid | gap −0.042 [−0.084, 0.002] |","| Original grid | gap −0.042 [−0.084, 0.002] |",yes
+§1,documents left out,`documents_left_out: []`,`documents_left_out: []`,yes
+§2,"LangChain default → tuned, docling",0.610 → 0.733,0.610 → 0.733,yes
+§2,"difference, docling","**+0.123 [0.057, 0.196]**","**+0.123 [0.057, 0.196]**",yes
+§2,"LangChain default → tuned, pdfplumber",0.648 → 0.748,0.648 → 0.748,yes
+§2,"difference, pdfplumber","**+0.100 [0.038, 0.186]**","**+0.100 [0.038, 0.186]**",yes
+§2,"Holm, LangChain default",**Holm p < 0.01**,**Holm p < 0.01**,yes
+§2,"own chunkers, 512 vs tuned",differences −0.015 to +0.047,differences −0.015 to +0.047,yes
+§2,own chunkers significant after Holm,none significant after Holm,none significant after Holm,yes
+§2,method1_tree on pdfplumber,"+0.047 [−0.000, 0.104]","+0.047 [−0.000, 0.104]",yes
+§2,fixed_token on pdfplumber,"+0.035 [−0.001, 0.070]","+0.035 [−0.001, 0.070]",yes
+§2,tuning size-recall rho,rho −0.61 to −0.97,rho −0.61 to −0.97,yes
+§2,tuning documents by source,"CUAD 6, Indian 3, OHR-Bench 10 documents","CUAD 6, Indian 3, OHR-Bench 10 documents",yes
+§2,tuning best sizes,Best sizes are 209–439 tokens,Best sizes are 209–439 tokens,yes
+§2,negative at every budget,every source and parser has a negative size-recall correlation at every budget,every source and parser has a negative size-recall correlation at every budget,yes
+§2,held-out OHR-Bench documents,Held-out OHR-Bench (12 documents),Held-out OHR-Bench (12 documents),yes
+§2,held-out OHR-Bench rho,rho −0.84 to −0.93,rho −0.84 to −0.93,yes
+§2,held-out OHR-Bench best sizes,best sizes 216–318,best sizes 216–318,yes
+§2,held-out Indian documents,Held-out Indian has 1 document,Held-out Indian has 1 document,yes
+§2,held-out CUAD documents,Held-out CUAD (3 documents),Held-out CUAD (3 documents),yes
+§3,digital sample,"5 PDFs, 306–308 questions","5 PDFs, 306–308 questions",yes
+§3,digital: largest difference,Every difference is below 0.01,Every difference is below 0.01,yes
+§3,digital: intervals,every interval reaches 0,every interval reaches 0,yes
+§3,digital: smallest Holm p,every Holm p ≥ 0.29,every Holm p ≥ 0.29,yes
+§3,digital: no variant beats default,no variant beats its default,no variant beats its default,yes
+§3,digital: parser defaults,Docling 0.827 against pdfplumber 0.798,Docling 0.827 against pdfplumber 0.798,yes
+§3,scanned sample,8 PDFs / 34 shared questions,8 PDFs / 34 shared questions,yes
+§3,scanned recall,0.786 vs 0.765,0.786 vs 0.765,yes
+§3,scanned difference,"**+0.02 [−0.05, 0.08], Holm p 0.50**","**+0.02 [−0.05, 0.08], Holm p 0.50**",yes
+§3,scanned gold placement,49 exact / 47 certain,not re-run: p1_gold_match rewrites gold files; out of scope,—
+§3,OCR variants byte-identical,byte-identical to the default on all 10 documents,not re-run: no script for the identity check,—
+§5,held-out size,"114 questions, 17 documents","114 questions, 17 documents",yes
+§5,held-out best setup and F1,method1_tree T256 with F1 0.393,method1_tree T256 with F1 0.393,yes
+§5,held-out F1 vs fixed_token_size1024,"**+0.123 [0.050, 0.210], Holm p < 0.01**","**+0.123 [0.050, 0.210], Holm p < 0.01**",yes
+§5,held-out F1 vs method1_tree_T384,"+0.065 [0.010, 0.137], Holm p 0.025","+0.065 [0.010, 0.137], Holm p 0.025",yes
+§5,held-out F1 vs langchain_default,"+0.047 [0.001, 0.099], Holm p 0.176","+0.047 [0.001, 0.099], Holm p 0.176",yes
+§5,recall gap shown by RQ5b,+0.10 to +0.12,+0.10 to +0.12,yes
+§5,tuning: significant differences,no significant differences,no significant differences,yes
+§5,Spearman F1 vs recall,"tuning 0.75, held-out 0.43","tuning 0.75, held-out 0.43",yes
+§5,Spearman judge vs recall,0.75 and 0.64,0.75 and 0.64,yes
+§5,scanned size,"25 questions, 10 documents","25 questions, 10 documents",yes
+§5,scanned best above Tesseract,scores above all five Tesseract setups,scores above all five Tesseract setups,yes
+§5,scanned significant after Holm,"one difference is significant after Holm (+0.243, Holm p 0.036)","one difference is significant after Holm (+0.243, Holm p 0.036)",yes
+§5,"judge check, second pass","95%, kappa 0.86","95%, kappa 0.86",yes
+§5,judge check cases,**Judge check** (40 cases),**Judge check** (40 cases),yes
+§5,"judge check, first pass","70% agreement, kappa 0.48",not re-run: judge_check.csv now holds the second-pass labels only,—
+§6,"tuning questions lost, docling",84/970 (8.7%),84/970 (8.7%),yes
+§6,"tuning questions lost, pdfplumber",92/970 (9.5%),92/970 (9.5%),yes
+§6,"scanned lost, pdfplumber",pdfplumber loses 110/110,pdfplumber loses 110/110,yes
+§6,"scanned lost, Docling default",Docling default 64/110 (58%),Docling default 64/110 (58%),yes
+§6,"scanned lost, Tesseract",Tesseract 67/110 (61%),Tesseract 67/110 (61%),yes
+§6,"held-out questions lost, docling",121/742 (16.3%),121/742 (16.3%),yes
+§6,"held-out questions lost, pdfplumber",205/742 (27.6%),205/742 (27.6%),yes
+§6,held-out Indian drop,Indian (2% vs 14%),Indian (2% vs 14%),yes
+§6,held-out OHR-Bench held_out_c drop,OHR-Bench held_out_c (22% vs 37%),OHR-Bench held_out_c (22% vs 37%),yes
+§6,held-out documents 31 → 17,31 → 17,not re-run: no script for the accounting (⚠️ in RESULTS.md),—
+§7,Recall@5 best,Recall@5: fixed_token 1024 is best on both parsers (0.904),Recall@5: fixed_token 1024 is best on both parsers (0.904),yes
+§7,Recall@10 best,"Recall@10: fixed_token 896 is best (Docling 0.964, pdfplumber 0.968)","Recall@10: fixed_token 896 is best (Docling 0.964, pdfplumber 0.968)",yes
+§7,"best hit1, docling",Docling method1_tree T512 0.624,Docling method1_tree T512 0.624,yes
+§7,"best hit1, pdfplumber",pdfplumber recursive 1024 0.632,pdfplumber recursive 1024 0.632,yes
+§7,"best mrr, docling",Docling method1_tree T1024 0.743,Docling method1_tree T1024 0.743,yes
+§7,"best mrr, pdfplumber",pdfplumber recursive 1024 0.748,pdfplumber recursive 1024 0.748,yes
+§7,"best recall4000, docling",Docling method1_tree T384 0.932,Docling method1_tree T384 0.932,yes
+§7,"best recall4000, pdfplumber",pdfplumber sentence 5 0.928,pdfplumber sentence 5 0.928,yes
+§7,Docling method1_tree winners are _prefix_v11,The three Docling method1_tree winners named above are the superseded `_prefix_v11` settings,The three Docling method1_tree winners named above are the superseded `_prefix_v11` settings,yes
+§7,Docling Hit@1 range,Docling Hit@1 range about 0.53–0.62,Docling Hit@1 range about 0.53–0.62,yes
+§7,"Recall@4,000 best sizes",best sizes about 220–380 tokens,best sizes about 220–380 tokens,yes

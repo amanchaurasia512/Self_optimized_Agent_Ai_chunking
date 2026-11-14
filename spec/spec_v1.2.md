@@ -437,6 +437,14 @@ Corrections to earlier notes; the earlier notes are left as written.
   computed" are superseded by "Correction to RQ5(a) scanned results" (2026-11-11): Docling default 49 exact / 47
   certain, Tesseract 41 / 43; recall comparison computed (+0.02 [-0.05, 0.08], Holm p 0.50).
 
+## Errata (2026-11-14)
+
+Found by the reproduction check (2026-11-14); the earlier note is left as written.
+- RQ5(a) result (2026-11-10), digital sample: "307-308 questions" should read "306-308 questions". The output
+  P5-LOCAL-20261110-1_digital.csv gives docling_table_mode_switched 306 shared questions (docling_headings and
+  docling_ocr_off 307, pdfplumber_layout 307, pdfplumber_tolerance_wide 308). A transcription error in the note
+  only; the analysis and its conclusion are unchanged (the reproduced output is byte-identical to the original).
+
 ## Agent spec (2026-11-13)
 The agent design is in spec/agent_v1.md.
 
@@ -446,3 +454,54 @@ For the README and the paper, existing work is labelled RQ1-RQ4; RQ5 keeps its s
 (P4); RQ2 = chunk size and chunker at a fixed budget, overall and per source (P3, size-by-source report); RQ3 = effect
 of the metric on the best size (fixed-k diagnostic); RQ4 = answer quality (AQ). These are labels for work already
 designed and run, not new questions; no analysis changes.
+## Reproduction check (2026-11-14)
+
+Before the paper, every analysis whose numbers appear in RESULTS.md was re-run from the saved inputs, with no change
+to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-extraction on Kaggle.
+- **How:** the committed code (ae7f506) was exported with `git archive` into an isolated copy outside the repo. In the
+  copy, the result inputs were copied in and the large inputs (chunks, embeddings, extracted text, gold, pdfs) were
+  linked read-only. Output folders started empty, so every output is new and no original could be overwritten.
+  `p3_score` and `p4_analyse` ran with `--run-source REPRO`. The run records are in `runs/tests/repro-20261114/`; the
+  outputs, logs, the comparison tables and the comparison scripts are in `data/results/repro-20261114/`. The run
+  records give `commit: null` (the copy has no `.git`) and output paths relative to the copy; the code is ae7f506
+  (`comparison/commit.txt`) and the files sit under `data/results/repro-20261114/`.
+- **Re-run, with their originals:**
+
+| Re-run | Original | Result |
+|---|---|---|
+| p3_score, tuning (the 59 + 62 settings of the original) P3-REPRO-20261114-1 | P3-LOCAL-20261105-4 | identical (962,568 rows, decompressed CSV) |
+| p4_analyse, tuning P4-REPRO-20261114-1 | P4-LOCAL-20261105-1 | 6 files byte-identical |
+| p4_analyse on P3-FINAL (26 primary setups) P4-REPRO-20261114-2 | P4-FINAL-20261106-1 | 9 files byte-identical; run-record summary identical |
+| rq5_parser_compare digital P5-LOCAL-20261114-1 | P5-LOCAL-20261110-1 | byte-identical |
+| rq5_parser_compare scanned P5-LOCAL-20261114-2 | P5-LOCAL-20261111-1 and -20261112-1 | byte-identical to both |
+| rq5_chunker_compare P5-LOCAL-20261114-3 | P5-LOCAL-20261110-2 | byte-identical |
+| aq_run --stage analyse (no run record) | data/results/aq/analysis_*.csv | 6 files byte-identical; Spearman lines as recorded |
+| aq_run --stage judge-check-score (no run record) | AQ judge check, second pass | 95% agreement, kappa 0.86 |
+| p3_fixedk P3-FIXEDK-20261114-1 | P3-FIXEDK-20261112-1 | byte-identical |
+| p3_gold_drop, tuning P3-GOLDDROP-20261114-1 | P3-GOLDDROP-20261112-1 | 2 files byte-identical |
+| p3_size_by_source, tuning P3-SIZESRC-20261114-1 | P3-SIZESRC-20261112-1 | 2 files byte-identical |
+| p3_gold_drop --final P3-GOLDDROP-20261114-2 (run by the author) | gold_drop_*_final.csv (no run record) | 2 files byte-identical |
+| p3_size_by_source --run P3-FINAL-20261106-1 --final P3-SIZESRC-20261114-2 (run by the author) | size_by_source_*_P3-FINAL-20261106-1.csv (no run record) | 2 files byte-identical |
+
+- **Numbers:** 71 numbers in RESULTS.md compared with the new outputs, each formatted as RESULTS.md shows it; all 71
+  match after one correction: the RQ5(a) digital sample size, "307-308 questions" for 306-308 (a transcription error in
+  the 2026-11-10 note; see Errata 2026-11-14). The table is `data/results/repro-20261114/comparison/results_table.csv`.
+- **Held-out reads:** p4_analyse on P3-FINAL reads the held-out chunk files, for the index token and chunk counts
+  only, exactly as the original P4-FINAL did; the held-out score file was read as an input. The two `--final` runs
+  were run by the author, in the isolated copy.
+- **Side effect on a shared input:** loading the embedding cache (src/eval/embed.check_embedder, used by p3_score and
+  p3_fixedk) rewrites `data/embeddings/bge-m3/embedder.json` after checking it names the same embedder. Its content is
+  unchanged (SHA-256 dd0cb044..., identical to the untouched Kaggle copies); only its timestamp moved. Every other
+  input file kept its path, size and timestamp.
+- **Not re-run, and why:**
+  - AQ judge check, first pass (70% agreement, kappa 0.48): `judge_check.csv` now holds only the second-pass labels,
+    so the first pass cannot be recomputed.
+  - RQ5(a) scanned gold placement (49 exact / 47 certain, Tesseract 41 / 43): `p1_gold_match` rewrites the gold
+    files, so it was not run.
+  - RQ5(a) OCR variants byte-identical to the default, and the held-out document accounting (31 -> 17): no script.
+  - Scorer sanity (P3-LOCAL-20261105-1, floor and damage tests): left out by decision; it predates the frozen scorer
+    and the damage test has no run id.
+  - Extraction, embedding and answering runs (Kaggle, Gemini) and the Qwen3-8B judge: not repeated by design. Their
+    saved outputs are the inputs above.
+- **Checksums:** `docs/paper_checksums.txt` holds the SHA-256 of the 64 original result files and run records the
+  paper uses (check with `sha256sum -c docs/paper_checksums.txt`).
