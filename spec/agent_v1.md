@@ -175,6 +175,39 @@ no pipeline code of its own.
   environment's versions, CPU torch), downloads bge-m3 (pinned revision) and Docling's models at build time, runs as
   a non-root user. Run records written in the container have code.commit null (no .git in the image).
 
+## App v1.1: indexing animation and chunking strategy (added 2026-11-13)
+**Animation.** While a PDF is indexed, the app shows one looping animation (app/animation.py: hand-made SVG and CSS,
+no animation files or new libraries; about 4 s): a page appears, a blade slashes it diagonally twice leaving short
+green cut lines, the page shakes and breaks into 8 jagged pieces (each with grey text lines) that fly outward with
+rotation and fade, then it starts again. The pieces share their seams, so together they tile the page. Under it, one
+progress line from the existing callback, real values only: the step (scan check, cache lookup, parse, or OCR when
+pages have no text layer, chunk, embed, load vectors), "N pages, M without text" once known, and "embedded X / N
+chunks" while embedding. The loop is rendered once and the line separately, so line updates never restart it. When
+indexing finishes the loop is replaced by a static "✓ N chunks ready". Under prefers-reduced-motion the loop is hidden
+and the line shows a plain progress bar. Colours derive from currentColor (the Streamlit theme's text colour) plus
+Streamlit's green, so they work in light and dark themes.
+- To give the line real numbers, ProgressLogger's on_step now receives the step's run-record entry instead of its
+  seconds, and two steps record counts: scan_check `pages` and `pages_without_text`, chunk `chunks` (embed already
+  had `chunks`). Run records written from now on carry these fields; older run records are unchanged. Nothing about
+  parsing, chunking, retrieval or answers changes.
+
+**Chunking strategy shown.** After indexing, a line under the file name names the chunker, its size, prefix and the
+parser, read from the app_index run record's stack (app/explain.py; "structure-tree" is a display label for
+method1_tree). A "Why these settings?" expander in the sidebar gives the reasons, every number taken from RESULTS.md,
+plus a link to the README's research questions. The sidebar settings are mode and budget only; chunk size is not a
+user setting. "Record text" moved under its own Privacy heading.
+- RESULTS.md §1 gained one row, "Same chunker on Docling: 0.752, statistically tied", checked against the ✅ file
+  that section already cites (P4-FINAL-20261106-1_primary_setups.csv: 0.7525, tied_with_best True).
+- The reasons include RESULTS.md §5's caveat that T384 answers were 0.065 token-F1 below T256 on held-out
+  (reported, not claimed).
+- app/ is now a package (app/__init__.py, listed in pyproject) so the app and tests import app.animation and
+  app.explain.
+- Tests: tests/agent/test_animation.py (running and done parse as valid SVG/HTML; the 8 pieces tile the page; the
+  line shows only the values passed in; reduced motion falls back to the bar; every step open_index logs has a name;
+  the counts are on the records), tests/agent/test_explain.py (the chunker line is read from the run record; every
+  number in the reasons is in RESULTS.md; the link targets an existing README section), and tests/agent/test_app.py
+  (indexing ends on "✓ N chunks ready" with no loop left, the chunker line shows pdfplumber in fast mode).
+
 ## chunk.json
 chunk.json follows spec/chunk.schema.json unchanged, the same format as the study's chunk files (every chunk has
 pages). Agent-only facts (pages OCR'd, step timings, parser mode) go in the run record, not in chunk.json.

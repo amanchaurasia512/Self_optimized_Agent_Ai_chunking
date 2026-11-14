@@ -10,6 +10,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from app import animation, explain
 from src.agent import index, pipeline, providers
 from src.agent.ask import ProgressLogger, ask_index, open_index, write_ask_record, write_index_record
 from src.common.cost_logger import CostLogger
@@ -54,27 +55,28 @@ def saved_upload(uploaded):
 
 
 def build_index(pdf_path, fast):
-    """open_index with a progress line per step and embedding progress by chunks; writes the app_index run record."""
+    """open_index shown as the looping animation (app/animation.py) with a progress line of the real step and counts;
+    writes the app_index run record. When done, the loop stops and "✓ N chunks ready" stays until the next rerun."""
     with st.status("Building the index", expanded=True) as status:
-        lines = {}
-        bar = st.empty()
+        scene, line, facts = st.empty(), st.empty(), {}
+        scene.html(animation.render_running())  # rendered once: line updates never restart the loop
 
-        def on_step(name, state, seconds):
-            if state == "start":
-                lines[name] = st.empty()
-                lines[name].write(f"{STEPS.get(name, name)}…")
-            else:
-                lines[name].write(f"{STEPS.get(name, name)}: {seconds:.1f} s")
+        def on_step(name, state, record):
+            facts.update({key: record[key] for key in ("pages", "pages_without_text", "chunks") if key in record})
+            line.html(animation.progress_line(name, facts))
 
         def on_embedded(done, total):
-            bar.progress(done / total, text=f"Embedded {done} of {total} chunks")
+            facts.update(embedded=done, chunks=total)
+            line.html(animation.progress_line("embed", facts))
 
         logger, run_id = ProgressLogger(on_step), pipeline.agent_run_id()
         session = open_index(pdf_path, logger, run_id, fast, None, CACHE_ROOT, partial(index.embed, progress=on_embedded))
         record = write_index_record(run_id, session, logger, MACHINE, "app_index")
+        line.empty()
+        scene.html(animation.render_done(len(session["chunks"])))
         state = "cached" if session["cache_hit"] else "built"
         status.update(label=f"Index {state}: {len(session['chunks'])} chunks ({session['planned']['parser']})",
-                      state="complete", expanded=False)
+                      state="complete")
     return session, logger.stages, record
 
 
@@ -83,6 +85,10 @@ def sidebar():
     mode = st.sidebar.radio("Parser mode", ["thorough", "fast"],
                             help="Thorough: Docling for every PDF. Fast: pdfplumber, Docling if any page has no text.")
     budget = st.sidebar.selectbox("Reading budget (tokens)", BUDGETS, index=BUDGETS.index(1250))
+    with st.sidebar.expander("Why these settings?"):
+        st.markdown("\n".join(f"- {point}" for point in explain.WHY))
+        st.markdown(f"[The research questions, in the README]({explain.README_QUESTIONS})")
+    st.sidebar.header("Privacy")
     record_text = st.sidebar.checkbox("Record text", help="Store the question and answer text in the run record.")
     st.sidebar.header("Answer providers")
     try:
@@ -128,6 +134,7 @@ def main():
                f"parser {session['planned']['parser']} ({session['planned']['reason']}), "
                f"index {'cached' if session['cache_hit'] else 'built'} · "
                + " · ".join(f"{row['step'].lower()} {row['seconds']:.1f} s" for row in step_table(st.session_state["index_steps"])))
+    st.caption(explain.chunker_line(json.loads(Path(st.session_state["index_record"]).read_text(encoding="utf-8"))))
     st.download_button("Download chunk.json", st.session_state["chunk_json"], file_name=f"{pdf_path.stem}.chunks.json",
                        mime="application/json")
 

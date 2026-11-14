@@ -20,7 +20,8 @@ def text_record(text, record_text):
 
 
 class ProgressLogger(CostLogger):
-    """A CostLogger that also reports each step as it starts and ends: on_step(name, "start" or "done", seconds)."""
+    """A CostLogger that also reports each step as it starts and ends: on_step(name, "start" or "done", record), where
+    record is the step's run-record entry (wall_seconds and the step's counts are set by "done")."""
 
     def __init__(self, on_step):
         super().__init__()
@@ -28,10 +29,10 @@ class ProgressLogger(CostLogger):
 
     @contextmanager
     def stage(self, name):
-        self.on_step(name, "start", None)
         with super().stage(name) as record:
+            self.on_step(name, "start", record)
             yield record
-        self.on_step(name, "done", record["wall_seconds"])
+        self.on_step(name, "done", record)
 
 
 def load_embedder(embed, logger):

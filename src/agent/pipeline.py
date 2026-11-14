@@ -89,8 +89,9 @@ def scan(pdf_path, pdf_sha, cache_root=None):
 def plan(pdf_path, fast=False, from_extraction=None, logger=None, cache_root=None):
     """Scan check and parser choice, before any parsing: what to build and why."""
     pdf_sha = manifest.file_sha256(pdf_path)
-    with logger.stage("scan_check"):
+    with logger.stage("scan_check") as stage:
         empty_pages, page_count = scan(pdf_path, pdf_sha, cache_root)
+        stage.update(pages=page_count, pages_without_text=len(empty_pages))
     extraction = json.loads(Path(from_extraction).read_text(encoding="utf-8")) if from_extraction else None
     if extraction:
         parser, reason = extraction["parser"]["name"], f"from existing extraction {manifest.project_path(from_extraction)}"
@@ -115,10 +116,11 @@ def build(planned, run_id, logger):
             document = parse(planned["pdf"], planned["parser"], planned["pdf"].stem, planned["reason"])
             source = {"sha256": planned["pdf_sha"], "file": planned["pdf"].name}
     entry = CHUNKERS[CHUNKER_NAME]
-    with logger.stage("chunk"):
+    with logger.stage("chunk") as stage:
         spans = entry["function"](document, **CHUNKER_SETTINGS)
         chunk_doc = chunk_document(document, spans, chunker_info(), run_id, source, HEADING_PREFIX, entry["nodes"](document),
                                    int(entry["prefix_share"] * CHUNKER_SETTINGS["T"]))
+        stage["chunks"] = len(chunk_doc["chunks"])
         chunk_doc["quality"]["layer1"] = layer1_report(chunk_doc, document["text"], load_validator())
     return document, chunk_doc
 

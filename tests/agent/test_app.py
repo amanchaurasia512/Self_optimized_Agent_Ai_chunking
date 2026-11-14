@@ -10,6 +10,7 @@ pytest.importorskip("streamlit")
 import streamlit as st
 from streamlit.testing.v1 import AppTest
 
+from app import explain
 from src.agent import index, providers
 from src.agent.pipeline import chunk_pdf
 from src.common.paths import PROJECT_ROOT
@@ -75,6 +76,13 @@ def test_upload_index_ask_twice_download(app, tmp_path):
     assert index_record["stack"]["agent_mode"] == "app_index" and not index_record["stack"]["cache"]["hit"]
     assert [stage["stage"] for stage in index_record["costs"]["stages"]] == [
         "scan_check", "load_index", "parse", "chunk", "embed", "load_vectors"]
+    shown = [element.proto.body for element in at.get("html")]  # the loop stopped; "✓ N chunks ready" remains
+    chunks = len(at.session_state["session"]["chunks"])
+    assert any('data-state="done"' in body and f"{chunks} chunks ready" in body for body in shown)
+    assert not any('data-state="running"' in body for body in shown)
+    assert explain.chunker_line(index_record) == "Chunker: method1_tree (structure-tree), 384 tokens, no prefix · parser: pdfplumber"
+    assert any(explain.chunker_line(index_record) == caption.value for caption in at.caption)
+    assert [expander.label for expander in at.sidebar.expander] == ["Why these settings?"]
 
     ask(at, QUESTIONS[0])
     at.sidebar.checkbox[0].check().run()

@@ -42,4 +42,4 @@ app = ["streamlit==1.67.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["src", "src.*", "scripts", "scripts.*"]
+include = ["src", "src.*", "scripts", "scripts.*", "app"]
