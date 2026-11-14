@@ -1,0 +1,25 @@
+labelled 60 of 60
+
+                             labelled  invalid  unsure  invalid_rate    low   high  invalid_or_unsure_rate  strict_low  strict_high
+doc_id                                                                                                                             
+indian_d1                        20.0      3.0     8.0         0.150  0.052  0.360                   0.550       0.342        0.742
+indian_d3_fundamental_rules      20.0      9.0     0.0         0.450  0.258  0.658                   0.450       0.258        0.658
+indian_d4_rti_act                20.0      8.0     0.0         0.400  0.219  0.613                   0.400       0.219        0.613
+overall                          60.0     20.0     8.0         0.333  0.227  0.459                   0.467       0.346        0.591
+
+by the study's certain flag (Docling gold):
+overall  labelled  invalid  unsure  invalid_rate    low   high  invalid_or_unsure_rate  strict_low  strict_high
+certain                                                                                                        
+False         2.0      1.0     0.0         0.500  0.095  0.905                   0.500       0.095        0.905
+True         58.0     19.0     8.0         0.328  0.221  0.456                   0.466       0.343        0.592
+
+by batch (batch 2 could use key m, 2,000 characters):
+overall  labelled  invalid  unsure  invalid_rate    low   high  invalid_or_unsure_rate  strict_low  strict_high
+batch                                                                                                          
+1            60.0     20.0     8.0         0.333  0.227  0.459                   0.467       0.346        0.591
+
+expansion due (batch 1 invalid >= 3 of 20): ['indian_d1', 'indian_d3_fundamental_rules', 'indian_d4_rti_act']
+
+label notes:
+   doc_id question_id   label                             note
+indian_d1     D1-Q153 invalid the retrieve chunk is not enough

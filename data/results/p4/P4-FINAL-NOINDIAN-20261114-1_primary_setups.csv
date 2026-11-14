@@ -1,0 +1,27 @@
+setup,all held-out,without Indian,tied_all,tied_without_indian,rank_all,rank_without_indian
+docling/fixed_token_size256_overlap0_noprefix,0.7374589776065522,0.7253500592909525,True,True,10.0,10.0
+docling/fixed_token_size384_overlap0_noprefix,0.6701461185275731,0.6532538695440333,False,False,26.0,26.0
+docling/fixed_token_size512_overlap0_noprefix,0.6811021068866165,0.6693853438267752,False,False,25.0,25.0
+docling/langchain_recursive_size256_overlap0_noprefix,0.7148404004341427,0.6992135953959172,True,True,20.0,20.0
+docling/langchain_recursive_size384_overlap0_noprefix,0.7101885019644446,0.6949992599454095,True,True,22.0,22.0
+docling/langchain_recursive_size512_overlap0_noprefix,0.7245069598866742,0.7127837043673915,True,True,14.0,13.0
+docling/method1_tree_T256_noprefix,0.7351269880069321,0.720034413061459,True,True,12.0,12.0
+docling/method1_tree_T384_noprefix,0.752462398262547,0.7417427601422601,True,True,5.0,5.0
+docling/method1_tree_T512_noprefix,0.7194956990023808,0.707081139254357,True,True,17.0,17.0
+docling/recursive_size256_overlap0_noprefix,0.6897817584938243,0.6714922971062587,False,False,24.0,24.0
+docling/recursive_size384_overlap0_noprefix,0.7012776505701946,0.6869934686431125,False,False,23.0,23.0
+docling/recursive_size512_overlap0_noprefix,0.7239903366831937,0.7103216040709226,True,True,15.0,15.0
+docling/sentence_sentences5_noprefix,0.7559354190909164,0.7491356782449731,True,True,4.0,4.0
+pdfplumber/fixed_token_size256_overlap0_noprefix,0.7492187346787076,0.737147871149857,True,True,7.0,6.0
+pdfplumber/fixed_token_size384_overlap0_noprefix,0.7432910552005985,0.7312051968891844,False,False,9.0,9.0
+pdfplumber/fixed_token_size512_overlap0_noprefix,0.7183579258181497,0.7062082761310547,False,False,19.0,18.0
+pdfplumber/langchain_recursive_size256_overlap0_noprefix,0.749666908135533,0.7362140723501442,True,True,6.0,7.0
+pdfplumber/langchain_recursive_size384_overlap0_noprefix,0.7487523573900203,0.7356078592590604,True,True,8.0,8.0
+pdfplumber/langchain_recursive_size512_overlap0_noprefix,0.7185313410734464,0.7057451595938072,False,False,18.0,19.0
+pdfplumber/method1_tree_T256_noprefix,0.7647041721019218,0.7514601711623854,True,True,3.0,3.0
+pdfplumber/method1_tree_T384_noprefix,0.7715545034368948,0.7583731511297708,True,True,1.0,1.0
+pdfplumber/method1_tree_T512_noprefix,0.726794332905905,0.7126971030356777,False,True,13.0,14.0
+pdfplumber/recursive_size256_overlap0_noprefix,0.7652115444245255,0.7519992542551519,True,True,2.0,2.0
+pdfplumber/recursive_size384_overlap0_noprefix,0.735953953938585,0.7220095555919104,False,True,11.0,11.0
+pdfplumber/recursive_size512_overlap0_noprefix,0.7102122797474171,0.6969061569349011,False,False,21.0,21.0
+pdfplumber/sentence_sentences5_noprefix,0.7235300934469692,0.7073472155154749,False,False,16.0,16.0

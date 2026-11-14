@@ -1,0 +1,159 @@
+{
+  "run_id": "P4-FINAL-NOINDIAN-20261114-2",
+  "created_at": "2026-11-14T12:54:28+00:00",
+  "code": {
+    "commit": "ed6e1c0062a21832f5b7df9b1f1f46b085716011",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "robust_no_indian",
+    "split": "held_out",
+    "scores_run": "P3-FINAL-20261106-1",
+    "original_run": "P3-LOCAL-20261105-2",
+    "retriever": "hybrid",
+    "budget_p4": 1250,
+    "excluded_source": "Indian",
+    "excluded_documents": [
+      "indian_d2_ccs_conduct_rules"
+    ],
+    "primary_settings_from": "P4-FINAL-20261106-1_primary_setups.csv",
+    "final": true,
+    "seed": 42,
+    "level": 0.95,
+    "summary": {
+      "all held-out / full": {
+        "documents": 17,
+        "questions": 530,
+        "best_single": "pdfplumber/method1_tree_T256_prefix",
+        "best_recall": 0.7733829661479656,
+        "tied": 23,
+        "gap": -0.05563426615127899,
+        "gap_interval": [
+          -0.10830040150282544,
+          -0.009824637811663596
+        ]
+      },
+      "all held-out / original": {
+        "documents": 17,
+        "questions": 530,
+        "best_single": "docling/sentence_sentences5_noprefix",
+        "best_recall": 0.7559354190909164,
+        "tied": 17,
+        "gap": -0.04196060867025348,
+        "gap_interval": [
+          -0.08358295029393893,
+          0.002176830984519182
+        ]
+      },
+      "all held-out / primary": {
+        "documents": 17,
+        "questions": 530,
+        "best_single": "pdfplumber/method1_tree_T384_noprefix",
+        "best_recall": 0.7715545034368948,
+        "tied": 15,
+        "gap": -0.0069232341431268735,
+        "gap_interval": [
+          -0.04517088097143906,
+          0.02321577377703019
+        ]
+      },
+      "without Indian / full": {
+        "documents": 16,
+        "questions": 359,
+        "best_single": "pdfplumber/method1_tree_T256_prefix",
+        "best_recall": 0.7610468869123304,
+        "tied": 26,
+        "gap": -0.06987854822480803,
+        "gap_interval": [
+          -0.12729732194198454,
+          -0.021584750187660366
+        ]
+      },
+      "without Indian / original": {
+        "documents": 16,
+        "questions": 359,
+        "best_single": "docling/sentence_sentences5_noprefix",
+        "best_recall": 0.7491356782449731,
+        "tied": 12,
+        "gap": -0.05002955650037041,
+        "gap_interval": [
+          -0.09372527192277368,
+          -0.0059474034759517715
+        ]
+      },
+      "without Indian / primary": {
+        "documents": 16,
+        "questions": 359,
+        "best_single": "pdfplumber/method1_tree_T384_noprefix",
+        "best_recall": 0.7583731511297708,
+        "tied": 17,
+        "gap": -0.006748317989966581,
+        "gap_interval": [
+          -0.04723814339633081,
+          0.027795249446087827
+        ]
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-FINAL-20261106-1.csv.gz",
+      "sha256": "4ef21b75991e607a67848a1298d8f88aec1f7ee9e44560ed1b0764b1852da828"
+    },
+    {
+      "path": "data/results/p4/P4-FINAL-20261106-1_primary_setups.csv",
+      "sha256": "86ab5e793ed34e0a65fc39fca0ae649ed7009ff7a70ebd6594ad8b8516efef58"
+    },
+    {
+      "path": "pdfs/split.csv",
+      "sha256": "c22d47fa2b88c9c7b682677c2738fa0110528884da11ff25943481479b4379e2"
+    }
+  ],
+  "outputs": [
+    "data/results/p4/P4-FINAL-NOINDIAN-20261114-2_p4.csv",
+    "data/results/p4/P4-FINAL-NOINDIAN-20261114-2_primary_setups.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "robust_no_indian",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.284,
+        "peak_ram_mb": 936.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1.284,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 936.8,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

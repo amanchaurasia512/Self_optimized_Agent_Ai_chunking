@@ -1,6 +1,6 @@
-"""Robustness (spec v1.2, 2026-11-14): tuning P4 (best single, ties, gap) and the RQ2 size result with and without
-the Indian documents. Tuning scores only (P3-LOCAL-20261105-4); no held-out document file is read. Writes a run
-record."""
+"""Robustness (spec v1.2, 2026-11-14): P4 (best single, ties, gap) with and without the Indian documents, and on
+tuning also the RQ2 size result. --split tuning reads P3-LOCAL-20261105-4; --split held_out reads the existing scores
+P3-FINAL-20261106-1 only (no chunk or document file) and needs --final. Writes a run record."""
 import argparse
 
 import numpy as np
@@ -11,9 +11,11 @@ from scripts.p4_analyse import LEVEL, SEED, analyse, in_scope, question_matrix, 
 from scripts.rq5_chunker_compare import FAMILIES, tuned_setting
 from src.common.cost_logger import CostLogger
 from src.common.manifest import build_manifest, new_run_id, write_manifest
-from src.common.paths import RESULTS
+from src.common.paths import PROJECT_ROOT, RESULTS
 
-RUN, ORIGINAL_RUN = "P3-LOCAL-20261105-4", "P3-LOCAL-20261105-2"
+RUNS = {"tuning": ("P3-LOCAL-20261105-4", "NOINDIAN"), "held_out": ("P3-FINAL-20261106-1", "FINAL-NOINDIAN")}
+ORIGINAL_RUN, SEALED = "P3-LOCAL-20261105-2", "held_out"
+SPLIT_FILE = PROJECT_ROOT / "pdfs" / "split.csv"
 PRIMARY_FILE = RESULTS / "p4" / "P4-FINAL-20261106-1_primary_setups.csv"
 EXCLUDED_SOURCE = "Indian"
 
@@ -62,45 +64,58 @@ def size_rows(frame):
 
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
+    arg_parser.add_argument("--split", choices=list(RUNS), default="tuning")
+    arg_parser.add_argument("--final", action="store_true", help="allow a run holding held-out documents")
     arg_parser.add_argument("--machine", default="laptop")
     args = arg_parser.parse_args()
 
-    scores_file = RESULTS / "p3" / f"{RUN}.csv.gz"
+    run, source = RUNS[args.split]
+    scores_file = RESULTS / "p3" / f"{run}.csv.gz"
     primary = sorted({setup.split("/")[1] for setup in pd.read_csv(PRIMARY_FILE, index_col=0).index})
     scores = pd.read_csv(scores_file)
     scores = scores[(scores["retriever"] == "hybrid") & (scores["source"].str.lower() != "qasper")]
-    variants = {"all tuning": scores, "without Indian": scores[scores["source"] != EXCLUDED_SOURCE]}
+    splits = pd.read_csv(SPLIT_FILE).set_index("doc_id")["split"]
+    if scores["doc_id"].map(splits).fillna("").str.startswith(SEALED).any() and not args.final:
+        raise SystemExit(f"{run} holds held-out documents: rerun with --final")
+    everything = "all tuning" if args.split == "tuning" else "all held-out"
+    variants = {everything: scores, "without Indian": scores[scores["source"] != EXCLUDED_SOURCE]}
+    excluded = sorted(scores.loc[scores["source"] == EXCLUDED_SOURCE, "doc_id"].unique())
     logger = CostLogger()
-    with logger.stage("robust_no_indian"):
-        results = {name: (p4_rows(frame, primary), size_rows(frame)) for name, frame in variants.items()}
+    with logger.stage("robust_no_indian"):  # the size part needs chunk files and is a tuning-only result: tuning only
+        results = {name: (p4_rows(frame, primary), size_rows(frame) if args.split == "tuning" else None)
+                   for name, frame in variants.items()}
     p4 = pd.concat({name: rows for name, ((rows, setups), sizes) in results.items()}, names=["variant"])
-    pooled = pd.concat({name: sizes[0] for name, (p4_part, sizes) in results.items()}, names=["variant"])
-    tuned = pd.concat({name: sizes[1] for name, (p4_part, sizes) in results.items()}, names=["variant"])
     setups = pd.DataFrame({name: setups["primary"]["recall"] for name, ((rows, setups), sizes) in results.items()})
-    setups["tied_all"] = results["all tuning"][0][1]["primary"]["tied_with_best"]
+    setups["tied_all"] = results[everything][0][1]["primary"]["tied_with_best"]
     setups["tied_without_indian"] = results["without Indian"][0][1]["primary"]["tied_with_best"]
-    setups["rank_all"] = setups["all tuning"].rank(ascending=False)
+    setups["rank_all"] = setups[everything].rank(ascending=False)
     setups["rank_without_indian"] = setups["without Indian"].rank(ascending=False)
+    tables = {"p4": p4, "primary_setups": setups}
+    if args.split == "tuning":
+        tables["pooled_size"] = pd.concat({name: sizes[0] for name, (p4_part, sizes) in results.items()}, names=["variant"])
+        tables["tuned_size"] = pd.concat({name: sizes[1] for name, (p4_part, sizes) in results.items()}, names=["variant"])
 
-    run_id = new_run_id(4, "NOINDIAN")
-    outputs = [RESULTS / "p4" / f"{run_id}_{name}.csv" for name in ("p4", "pooled_size", "tuned_size", "primary_setups")]
-    for path, table in zip(outputs, (p4, pooled, tuned, setups)):
+    run_id = new_run_id(4, source)
+    outputs = [RESULTS / "p4" / f"{run_id}_{name}.csv" for name in tables]
+    for path, table in zip(outputs, tables.values()):
         table.to_csv(path)
-    stack = {"analysis": "robust_no_indian", "scores_run": RUN, "original_run": ORIGINAL_RUN, "retriever": "hybrid",
-             "budget_p4": 1250, "excluded_source": EXCLUDED_SOURCE, "primary_settings_from": PRIMARY_FILE.name,
-             "seed": SEED, "level": LEVEL,
+    stack = {"analysis": "robust_no_indian", "split": args.split, "scores_run": run, "original_run": ORIGINAL_RUN,
+             "retriever": "hybrid", "budget_p4": 1250, "excluded_source": EXCLUDED_SOURCE, "excluded_documents": excluded,
+             "primary_settings_from": PRIMARY_FILE.name, "final": args.final, "seed": SEED, "level": LEVEL,
              "summary": {f"{name} / {row.scope}": {"documents": row.documents, "questions": row.questions,
                                                     "best_single": row.best_single, "best_recall": row.best_recall,
                                                     "tied": row.tied, "gap": row.gap, "gap_interval": [row.gap_low, row.gap_high]}
                          for (name, index), row in p4.iterrows()}}
-    manifest_path = write_manifest(build_manifest(run_id, "v1.2", stack, [scores_file, PRIMARY_FILE], outputs,
+    manifest_path = write_manifest(build_manifest(run_id, "v1.2", stack, [scores_file, PRIMARY_FILE, SPLIT_FILE], outputs,
                                                   logger.summary(), args.machine))
     pd.set_option("display.width", 250)
-    print(f"P4 (tuning, hybrid, Recall@1,250)\n{p4.round(3).to_string()}\n\nprimary setups\n"
-          f"{setups.sort_values('all tuning', ascending=False).round(3).to_string()}\n\nRQ2 pooled size curve\n"
-          f"{pooled.round(3).to_string()}\n\nRQ5(b) tuned size per family\n"
-          f"{tuned.reset_index().pivot_table(index=['family', 'parser'], columns='variant', values='tuned', aggfunc='first').to_string()}"
-          f"\n\nrun {run_id} | manifest: {manifest_path}")
+    print(f"P4 ({args.split}, hybrid, Recall@1,250; left out: {excluded})\n{p4.round(3).to_string()}\n\nprimary setups\n"
+          f"{setups.sort_values(everything, ascending=False).round(3).to_string()}")
+    if args.split == "tuning":
+        tuned = tables["tuned_size"].reset_index()
+        print(f"\nRQ2 pooled size curve\n{tables['pooled_size'].round(3).to_string()}\n\nRQ5(b) tuned size per family\n"
+              f"{tuned.pivot_table(index=['family', 'parser'], columns='variant', values='tuned', aggfunc='first').to_string()}")
+    print(f"\nrun {run_id} | manifest: {manifest_path}")
 
 
 if __name__ == "__main__":

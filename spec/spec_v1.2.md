@@ -648,3 +648,27 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
   3rd and stays tied). Without them the full-grid gap is below 0 (-0.034 [-0.066, -0.003]). Pooled size-recall rho
   -0.92 to -0.97 vs -0.87 to -0.95; best sizes 215-404 vs 216-402 tokens; the RQ5(b) tuned size is the same in all 8
   family-parser pairs, so RQ5(b) is unaffected.
+
+## GOLDEN_200 validity check stopped after batch 1 (2026-11-14), deviation
+- The author stopped the check after batch 1 by their own decision: on reading, they judged the questions poor. The
+  expansion rule (fixed before labelling; due for all three documents) and the reason review (added after batch 1)
+  were not carried out. This is a deviation from the design notes above and is reported as such.
+- Result, batch 1 only, labels unchanged (data/results/golden_check/labels.csv; report output in report.txt there):
+  20 of 60 invalid, 0.333 [0.227, 0.459] (Wilson 95%), and 8 of 60 unsure, 0.133 [0.069, 0.242]; invalid or unsure
+  28 of 60, 0.467 [0.346, 0.591]. Per document invalid: indian_d1 3 of 20, 0.150 [0.052, 0.360] (8 unsure);
+  indian_d3_fundamental_rules 9 of 20, 0.450 [0.258, 0.658]; indian_d4_rti_act 8 of 20, 0.400 [0.219, 0.613].
+- Limits: one rater, no second rater; about 600 characters of context per question (the only note says the context
+  was not enough for one question); the rate is not separated into question defects and context length. Held-out
+  indian_d2 was not checked.
+
+## Robustness without the Indian documents, held-out (2026-11-14)
+- The author asked for the same P4 analysis on the held-out scores P3-FINAL-20261106-1 without
+  indian_d2_ccs_conduct_rules (the only held-out Indian document), reading existing scores only, as P4-FINAL did:
+  scripts/robust_no_indian.py --split held_out --final. Same rule as on tuning (source Indian left out), same scopes,
+  rng order, primary settings and original run (P3-LOCAL-20261105-2). Only the P4 part runs: the size curve needs
+  chunk files and the RQ5(b) tuned size is a tuning-only choice. The rows with all documents must reproduce
+  P4-FINAL-20261106-1. New run record; no decision changes.
+- Result (P4-FINAL-NOINDIAN-20261114-1): the rows with all documents reproduce P4-FINAL-20261106-1 exactly. Without
+  indian_d2 (16 documents, 359 of 530 questions): primary best single pdfplumber/method1_tree_T384 0.758 (unchanged
+  winner), 17 of 26 tied, gap -0.007 [-0.047, 0.028]; full grid -0.070 [-0.127, -0.022]; original -0.050 [-0.094,
+  -0.006]. NO-GO in every scope; the tuning winner docling/langchain_recursive_size256 stays rank 20 and tied.

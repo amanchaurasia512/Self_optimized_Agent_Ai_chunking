@@ -142,8 +142,8 @@ held-out counts are ⚠️ no run record (they need `--final`). Main questions, 
 ## 8. Supplementary tables
 
 Source: spec note "Supplementary analyses for the paper (2026-11-14)". Read-only and descriptive; no decision changes.
-Outputs and scripts: `data/results/supplementary-20261114/`. ⚠️ Sections 8.1–8.5 write no run record; their inputs
-are the run ids named in each table. Section 8.6 has a run record.
+Outputs and scripts: `data/results/supplementary-20261114/`. ⚠️ Sections 8.1–8.5 and 8.7 write no run record; their
+inputs are the run ids named in each table. Section 8.6 has run records.
 
 ### 8.1 Index cost at 384 tokens (mean per document)
 
@@ -265,22 +265,54 @@ From 650 run records. Hours are wall-clock time of recorded stages, not core-hou
 
 ### 8.6 Robustness: tuning results without the Indian documents
 
-Source: P4-NOINDIAN-20261114-1 ✅ (`scripts/robust_no_indian.py`, spec note "Robustness: tuning results without the
-Indian documents"), on the tuning scores P3-LOCAL-20261105-4, hybrid, Recall@1,250. The three Indian documents are 3
-of 19 tuning documents but 570 of 860 questions; results average documents first. The rows with all documents
-reproduce 8.2 exactly.
+Source: `scripts/robust_no_indian.py` (spec notes "Robustness: tuning results without the Indian documents" and
+"Robustness without the Indian documents, held-out"), hybrid, Recall@1,250, existing scores only.
+- Tuning: P4-NOINDIAN-20261114-1 ✅ on P3-LOCAL-20261105-4. The three Indian documents are 3 of 19 tuning documents
+  but 570 of 860 questions; results average documents first. The rows with all documents reproduce 8.2 exactly.
+- Held-out: P4-FINAL-NOINDIAN-20261114-1 ✅ on P3-FINAL-20261106-1 (run by the author's request with `--final`),
+  leaving out indian_d2_ccs_conduct_rules (171 of 530 questions). The rows with all documents reproduce
+  P4-FINAL-20261106-1 exactly.
 
-| Scope | All tuning (19 docs, 860 q): best single, recall | Tied | Gap [95%] | Without Indian (16 docs, 290 q): best single, recall | Tied | Gap [95%] |
+| Split, scope | All documents: best single, recall | Tied | Gap [95%] | Without Indian: best single, recall | Tied | Gap [95%] |
 |---|---|---|---|---|---|---|
-| Primary (26) | docling / langchain_recursive_256, 0.802 | 20 | −0.001 [−0.032, 0.030] | docling / langchain_recursive_512, 0.791 | 15 | −0.014 [−0.044, 0.014] |
-| Full (100) | docling / langchain_recursive_256, 0.802 | 32 | −0.015 [−0.046, 0.016] | docling / langchain_recursive_512, 0.791 | 24 | −0.034 [−0.066, −0.003] |
-| Original (44) | docling / langchain_recursive_512, 0.801 | 7 | −0.034 [−0.066, −0.003] | docling / langchain_recursive_512, 0.791 | 5 | −0.055 [−0.086, −0.025] |
+| Tuning, primary (26) | docling / langchain_recursive_256, 0.802 | 20 | −0.001 [−0.032, 0.030] | docling / langchain_recursive_512, 0.791 | 15 | −0.014 [−0.044, 0.014] |
+| Tuning, full (100) | docling / langchain_recursive_256, 0.802 | 32 | −0.015 [−0.046, 0.016] | docling / langchain_recursive_512, 0.791 | 24 | −0.034 [−0.066, −0.003] |
+| Tuning, original (44) | docling / langchain_recursive_512, 0.801 | 7 | −0.034 [−0.066, −0.003] | docling / langchain_recursive_512, 0.791 | 5 | −0.055 [−0.086, −0.025] |
+| **Held-out, primary (26)** | pdfplumber / method1_tree_T384, 0.772 | 15 | −0.007 [−0.045, 0.023] | pdfplumber / method1_tree_T384, 0.758 | 17 | −0.007 [−0.047, 0.028] |
+| Held-out, full (98) | pdfplumber / method1_tree_T256_prefix, 0.773 | 23 | −0.056 [−0.108, −0.010] | pdfplumber / method1_tree_T256_prefix, 0.761 | 26 | −0.070 [−0.127, −0.022] |
+| Held-out, original (42) | docling / sentence_5, 0.756 | 17 | −0.042 [−0.084, 0.002] | docling / sentence_5, 0.749 | 12 | −0.050 [−0.094, −0.006] |
 
-- RQ1: NO-GO in every scope either way. Without the Indian documents, langchain_recursive_256 ranks 3rd and stays
-  tied with the best; per-document choice looks worse, not better.
+Documents and questions: tuning 19 / 860 with, 16 / 290 without; held-out 17 / 530 with, 16 / 359 without.
+
+- RQ1: NO-GO in every scope, on both splits, with and without the Indian documents. On tuning,
+  langchain_recursive_256 drops to 3rd and stays tied. On held-out, the best single is unchanged and the main gap is
+  the same (−0.007); the tuning winner docling / langchain_recursive_256 stays rank 20 and tied. Without the Indian
+  documents per-document choice looks worse, not better.
+- RQ2 on held-out was not rerun: it needs the chunk files, and the RQ5(b) tuned size is chosen on tuning only.
 - RQ2: the pooled size-recall correlation stays negative for both parsers at every budget (rho −0.92 to −0.97 with,
   −0.87 to −0.95 without); best sizes 215–404 vs 216–402 tokens. The RQ5(b) tuned size is the same in all 8
   family-parser pairs, so RQ5(b) is unaffected. The per-source rows for CUAD and OHR-Bench cannot change.
+
+### 8.7 GOLDEN_200 question validity (tuning, batch 1 only)
+
+Source: spec notes "GOLDEN_200 validity check (tuning only)" and "GOLDEN_200 validity check stopped after batch 1".
+⚠️ No run record (reporting step, no LLM call). Labels by the author in `data/results/golden_check/labels.csv`
+(unchanged); the report output is in `report.txt` there. Valid means the question is clear and the gold evidence
+really answers it. 20 random questions per document (seed 42), about 600 characters of Docling context shown.
+
+| Document | Labelled | Invalid | Invalid rate [Wilson 95%] | Unsure | Invalid or unsure [Wilson 95%] |
+|---|---|---|---|---|---|
+| indian_d1 | 20 | 3 | 0.150 [0.052, 0.360] | 8 | 0.550 [0.342, 0.742] |
+| indian_d3_fundamental_rules | 20 | 9 | 0.450 [0.258, 0.658] | 0 | 0.450 [0.258, 0.658] |
+| indian_d4_rti_act | 20 | 8 | 0.400 [0.219, 0.613] | 0 | 0.400 [0.219, 0.613] |
+| **Overall** | 60 | **20** | **0.333 [0.227, 0.459]** | 8, 0.133 [0.069, 0.242] | 0.467 [0.346, 0.591] |
+
+- **Deviation:** the author stopped the check after batch 1, having judged the questions poor on reading. The
+  expansion rule fixed before labelling (due for all three documents, 3 or more invalid of 20) and the reason
+  review added after batch 1 were not carried out.
+- Limits: one rater; short context (the only note, on one invalid question, says the shown text was not enough), so
+  the rate does not separate question defects from context length; held-out indian_d2 was not checked.
+- Section 8.6 shows that the RQ1 and RQ2 conclusions hold without the Indian documents.
 
 ## Spec corrections
 
