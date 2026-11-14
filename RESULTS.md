@@ -131,13 +131,14 @@ held-out counts are ⚠️ no run record (they need `--final`). Main questions, 
   - Recall@5: fixed_token 1024 is best on both parsers (0.904).
   - Recall@10: fixed_token 896 is best (Docling 0.964, pdfplumber 0.968).
   - Hit@1 and MRR barely separate sizes (Docling Hit@1 range about 0.53–0.62). Best Hit@1: Docling method1_tree
-    T512 0.624, pdfplumber recursive 1024 0.632. Best MRR: Docling method1_tree T1024 0.743, pdfplumber recursive
+    T384 0.622, pdfplumber recursive 1024 0.632. Best MRR: Docling method1_tree T1024 0.742, pdfplumber recursive
     1024 0.748.
-  - Recall@4,000 tokens: small chunks are best (Docling method1_tree T384 0.932, pdfplumber sentence 5 0.928; best
-    sizes about 220–380 tokens).
+  - Recall@4,000 tokens: small chunks are best (Docling method1_tree T384 prefix 0.925, pdfplumber sentence 5 0.928;
+    best sizes about 220–380 tokens).
   - With a fixed number of chunks, larger chunks read more text, so fixed-k favours them. At an equal token budget
     the ranking reverses.
-  - The three Docling method1_tree winners named above are the superseded `_prefix_v11` settings.
+  - Superseded `_v10` / `_v11` settings are left out, as in P4 (spec Errata 2026-11-14, fixed-k). With them, the
+    three Docling winners were the `_prefix_v11` settings (Hit@1 0.624, MRR 0.743, Recall@4,000 0.932).
 
 ## 8. Supplementary tables
 

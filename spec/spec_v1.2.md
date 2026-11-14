@@ -445,6 +445,21 @@ Found by the reproduction check (2026-11-14); the earlier note is left as writte
   docling_ocr_off 307, pdfplumber_layout 307, pdfplumber_tolerance_wide 308). A transcription error in the note
   only; the analysis and its conclusion are unchanged (the reproduced output is byte-identical to the original).
 
+## Errata (2026-11-14, fixed-k)
+
+Found while planning the paper; the earlier note is left as written.
+- Fixed-k result (P3-FIXEDK-20261112-1, 2026-11-12): the run scored all 63 settings of P3-LOCAL-20261105-4,
+  including 11 superseded method1_tree folders (*_v10 x 4: T512 and T1024, with and without prefix; *_prefix_v11
+  x 7: T256-T1024), which P4 leaves out ("Method 1 v1.2", 2026-11-05), and the 2 sanity chunkers. Three Docling
+  winners in the note are superseded settings. With P4's rule (in_scope: 50 of 63 settings, without the 11
+  superseded and the 2 sanity settings) they read: best Hit@1 method1_tree T384 0.622 (not T512 prefix_v11
+  0.624); best MRR method1_tree T1024 0.742 (not T1024 prefix_v11 0.743); best Recall@4,000 tokens method1_tree
+  T384 prefix 0.925 (not T384 prefix_v11 0.932).
+- Unchanged: every pdfplumber winner; Docling Recall@5 and Recall@10; the Docling Hit@1 range (about 0.53-0.62);
+  the best sizes at 4,000 tokens (about 220-380 tokens); the conclusion (fixed k favours large chunks, an equal
+  token budget reverses the ranking).
+- data/results/p3/fixedk_tuning.csv is left as written; the paper applies the filter in
+  paper/scripts/make_artifacts.py.
 ## Agent spec (2026-11-13)
 The agent design is in spec/agent_v1.md.
 
@@ -672,3 +687,17 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
   indian_d2 (16 documents, 359 of 530 questions): primary best single pdfplumber/method1_tree_T384 0.758 (unchanged
   winner), 17 of 26 tied, gap -0.007 [-0.047, 0.028]; full grid -0.070 [-0.127, -0.022]; original -0.050 [-0.094,
   -0.006]. NO-GO in every scope; the tuning winner docling/langchain_recursive_size256 stays rank 20 and tied.
+
+## AQ judge check: first-pass labels overwritten in place (reporting, added 2026-11-14)
+- The first-pass human labels of the 40-case judge check were overwritten in place by the second pass in
+  data/results/aq/judge_check.csv (a LibreOffice lock file dated 2026-11-13 remains next to it). Git holds one
+  version of the file (a6278ca), identical to the working copy, with second-pass labels only (human 1.0 x 31,
+  0.0 x 8, 0.5 x 1); no other copy exists in data/.
+- The second pass (95%, kappa 0.86) is recomputable and was reproduced (data/results/repro-20261114/comparison/
+  aq_judge_check.log). The first pass (70%, kappa 0.48; 12 disagreements, 11 of them human 0.5 / judge 1) rests on
+  the note "AQ judge check (2026-11-12)" only.
+- A deduction from the second-pass file, assuming the 28 agreeing cases and the judge scores were unchanged, gives
+  70% and kappa 0.451 or 0.465 (depending on the first-pass label of the one judge-0.5 case), not the recorded 0.48.
+  The files cannot show the cause. The recorded values are kept as written and flagged; the paper takes them from
+  paper/data/manual_facts.csv with this note as source. No conclusion changes: the judge was a secondary measure
+  because the first pass failed the 80% mark, which holds for every reconstruction.

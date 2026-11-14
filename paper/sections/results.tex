@@ -1,0 +1,53 @@
+\section{Results}
+\label{sec:results}
+% About 3 pages. Floats hold generated bodies only; captions are prose.
+
+\subsection{RQ1: Per-Document Choice versus One Fixed Setup}
+\label{sec:rq1}
+
+\begin{table*}[t]
+\centering
+\generated{tables/rq1.tex}
+\caption{RQ1 on the held-out documents (hybrid retrieval, Recall@1,250).}
+\label{tab:rq1}
+\end{table*}
+
+\subsection{RQ2: Chunk Size and Chunker at a Fixed Budget}
+\label{sec:rq2}
+
+\begin{figure*}[t]
+\centering
+\generated{figures/rq2.tex}
+\caption{RQ2: recall at a fixed token budget against measured chunk size, by source (tuning documents).}
+\label{fig:rq2}
+\end{figure*}
+
+\subsection{RQ3: The Measure Decides the Best Size}
+\label{sec:rq3}
+
+\begin{figure}[t]
+\centering
+\generated{figures/rq3.tex}
+\caption{RQ3: chunk size of the best setting under each measure (tuning documents).}
+\label{fig:rq3}
+\end{figure}
+
+\subsection{RQ4: Answer Quality}
+\label{sec:rq4}
+
+\begin{table*}[t]
+\centering
+\generated{tables/rq4.tex}
+\caption{RQ4: answer token F1 on the held-out documents against the best setup.}
+\label{tab:rq4}
+\end{table*}
+
+\subsection{RQ5: Tuned Settings versus Defaults}
+\label{sec:rq5}
+
+\begin{figure*}[t]
+\centering
+\generated{figures/rq5.tex}
+\caption{RQ5: held-out recall difference of the tuned setting against the default.}
+\label{fig:rq5}
+\end{figure*}

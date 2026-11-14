@@ -1,0 +1,11 @@
+key,value,unit,section,source_file,source_commit,note
+judge_first_pass_agreement,0.70,proportion of 40 cases,RESULTS.md 5,"spec/spec_v1.2.md, AQ judge check (2026-11-12)",a6278ca,"Not recomputable: judge_check.csv was overwritten in place by the second pass; git holds only the second-pass version (a6278ca). 28 of 40."
+judge_first_pass_kappa,0.48,Cohen's kappa,RESULTS.md 5,"spec/spec_v1.2.md, AQ judge check (2026-11-12)",a6278ca,"Not recomputable (as above). Deduction from the second-pass file and the fixed judge scores gives 0.451 or 0.465, not 0.48; the cause cannot be found from the files."
+judge_first_pass_disagreements,12,cases of 40,RESULTS.md 5,"spec/spec_v1.2.md, AQ judge check (2026-11-12)",a6278ca,Not recomputable (as above).
+judge_first_pass_long_correct,11,of the 12 disagreements,RESULTS.md 5,"spec/spec_v1.2.md, AQ judge check (2026-11-12)",a6278ca,"Long but correct answers: human 0.5, judge 1. Not recomputable (as above)."
+scanned_placement_docling_exact,49,questions,RESULTS.md 3,"spec/spec_v1.2.md, Correction to RQ5(a) scanned results (2026-11-11)",3d5407e,"Not recomputed: needs scanned_rq5 gold files, not read without the author's permission; p1_gold_match writes no record."
+scanned_placement_docling_certain,47,questions,RESULTS.md 3,"spec/spec_v1.2.md, Correction to RQ5(a) scanned results (2026-11-11)",3d5407e,Not recomputed (as above).
+scanned_placement_tesseract_exact,41,questions,RESULTS.md 3,"spec/spec_v1.2.md, Correction to RQ5(a) scanned results (2026-11-11)",3d5407e,Not recomputed (as above).
+scanned_placement_tesseract_certain,43,questions,RESULTS.md 3,"spec/spec_v1.2.md, Correction to RQ5(a) scanned results (2026-11-11)",3d5407e,Not recomputed (as above).
+scanned_placement_pdfplumber,0,questions,RESULTS.md 3,"spec/spec_v1.2.md, Correction to RQ5(a) scanned results (2026-11-11)",3d5407e,"pdfplumber reads no text on the scans. Not recomputed (as above)."
+ocr_variants_identical_documents,10,of 10 scanned documents,RESULTS.md 3,"spec/spec_v1.2.md, RQ5(a) result (2026-11-10)",7733597,"ocr_rapidocr and ocr_scale_double gave text byte-identical to the Docling default; no script or file. Not recomputed: needs scanned_rq5 extraction files."
