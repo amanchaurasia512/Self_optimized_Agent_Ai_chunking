@@ -505,3 +505,83 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
     saved outputs are the inputs above.
 - **Checksums:** `docs/paper_checksums.txt` holds the SHA-256 of the 64 original result files and run records the
   paper uses (check with `sha256sum -c docs/paper_checksums.txt`).
+
+
+## Supplementary analyses for the paper (2026-11-14), read-only, descriptive
+- Purpose: five reporting tables for the paper. No decision, rule or frozen part changes; nothing here alters RQ1-RQ5.
+  No `--final` run, no LLM call, no chunk file read. Outputs, scripts and the GitHub activity pages are in
+  `data/results/supplementary-20261114/` (`tools/retrievers.py`, `tools/tables.py`). These analyses write no run
+  record. The design was set by the author's request on 2026-11-14. Item (2) was computed before this note was
+  written; it is descriptive and has no decision attached.
+- **(1) Index cost at 384 tokens** (from the saved P4 setup tables: tuning P4-LOCAL-20261105-1, 19 documents;
+  held-out P4-FINAL-20261106-1, 17 documents; means per document; per-document values were never saved and would need
+  the chunk files):
+  - Index tokens are equal within 0.03% for method1_tree T384, recursive 384 and langchain_recursive 384 on each
+    parser and split (no overlap, no prefix: every chunker indexes the whole text once).
+  - **method1_tree does not reduce chunk count.** It makes 6-11% more chunks than the own recursive chunker (tuning
+    Docling 121.2 vs 109.2, pdfplumber 100.5 vs 93.8; held-out Docling 214.7 vs 194.1, pdfplumber 173.1 vs 162.9),
+    and about as many as langchain_recursive (+3% to +5% Docling, -1% to -4% pdfplumber). Its chunks are shorter on average
+    (295-325 vs 327-345 tokens), because it cuts at structure nodes. Its advantage is recall, not storage.
+- **(2) BM25-only and dense-only** (Recall@1,250, main questions, scores P3-LOCAL-20261105-4 and P3-FINAL-20261106-1,
+  original grid from P3-LOCAL-20261105-2): p4_analyse's own functions (question_matrix, analyse, resampled_means;
+  seed 42, the same scope order full, original, primary), with the retriever filter changed. Index cost is not used
+  by ties, best single, oracle or gap, so zero tables stand in. Check: the hybrid rows reproduce every value of the
+  P4-LOCAL-20261105-1 and P4-FINAL-20261106-1 summaries exactly. The tuning primary scope is new (P4-LOCAL had none).
+  - Held-out primary: hybrid best pdfplumber/method1_tree_T384 0.772, gap -0.007 [-0.045, 0.023]; BM25 best
+    pdfplumber/langchain_recursive_256 0.779 (method1_tree_T384 0.756, tied), gap -0.029 [-0.079, 0.013]; dense best
+    pdfplumber/method1_tree_T384 0.775, gap -0.003 [-0.074, 0.055].
+  - Tuning primary: hybrid best docling/langchain_recursive_256 0.802, gap -0.001 [-0.032, 0.030]; BM25 same best
+    0.804, gap -0.005 [-0.037, 0.033]; dense best pdfplumber/langchain_recursive_256 0.783, gap -0.015 [-0.048, 0.016].
+  - The frozen go/no-go rule gives NO-GO for every retriever on both splits, so the RQ1 conclusion does not depend on
+    the retriever. The best single changes only under BM25, and the hybrid winner stays in the tied set for every
+    retriever. On the full and original grids no interval is above 0 (closest: held-out dense original +0.026
+    [-0.036, 0.100]). Docling method1_tree T384 falls to 0.679 with dense alone on held-out (still in the tied set).
+- **(3) Pre-registration timeline:** git commits, with the first push of each commit read from GitHub's activity API
+  (read-only; 132 events from repository creation on 2026-10-26; only `push` and `branch_creation` on main, no
+  force push or branch deletion, so the published history was never rewritten). Every spec freeze and amendment
+  reached GitHub 2-25 s after it was committed (most within 4 s). The held-out plan (305da55) was pushed 2026-11-05 23:44:15 IST.
+  Held-out extraction (P1-LOCAL-20261106-1, 00:30 IST), chunking (P2-P4-KN01-*, from 00:44 IST) and the `--final`
+  scoring (P3-FINAL-20261106-1, 2026-11-06 14:27 IST) all came after that push. The table is in RESULTS.md section 8.
+- **(4) Datasets and licences** (licences checked on each dataset's official page on 2026-11-14; table in RESULTS.md
+  section 8):
+  - **Non-commercial licences:** UniDoc-Bench and the FinanceBench annotations are CC BY-NC 4.0. Research use is
+    covered. Any shared file derived from them (questions, gold spans, answers) must keep attribution and the
+    non-commercial term; the repository's own licence does not cover them. They are not in the repository (data/
+    is git-ignored). The agent and app ship no benchmark data.
+  - MP-DocVQA is MIT at its source (rubentito/mp-docvqa); the lmms-lab copy we read states no licence of its own.
+  - **Indian GOLDEN_200 provenance gaps** (read: the benchmark's README and LICENSE, its single commit 654c512 of
+    2026-10-15, the GitHub page and the arXiv abstract 2609.31660; only the tuning question files D1, D3 and D4 were
+    opened): the repository is Apache-2.0 and the questions were LLM-generated against verbatim evidence, with a 10%
+    manual spot-check, deduplication and no inter-annotator agreement. Not found anywhere: (a) which LLM, the prompt
+    and the generation date; (b) who did the spot-check, which questions were checked and what was found or removed
+    (the JSON has no field for it); (c) the corpus manifest with source URLs, retrieval dates and PDF hashes that the
+    README describes (absent, like requirements.txt and master_results.csv); (d) any licence for the four PDFs
+    (Government of India documents); (e) a release tag or DOI. The Indian questions should be treated as
+    LLM-generated, lightly checked gold.
+- **(5) Compute** (650 run records; hours are wall-clock time of recorded stages, not core-hours or measured GPU use):
+  study runs 19.5 GPU hours on Kaggle T4 (P3 embedding 13.4, P1 extraction 3.1, P2 chunking 3.1) and 10.8 CPU hours
+  (Kaggle CPU 5.3, laptop 5.5); test runs 0.35 GPU and 0.64 CPU hours. LLM calls in run records: 360 Gemini calls by
+  LLM chunkers (4.0 M input tokens), 640 AQ answer calls, 86 agent answer calls; LlamaParse 1,711 credits
+  (P1-LOCAL-20261028-*). Not in any run record: the Qwen3-8B judge (2,301 judgements on Kaggle, GPU time unknown)
+  and the 1,661 AQ answers below.
+- **AQ answers without a run record:**
+  - `data/results/aq/answers.jsonl` holds 2,301 unique answers; the run records P6-LOCAL-20261110-1…3 account for
+    269 + 72 + 299 = 640 of them (the last 640 lines). The file is append-only, so lines 1-1,661 were written before
+    P6-1 started (about 16:31 IST on 2026-11-10). The file has no per-line timestamps. No crash log survives (the
+    session ran in a claude.ai web session, whose output is not stored locally).
+  - The 1,661 earlier answers come from the unpaced code at e5a924a (4 concurrent requests, no pacing, record written
+    only after every job finished). Its runs stopped on rate-limit errors before writing a record: the most likely
+    cause, since no log survives. Every answer was flushed to the file as it arrived, so the answers were kept.
+  - The P6 runs record `uncommitted_changes: true`: pacing was added (one request every 60/14 s, committed later in
+    3d5407e together with a clean stop at the daily limit).
+  - Same answer setup across both code versions (e5a924a against 3d5407e and the P6 run records): identical answer
+    prompt, model gemini-3.5-flash-lite, temperature 0 (src/chunk/llm.py unchanged), budget 1,250, hybrid retrieval,
+    the same setups and the same context building (`contexts`, `question_vector`, `encoder` and job building are
+    unchanged). Same sample file (SHA-256 3abd903…, kept as data/backup_test/aq_sample_before.csv; the 2026-11-11
+    rebuild changed only the 25 scanned references). The only differences are pacing (4 concurrent vs one start every
+    4.29 s), the daily-limit stop, and the run-record field `concurrency` vs `seconds_between_requests`. The exact
+    uncommitted P6 code is not kept; this comparison rests on 3d5407e and the P6 records.
+  - Daily cap: the free-tier limit of 500 calls a day applies per API key. On 2026-11-10, after keys hit the daily
+    limit, the author switched to further free-tier keys (author's statement; key identities are not recorded). All
+    answers came from gemini-3.5-flash-lite. The 2026-11-11 judge amendment's "would take 5 days" assumed one key.
+  - No retroactive run record was made.

@@ -1,0 +1,164 @@
+{
+  "run_id": "A-LOCAL-20261113-18",
+  "created_at": "2026-11-13T17:11:46+00:00",
+  "code": {
+    "commit": "ae7f506c8e5571714a8527cb3b72ce1c5a1510cd",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "app_index",
+    "parser_mode": "fast",
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    },
+    "parser_reason": "fast mode, every page has a text layer",
+    "from_extraction": null,
+    "pages": 6,
+    "pages_without_text": 0,
+    "pages_without_text_list": [],
+    "chunker": {
+      "name": "method1_tree",
+      "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix",
+      "settings": {
+        "T": 384,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "cache": {
+      "hit": false,
+      "folder": "/tmp/tmpa8e8b_wn/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix"
+    },
+    "chunks": 11
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": "2.143.0",
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "/tmp/tmpa8e8b_wn/uploads/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement.pdf",
+      "sha256": "29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64"
+    }
+  ],
+  "outputs": [
+    "/tmp/tmpa8e8b_wn/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix/extraction.json",
+    "/tmp/tmpa8e8b_wn/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix/chunks.json",
+    "/tmp/tmpa8e8b_wn/29430de07c93623cb6ebae2f403bb70a0c59723806534e45ce246ab62c1aef64/pdfplumber_method1_tree_T384_noprefix/index.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "scan_check",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "pages": 6,
+        "pages_without_text": 0,
+        "wall_seconds": 0.456,
+        "peak_ram_mb": 3954.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_index",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.001,
+        "peak_ram_mb": 3954.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.294,
+        "peak_ram_mb": 3965.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 11,
+        "wall_seconds": 0.051,
+        "peak_ram_mb": 3966.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 11,
+        "wall_seconds": 17.087,
+        "peak_ram_mb": 4232.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "load_vectors",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.001,
+        "peak_ram_mb": 3998.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 17.89,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 4232.9,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

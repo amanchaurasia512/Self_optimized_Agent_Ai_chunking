@@ -139,6 +139,130 @@ held-out counts are ⚠️ no run record (they need `--final`). Main questions, 
     the ranking reverses.
   - The three Docling method1_tree winners named above are the superseded `_prefix_v11` settings.
 
+## 8. Supplementary tables
+
+Source: spec note "Supplementary analyses for the paper (2026-11-14)". Read-only and descriptive; no decision changes.
+Outputs and scripts: `data/results/supplementary-20261114/`. ⚠️ These analyses write no run record; their inputs are
+the run ids named in each table.
+
+### 8.1 Index cost at 384 tokens (mean per document)
+
+From P4-LOCAL-20261105-1 (tuning, 19 documents) and P4-FINAL-20261106-1 (held-out, 17 documents), full-grid setup
+tables. Recall is hybrid Recall@1,250.
+
+| Split | Parser | Setting | Chunks | Index tokens | Tokens / chunk | Recall |
+|---|---|---|---|---|---|---|
+| Tuning | Docling | method1_tree T384 | 121.2 | 35,789 | 295 | 0.789 |
+| | | recursive 384 | 109.2 | 35,794 | 328 | 0.768 |
+| | | langchain_recursive 384 | 117.1 | 35,792 | 306 | 0.797 |
+| | pdfplumber | method1_tree T384 | 100.5 | 31,855 | 317 | 0.783 |
+| | | recursive 384 | 93.8 | 31,855 | 339 | 0.785 |
+| | | langchain_recursive 384 | 101.5 | 31,855 | 314 | 0.767 |
+| Held-out | Docling | method1_tree T384 | 214.7 | 63,545 | 296 | 0.752 |
+| | | recursive 384 | 194.1 | 63,552 | 327 | 0.701 |
+| | | langchain_recursive 384 | 204.8 | 63,549 | 310 | 0.710 |
+| | pdfplumber | method1_tree T384 | 173.1 | 56,179 | 325 | 0.772 |
+| | | recursive 384 | 162.9 | 56,179 | 345 | 0.736 |
+| | | langchain_recursive 384 | 180.6 | 56,179 | 311 | 0.749 |
+
+Index tokens are the same for all three chunkers (no overlap, no prefix). **method1_tree does not reduce chunk
+count**: it makes 6–11% more chunks than recursive. Its gain is recall, not storage. Per-document values were not
+saved by P4.
+
+### 8.2 Retriever: BM25-only and dense-only (primary 26 setups, Recall@1,250)
+
+p4_analyse's own functions on P3-LOCAL-20261105-4 (tuning) and P3-FINAL-20261106-1 (held-out); the hybrid rows
+reproduce P4-LOCAL-20261105-1 and P4-FINAL-20261106-1 exactly. The tuning primary scope is computed here for the
+first time.
+
+| Split | Retriever | Best single | Recall | Tied | pdfplumber method1_tree T384 | Gap [95%] | Rule |
+|---|---|---|---|---|---|---|---|
+| Held-out | hybrid | pdfplumber / method1_tree_T384 | 0.772 | 15 | best | −0.007 [−0.045, 0.023] | NO-GO |
+| Held-out | BM25 | pdfplumber / langchain_recursive_256 | 0.779 | 15 | 0.756, tied | −0.029 [−0.079, 0.013] | NO-GO |
+| Held-out | dense | pdfplumber / method1_tree_T384 | 0.775 | 14 | best | −0.003 [−0.074, 0.055] | NO-GO |
+| Tuning | hybrid | docling / langchain_recursive_256 | 0.802 | 20 | 0.783, tied | −0.001 [−0.032, 0.030] | NO-GO |
+| Tuning | BM25 | docling / langchain_recursive_256 | 0.804 | 15 | 0.756, tied | −0.005 [−0.037, 0.033] | NO-GO |
+| Tuning | dense | pdfplumber / langchain_recursive_256 | 0.783 | 9 | 0.775, tied | −0.015 [−0.048, 0.016] | NO-GO |
+
+The RQ1 conclusion does not depend on the retriever. The best single changes only under BM25. The hybrid winner of
+each split stays tied with the best under every retriever. On the full and original grids no gap interval is above 0.
+
+### 8.3 Pre-registration timeline (IST)
+
+Commit times from git; push times from GitHub's activity API (only pushes and the branch creation on main; no force
+push, so the published history was never rewritten). Run times from the run records' `created_at`.
+
+| Event | Commit / run | Committed | First pushed |
+|---|---|---|---|
+| Spec v1 | 607d29c | 10-26 21:57:51 | 10-26 21:58:16 |
+| Spec v1.1 (chunker pool, oracle, gap) | de4aff3 | 11-01 18:49:27 | 18:49:30 |
+| v1.1: method 1 defined before any retrieval result | a4c30f7 | 11-02 17:03:35 | 17:03:38 |
+| Spec v1.2: method 1 rules A1–A11 | 4584c8f | 11-04 12:05:37 | 12:05:40 |
+| Rules A5b, A12 | 5503874 | 11-04 12:34:40 | 12:34:43 |
+| Amendment A13 (line blocks) | f92ba8c | 11-04 23:30:30 | 23:30:33 |
+| Amendment: S14 floor, S10 tie rule | a89b9ff | 11-05 11:03:12 | 11:03:14 |
+| RQ5 added (after P3) | e59c69c | 11-05 11:15:51 | 11:15:54 |
+| **scorer_v1 frozen** | 448173c | 11-05 11:21:57 | 11:22:00 |
+| Grid extension after the first official run | 6032033 | 11-05 12:09:04 | 12:09:07 |
+| Method 1 v1.2 (A9 on the whole prefix) | 93d7e16 | 11-05 17:12:21 | 17:12:24 |
+| P4 v2 (tuning) | a781ff7 | 11-05 23:19:35 | 23:19:38 |
+| **Held-out plan frozen** | 305da55 | 11-05 23:44:12 | **23:44:15** |
+| Held-out extraction / chunking | P1-LOCAL-20261106-1 / P2-P4-KN01-* | runs 11-06 00:30 / from 00:44 | — |
+| Held-out gold | a2c87c6 | 11-06 14:13:08 | 14:13:11 |
+| **`--final` scoring** | P3-FINAL-20261106-1 | run 11-06 14:27:20 | — |
+| Held-out analysis | P4-FINAL-20261106-1 | run 11-06 15:29:07 | — |
+| Held-out result | 0d42cd0 | 11-06 15:37:49 | 15:37:52 |
+| RQ5(a) design frozen | 8116310 | 11-08 10:36:05 | 10:36:09 |
+| AQ design frozen | 479a55c | 11-10 12:11:12 | 12:11:15 |
+| AQ code (answers on 11-10, see 8.5) | e5a924a | 11-10 12:17:35 | 12:17:37 |
+| Correction (MP-DocVQA answers) | 3d5407e | 11-11 23:11:20 | 23:11:23 |
+| AQ result | a6278ca | 11-12 15:57:42 | 15:58:06 |
+| Held-out gold-drop and size-by-source reports (`--final`, no run record) | 5a6b52d | 11-12 18:02:31 | 18:02:35 |
+| Errata | 3b9ecd6 / 56bd9ae | 11-12 22:55:13 / 11-14 14:41:01 | 22:55:16 / 14:41:05 |
+| `--final` reproduction runs (by the author) | P3-SIZESRC-20261114-2 / P3-GOLDDROP-20261114-2 | runs 11-14 13:36 / 13:41 | — |
+
+### 8.4 Datasets
+
+Licences checked on each dataset's official page (2026-11-14).
+
+| Dataset | Source | Licence | How the questions were made |
+|---|---|---|---|
+| CUAD v1 | The Atticus Project (HF theatticusproject/cuad) | CC BY 4.0 | Contracts labelled by hand for 41 clause types |
+| QASPER | AllenAI (HF allenai/qasper) | CC BY 4.0 | NLP practitioners wrote questions from title and abstract; others answered with evidence |
+| OHR-Bench v2 | opendatalab/OHR-Bench | CC BY 4.0 (questions); PDFs under their own licences | GPT-4o generated from page ground truth; rule, LLM and manual filtering (arXiv 2412.02592) |
+| UniDoc-Bench | Salesforce/UniDoc-Bench | **CC BY-NC 4.0** | GPT-4.1 generated, Gemini-2.5-Pro grounding check, 3 human annotators with expert adjudication (arXiv 2510.03663) |
+| FinanceBench | PatronusAI/financebench | **CC BY-NC 4.0** (annotations); PDFs are public SEC filings | Written by financial-analyst annotators (arXiv 2311.11944) |
+| MP-DocVQA | rubentito/mp-docvqa (read from lmms-lab/MP-DocVQA) | MIT at the source; the lmms-lab copy states none | Reused from SP-DocVQA |
+| Indian regulatory (GOLDEN_200) | github.com/shubham-61291/pre_generation_rag_retrieval_benchmark (commit 654c512); arXiv 2609.31660 | Apache-2.0 (repository); PDFs are Government of India documents, no licence stated | LLM-generated against verbatim evidence, 10% manual spot-check, deduplicated, no inter-annotator agreement |
+
+- The two CC BY-NC sources allow research use. Files derived from them keep the non-commercial term; they are not
+  in the repository (`data/` is git-ignored).
+- **GOLDEN_200 provenance gaps:** the generating LLM, prompt and date; who spot-checked which questions and with what
+  result; the corpus manifest (source URLs, retrieval dates, PDF hashes) the README describes; any licence for the four
+  PDFs; any release tag or DOI. The Indian questions are LLM-generated, lightly checked gold.
+
+### 8.5 Compute
+
+From 650 run records. Hours are wall-clock time of recorded stages, not core-hours or measured GPU use.
+
+| | Study runs | Test runs |
+|---|---|---|
+| GPU hours (Kaggle T4) | **19.5** (P3 embedding 13.4, P1 extraction 3.1, P2 chunking 3.1) | 0.35 |
+| CPU hours | **10.8** (Kaggle CPU 5.3, laptop 5.5) | 0.64 |
+| Gemini calls, LLM chunkers | 360 (4.0 M input tokens) | 0 |
+| Gemini calls, AQ answers | 640 in run records (P6-LOCAL-20261110-1…3), 2,301 answers in total | 0 |
+| Gemini calls, agent answers | 86 | 0 |
+| LlamaParse | 1,711 credits (P1-LOCAL-20261028-*) | 0 |
+
+- ⚠️ Not in any run record:
+  - The Qwen3-8B judge: 2,301 judgements on Kaggle, GPU time unknown.
+  - 1,661 AQ answers. They were made on 2026-11-10 before P6-1 started, by the unpaced code at e5a924a. Its runs
+    most likely stopped on rate-limit errors before writing a record; no log survives.
+- The P6 runs record `uncommitted_changes: true` (pacing added). Prompt, model (gemini-3.5-flash-lite), temperature 0,
+  budget, setups and context building are identical across both code versions.
+- The 500-call daily limit applies per API key. On 11-10 the author switched to further free-tier keys after keys hit
+  the limit.
+
 ## Spec corrections
 
 The spec's Errata (2026-11-12) corrects:
