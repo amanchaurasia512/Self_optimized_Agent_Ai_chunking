@@ -585,3 +585,27 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
     limit, the author switched to further free-tier keys (author's statement; key identities are not recorded). All
     answers came from gemini-3.5-flash-lite. The 2026-11-11 judge amendment's "would take 5 days" assumed one key.
   - No retroactive run record was made.
+
+## GOLDEN_200 validity check (tuning only), design written before any label (2026-11-14)
+- Question: how many of the Indian benchmark's LLM-generated questions are invalid? The benchmark reports only a 10%
+  manual spot-check with no results (see "Supplementary analyses", item 4). Descriptive; no study result or frozen part
+  changes.
+- Documents: tuning only, indian_d1, indian_d3_fundamental_rules and indian_d4_rti_act. indian_d2_ccs_conduct_rules is
+  held-out and is never read (the script refuses any document that is not tuning in pdfs/split.csv).
+- Sample: for each document, the 200 question ids from its GOLDEN_200 file in a random order (numpy
+  default_rng(42).permutation, one generator per document); the first 20 are batch 1. All 200 questions are eligible,
+  not only those the study's gold rules kept; the study's `certain` flag (Docling gold) is stored for a breakdown.
+- Labels, by the author in a terminal labeller (scripts/golden_check.py --stage label): valid (y) / invalid (n) /
+  unsure (s), with an optional note. **Valid** means the question is clear and the gold evidence really answers it.
+  The labeller shows the question, the gold answer and evidence strings, and about 600 characters of the Docling
+  extraction around the evidence as the study placed it (data/gold/spans_docling.jsonl; evidence marked >>> <<<). If
+  the study could not place the evidence, the cited page's text is shown and this is said on screen. Saved after
+  every label to data/results/golden_check/labels.csv; batches of 20; resumable.
+- Report (--stage report): invalid rate per document and overall = invalid / labelled, with Wilson 95% intervals
+  (z = 1.96). Unsure labels are counted in the denominator and reported separately; a sensitivity line counts unsure
+  as invalid. Breakdown by the study's `certain` flag. The overall rate pools the labelled questions (equal sample per
+  document).
+- Expansion rule, fixed now: a document gets one more batch of 20 (the next 20 ids of the same permutation) if its
+  batch-1 invalid count is 3 or more of 20 (Wilson lower bound above 5%). At most one expansion per document; the
+  rule is checked by --stage expand, which refuses otherwise. Unsure labels do not trigger it.
+- No LLM call, no run record (reporting step, like the AQ judge check). Interpretation is left to the result note.
