@@ -1,1 +1,18 @@
 % Abstract (about 0.25 page). Prose only; numbers through macros from generated/tables/numbers.tex.
+Retrieval over PDFs depends on how documents are parsed and cut into
+chunks, and recent work proposes choosing the chunking method per
+document. We test this in a pre-registered study with two parsers, a pool
+of chunkers including a structure-tree method of our own, hybrid
+retrieval, and one frozen scorer that reads retrieved chunks up to a fixed
+token budget. On \AccountingMain{} held-out documents, opened only after
+the analysis plan was frozen, a split-half per-document oracle does not
+beat the best single setup (gap \RQonePrimaryGap{} \RQonePrimaryGapCI{});
+by the pre-registered rule the answer is \RQoneDecision{}, and one fixed
+setup is the recommendation. At an equal token budget smaller chunks
+retrieve more of the gold, while the usual fixed-$k$ measures favour
+large chunks. A popular library's default chunk size loses
+\RQfiveBLangchainRecursiveDoclingDiff{} recall on Docling to a tuned size, whereas
+tuning parser settings or our own chunkers' sizes gives no significant
+gain. Answers from a language model confirm the penalty for large chunks
+but do not separate small-chunk setups. We report every deviation from
+the plan and release the result files.

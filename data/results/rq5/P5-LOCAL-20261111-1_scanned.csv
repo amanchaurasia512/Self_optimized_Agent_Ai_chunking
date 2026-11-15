@@ -1,0 +1,2 @@
+variant,default,documents,questions,default_recall,variant_recall,difference,low,high,p,holm_p,beats_default
+docling_ocr_tesseract,docling,8,34,0.7654761904761904,0.785952380952381,0.020476190476190467,-0.051199404761904745,0.07666964285714283,0.504,0.504,False

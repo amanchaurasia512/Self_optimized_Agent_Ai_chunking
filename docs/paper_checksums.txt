@@ -1,6 +1,9 @@
 # SHA-256 of every result file the paper uses (RESULTS.md), written 2026-11-14 after the reproduction check
 # (spec/spec_v1.2.md, "Reproduction check (2026-11-14)"). These are the original files, not the re-run copies.
 # Check from the repo root: sha256sum -c docs/paper_checksums.txt   (the # lines are skipped with a warning)
+# paper-v1.2 (2026-11-15): every listed file is in git except data/results/aq/answers.jsonl, which is checksummed
+# but not distributed (model answers written from documents whose licence is unknown; NOTICE.md). Its hash still
+# fixes the file that scripts/redraw_judge_check.py reads.
 
 # Retrieval scores (P3)
 191c04ddedf846ca480dc33e373b05d3edbf48aa3c2885d394bbee84dabc1f40  data/results/p3/P3-LOCAL-20261105-2.csv.gz

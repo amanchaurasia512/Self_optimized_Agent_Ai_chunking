@@ -1,18 +1,195 @@
 \section{Method}
 \label{sec:method}
-% About 2 pages.
 
-\subsection{Data and Splits}
+\subsection{Study design and pre-registration}
+\label{sec:prereg}
+
+Figure~\ref{fig:overview} summarises the pipeline. Each PDF is parsed by
+one of two parsers, split into chunks by one chunker, indexed for hybrid
+retrieval, and scored by a single frozen scorer. We call one combination
+of parser, chunker and chunker setting a \emph{setup}.
+
+\input{sections/overview_figure}
+
+The study design was written before the experiments and versioned. The
+first specification was frozen on \DateSpecVone{};
+the chunker pool and the oracle analysis were added on
+\DateSpecVoneOne{}, before any retrieval result existed;
+and the held-out sets were specified on \DateSpecVoneTwo{},
+before any of their documents was opened. The scorer
+(\texttt{scorer\_v1}) was frozen and tagged on \DateScorerFrozen{},
+and the held-out plan, including the decision rule for RQ1, was frozen
+and pushed to a public repository the same day. The held-out set was
+first scored on \DateHeldOutScored{}, for RQ1; its later uses are listed in
+\S\ref{sec:deviations}.
+Each frozen version is a tagged commit with a public push time
+(Appendix~\ref{app:timeline}). Every later change is reported as a
+deviation (\S\ref{sec:deviations}; Appendix~\ref{app:deviations}).
+
+\subsection{Documents and questions}
 \label{sec:data}
 
-\subsection{Parsers and Chunkers}
-\label{sec:chunkers}
+We use digital PDFs from five public question-answering collections:
+contracts from CUAD v1 \citep{hendrycks2021cuad}, scientific papers from
+QASPER \citep{dasigi2021qasper}, OHR-Bench v2
+\citep{zhang2024ocr}, UniDoc-Bench \citep{peng2025unidoc} and
+FinanceBench \citep{islam2023financebench}. We add Indian regulatory
+documents with the questions of \citet{singh2026parser} and a small Hindi
+track of our own. Scanned PDFs, used only for RQ5, come from the
+MP-DocVQA validation split \citep{tito2023mpdocvqa}.
 
-\subsection{Gold Placement and Scoring}
+The \AccountingHeldOut{} held-out documents were chosen by a fixed rule
+written before any of them was opened. A \emph{type} is a source
+collection, split by domain where the collection has domain labels
+(OHR-Bench, UniDoc-Bench). For each type in the tuning set we took the
+largest unseen document by that collection's own length metadata; an
+out-of-domain group applies the same rule to unused domains, and adds one
+FinanceBench document from the top decile by question count. Gold
+answers are character spans that we keep only when they are certain
+(per-collection rules in Appendix~\ref{app:gold}).
+
+Of the \TuningDocuments{} tuning documents,
+\TuningScoredDocuments{} have at least one usable question;
+the UniDoc-Bench documents have only page-level gold, and two QASPER
+documents have no gold span that can be placed with certainty. QASPER
+is reported separately (the rationale was not recorded), so
+the main tuning analysis uses \TuningMainDocuments{} documents and
+\TuningMainQuestions{} questions.
+On the held-out side we removed the
+\AccountingRemovedOwnHindiTrack{} Hindi documents (no gold source), the
+\AccountingRemovedUniDocBench{} UniDoc-Bench documents (page-level gold
+only) and the \AccountingRemovedQASPER{} QASPER documents (same rule),
+which leaves \AccountingMain{} documents with \RQoneQuestions{}
+questions. A question is dropped for a parser when its gold span cannot
+be located in that parser's output; drop rates are in
+\S\ref{sec:coverage}.
+
+\subsection{Parsers and chunkers}
+\label{sec:setups}
+
+\paragraph{Parsers.} We compare Docling \DoclingVersion{}
+\citep{auer2024docling} and pdfplumber \PdfplumberVersion{}\footnote{\url{https://github.com/jsvine/pdfplumber}}. Docling runs with its default pipeline (automatic OCR and
+table-structure recognition; exact settings in Appendix~\ref{app:setups}); pdfplumber uses its default
+text extraction, which reads no text from scanned pages.
+
+\paragraph{Chunkers.} Every chunk length is counted with the bge-m3
+tokenizer \citep{chen2024m3}, so all chunkers share one ruler. The pool contains fixed-size
+token windows, recursive splitting with the separators of
+\citet{demourajunior2026adaptive}, LangChain's recursive splitter,
+sentence windows, page chunks, embedding-based semantic chunking,
+LLM-proposed split patterns, and our own tree-based method
+(Method~1). Method~1 builds a tree of sections, sub-sections, blocks and
+sentences, from the parser's structure labels or, without them, from the
+text's own numbering; a node becomes one chunk when its whole subtree
+fits the target size, otherwise the chunker goes one level down and
+merges small neighbouring siblings, so it never cuts inside a sentence,
+list item or table row. Table chunks repeat the table's header row;
+cross-references, planned in the design, are not part of the evaluated
+version. Method~1 can add a
+heading-path prefix to each chunk, capped at \PrefixCap{} of the chunk
+size together with any table header. The size-based chunkers share a grid from
+\SizeMin{} to \SizeMax{} tokens in steps of \SizeStep{}; the full grid, including overlap variants
+and sentence windows, is in Appendix~\ref{app:setups}. After
+chunking, every chunk above \ChunkMax{} tokens is split again and every
+chunk under \ChunkMin{} tokens is merged into the preceding chunk when the result
+stays within \ChunkMax{} tokens.
+
+Across both parsers this gives \TuningSetups{} setups on the tuning set
+and \HeldOutSetups{} on the held-out set, where the semantic chunker ran
+out of memory. RQ1's primary analysis uses a subset of \RQoneSetups{}
+setups, fixed in the held-out plan before the held-out set was opened:
+recursive, LangChain recursive, fixed-size and Method~1 without prefix at
+\RQonePrimarySizes{} tokens with no overlap, plus sentence windows of
+\RQonePrimarySentenceWindow{} sentences, giving \RQonePrimarySettings{}
+settings per parser (bold in Appendix~\ref{app:setups}). The plan gives
+its reasons from the tuning results: sizes above these were worse for
+every method, the prefix gave no measurable gain once its cap was fixed,
+overlap gave no gain at the largest of these sizes, and the semantic and LLM-pattern chunkers ranked
+lowest. Two sanity chunkers,
+a random cut and a table-splitting cut, test that the scorer punishes
+damage; they are never candidates. Short setup names are listed in
+Appendix~\ref{app:key}.
+
+\subsection{Retrieval and scoring}
 \label{sec:scoring}
 
-\subsection{Per-Document Choice and the Decision Rule}
-\label{sec:p4}
+Each setup is indexed for hybrid retrieval: BM25 ($k_1=\BMKone{}$,
+$b=\BMb{}$) and dense retrieval with bge-m3 (\EmbedDim{} dimensions,
+cosine similarity), combined by reciprocal rank fusion with
+$k=\RRFk{}$. No reranker is used.
 
-\subsection{Pre-Registration and the Held-Out Seal}
-\label{sec:preregistration}
+Our main metric is \textbf{Recall@B}: chunks are read in rank order
+until $B$ tokens have been read, and Recall@B is the share of gold-span
+characters (ignoring whitespace) contained in that text. Prefix tokens
+count against the budget, overlapping text is counted once, and the last
+chunk is cut at $B$. The main budget is $B=\BudgetMain{}$, with
+\BudgetLow{} and \BudgetHigh{} as checks. Because the budget is in
+tokens, a setup with small chunks reads more chunks than one with large
+chunks, so chunk size and retrieval depth are compared at equal reading
+cost.
+
+For RQ3 we also report the usual fixed-$k$ measures, which ignore chunk
+length: Recall@\TopKSmall{} and Recall@\TopKLarge{} (gold characters in
+the top $k$ chunks), Hit@1, MRR, and Recall at a \FixedKBudget{}-token
+budget. The scorer is frozen as \texttt{scorer\_v1}; its rules exist
+only as tagged code, which is therefore the specification
+(Appendix~\ref{app:scorer}).
+
+\subsection{Statistics}
+\label{sec:stats}
+
+Unless stated otherwise, intervals are \CILevel{}\% paired bootstrap intervals with
+\Resamples{} resamples, clustered by document, so that documents with
+many questions do not dominate. Proportions from the gold-label check use Wilson intervals.
+Two setups \emph{tie} when the interval of their paired per-document
+difference contains zero. The \emph{best single setup} is the one with
+the highest mean among setups that are not clearly worse than the top setup;
+cost does not break ties.
+
+\paragraph{Per-document oracle (RQ1).} Choosing the best setup per
+document and scoring it on the same questions rewards luck. We
+therefore split each document's questions at random into two halves,
+choose the best setup on one half and score it on the other, and repeat
+this \SplitHalfReps{} times. Documents with a single question cannot be split; for them the oracle equals the
+best single setup.
+The \emph{gap} is the mean over documents of the oracle's score minus
+the best single setup's score. RQ1 is GO only if the lower end of the
+gap's interval is above zero; this rule was frozen before the held-out
+set was scored. Where several comparisons are reported together, $p$
+values are Holm-corrected.
+
+\subsection{Answer quality (RQ4)}
+\label{sec:aq}
+
+For each document we sample \AQSampleShare{} of its questions (rounded up, at least one), drawn from questions
+with a certain gold span located by both parsers; for scanned documents, which pdfplumber cannot read, the pool
+is all located questions
+(\AQTuningQuestions{} tuning, \AQHeldOutQuestions{} held-out and
+\AQScannedQuestions{} scanned questions). A generator model
+(gemini-3.5-flash-lite, temperature zero) answers from the top
+retrieved chunks up to the main budget, or replies that the answer is
+not found. The primary measures are token F1 and whether the answer
+contains the collection's reference answer (any listed alternative is accepted). An LLM judge (Qwen3-8B) rates each answer as
+fully, partly or not correct. Against a human on \JudgeCases{} cases it
+agreed \ManualJudgeFirstPassAgreement{}\% at the first pass, below our
+pre-set threshold, so we report the judge as a secondary measure only;
+the check and its provenance are in Appendix~\ref{app:judge}.
+
+\subsection{Deviations}
+\label{sec:deviations}
+
+We record \DeviationCount{} deviations from the pre-registered plan and \CorrectionCount{} later corrections,
+each with its date (Appendix~\ref{app:deviations}). The most important
+are these:
+(i)~the held-out set was scored for three evaluations (RQ1, RQ5 and RQ4), and the RQ5 and RQ4 analyses were
+specified after the RQ1 scores existed; held-out scores were also re-read, without new scoring, for descriptive
+analyses;
+(ii)~RQ5 and an extension of the chunker grid were added after the
+tuning results were seen, but before the held-out set was scored;
+(iii)~the RQ1 analysis rules were amended after the tuning run, before
+the held-out set was scored;
+(iv)~the answer judge was replaced and then failed its human check;
+(v)~a check of \GoldenSampled{} questions from the Indian regulatory documents, each judged with its answer and
+evidence, found \GoldenInvalid{} invalid and \GoldenUnsure{} unsure, and was stopped after its first batch; and
+(vi)~the fixed-$k$ analysis first included superseded settings, which
+a dated erratum corrects (Appendix~\ref{app:erratum}).

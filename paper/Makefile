@@ -1,7 +1,8 @@
 # Paper 1 build (spec/paper_build_spec.md).
-#   make artifacts            generated tables, figures and numbers (refuses before the paper-v1.1 tag)
-#   make pdf [MODE=final]     review version by default (anonymous, line numbers); final = camera-ready
-#   make check                generator twice (byte compare), source checks, both PDFs, aclpubcheck on both
+#   make artifacts            generated tables, figures and numbers (refuses before the paper-v1.2 tag)
+#   make pdf [MODE=final]     runs make artifacts first; review version by default (anonymous, line numbers); final = camera-ready
+#   make check                generator twice (byte compare), source checks, both PDFs build, aclpubcheck on the
+#                             final PDF only (the review PDF's line and page numbers are review features)
 #   make pubcheck-env         install aclpubcheck (pinned) into .venv-pubcheck
 MODE ?= review
 ROOT := ..
@@ -24,7 +25,7 @@ endef
 artifacts:
 	cd $(ROOT) && $(PY) -m paper.scripts.make_artifacts
 
-pdf:
+pdf: artifacts
 	$(TEXENV) latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=$(BUILD) -jobname=main-$(MODE) $(PRETEX) main.tex
 
 check:
@@ -36,7 +37,6 @@ check:
 	cd $(ROOT) && $(PY) -m paper.scripts.check_sources
 	$(MAKE) pdf MODE=review
 	$(MAKE) pdf MODE=final
-	$(call pubcheck,review)
 	$(call pubcheck,final)
 
 pubcheck-env:

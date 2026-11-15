@@ -1,0 +1,13 @@
+split,p4_table,parser,setting,chunks,index_tokens,recall,tokens_per_chunk
+tuning,data/results/p4/P4-LOCAL-20261105-1_full_setups.csv,docling,method1_tree_T384_noprefix,121.15789473684211,35789.21052631579,0.7892885699647758,295.3931364031277
+tuning,data/results/p4/P4-LOCAL-20261105-1_full_setups.csv,docling,recursive_size384_overlap0_noprefix,109.15789473684211,35793.73684210526,0.768392102046889,327.90790742526514
+tuning,data/results/p4/P4-LOCAL-20261105-1_full_setups.csv,docling,langchain_recursive_size384_overlap0_noprefix,117.05263157894737,35791.73684210526,0.7973890810370026,305.77473021582733
+tuning,data/results/p4/P4-LOCAL-20261105-1_full_setups.csv,pdfplumber,method1_tree_T384_noprefix,100.47368421052632,31855.21052631579,0.7828901501780737,317.0502881089576
+tuning,data/results/p4/P4-LOCAL-20261105-1_full_setups.csv,pdfplumber,recursive_size384_overlap0_noprefix,93.84210526315789,31855.21052631579,0.7847915491814115,339.45541222658443
+tuning,data/results/p4/P4-LOCAL-20261105-1_full_setups.csv,pdfplumber,langchain_recursive_size384_overlap0_noprefix,101.47368421052632,31855.21052631579,0.7673087356030489,313.9258298755187
+held_out,data/results/p4/P4-FINAL-20261106-1_full_setups.csv,docling,method1_tree_T384_noprefix,214.7058823529412,63544.882352941175,0.752462398262547,295.9624657534246
+held_out,data/results/p4/P4-FINAL-20261106-1_full_setups.csv,docling,recursive_size384_overlap0_noprefix,194.05882352941177,63552.05882352941,0.7012776505701946,327.4886329190664
+held_out,data/results/p4/P4-FINAL-20261106-1_full_setups.csv,docling,langchain_recursive_size384_overlap0_noprefix,204.76470588235293,63549.0,0.7101885019644446,310.3513358230394
+held_out,data/results/p4/P4-FINAL-20261106-1_full_setups.csv,pdfplumber,method1_tree_T384_noprefix,173.05882352941177,56178.58823529412,0.7715545034368948,324.6213460231135
+held_out,data/results/p4/P4-FINAL-20261106-1_full_setups.csv,pdfplumber,recursive_size384_overlap0_noprefix,162.94117647058823,56178.58823529412,0.735953953938585,344.77833935018054
+held_out,data/results/p4/P4-FINAL-20261106-1_full_setups.csv,pdfplumber,langchain_recursive_size384_overlap0_noprefix,180.58823529411765,56178.58823529412,0.7487523573900203,311.08664495114004

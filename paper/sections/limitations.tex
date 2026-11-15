@@ -1,3 +1,33 @@
 \section*{Limitations}
 % Required section, outside the page limit. No new results, figures, tables or analyses: every number here is a
 % macro that also appears in the main text or the appendix (checked by make check).
+
+\paragraph{Few held-out documents.} The main held-out analysis has
+\AccountingMain{} documents, some with very few questions, so intervals
+are wide and a small per-document gain could go undetected.
+
+\paragraph{Scope.} All scored questions are in English; the Hindi track
+has no question source and is not evaluated. Scanned PDFs enter only
+RQ5(a) and the answer check, with a small sample. We use one embedding
+model (bge-m3), one answering model and one judge.
+
+\paragraph{Measures.} The answering model often gave long answers, and
+token F1 penalises extra words; most first-pass judge disagreements were
+long but correct answers (Appendix~\ref{app:judge}). Bootstrap $p$ values
+rest on \Resamples{} resamples, so a $p$ value of zero only means that no
+resample crossed zero. The Indian questions are LLM-generated, and a check
+found many invalid ones (Appendix~\ref{app:golden}).
+
+\paragraph{Use of the held-out set.} The held-out documents were scored
+for three evaluations (RQ1, RQ5 and RQ4), and the RQ5 and RQ4 analyses
+were specified after the RQ1 scores existed. All but one of the first
+held-out group's documents were seen as tree structure only (no
+questions, answers or scores) while Method~1 was designed.
+
+\paragraph{Records.} The first-pass labels of the judge check were
+overwritten, so its first-pass agreement cannot be recomputed. A few
+facts were entered by hand from the specification because their source
+files were not read for this paper (Appendix~\ref{app:scanned}). The
+model answers are checksummed but not distributed, because the licence of
+some source documents is unknown, so the judge-check draw can be repeated
+only with that file.

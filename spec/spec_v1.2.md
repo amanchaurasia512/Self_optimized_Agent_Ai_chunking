@@ -701,3 +701,50 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
   The files cannot show the cause. The recorded values are kept as written and flagged; the paper takes them from
   paper/data/manual_facts.csv with this note as source. No conclusion changes: the judge was a secondary measure
   because the first pass failed the 80% mark, which holds for every reconstruction.
+
+## AQ judge check: size changed from 20 to 40 cases; judge amendment committed with the result (reporting, added 2026-11-15)
+- The AQ design frozen at 479a55c (2026-11-10 12:11 IST) fixed the judge check as: 20 cases labelled by hand without
+  seeing the judge's label; the judge is used only if agreement is at least 80%; otherwise the guide is revised once
+  and re-checked on 20 new cases. The judge was the answering model (gemini-3.5-flash-lite).
+- 3d5407e (2026-11-11 23:11 IST) added the judge-check stages to scripts/aq_run.py: CHECK_CASES = 40, one draw of
+  40 tuning cases (seed 42) for blind labelling, and the fail message "revise the guide once (spec) and re-check on
+  40 new cases". The code names no judge model; it judges through src/chunk/llm.py, which is gemini-3.5-flash-lite.
+  No spec note in this commit records the change from 20 to 40 or gives a reason.
+- Re-draw (2026-11-15, read-only, no LLM call): the 3d5407e logic (answered(), then the tuning rows, then
+  .sample(40, random_state=42)) on the checksummed sample.csv and answers.jsonl reproduces judge_check_keys.csv and
+  the question, reference and answer columns of judge_check.csv exactly, in the same order (pandas 3.1.0, the
+  study's .venv). The 40 cases are one draw, not 20 + 20. Script: scripts/redraw_judge_check.py (reuses
+  aq_run.answered and the seed and size constants, unchanged since 3d5407e); output:
+  data/results/repro-20261115/redraw_judge_check.log. The script needs data/results/aq/answers.jsonl, which is
+  checksummed (docs/paper_checksums.txt) but not distributed, so it can be re-run only where that file exists.
+- The "AQ judge amendment (2026-11-11)" (Qwen3-8B on Kaggle; "the same 40-case human check") was first committed in
+  a6278ca (2026-11-12 15:57 IST), together with the check's result (the note "AQ judge check (2026-11-12)"),
+  judge_check.csv, judge_check_keys.csv and judgements.jsonl. No earlier commit holds the case files or a Qwen3-8B
+  judge.
+- What git can't show: when the 40 cases were drawn, labelled and judged (the check has no run record), and
+  therefore whether the Qwen3-8B choice, dated 2026-11-11 in its heading, came before the check. What git does show:
+  the 40-case size was in committed code before the result was committed.
+- The result note's "the frozen rule asked for 40 new cases" follows the code at 3d5407e, not the frozen design,
+  which says 20 new cases. Neither the revision nor a re-check was done. Instead, the 12 disagreements among the same
+  40 cases got a second, non-blind pass (95%, kappa 0.86).
+- Nothing is changed. The judge stays a secondary measure, because the first pass on the 40 cases failed the 80%
+  mark (recorded 70%; every reconstruction in the note of 2026-11-14 is also below it). The paper states this in
+  Method (Answer quality) and in the deviations table.
+
+## Errata (2026-11-15, distributed data)
+- "Supplementary analyses for the paper (2026-11-14)", (4), says that files derived from the CC BY-NC sources "are
+  not in the repository (data/ is git-ignored)" and that "the repository's own licence does not cover them". Both
+  are wrong:
+  - data/results/aq/sample.csv (tracked since 3d5407e, 2026-11-11) holds one FinanceBench question and its reference
+    (CC BY-NC 4.0). No UniDoc-Bench text is tracked.
+  - data/ has been git-ignored since 5f4e103 (2026-10-26), but 35 files under it were force-added, among them
+    sample.csv, judge_check.csv and data/external/mpdocvqa/selected_questions.json, which hold question, reference
+    and answer text (NOTICE.md lists them by source).
+  - The repository has no licence file of its own.
+- Also tracked with source text: runs/tests/test_p3_hand_check_20_cases.txt (6a823b7, 2026-11-04): questions, gold
+  spans and document excerpts from CUAD, OHR-Bench and Indian documents.
+- Also tracked: runs/tests/agent/A-LOCAL-20261113-{102,169,236,315}.json, each holding one CUAD question
+  (stack.question.text).
+- Correction: NOTICE.md (2026-11-15) states, per source, the licence and the tracked files that contain its text, and
+  marks unknown licences. For paper-v1.2, 27 result files are un-ignored (numbers, identifiers and setup names only),
+  and data/results/aq/answers.jsonl (model answers) stays checksummed but not distributed. No result changes.

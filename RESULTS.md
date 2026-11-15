@@ -236,8 +236,12 @@ Licences checked on each dataset's official page (2026-11-14).
 | MP-DocVQA | rubentito/mp-docvqa (read from lmms-lab/MP-DocVQA) | MIT at the source; the lmms-lab copy states none | Reused from SP-DocVQA |
 | Indian regulatory (GOLDEN_200) | github.com/shubham-61291/pre_generation_rag_retrieval_benchmark (commit 654c512); arXiv 2609.31660 | Apache-2.0 (repository); PDFs are Government of India documents, no licence stated | LLM-generated against verbatim evidence, 10% manual spot-check, deduplicated, no inter-annotator agreement |
 
-- The two CC BY-NC sources allow research use. Files derived from them keep the non-commercial term; they are not
-  in the repository (`data/` is git-ignored).
+- The two CC BY-NC sources allow research use; files derived from them keep the attribution and non-commercial
+  terms. One such file is tracked: data/results/aq/sample.csv holds one FinanceBench question and its reference.
+  Several tracked files hold question, reference, answer or document text from other sources; NOTICE.md lists them by
+  source, with the licence of each and "unknown" where none is stated (the OHR-Bench, Indian and MP-DocVQA documents
+  themselves). data/results/aq/answers.jsonl (model answers) is checksummed but not distributed. The repository has
+  no licence of its own. (Corrects the earlier "not in the repository"; spec Errata 2026-11-15, distributed data.)
 - **GOLDEN_200 provenance gaps:** the generating LLM, prompt and date; who spot-checked which questions and with what
   result; the corpus manifest (source URLs, retrieval dates, PDF hashes) the README describes; any licence for the four
   PDFs; any release tag or DOI. The Indian questions are LLM-generated, lightly checked gold.

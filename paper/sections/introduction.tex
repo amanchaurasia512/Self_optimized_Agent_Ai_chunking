@@ -1,3 +1,50 @@
 \section{Introduction}
 \label{sec:introduction}
-% About 1 page: the question, pre-registration, the main answer (NO-GO; one fixed setup).
+
+Retrieval-augmented generation over PDFs first turns each document into
+text and cuts the text into chunks; a retriever then picks the chunks a
+language model reads. How to cut is an open choice, and the number of
+chunking methods keeps growing
+\citep{smigielski2026chunking,shaukat2026systematic,zhao2025moc,lu2025hichunk}.
+Because no method wins everywhere, recent work proposes choosing the
+chunking method per document \citep{demourajunior2026adaptive}. Whether
+that choice pays off is hard to judge from published comparisons: they
+usually retrieve a fixed number of chunks, so a method with larger chunks
+also gives the reader more text, and the choice is usually tuned and
+scored on the same questions.
+
+We ask five questions. \textbf{RQ1}: does choosing a setup (parser,
+chunker and chunker setting) per document beat one fixed setup?
+\textbf{RQ2}: how do chunk size and chunker affect retrieval at a fixed
+token budget? \textbf{RQ3}: does the measure change which size looks
+best? \textbf{RQ4}: do answers from a language model follow retrieval?
+\textbf{RQ5}: do tuned chunk sizes and parser settings beat their
+defaults?
+
+To answer RQ1 fairly, we score every setup by the share of gold-answer
+characters read within the same token budget, so chunk size and retrieval
+depth trade off, and we estimate per-document choice with a split-half
+oracle that chooses on half of a document's questions and scores on the
+other half. The study was pre-registered: the scorer, the analysis and
+the decision rule were frozen and pushed to a public repository before
+the held-out documents were opened, and every later change is reported
+as a dated deviation.
+
+Our contributions are:
+\begin{itemize}
+\item a pre-registered comparison of per-document choice against one
+fixed setup, with \RQoneSetups{} setups on \AccountingMain{} held-out
+documents, two parsers and a frozen scorer;
+\item an evaluation at an equal token budget, with a structure-tree
+chunker of our own among the candidates;
+\item evidence that the measure decides which chunk size looks best, and
+that a library default costs more than per-document choice gains;
+\item the plan, deviations, scorer and result files: every number in
+this paper is generated from a checksummed result file or, where noted,
+taken from a dated specification note.
+\end{itemize}
+
+The answer to RQ1 is \RQoneDecision{}: the per-document oracle does not
+beat the best single setup (gap \RQonePrimaryGap{}
+\RQonePrimaryGapCI{}), and the recommendation is one fixed setup with a
+small, tuned chunk size.

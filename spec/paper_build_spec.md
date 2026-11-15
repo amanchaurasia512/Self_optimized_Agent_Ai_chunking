@@ -51,7 +51,7 @@ paper/
 
 ## 2. Generator rules (paper/scripts/make_artifacts.py)
 
-- **Inputs:** only frozen result files listed in `docs/paper_checksums.txt` (extended at `paper-v1.1`), plus
+- **Inputs:** only frozen result files listed in `docs/paper_checksums.txt` (extended at `paper-v1.1`; the tag the generator checks is `paper-v1.2`, §10), plus
   `paper/data/manual_facts.csv`, which the generator hashes into MANIFEST.txt. The input list sits in one constant
   in the script, so it can be reviewed.
 - **Checksums:** before reading anything, every input is checked against `docs/paper_checksums.txt`. A missing
@@ -221,3 +221,46 @@ Limitations and Ethical Considerations, and two-column appendices.
   Section text was reworded where a heading carried a number ("Index Cost at Equal Chunk Size"; "the first batch").
 - Not done: the PDF compile. latexmk and TeX Live are not installed (§5). The empty `references.bib` may make
   bibtex fail on the first compile; that is to be checked then.
+
+## 9. Layout fixes after the first real build (2026-11-14, approved by the author)
+
+- **One short-name scheme** (`short`, `short_family`, `short_variant`, `short_document` in make_artifacts.py), used in
+  every table and figure: parser letter / setting code. Examples: `P/M1-384`, `D/LC-256`, `P/M1-256+p` (heading
+  prefix), `D/Rec-256o64` (overlap), `D/LC` (a family), `D/ocr off` (a parser setting), `D3` (a GOLDEN_200 document).
+  The generator refuses a short name that would stand for two full names. A generated appendix key
+  (`tables/key.tex`, Appendix "Key to Short Names") lists every short name used, once each, grouped by kind. Inline
+  macros in numbers.tex keep the full readable names.
+- **Tables:** shorter headers. RQ1 drops the Docs and Q. columns, because they are the same in every choice set; the
+  generator checks this and the caption gives them through \RQoneDocuments and \RQoneQuestions. A6 groups its rows
+  under Tuning and Held-out subheadings that carry documents / questions. A7 is a `table*` and keeps its
+  invalid-or-unsure column. Nothing uses \small; the rule is enforced by check_sources (`% small: <reason>` required on
+  the same line).
+- **Figures** at \columnwidth (scale only axis):
+  - RQ2 and RQ5 have their panels stacked;
+  - RQ3 has angled tick labels;
+  - RQ5 uses fixed-point ticks.
+- **make check** builds both PDFs and runs aclpubcheck on the final PDF only. The review PDF's line and page numbers are
+  review features that pubcheck counts as margin errors.
+- **Skeleton artifact:** while the sections hold only headings, about 25 headings in a row form one unbreakable block.
+  This gives an over-tall column (LaTeX "Overfull \vbox") and one pubcheck bottom-margin error on page 2. Checked in a
+  scratch copy: with one sentence after each heading the same build has 0 overfull boxes and pubcheck reports
+  "All Clear!". The error goes away once the sections have text.
+
+## 10. paper-v1.2 (prepared 2026-11-15; not tagged)
+
+- The generator checks the tag `paper-v1.2` (`TAG` in make_artifacts.py; the tests, Makefile and main.tex name no tag
+  or follow `TAG`). Sections 0 and 8 keep `paper-v1.1` as the record of that step.
+- Until the author tags `paper-v1.2`, `make artifacts` (and so `make pdf`) refuses to run: the tag is missing, and
+  `docs/paper_checksums.txt` no longer equals its `paper-v1.1` version (header note on answers.jsonl).
+- What the tag adds: 27 of the 28 checksummed result files that were git-ignored at `paper-v1.1` are un-ignored in the
+  root .gitignore (only their parent directories under data/results/ are re-included; data/ holds nested git
+  repositories). `data/results/aq/answers.jsonl` stays checksummed but not distributed. NOTICE.md lists each source's
+  licence and the tracked files that contain its text.
+- The generator reads spec_v1.2.md as tagged, so the 2026-11-15 notes reach the deviations table only after the tag.
+- What the tag freezes (2026-11-15): the result files (through the checksum file), docs/paper_checksums.txt, spec_v1.2.md
+  (read as tagged), the study code under src/ and scripts/p4_analyse.py and scripts/aq_run.py (the generator imports
+  constants from both): `CODE_AT_TAG`, compared with `git diff` against the tag; an untracked, not ignored file under
+  these paths also stops the generator. Paper code is not compared, so it can change without a re-tag. Before this,
+  five files were compared: three under src/ plus the two scripts.
+- A3 (timeline) reads the paper-v1.2 event from git: the tag's commit and its commit time
+  (`git show -s --format=%cI paper-v1.2^{commit}`). RESULTS.md section 8.3 gets no typed row for it.

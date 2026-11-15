@@ -1,0 +1,8 @@
+agreement 95% (38 of 40) | Cohen's kappa 0.86 | unparsed judge replies: 0
+judge  0.0  0.5  1.0
+human               
+0.0      8    0    0
+0.5      0    0    1
+1.0      0    1   30
+
+PASS: judge may be used

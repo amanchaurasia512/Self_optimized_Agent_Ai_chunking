@@ -1,4 +1,41 @@
-data/
+# data/ stays ignored, except the 27 checksummed result files the paper is built from (paper-v1.2; spec/spec_v1.2.md,
+# "Result files tracked for paper-v1.2"). aq/answers.jsonl is checksummed but not distributed (model answers written
+# from documents whose licence is unknown; NOTICE.md). Only the parent directories of those files are re-included (data/ holds nested git repositories).
+/data/**
+!/data/results/
+!/data/results/p3/
+!/data/results/p4/
+!/data/results/repro-20261114/
+!/data/results/repro-20261114/comparison/
+!/data/results/rq5/
+!/data/results/supplementary-20261114/
+!/data/results/p3/P3-LOCAL-20261105-2.csv.gz
+!/data/results/p3/P3-LOCAL-20261105-4.csv.gz
+!/data/results/p3/P3-FINAL-20261106-1.csv.gz
+!/data/results/p3/P3-RQ5D-20261110-1.csv.gz
+!/data/results/p3/P3-RQ5S-20261111-1.csv.gz
+!/data/results/p4/P4-FINAL-20261106-1_full_documents.csv
+!/data/results/p4/P4-FINAL-20261106-1_full_left_out.csv
+!/data/results/p4/P4-FINAL-20261106-1_full_setups.csv
+!/data/results/p4/P4-FINAL-20261106-1_original_documents.csv
+!/data/results/p4/P4-FINAL-20261106-1_original_left_out.csv
+!/data/results/p4/P4-FINAL-20261106-1_original_setups.csv
+!/data/results/p4/P4-FINAL-20261106-1_primary_documents.csv
+!/data/results/p4/P4-FINAL-20261106-1_primary_left_out.csv
+!/data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
+!/data/results/rq5/P5-LOCAL-20261110-1_digital.csv
+!/data/results/rq5/P5-LOCAL-20261111-1_scanned.csv
+!/data/results/rq5/P5-LOCAL-20261112-1_scanned.csv
+!/data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
+!/data/results/p3/fixedk_tuning.csv
+!/data/results/p4/P4-LOCAL-20261105-1_full_setups.csv
+!/data/results/supplementary-20261114/retriever_summary.csv
+!/data/results/supplementary-20261114/retriever_setup_recall.csv
+!/data/results/supplementary-20261114/index_cost_T384.csv
+!/data/results/supplementary-20261114/compute_summary.csv
+!/data/results/supplementary-20261114/github_activity_page1.json
+!/data/results/supplementary-20261114/github_activity_page2.json
+!/data/results/repro-20261114/comparison/aq_judge_check.log
 .venv/
 .env
 __pycache__/

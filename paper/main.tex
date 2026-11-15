@@ -17,14 +17,20 @@
 \IfFileExists{inconsolata.sty}{\usepackage{inconsolata}}{}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{tabularx}
 \usepackage{pgfplots}
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage{placeins}  % \FloatBarrier keeps each appendix table in its own section
 \usepgfplotslibrary{groupplots}
 \pgfplotsset{compat=1.18}
 % ACLPUB (January 2025): text in figures at the document font size whenever possible, readable on A4.
 \pgfplotsset{every axis/.append style={font=\normalsize, tick label style={font=\normalsize},
   label style={font=\normalsize}, legend style={font=\normalsize}, title style={font=\normalsize}}}
 
-% A generated file, or a visible placeholder while paper/generated/ is empty (before the paper-v1.1 tag).
+% Open points in the draft, visible in the PDF; make check lists them (none may remain at submission).
+\newcommand{\TODO}[1]{\textbf{[TODO: #1]}}
+
+% A generated file, or a visible placeholder while paper/generated/ is empty (before the paper tag).
 \newcommand{\generated}[1]{\IfFileExists{generated/#1}{\input{generated/#1}}{\fbox{\texttt{missing: generated/\detokenize{#1}}}}}
 \IfFileExists{generated/tables/numbers.tex}{\input{generated/tables/numbers.tex}}{}
 
