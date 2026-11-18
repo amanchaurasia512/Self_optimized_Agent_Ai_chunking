@@ -1005,3 +1005,11 @@ below uses only the document's own tree (src/chunk/tree.py v4) and text; no word
   reported not patched: on pdfplumber, repeated sections at the same depth (D4 holds the Act more than once) make many
   references ambiguous (101 of 385); on Docling, dotted references can resolve to schedule entries with the same
   number (at least 30 of 69 checked). Precision is measured by the X12 hand check.
+
+- Decision before any recall (2026-11-18), method 1 v2 (cross-references): not included in the scored extension run.
+  Reasons: (1) the notes add the referenced part's title to the referring chunk; for retrieval of gold spans this
+  draws questions about the referenced part towards the referring chunk instead, so the method mainly serves answer
+  understanding, which Recall@B does not measure; (2) in the X12 hand check the first labelled references were
+  mostly wrong targets (schedule entries with the same number); the partial labels are kept as they are (n labelled
+  of 30, reported). Code and all test records stay in the repository. A cross-reference variant aimed at answer
+  quality, with a better resolver, is left to future work.
