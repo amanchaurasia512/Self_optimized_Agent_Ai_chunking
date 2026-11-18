@@ -794,3 +794,57 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
 - An MIT licence was added for the project's own code (LICENSE). It does not cover dataset-derived files, which keep
   their sources' licences (NOTICE.md). This updates "Errata (2026-11-15, distributed data)": "The repository has no
   licence file of its own" is no longer true.
+
+## AQ caveat (2026-11-18), reporting
+- The Spearman correlations between answer F1 and Recall@1,250 (tuning 0.75, held-out 0.43; judge 0.75 / 0.64) are
+  computed over 7 digital setups only; with 7 points they are weak evidence and are reported without a test.
+- method1_tree T256 answers 0.065 token-F1 above T384 on held-out (Holm p 0.025), opposite to the recall tie. The
+  question of which of the two is better for answers stays open; the agent's T384 default rests on recall only.
+
+## Scope: planned chunkers not in the final grid (2026-11-18), reporting
+- Paragraph group (spec v1.1, 2 paragraphs, 1 overlapping) → not built, never run → not built; no written reason.
+  Method 1's A6/A10 fallback packs whole parser blocks but is not this chunker.
+- Dynamic token size (spec v1.1, 128 to 512) → not built, never run → not built; no written reason.
+- Section + table-aware (spec v1.1, one section per chunk, table-row chunks, no overlap) → not built as a chunker,
+  never run; parts of the idea are in method 1 (sections from the tree; tables cut between rows with the header
+  repeated, A7) → not built; no written reason.
+- Docling HybridChunker (spec v1.1, max 512 bge-m3 tokens, Docling only) → not built, never run → not built; no
+  written reason.
+- Method 1 cross-references (spec v1.1 "Cross-references") → not built → deferred in rule A11 (this spec, "Own
+  method 1", 2026-11-04, before any method-1 result: "not in this version; they are a later, separate variant").
+  Cross-references are left to a later method 1 v2, to be tested on tuning documents only against overlap
+  (recursive, overlap 0/8/32/64, per extra index token), as spec v1.1 designed. Paper 1 reports one own method.
+- The boundary-similarity rule (spec v1.1, "P2-R08") was never applied, as none of these chunkers was built; the id
+  P2-R08 was later reused for a locate fix (86ef639).
+- Consequence for RQ1: the choice set is narrower than spec v1.1 planned. The NO-GO result holds for the setups
+  tested; it says nothing about these four.
+- No result or decision changes.
+
+## Extension: the five planned items, built after the main study (2026-11-18), design before any code
+- Why: spec v1.1 planned them; they were never built (see the scope note above). Built now as an extension,
+  labelled "added after the main study". The frozen RQ1-RQ5 results are not changed or replaced.
+- Items, with the settings spec v1.1 planned (kept as written, not re-tuned):
+  1. paragraph_group: 2 paragraphs per chunk, 1 overlapping; paragraphs = parser blocks (Docling) or non-empty-line
+     groups (pdfplumber, as method 1 rule A13).
+  2. dynamic_token: sizes 128 to 512. Its definition is written in a dated note before coding, from the source spec
+     v1.1 refers to; if no source is found, our own definition is stated as such.
+  3. section_table: one section per chunk from the frozen tree (src/chunk/tree.py v4, top-level sections), table
+     rows as their own chunks with the header repeated, no overlap.
+  4. docling_hybrid: Docling HybridChunker, max 512 bge-m3 tokens, Docling only (pinned Docling 2.143.0).
+  5. method1_tree cross-references (method 1 v2): as spec v1.1 "Cross-references" (labels found in the document's
+     own tree, no word lists; the referenced node's label and title attached; counted like the prefix), at T = 384
+     and T = 512.
+  All share the frozen post-processing (merge under 100 tokens, re-split over 1,024), the bge-m3 tokenizer, no
+  heading prefix except where stated.
+- Data: tuning documents only (pdfs/split.csv; no --final). Same frozen extractions, gold, scorer_v1, bge-m3
+  (new chunk texts embedded with the same model and revision; GPU runs on Kaggle as before).
+- Scoring: hybrid Recall@B at 750 / 1,250 / 2,000 (main 1,250), main questions, QASPER excluded.
+- Analysis (fixed now):
+  (a) each new setup against the tuning best single of P4 (primary scope), paired document bootstrap, S10 tie rule;
+  (b) RQ1 extension: p4_analyse on the primary choice set plus the new setups (tuning only), gap and go/no-go
+      reported next to the original, not replacing it;
+  (c) cross-references: method1_tree v2 against v1 at the same T, and against recursive overlap 8/32/64, as recall
+      gain per extra index token (spec v1.1).
+  Holm over the comparisons in (a) and (c).
+- Held-out: not used. A held-out check is allowed only if a new setup is clearly better on tuning, and only after
+  its own design note, as a disclosed further use of the held-out set.
