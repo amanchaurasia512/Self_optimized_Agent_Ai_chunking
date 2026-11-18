@@ -848,3 +848,10 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
   Holm over the comparisons in (a) and (c).
 - Held-out: not used. A held-out check is allowed only if a new setup is clearly better on tuning, and only after
   its own design note, as a disclosed further use of the held-out set.
+- Amendment before any code (2026-11-18):
+  (1) The overlap comparison in (c) is made at T = 512 only, against recursive_size512_overlap8/32/64 (the only
+      matching sizes). At T = 384, method 1 v2 is compared with v1 only.
+  (2) Method 1 v2 builds on method1_tree_T*_noprefix: chunk text plus the cross-reference text only, no heading
+      prefix. Cross-reference tokens count in index cost and budgets like a prefix.
+  (3) dynamic_token has no published source (spec v1 gives none). Its definition is our own; it is written in its
+      own dated note before coding and stated as our own in the paper.
