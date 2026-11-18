@@ -243,3 +243,10 @@ pages). Agent-only facts (pages OCR'd, step timings, parser mode) go in the run 
 ## Out of scope (v1)
 Hindi and other languages; per-document tuning; tables as structured data; user accounts. The app and deployment
 (Streamlit, Docker, hosting) get their own spec entry after these tests pass.
+
+## Clarifications (2026-11-18)
+- Scan detection is per page, but the parser switch is per document: in fast mode, choose_parser sends the whole PDF
+  to Docling if any one page has no text layer.
+- The reading budget is a user setting (750 / 1,250 / 2,000 tokens, default 1,250); the agent does not choose it.
+- The app (App v1, v1.1 and the Docker image) was built on 2026-11-13, before tests 4 and 5, which are still not
+  done. This departs from "Out of scope (v1)", which said the app and deployment come after these tests pass.

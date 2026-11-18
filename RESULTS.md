@@ -55,7 +55,7 @@ More choices make per-document choice worse, because the selection rests on few 
 
 - **Digital** (5 PDFs, 306–308 questions; P3-RQ5D-20261110-1 ☑️, P5-LOCAL-20261110-1 ✅): no variant beats its
   default. Every difference is below 0.01, every interval reaches 0, and every Holm p ≥ 0.29. Parser choice still
-  matters: Docling 0.827 against pdfplumber 0.798 on this sample.
+  matters (descriptive, not tested): Docling 0.827 against pdfplumber 0.798 on this sample.
 - **Scanned** (10 MP-DocVQA PDFs):
   - Recall: Tesseract against the Docling default on 8 PDFs / 34 shared questions gives 0.786 vs 0.765, **+0.02
     [−0.05, 0.08], Holm p 0.50**, no difference. Runs P3-RQ5S-20261111-1 ☑️, P5-LOCAL-20261111-1 ✅, and the
@@ -91,7 +91,7 @@ committed in a6278ca.
     Errata 2026-11-12).
   - method1_tree T384: +0.065 [0.010, 0.137], Holm p 0.025. This runs opposite to the recall tie; it is reported,
     not claimed.
-  - langchain_default: +0.047 [0.001, 0.099], Holm p 0.176, not significant (recall showed a significant +0.10 to
+  - langchain_default: +0.048 [0.002, 0.099], Holm p 0.176, not significant (recall showed a significant +0.10 to
     +0.12).
 - **Tuning:** no significant differences.
 - **Spearman, F1 against Recall@1,250 across setups:** tuning 0.75, held-out 0.43. The judge (secondary measure)
@@ -126,19 +126,23 @@ held-out counts are ⚠️ no run record (they need `--final`). Main questions, 
 
 - No Hindi or multilingual claim: the held_out_hindi track has no question source. The Hindi OCR check was drafted
   but not run.
-- **Fixed-k diagnostic** (P3-FIXEDK-20261112-1 ✅, tuning, main questions; descriptive, no intervals or tests): the
-  best chunk size depends on the measure.
-  - Recall@5: fixed_token 1024 is best on both parsers (0.904).
-  - Recall@10: fixed_token 896 is best (Docling 0.964, pdfplumber 0.968).
-  - Hit@1 and MRR barely separate sizes (Docling Hit@1 range about 0.53–0.62). Best Hit@1: Docling method1_tree
-    T384 0.622, pdfplumber recursive 1024 0.632. Best MRR: Docling method1_tree T1024 0.742, pdfplumber recursive
-    1024 0.748.
-  - Recall@4,000 tokens: small chunks are best (Docling method1_tree T384 prefix 0.925, pdfplumber sentence 5 0.928;
-    best sizes about 220–380 tokens).
-  - With a fixed number of chunks, larger chunks read more text, so fixed-k favours them. At an equal token budget
-    the ranking reverses.
-  - Superseded `_v10` / `_v11` settings are left out, as in P4 (spec Errata 2026-11-14, fixed-k). With them, the
-    three Docling winners were the `_prefix_v11` settings (Hit@1 0.624, MRR 0.743, Recall@4,000 0.932).
+
+## RQ3: fixed-k diagnostic
+
+P3-FIXEDK-20261112-1 ✅, tuning, main questions; descriptive, no intervals or tests. The best chunk size depends
+on the measure.
+
+- Recall@5: fixed_token 1024 is best on both parsers (0.904).
+- Recall@10: fixed_token 896 is best (Docling 0.964, pdfplumber 0.968).
+- Hit@1 and MRR barely separate sizes (Docling Hit@1 range about 0.53–0.62). Best Hit@1: Docling method1_tree
+  T384 0.622, pdfplumber recursive 1024 0.632. Best MRR: Docling method1_tree T1024 0.742, pdfplumber recursive
+  1024 0.748.
+- Recall@4,000 tokens: small chunks are best (Docling method1_tree T384 prefix 0.925, pdfplumber sentence 5 0.928;
+  best sizes about 220–380 tokens).
+- With a fixed number of chunks, larger chunks read more text, so fixed-k favours them. At an equal token budget
+  the ranking reverses.
+- Superseded `_v10` / `_v11` settings are left out, as in P4 (spec Errata 2026-11-14, fixed-k). With them, the
+  three Docling winners were the `_prefix_v11` settings (Hit@1 0.624, MRR 0.743, Recall@4,000 0.932).
 
 ## 8. Supplementary tables
 

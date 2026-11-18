@@ -19,9 +19,9 @@ already done (see the spec note "Question numbering"); the "planned" column says
 |---|---|---|---|---|
 | RQ1 | How much retrieval quality is lost by using one fixed parse-and-chunk setup per PDF, and how much can choosing per document recover without questions? | before held-out | Nothing is recovered: oracle minus best single setup is -0.007 [-0.045, 0.023], so per-document choice is NO-GO; use one fixed setup (best: pdfplumber/method1_tree_T384, 0.772; 15 of 26 setups tied). | RESULTS.md §1 |
 | RQ2 | At a fixed token budget, which chunk size and chunker retrieve best, and does it hold across document sources? | grid before held-out; per source afterwards | Small chunks (about 256-384 tokens). Holds within every tuning source (rho -0.61 to -0.97) and held-out OHR-Bench; weakens on held-out contracts (3 documents). | RESULTS.md §2 |
-| RQ3 | Does the evaluation metric change which chunk size looks best? | afterwards (diagnostic) | Yes. With a fixed number of chunks (top 5 or 10), large chunks (about 900-1,000 tokens) look best because they read more text; at an equal token budget small chunks win; Hit@1 and MRR barely separate sizes. | RESULTS.md §7 |
+| RQ3 | Does the evaluation metric change which chunk size looks best? | afterwards (diagnostic) | Yes. With a fixed number of chunks (top 5 or 10), large chunks (about 900-1,000 tokens) look best because they read more text; at an equal token budget small chunks win; Hit@1 and MRR barely separate sizes. | RESULTS.md, "RQ3: fixed-k diagnostic" |
 | RQ4 | Do setups that retrieve better also give better answers? | after held-out, design note first | Partly. Answers confirm the large-chunk penalty (fixed_token 1024 is 0.123 token-F1 below the best on held-out, Holm p < 0.01) but do not separate the small-chunk setups (Spearman with recall 0.75 tuning, 0.43 held-out). | RESULTS.md §5 |
-| RQ5 | Does tuning improve retrieval: (a) the parser's settings and (b) the chunker's settings, compared with their defaults? | as in the spec | (a) No: no parser variant beats its default on digital or scanned PDFs; detecting scans is the decisive choice. (b) Against LangChain's default size, tuning gains +0.10 to +0.12 recall (Holm p < 0.01); among our own chunkers, nothing beyond the tuned size. | RESULTS.md §3, §2 |
+| RQ5 | Does tuning improve retrieval: (a) the parser's settings and (b) the chunker's settings, compared with their defaults? | added 2026-11-05 after the tuning scores; RQ5(b) rule written after the held-out scores existed (disclosed in spec v1.2) | (a) No: no parser variant beats its default on digital or scanned PDFs; detecting scans is the decisive choice. (b) Against LangChain's default size, tuning gains +0.10 to +0.12 recall (Holm p < 0.01); among our own chunkers, nothing beyond the tuned size. | RESULTS.md §3, §2 |
 
 RQ1 is measured as the oracle gap: per-document best setup (split-half cross-fitted) minus the best single setup, on
 Recall@1,250 tokens with a 95% document bootstrap interval (spec v1.1, amended in spec v1.2 "P4 analysis rules"); the
@@ -43,7 +43,7 @@ ranked chunks up to a token budget.
 | Mode | Parser | Chunker |
 |---|---|---|
 | thorough (default) | Docling (reads scans, keeps more answer text) | `docling/method1_tree_T384_noprefix` (0.752, tied with the best) |
-| fast (`--fast`) | pdfplumber; the whole document goes to Docling if any page has no text layer | `pdfplumber/method1_tree_T384_noprefix` (0.772, the best single setup) |
+| fast (`--fast`) | pdfplumber; the whole document goes to Docling if any page has no text layer | `pdfplumber/method1_tree_T384_noprefix` (0.772, the best recall on questions both parsers could place, but loses more answer text on held-out: 27.6% vs 16.3% of questions) |
 
 ```bash
 python -m src.agent chunk <pdf> -o <chunks.json>            # thorough; needs the Docling environment

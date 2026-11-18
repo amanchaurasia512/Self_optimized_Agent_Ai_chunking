@@ -748,3 +748,13 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
 - Correction: NOTICE.md (2026-11-15) states, per source, the licence and the tracked files that contain its text, and
   marks unknown licences. For paper-v1.2, 27 result files are un-ignored (numbers, identifiers and setup names only),
   and data/results/aq/answers.jsonl (model answers) stays checksummed but not distributed. No result changes.
+
+## Errata (2026-11-18)
+- Duplicated line: "A document is picked at most once, by its source id across all domains (UniDoc lists some
+  documents under more than one domain); if a type's largest is already taken, the next largest is picked." appears
+  first in H2 and is repeated twice after it (once directly below, once after H4). It is one rule, stated once; the
+  old lines stay as written.
+- AQ rounding: the held-out AQ comparison against langchain_default is reported above as +0.047 [0.001, 0.099].
+  data/results/aq/analysis_held_out_vs_best.csv holds difference 0.0475, interval [0.0015, 0.099]; rounded to 3
+  decimals (half up) that is +0.048 [0.002, 0.099], as in the paper table. RESULTS.md now matches the CSV. Holm p
+  0.176 and the conclusion (not significant) are unchanged; no result changes.
