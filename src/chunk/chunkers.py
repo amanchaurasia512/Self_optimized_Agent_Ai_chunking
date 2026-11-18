@@ -117,6 +117,18 @@ def llm_regex(document, run=1):
                                 count_tokens_func=bge_tokens, context_tokens=8000)
     return locate(asyncio.run(splitter.split_text(document["text"])), document["text"])
 
+def paragraph_group(document, paragraphs=2, overlap=1):
+    """Extension item 1 (spec v1.2, "Extension", added after the main study): groups of `paragraphs` parser blocks from
+    the saved Docling extraction, each next group starting `overlap` blocks back (spec v1.1: 2 paragraphs, 1 overlapping).
+    Docling only: pdfplumber has no paragraph blocks (its lines collapse under the shared merge, its blank lines are page
+    breaks)."""
+    if document["parser"]["name"] != "docling" or not document.get("elements"):
+        raise ValueError(f"paragraph_group needs Docling blocks; got parser {document['parser']['name']!r} "
+                         f"with {len(document.get('elements') or [])} elements")
+    blocks = sorted((element["start_char"], element["end_char"]) for element in document["elements"])
+    starts = range(0, max(len(blocks) - overlap, 1), paragraphs - overlap)
+    return [(blocks[first][0], blocks[min(first + paragraphs, len(blocks)) - 1][1]) for first in starts]
+
 CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "page": {"function": page, "version": "1.0"},
             "recursive": {"function": recursive, "version": "1.0+adaptive-chunking-ea87ce8"},
@@ -126,6 +138,7 @@ CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"},
             "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True},
             "method1_tree": {"function": method1_tree, "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix", "nodes": tree_nodes, "prefix_share": 0.10},
+            "paragraph_group": {"function": paragraph_group, "version": "1.0"},
             "sanity_random_cut": {"function": sanity_random_cut, "version": "1.0", "sanity": True},
             "sanity_table_split": {"function": sanity_table_split, "version": "1.0+method1-1.1", "sanity": True}}
             
