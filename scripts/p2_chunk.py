@@ -62,10 +62,13 @@ def main():
                 for call in calls:
                     logger.record_llm_call(call["input_tokens"], call["output_tokens"] + call["thinking_tokens"])
                 nodes = entry["nodes"](document) if "nodes" in entry else None
-                chunk_doc = chunk_document(document, spans, chunker, run_id, source, args.heading_prefix, nodes, prefix_budget)
+                builder = entry.get("chunk_document", chunk_document)  # section_table: row chunks skip merge-under-100
+                chunk_doc = builder(document, spans, chunker, run_id, source, args.heading_prefix, nodes, prefix_budget)
                 stage["chunks"] = len(chunk_doc["chunks"])
                 stage["index_tokens"] = sum(chunk["token_count"] + chunk["prefix_token_count"] for chunk in chunk_doc["chunks"])
                 stage["llm"] = calls
+                report = entry["report"](document, **settings) if "report" in entry else {}  # docling_hybrid: located/unlocated chunks
+                stage.update(report)
             layer1 = layer1_report(chunk_doc, document["text"], validator)
             chunk_doc["quality"]["layer1"] = layer1
             output_path = CHUNKS / parser / name / f"{doc_id}.json"
@@ -79,7 +82,7 @@ def main():
                          "min": tokens.min(), "median": int(tokens.median()), "max": tokens.max(),
                          "C3": sum("C3" in chunk["errors"] for chunk in chunk_doc["chunks"]),
                          "passed": layer1.get("passed"), "coverage": round(layer1.get("text_coverage", 0), 4),
-                         "seconds": stage["wall_seconds"]})
+                         "seconds": stage["wall_seconds"], **report})
 
     stack = {"chunker": chunker, "tokenizer": TOKENIZER, "parsers": args.parsers,
              "llm": llm_info() if entry.get("llm") else None}

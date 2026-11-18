@@ -1,0 +1,9 @@
+docling_hybrid smoke test (inputs=tests), cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement (tuning, Docling)
+convert run P2-TEST-20261118-2 (laptop CPU, data/extracted/tests/), chunk run P2-TEST-20261118-1
+HybridChunker chunk.text                 chunks  18 | mean  297.6 | max 493 | min 27
+mapped spans, before post-processing     chunks  18 | mean  301.9 | max 500 | min 30
+after shared post-processing             chunks  16 | mean  339.6 | max 500 | min 113
+located / unlocated: {'hybrid_chunks': 18, 'located': 18, 'unlocated': 0, 'unlocated_chars': 0, 'unlocated_labels': [], 'text_identical': False}
+spans contiguous from 0 to 23384: True
+layer1 after post-processing: coverage 1.0, passed True
+text comparison (laptop CPU re-conversion vs frozen): {'text_identical': False, 'frozen_chars_differing': 1, 'new_chars_differing': 2, 'pages_equal': False, 'elements_equal': False, 'parser_info_equal': True}
