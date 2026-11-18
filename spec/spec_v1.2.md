@@ -1013,3 +1013,7 @@ below uses only the document's own tree (src/chunk/tree.py v4) and text; no word
   mostly wrong targets (schedule entries with the same number); the partial labels are kept as they are (n labelled
   of 30, reported). Code and all test records stay in the repository. A cross-reference variant aimed at answer
   quality, with a better resolver, is left to future work.
+
+- Analysis addition before any score (2026-11-18), extension: every comparison is reported with and without the
+  Indian documents (their questions are LLM-generated, 20 of 60 invalid in the GOLDEN_200 check), as in RESULTS.md
+  8.6. Part (c) of the analysis (cross-references against overlap) is dropped with method 1 v2.
