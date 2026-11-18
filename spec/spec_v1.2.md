@@ -934,3 +934,58 @@ Our own definition; spec v1 gives the range 128-512 and no source. Fixed before 
   (5) A chunk that cannot be located (e.g. a table serialized as cell triplets) is not repaired: its text falls in the
       gap and joins the next located chunk's span. The number of unlocated chunks and their characters are counted
       per document and reported. No table-specific rule.
+
+## method 1 v2 (cross-references): clarification before any code (2026-11-18), extension item 5
+Builds on the Extension design note (item 5) and its amendment (2): method1_tree_T*_noprefix plus cross-reference
+text only, no heading prefix; cross-reference tokens count in index cost and budgets like a prefix. Every rule
+below uses only the document's own tree (src/chunk/tree.py v4) and text; no word lists, no document-specific rules.
+
+- X1 Cuts: identical to method1_tree v1 noprefix at the same T (rules A1-A13 unchanged; only the prefix field is
+  filled). Checked per document: chunk (start, end) lists of v2 and v1 must be equal; any difference stops the run.
+- X2 Labels from the tree: each node's label is split into its style (tree.py) and its value with suffix
+  ("(3)" -> paren digit 3; "13-A" -> 13-A; "6." -> dotted 6; "FR 9" -> word FR, 9; "CHAPTER II" -> word CHAPTER, II).
+  A text match is a candidate reference when its style and value equal those of at least one node other than the
+  root, and it is not the node's own label at that node's start.
+- X3 Reference forms, all taken from the tree's styles:
+  (a) bracketed labels as written: "(3)", "(b)", "(iv)";
+  (b) word labels with the tree's own word, any case: "Chapter II", "FR 9";
+  (c) compound labels written together are a path, outermost first: "9(6)(b)", "6(1)";
+  (d) bare-number labels ("6." dotted, or the number of a word label whose word the text does not use): a number
+      counts as a reference only after the document's referring word for that style. The referring word is learned
+      from the text: the word that most often stands directly before numbers equal to that style's label values;
+      kept only if it stands before at least 2 distinct label values (minimum evidence, not tuned on results); any
+      case. Learned per document and parser, and reported (expected on D4: "section"; on D3: "Rule").
+  Plural forms and list continuations ("sections 6 and 7", "Rules 6, 9(6)(b), 44") are not followed: only the
+  number right after the referring word counts. Stated as a limitation, not patched.
+- X4 Chains: two candidate references separated by at most one word, where the later one is of a higher tree level
+  ("sub-section (1) of section 4"), are one path, resolved outer first, then inner among the outer node's
+  descendants. No connecting word is named.
+- X5 Resolution, nearest scope first: start at the deepest node containing the reference; look at that node's
+  children, then (one step up) its siblings, then the parent's siblings, and so on to the root. The first level with
+  any match decides: exactly one match -> resolved; more than one -> ambiguous, skipped and counted. No match at
+  any level -> unresolved, counted. A path (X3c, X4) is resolved outer label first by this rule, inner labels inside
+  it.
+- X6 Exclusions, counted separately: (a) same chunk: the target node starts inside the referring chunk's span;
+  (b) self: the target is the chunk's owner node or one of its ancestors (the chunk is already inside it).
+- X7 Text attached: "[refers to: <label> - <title>]", with the node's label as in the tree (end "." dropped) and its
+  tree title (at most 80 characters, as tree.py stores it); never the node's text. Several references in order of
+  first appearance in the chunk; a target attached once per chunk. Joined with a single space.
+- X8 Place and cap: stored in the chunk's prefix field, counted in budgets and index cost (amendment (2)). Cap as
+  rule A9: 10% of T (38 tokens at T = 384, 51 at T = 512), bge-m3 tokens; whole references are dropped from the
+  last until the prefix fits, and counted. Never cut inside a reference.
+- X9 Parsers and settings: Docling and pdfplumber (pdfplumber through rule A13); T = 384 and 512. Names:
+  method1_xref_T384_noprefix, method1_xref_T512_noprefix ("noprefix" = no heading path, as in v1; the prefix field
+  holds references only). Version 2.0+tree-v4.
+- X10 Design documents: rules X2-X8 are checked on D4 (indian_d4_rti_act, tuning) first, then D3
+  (indian_d3_fundamental_rules, tuning, different numbering), then D1 (indian_d1, tuning) as the final check, as
+  spec v1.1 planned. D2 (indian_d2_ccs_conduct_rules) is held-out and never used. Any rule change after D4 is
+  written here, dated, before the D3 run; no change after any recall is computed. The scored run then covers all
+  tuning documents, per the Extension design note.
+- X11 Reported per document, parser and T: candidate references found; resolved; ambiguous (skipped); unresolved;
+  same chunk (excluded); self (excluded); attached; dropped by the cap; learned referring words (X3d); chunks with
+  any reference; extra index tokens against v1 (total and per chunk); the cut check of X1.
+- X12 Precision check (no score): on D4, Docling, T = 512, 30 attached references drawn at random (seed fixed in
+  the run record) are checked by hand against the text: correct target / wrong target / reference to another
+  document (e.g. "section 4 of the Official Secrets Act"). The correct-target rate is reported with a Wilson 95%
+  interval. References to other documents are a known false-positive source with no word-free rule to exclude
+  them; reported, not patched.
