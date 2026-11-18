@@ -989,3 +989,13 @@ below uses only the document's own tree (src/chunk/tree.py v4) and text; no word
   document (e.g. "section 4 of the Official Secrets Act"). The correct-target rate is reported with a Wilson 95%
   interval. References to other documents are a known false-positive source with no word-free rule to exclude
   them; reported, not patched.
+- Amendment after the D4 smoke test, before D3 and before any recall (2026-11-18), method 1 v2 (allowed by X10):
+  (X5') Resolution: at each ancestor of the referring position, nearest first, search all its descendants (not only
+        children) for the label; the first ancestor with any match decides; among its matches the shallowest wins;
+        a tie at that depth is ambiguous (skipped, counted). Reason: D4 holds the Act twice and an annex numbered
+        again; children-only search left 255-262 of 349-385 references unresolved.
+  (X2') A label at the start of a parser block or of a line is never a reference (list labels the tree did not
+        adopt as nodes, e.g. D4 "(viii)"-"(xvii)").
+  (X4') Chains allow up to two words between the two references ("clause (a) of sub-section (1)").
+  The D4 smoke-test records before this amendment are kept in runs/tests/. The X12 hand check is done on the D4
+  output after this amendment.
