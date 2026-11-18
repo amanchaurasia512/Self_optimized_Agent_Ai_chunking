@@ -914,3 +914,8 @@ Our own definition; spec v1 gives the range 128-512 and no source. Fixed before 
   (4) Cut points use token counts from the whole-text encoding; a chunk re-counted on its own may be 1-2 tokens over
       512 (or 1,024 before the shared re-split). The number of such chunks is reported with D9.
   Test runs reuse run ids inside runs/tests/ (new_run_id does not look there); their file names differ.
+- Clarification before any code (2026-11-18), section_table: sections are the top-level nodes of the frozen tree
+  (src/chunk/tree.py v4; pdfplumber through rule A13). Each table row is its own chunk; the table's header row goes in
+  the chunk's prefix field (as method 1 rule A7), counted in budgets and index cost; no other prefix. Sections over
+  1,024 and pieces under 100 tokens go through the shared post-processing unchanged. Both parsers; pdfplumber has no
+  table labels, so on pdfplumber section_table is sections only (reported).
