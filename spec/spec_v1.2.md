@@ -903,3 +903,14 @@ Our own definition; spec v1 gives the range 128-512 and no source. Fixed before 
 - Analysis addition (extension, fixed now): besides the comparisons already planned, dynamic_token, section_table and
   method 1 (v1 and v2) are compared on table questions only (OHR-Bench table evidence, Docling), descriptive with
   95% intervals, no Holm.
+
+- Clarifications before any score (2026-11-18), dynamic_token, from the smoke test (structure only, no recall):
+  (1) D3: Docling separates every block with a blank line, so ranks 1 and 2 fall at the same places; on Docling,
+      D3 in practice cuts at the latest block end in the window.
+  (2) D1: sentence ends follow method 1's rule (method1.SENTENCE_END), the project's existing rule; it also counts
+      list labels such as "b." as sentence ends.
+  (3) D5: chunks are spans of the original text and dynamic_token has no prefix (D7), so a table header row is not
+      repeated in later pieces (as in method1_tree_*_noprefix); pieces are still cut between rows only.
+  (4) Cut points use token counts from the whole-text encoding; a chunk re-counted on its own may be 1-2 tokens over
+      512 (or 1,024 before the shared re-split). The number of such chunks is reported with D9.
+  Test runs reuse run ids inside runs/tests/ (new_run_id does not look there); their file names differ.
