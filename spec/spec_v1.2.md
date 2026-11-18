@@ -871,3 +871,12 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
 - Reading: under fixed k, large chunks win in recall because they read more text (3.5 to 4.0 times the tokens at
   k = 5); once the random floor is subtracted the ranking reverses and small chunks are better. This matches the
   expectation written before running.
+
+
+- Amendment before any score (2026-11-18), paragraph_group: defined for Docling only. pdfplumber gives no paragraph
+  units: its extractions have no elements, and every blank line in the pdfplumber tuning texts is a page boundary
+  (984 of 984). Under rule A13 (each non-empty line a block), a test on one tuning document
+  (cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement) turned 252 two-line windows into
+  6 chunks of about 1,000 tokens, all merged, which is not a paragraph grouping. Decided from structure counts only,
+  before any recall was computed. Docling test on the same document: 45 chunks, 106-470 tokens, overlap kept at all
+  44 boundaries, 12 chunks changed by the shared merge step.
