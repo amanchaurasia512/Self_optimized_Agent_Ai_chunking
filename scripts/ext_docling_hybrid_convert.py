@@ -38,6 +38,13 @@ def differing_chars(old, new):
     return old_count, new_count
 
 
+def test_run_id(source):
+    """new_run_id does not look in runs/tests/: take the next number not used by a test record there either."""
+    prefix, number = new_run_id(2, source).rsplit("-", 1)
+    used = [int(path.stem.rsplit("-", 1)[1]) for path in (RUNS_DIR / "tests").glob(f"*{prefix}-*.json")]
+    return f"{prefix}-{max([int(number) - 1, *used]) + 1}"
+
+
 def compare(frozen, parser_info, text, pages, elements):
     old_chars, new_chars = differing_chars(frozen["text"], text)
     return {"text_identical": text == frozen["text"], "frozen_chars_differing": old_chars, "new_chars_differing": new_chars,
@@ -47,9 +54,10 @@ def compare(frozen, parser_info, text, pages, elements):
 
 def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
-    arg_parser.add_argument("--test", action="store_true", help=f"one document ({TEST_DOC}); run record into runs/tests/")
+    arg_parser.add_argument("--test", action="store_true",
+                            help=f"one document ({TEST_DOC}); outputs under data/extracted/tests/, run record in runs/tests/")
     arg_parser.add_argument("--machine", default="kaggle")
-    arg_parser.add_argument("--run-source", default="KN10", help="notebook id used in the run id; TEST with --test")
+    arg_parser.add_argument("--run-source", required=True, help="notebook id used in the run id, e.g. KN10; TEST for --test")
     args = arg_parser.parse_args()
 
     docs = [TEST_DOC] if args.test else sorted(tuning_ids())
@@ -61,9 +69,14 @@ def main():
     chunker = HybridChunker(tokenizer=tokenizer)
     chunker_info = {"name": "HybridChunker", "docling": version("docling"), "docling_core": version("docling-core"),
                     "tokenizer": TOKENIZER, "max_tokens": MAX_TOKENS, "merge_peers": chunker.merge_peers}
-    run_id = new_run_id(2, "TEST" if args.test else args.run_source)
-    folders = {name: EXTRACTED / name for name in ("docling_doc", "docling_hybrid")}
-    for folder in [*folders.values(), RESULTS]:
+    run_id = test_run_id(args.run_source) if args.test else new_run_id(2, args.run_source)
+    manifest_path = (RUNS_DIR / "tests" / f"test_docling_hybrid_convert_cuad_{run_id}.json" if args.test
+                     else RUNS_DIR / f"{run_id}.json")
+    if manifest_path.exists():
+        raise FileExistsError(f"run record already exists: {manifest_path}")
+    root, results = (EXTRACTED / "tests", RESULTS / "tests") if args.test else (EXTRACTED, RESULTS)
+    folders = {name: root / name for name in ("docling_doc", "docling_hybrid")}
+    for folder in [*folders.values(), results]:
         folder.mkdir(parents=True, exist_ok=True)
     logger, inputs, outputs, rows = CostLogger(), [], [], []
     for doc_id in docs:
@@ -84,14 +97,10 @@ def main():
         outputs += [doc_path, hybrid_path]
         rows.append({"doc_id": doc_id, **comparison, "chunks": len(chunks), "seconds": stage["wall_seconds"]})
 
-    table_path = RESULTS / f"text_comparison_{run_id}.csv"
+    table_path = results / f"text_comparison_{run_id}.csv"
     pd.DataFrame(rows).to_csv(table_path, index=False)
     manifest = build_manifest(run_id, "v1.2", {"parser": parser_info, "chunker": chunker_info}, inputs,
                               [*outputs, table_path], logger.summary(), "laptop" if args.test else args.machine)
-    manifest_path = (RUNS_DIR / "tests" / f"test_docling_hybrid_convert_cuad_{run_id}.json" if args.test
-                     else RUNS_DIR / f"{run_id}.json")
-    if manifest_path.exists():
-        raise FileExistsError(f"run record already exists: {manifest_path}")
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     pd.set_option("display.width", 250)
     print(pd.DataFrame(rows).to_string(index=False), f"\ncomparison: {table_path}\nmanifest: {manifest_path}")

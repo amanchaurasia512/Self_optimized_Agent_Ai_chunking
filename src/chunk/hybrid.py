@@ -3,23 +3,25 @@ Docling HybridChunker, max 512 bge-m3 tokens. The chunk texts come from scripts/
 environment); here, with no Docling import, they are mapped to contiguous spans of the frozen Docling extraction.
 (4) Located in order, whitespace ignored, after removing the serializer's list bullet ("- " at a line start). A located
 chunk runs from the previous span's end (document start for the first) to its last matched non-space character; the
-last runs to the document end. (5) An unlocated chunk is not repaired: its text joins the next located chunk's span."""
+last runs to the document end. (5) An unlocated chunk is not repaired: its text joins the next located chunk's span.
+Setting `inputs=tests` (smoke tests only) reads the --test outputs from data/extracted/tests/docling_hybrid/."""
 import json
 import re
 from functools import cache
 
 from src.common.manifest import PROJECT_ROOT
 
-HYBRID_CHUNKS = PROJECT_ROOT / "data" / "extracted" / "docling_hybrid"
+EXTRACTED = PROJECT_ROOT / "data" / "extracted"
+INPUT_FOLDERS = {"": EXTRACTED / "docling_hybrid", "tests": EXTRACTED / "tests" / "docling_hybrid"}
 DOCLING_VERSION = "2.143.0"
 LIST_BULLET = re.compile(r"(?m)^- ")
 SPACE = re.compile(r"\s+")
 
 
 @cache
-def mapping(doc_id, text):
+def mapping(doc_id, text, inputs):
     """(spans, report) for one document: rules (4) and (5)."""
-    saved = json.loads((HYBRID_CHUNKS / f"{doc_id}.json").read_text(encoding="utf-8"))
+    saved = json.loads((INPUT_FOLDERS[inputs] / f"{doc_id}.json").read_text(encoding="utf-8"))
     if saved["chunker"]["docling"] != DOCLING_VERSION:
         raise ValueError(f"HybridChunker output from Docling {saved['chunker']['docling']}, expected {DOCLING_VERSION}")
     kept = [position for position, char in enumerate(text) if not char.isspace()]
@@ -42,17 +44,19 @@ def mapping(doc_id, text):
     return spans, report
 
 
-def docling_mapping(document):
+def docling_mapping(document, inputs):
     if document["parser"]["name"] != "docling":
         raise ValueError(f"docling_hybrid is defined for Docling only; got parser {document['parser']['name']!r}")
-    return mapping(document["doc_id"], document["text"])
+    if inputs not in INPUT_FOLDERS:
+        raise ValueError(f"inputs must be one of {list(INPUT_FOLDERS)}; got {inputs!r}")
+    return mapping(document["doc_id"], document["text"], inputs)
 
 
-def docling_hybrid(document):
+def docling_hybrid(document, inputs=""):
     """Contiguous spans of the frozen text for the shared post-processing."""
-    return docling_mapping(document)[0]
+    return docling_mapping(document, inputs)[0]
 
 
-def hybrid_report(document):
+def hybrid_report(document, inputs=""):
     """Per document, for the run record: chunks located and unlocated (rule 5), and the text comparison."""
-    return docling_mapping(document)[1]
+    return docling_mapping(document, inputs)[1]
