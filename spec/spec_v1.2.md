@@ -758,3 +758,39 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
   data/results/aq/analysis_held_out_vs_best.csv holds difference 0.0475, interval [0.0015, 0.099]; rounded to 3
   decimals (half up) that is +0.048 [0.002, 0.099], as in the paper table. RESULTS.md now matches the CSV. Holm p
   0.176 and the conclusion (not significant) are unchanged; no result changes.
+
+## RQ3 controls: budget sweep and random floor, design written before running (2026-11-18)
+- Question: why does the best chunk size depend on the measure (RQ3)? Test whether large chunks win under fixed k
+  only because they read more text. Diagnostic; no earlier result or decision changes.
+- Data: tuning documents only (scripts read pdfs/split.csv; no --final), certain span-level main questions (QASPER
+  excluded), Docling and pdfplumber, the existing chunks, gold and bge-m3 cache of P3-LOCAL-20261105-4. scorer_v1
+  unchanged; hybrid retrieval only (BM25 + bge-m3, RRF k = 60). The embedder is not changed (one factor at a time).
+- Settings: the four size-swept families with overlap 0 and no prefix (fixed_token, recursive, langchain_recursive,
+  method1_tree) at 256, 384, 512, 640, 768, 896 and 1,024: 28 settings per parser. Superseded *_vNN and sanity
+  settings are left out (p4_analyse.in_scope).
+- Measures per question:
+  1. Recall@B for B in {250, 500, 750, 1,250, 2,000, 4,000} (read_ranking; the last chunk is cut at B). All settings
+     are scored at every B; rows where the setting's mean chunk size exceeds B are flagged, not dropped.
+  2. Recall@k for k in {1, 3, 5, 10} (top-k chunks, no budget, overlap counted once), as in p3_fixedk, plus the tokens
+     read by those k chunks.
+  3. Random floor: the same two measures for a random chunk order, averaged over 20 random permutations per question
+     (numpy default_rng(42), one generator, settings and documents processed in sorted order).
+  4. Lift = measure - its random floor.
+- Analysis: document means, then setting means, per parser.
+  - Curves: recall against tokens read, one line per size within each family.
+  - Test (fixed now): per family and parser, the paired document bootstrap (2,000 resamples, seed 42) of
+    (size 256 - size 1,024) at each B and each k, for both recall and lift; Holm over all these comparisons. Reported:
+    the difference, its 95% interval and the Holm p.
+  - Reported, not tested: per family and parser, the smallest B at which size 1,024 is no longer below size 256
+    (the crossover), if any.
+- Expected (written before running, not a decision rule): at equal B, 256 is above 1,024 for every B up to 2,000; at
+  fixed k, 1,024 is above 256 in recall, and the gap shrinks or reverses in lift.
+- Script: scripts/p3_budget_sweep.py; output data/results/p3/budget_sweep_tuning.csv; run record P3-SWEEP-<date>-<n>.
+- Amendment before running (2026-11-18): the Holm family is narrowed to the comparisons that test the question:
+  per family and parser, (size 256 - size 1,024) in Recall@1,250, Recall@5 and Lift@5 (24 comparisons). All other
+  budgets, k values and lifts are reported with their 95% intervals as descriptive, without Holm.
+
+## Licence (2026-11-18)
+- An MIT licence was added for the project's own code (LICENSE). It does not cover dataset-derived files, which keep
+  their sources' licences (NOTICE.md). This updates "Errata (2026-11-15, distributed data)": "The repository has no
+  licence file of its own" is no longer true.
