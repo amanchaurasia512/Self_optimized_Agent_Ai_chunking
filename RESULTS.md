@@ -144,6 +144,25 @@ on the measure.
 - Superseded `_v10` / `_v11` settings are left out, as in P4 (spec Errata 2026-11-14, fixed-k). With them, the
   three Docling winners were the `_prefix_v11` settings (Hit@1 0.624, MRR 0.743, Recall@4,000 0.932).
 
+### Controls: budget sweep and random floor (P3-SWEEP-20261118-1 ✅ checked against the CSV)
+
+Tuning only, 19 documents, main questions, hybrid retrieval, 28 settings per parser; diagnostic (spec note "RQ3
+controls", amended; result note 2026-11-18). Source: `data/results/p3/budget_sweep_tuning_tests.csv` (24 tested rows)
+and `budget_sweep_tuning_crossover.csv`.
+
+| Measure (size 256 − size 1,024) | Range over 4 families × 2 parsers | Holm |
+|---|---|---|
+| Recall@1,250 | +0.113 to +0.203 | all 8 significant |
+| Recall@5 | −0.088 to −0.137 | all 8 significant |
+| Lift@5 (Recall@5 − random floor) | +0.106 to +0.150 | all 8 significant |
+
+- All 24 tested comparisons are significant after Holm (largest Holm p 0.036; p = 0.000 means below 2/2000 before
+  Holm).
+- No crossover up to 4,000 tokens in any of the 8 family–parser pairs. Not tested: the recall difference shrinks with
+  the budget, from +0.31 to +0.40 (mean +0.345) at 250 tokens to +0.02 to +0.05 at 4,000.
+- At k = 5, size 1,024 reads 3.5 to 4.0 times the tokens of size 256. Its recall lead under fixed k reverses once the
+  random floor is subtracted: large chunks win at fixed k because they read more text.
+
 ## 8. Supplementary tables
 
 Source: spec note "Supplementary analyses for the paper (2026-11-14)". Read-only and descriptive; no decision changes.
@@ -332,5 +351,9 @@ The spec's Errata (2026-11-12) corrects:
 
 The spec's Errata (2026-11-14) corrects the RQ5(a) digital sample size "307–308 questions" to "306–308"
 (docling_table_mode_switched has 306 shared questions; found by the reproduction check).
+
+The spec's Errata (2026-11-18) corrects the AQ held-out langchain_default line from +0.047 [0.001, 0.099] to
++0.048 [0.002, 0.099]: data/results/aq/analysis_held_out_vs_best.csv holds 0.0475 [0.0015, 0.099], rounded half up
+to 3 decimals, as in the paper table. Holm p 0.176 and the conclusion are unchanged.
 
 Not yet corrected: spec v1.2 repeats the line "A document is picked at most once…" (lines 23–24 and 44–45).

@@ -855,3 +855,19 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
       prefix. Cross-reference tokens count in index cost and budgets like a prefix.
   (3) dynamic_token has no published source (spec v1 gives none). Its definition is our own; it is written in its
       own dated note before coding and stated as our own in the paper.
+
+## RQ3 controls result (2026-11-18), P3-SWEEP-20261118-1
+- Design: "RQ3 controls: budget sweep and random floor" with its amendment (Holm over 24 comparisons). Tuning only,
+  19 documents with main questions, hybrid retrieval, 28 settings per parser. Diagnostic; no earlier result or
+  decision changes. Output data/results/p3/budget_sweep_tuning*.csv.
+- Tested, size 256 - size 1,024, per family and parser (8 pairs each), paired document bootstrap:
+  - Recall@1,250: +0.113 to +0.203 (256 better in all 8);
+  - Recall@5: -0.088 to -0.137 (1,024 better in all 8);
+  - Lift@5 (Recall@5 minus its random floor): +0.106 to +0.150 (256 better in all 8).
+  All 24 are significant after Holm (largest Holm p 0.036; p shown as 0.000 means below 2/2000 before Holm).
+- Reported, not tested: no crossover up to 4,000 tokens in any of the 8 family-parser pairs (size 1,024 stays below
+  256 at every budget). The 256 - 1,024 recall difference shrinks with the budget: +0.31 to +0.40 (mean +0.345) at
+  250 tokens, +0.11 to +0.20 at 1,250, +0.02 to +0.05 at 4,000.
+- Reading: under fixed k, large chunks win in recall because they read more text (3.5 to 4.0 times the tokens at
+  k = 5); once the random floor is subtracted the ranking reverses and small chunks are better. This matches the
+  expectation written before running.
