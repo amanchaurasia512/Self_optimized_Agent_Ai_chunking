@@ -13,6 +13,7 @@ import asyncio
 from src.chunk.method1 import method1_tree, tree_nodes
 from src.chunk.dynamic import dynamic_token
 from src.chunk.section_table import chunk_document_keeping_rows, section_table
+from src.chunk.hybrid import docling_hybrid, hybrid_report
 from src.chunk.llm import complete
 from src.chunk.vendor.adaptive_llm_regex import LLMRegexSplitter, _build_few_shot_prompt
 from src.chunk.sanity import sanity_random_cut, sanity_table_split
@@ -144,6 +145,8 @@ CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "dynamic_token": {"function": dynamic_token, "version": "1.0"},
             "section_table": {"function": section_table, "version": "1.0+tree-v4", "nodes": tree_nodes,
                               "chunk_document": chunk_document_keeping_rows},
+            "docling_hybrid": {"function": docling_hybrid, "version": "1.0+docling-2.143.0+docling-core-2.106.0",
+                               "report": hybrid_report},
             "sanity_random_cut": {"function": sanity_random_cut, "version": "1.0", "sanity": True},
             "sanity_table_split": {"function": sanity_table_split, "version": "1.0+method1-1.1", "sanity": True}}
             
