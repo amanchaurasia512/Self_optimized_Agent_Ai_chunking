@@ -880,3 +880,26 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
   6 chunks of about 1,000 tokens, all merged, which is not a paragraph grouping. Decided from structure counts only,
   before any recall was computed. Docling test on the same document: 45 chunks, 106-470 tokens, overlap kept at all
   44 boundaries, 12 chunks changed by the shared merge step.
+
+## dynamic_token: definition before any code (2026-11-18), extension item 2
+Our own definition; spec v1 gives the range 128-512 and no source. Fixed before any code or result.
+- D1 Units: the parser's blocks (Docling elements; pdfplumber non-empty lines, as method 1 rule A13), split at
+  sentence ends (the base's sentence rule). Token counts with the bge-m3 tokenizer, as everywhere.
+- D2 Window: from the current start, a cut may fall where the chunk is 128 to 512 tokens.
+- D3 Break strength, strongest first: (1) page break or blank line; (2) table start or end, or block end (Docling);
+  (3) sentence end; (4) line end. Cut at the strongest kind of break in the window; among breaks of that kind, the
+  latest (the largest chunk).
+- D4 Unbreakable units: a Docling table, or a block with no sentence end inside, is never cut while it fits in
+  1,024 tokens. If the window would cut it, the chunk grows to hold the whole unit (up to 1,024).
+- D5 Over 1,024: a table is cut between rows only, the header row repeated in each piece (as method 1 rule A7);
+  any other unit at line ends, else by tokens (the base's split_long).
+- D6 No break in the window and no unbreakable unit: cut at 512 tokens.
+- D7 The last chunk of a document may be shorter than 128. No overlap, no prefix. The shared post-processing
+  (merge under 100, re-split over 1,024) applies unchanged.
+- D8 Parsers: both. pdfplumber gives no table labels, so D4 applies there only to blocks with no sentence end; this
+  is reported, not patched with a table-detection rule of our own.
+- D9 Reported with the result: chunk count; mean, median and maximum tokens; how many chunks grew past 512 under D4
+  and how many were cut under D5.
+- Analysis addition (extension, fixed now): besides the comparisons already planned, dynamic_token, section_table and
+  method 1 (v1 and v2) are compared on table questions only (OHR-Bench table evidence, Docling), descriptive with
+  95% intervals, no Holm.
