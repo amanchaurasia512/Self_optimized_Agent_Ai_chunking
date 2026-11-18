@@ -11,6 +11,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 import torch
 import asyncio
 from src.chunk.method1 import method1_tree, tree_nodes
+from src.chunk.dynamic import dynamic_token
 from src.chunk.llm import complete
 from src.chunk.vendor.adaptive_llm_regex import LLMRegexSplitter, _build_few_shot_prompt
 from src.chunk.sanity import sanity_random_cut, sanity_table_split
@@ -139,6 +140,7 @@ CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True},
             "method1_tree": {"function": method1_tree, "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix", "nodes": tree_nodes, "prefix_share": 0.10},
             "paragraph_group": {"function": paragraph_group, "version": "1.0"},
+            "dynamic_token": {"function": dynamic_token, "version": "1.0"},
             "sanity_random_cut": {"function": sanity_random_cut, "version": "1.0", "sanity": True},
             "sanity_table_split": {"function": sanity_table_split, "version": "1.0+method1-1.1", "sanity": True}}
             
