@@ -999,3 +999,9 @@ below uses only the document's own tree (src/chunk/tree.py v4) and text; no word
   (X4') Chains allow up to two words between the two references ("clause (a) of sub-section (1)").
   The D4 smoke-test records before this amendment are kept in runs/tests/. The X12 hand check is done on the D4
   output after this amendment.
+
+
+- Decision after the amended D4 smoke test (2026-11-18), method 1 v2: no further rule changes. Known limitations,
+  reported not patched: on pdfplumber, repeated sections at the same depth (D4 holds the Act more than once) make many
+  references ambiguous (101 of 385); on Docling, dotted references can resolve to schedule entries with the same
+  number (at least 30 of 69 checked). Precision is measured by the X12 hand check.
