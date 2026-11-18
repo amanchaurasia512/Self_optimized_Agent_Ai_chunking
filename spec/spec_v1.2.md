@@ -919,3 +919,18 @@ Our own definition; spec v1 gives the range 128-512 and no source. Fixed before 
   the chunk's prefix field (as method 1 rule A7), counted in budgets and index cost; no other prefix. Sections over
   1,024 and pieces under 100 tokens go through the shared post-processing unchanged. Both parsers; pdfplumber has no
   table labels, so on pdfplumber section_table is sections only (reported).
+- Amendment before any code (2026-11-18), section_table: table-row chunks skip merge-under-100. A row chunk is never
+  joined with a neighbour, in either direction; re-split over 1,024 still applies, and every other piece goes through
+  the shared post-processing unchanged. Reason: in ohr_finance_jpmorgan_2023q2_10q (tuning, Docling) 97% of the 3,281
+  table rows are under 100 tokens (median 35), so the shared merge would turn rows back into blocks of about 1,000
+  tokens. Row chunks under 100 tokens are kept and counted (C3 flag), not hidden.
+
+  (4) Span mapping: chunk texts are located in the frozen text in order, whitespace ignored, after removing the
+      chunking serializer's list bullet ("- " at a line start). Spans are contiguous: each located chunk runs from
+      the end of the previous chunk's span (the document start for the first) to its last matched non-space
+      character; the last chunk runs to the document end. Text HybridChunker keeps out of chunk.text (section
+      headings) therefore joins the following chunk. This is our mapping choice; coverage is 100%, as for every
+      other chunker. On the CUAD tuning document 18 of 18 chunks are located.
+  (5) A chunk that cannot be located (e.g. a table serialized as cell triplets) is not repaired: its text falls in the
+      gap and joins the next located chunk's span. The number of unlocated chunks and their characters are counted
+      per document and reported. No table-specific rule.
