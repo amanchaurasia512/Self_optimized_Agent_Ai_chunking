@@ -36,6 +36,7 @@ def main():
     arg_parser.add_argument("--final", action="store_true", help="allow held-out documents (final evaluation only)")
     arg_parser.add_argument("--machine", default="laptop")
     arg_parser.add_argument("--run-source", default="LOCAL", help="run id source, e.g. LOCAL or KN01 for a Kaggle notebook")
+    arg_parser.add_argument("--test-output", action="store_true", help="tests only: write chunks under data/chunks/tests/")
     args = arg_parser.parse_args()
 
     tuning = tuning_ids()
@@ -71,7 +72,7 @@ def main():
                 stage.update(report)
             layer1 = layer1_report(chunk_doc, document["text"], validator)
             chunk_doc["quality"]["layer1"] = layer1
-            output_path = CHUNKS / parser / name / f"{doc_id}.json"
+            output_path = (CHUNKS / "tests" if args.test_output else CHUNKS) / parser / name / f"{doc_id}.json"
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_text(json.dumps(chunk_doc, ensure_ascii=False, indent=2), encoding="utf-8")
             inputs.append(extracted_path)

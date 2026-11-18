@@ -14,6 +14,7 @@ from src.chunk.method1 import method1_tree, tree_nodes
 from src.chunk.dynamic import dynamic_token
 from src.chunk.section_table import chunk_document_keeping_rows, section_table
 from src.chunk.hybrid import docling_hybrid, hybrid_report
+from src.chunk.xref import PREFIX_SHARE, chunk_document_with_xref, xref_report
 from src.chunk.llm import complete
 from src.chunk.vendor.adaptive_llm_regex import LLMRegexSplitter, _build_few_shot_prompt
 from src.chunk.sanity import sanity_random_cut, sanity_table_split
@@ -141,6 +142,8 @@ CHUNKERS = {"fixed_token": {"function": fixed_token, "version": "1.0"},
             "semantic": {"function": semantic, "version": "1.0+adaptive-chunking-ea87ce8+langchain-experimental-0.4.2+qwen3-emb-0.6b-97b0c61-fp32"},
             "llm_regex": {"function": llm_regex, "version": "1.0+adaptive-chunking-ea87ce8", "llm": True},
             "method1_tree": {"function": method1_tree, "version": "1.2+tree-v4+A13-line-blocks+A9-whole-prefix", "nodes": tree_nodes, "prefix_share": 0.10},
+            "method1_xref": {"function": method1_tree, "version": "2.1+tree-v4", "nodes": tree_nodes, "prefix_share": PREFIX_SHARE,
+                             "chunk_document": chunk_document_with_xref, "report": xref_report},
             "paragraph_group": {"function": paragraph_group, "version": "1.0"},
             "dynamic_token": {"function": dynamic_token, "version": "1.0"},
             "section_table": {"function": section_table, "version": "1.0+tree-v4", "nodes": tree_nodes,

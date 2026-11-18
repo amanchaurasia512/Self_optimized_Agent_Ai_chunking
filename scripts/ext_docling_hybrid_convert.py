@@ -13,7 +13,7 @@ from docling_core.transforms.chunker.tokenizer.huggingface import HuggingFaceTok
 
 from src.chunk.base import TOKENIZER
 from src.common.cost_logger import CostLogger
-from src.common.manifest import PROJECT_ROOT, RUNS_DIR, build_manifest, new_run_id
+from src.common.manifest import PROJECT_ROOT, RUNS_DIR, build_manifest, new_run_id, new_test_run_id
 from src.common.pdf_catalog import PDF_MANIFEST
 from src.common.split import tuning_ids
 from src.parse.docling_parser import assemble, make_converter, page_entries
@@ -36,13 +36,6 @@ def differing_chars(old, new):
             old_count += sum(op[2] - op[1] for op in changed)
             new_count += sum(op[4] - op[3] for op in changed)
     return old_count, new_count
-
-
-def test_run_id(source):
-    """new_run_id does not look in runs/tests/: take the next number not used by a test record there either."""
-    prefix, number = new_run_id(2, source).rsplit("-", 1)
-    used = [int(path.stem.rsplit("-", 1)[1]) for path in (RUNS_DIR / "tests").glob(f"*{prefix}-*.json")]
-    return f"{prefix}-{max([int(number) - 1, *used]) + 1}"
 
 
 def compare(frozen, parser_info, text, pages, elements):
@@ -69,7 +62,7 @@ def main():
     chunker = HybridChunker(tokenizer=tokenizer)
     chunker_info = {"name": "HybridChunker", "docling": version("docling"), "docling_core": version("docling-core"),
                     "tokenizer": TOKENIZER, "max_tokens": MAX_TOKENS, "merge_peers": chunker.merge_peers}
-    run_id = test_run_id(args.run_source) if args.test else new_run_id(2, args.run_source)
+    run_id = new_test_run_id(2, args.run_source) if args.test else new_run_id(2, args.run_source)
     manifest_path = (RUNS_DIR / "tests" / f"test_docling_hybrid_convert_cuad_{run_id}.json" if args.test
                      else RUNS_DIR / f"{run_id}.json")
     if manifest_path.exists():

@@ -1,0 +1,5 @@
+method1_xref_T384_noprefix | run P2-TEST-20261118-1
+    parser            doc_id  chunks  index_tokens  llm_in  llm_out  min  median  max  C3  passed  coverage  seconds  found  resolved  ambiguous  unresolved  same_chunk  self  duplicate  attached  dropped_cap  chunks_with_refs     referring_words  cuts_equal_v1  extra_index_tokens  extra_per_chunk
+   docling indian_d4_rti_act     142         39995       0        0  102     296  449   0    True       1.0    0.985    349        85          2         262          39     3          9        26            8                26 dotted/1/.: section           True                 638             4.49
+pdfplumber indian_d4_rti_act     144         42314       0        0  102     306  467   0    True       1.0    0.493    385        76         54         255          30     2          7        30            7                29 dotted/1/.: section           True                 683             4.74
+manifest: /home/chaurasia008/Project_files/Self_optimized_Agent_Ai_chunking/runs/P2-TEST-20261118-1.json

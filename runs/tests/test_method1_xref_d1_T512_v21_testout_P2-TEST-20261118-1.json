@@ -1,0 +1,130 @@
+{
+  "run_id": "P2-TEST-20261118-1",
+  "created_at": "2026-11-18T12:19:12+00:00",
+  "code": {
+    "commit": "0cf2712897622b28025044286b85da04d0f1b3a9",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.1",
+  "config": null,
+  "stack": {
+    "chunker": {
+      "name": "method1_xref",
+      "version": "2.1+tree-v4",
+      "settings": {
+        "T": 512,
+        "heading_prefix": false
+      }
+    },
+    "tokenizer": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ],
+    "llm": null
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/extracted/docling/indian_d1.json",
+      "sha256": "5612acea5da28bb5054d82133bbc2413dab36a23067f4297e311bf4b546b3725"
+    },
+    {
+      "path": "data/extracted/pdfplumber/indian_d1.json",
+      "sha256": "f1258539635e0a1e2c54e9638bed0d1478885fd25e087a881610fdf223c5e7f5"
+    }
+  ],
+  "outputs": [
+    "data/chunks/tests/docling/method1_xref_T512_noprefix/indian_d1.json",
+    "data/chunks/tests/pdfplumber/method1_xref_T512_noprefix/indian_d1.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "chunk:docling:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 100,
+        "index_tokens": 37642,
+        "llm": [],
+        "found": 288,
+        "resolved": 201,
+        "ambiguous": 59,
+        "unresolved": 28,
+        "same_chunk": 61,
+        "self": 5,
+        "duplicate": 22,
+        "attached": 77,
+        "dropped_cap": 36,
+        "chunks_with_refs": 60,
+        "referring_words": "dotted/1/.: rule; word/FORM: form; word/NOTE: form",
+        "cuts_equal_v1": true,
+        "extra_index_tokens": 1756,
+        "extra_per_chunk": 17.56,
+        "wall_seconds": 0.992,
+        "peak_ram_mb": 1029.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "chunk:pdfplumber:indian_d1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chunks": 97,
+        "index_tokens": 36778,
+        "llm": [],
+        "found": 262,
+        "resolved": 207,
+        "ambiguous": 37,
+        "unresolved": 18,
+        "same_chunk": 75,
+        "self": 5,
+        "duplicate": 20,
+        "attached": 95,
+        "dropped_cap": 12,
+        "chunks_with_refs": 61,
+        "referring_words": "dotted/1/.: rule; word/FORM: form; word/NOTE: form",
+        "cuts_equal_v1": true,
+        "extra_index_tokens": 1934,
+        "extra_per_chunk": 19.94,
+        "wall_seconds": 0.415,
+        "peak_ram_mb": 1039.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1.407,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1039.9,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

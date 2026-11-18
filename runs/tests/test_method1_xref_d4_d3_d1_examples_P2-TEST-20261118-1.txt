@@ -1,0 +1,21 @@
+method1_xref 2.1 examples, Docling, T = 512, data/chunks/tests/ (D4, D3, D1)
+
+--- indian_d4_rti_act c00040 (+15 prefix tokens)
+prefix: [refers to: 5 - Directorate of Enforcement]
+from: 'section 5' (attached) context 'fficer designated as such under sub-section (Z)of section 5;\n\n"Chief '
+
+--- indian_d3_fundamental_rules c00032 (+27 prefix tokens)
+prefix: [refers to: (ii) - The licence fee so fixed shall remain effective until the last date of the calen]
+from: '(ii)' (attached) context "t of his monthly emoluments, whichever is less:\n\n'(ii) Deleted.\n"; '(iii)' (dropped_cap) context " emoluments, whichever is less:\n\n'(ii) Deleted.\n\n'(iii) Deleted.\n"
+
+--- indian_d3_fundamental_rules c00055 (+27 prefix tokens)
+prefix: [refers to: (1) - When a Government servant who has been dismissed, removed or compulsorily retire]
+from: '(1)' (attached) context 'all be paid to the Government servant. F.R. 54-A. (1) Where the'; '(2)' (dropped_cap) context 'ces in accordance with the provisions of sub-rule (2) or (3) su'; '(ii)' (dropped_cap) context 's been served) as may be specified in the notice: (ii) The perio'
+
+--- indian_d1 c00029 (+30 prefix tokens)
+prefix: [refers to: (a) - he is ordered to join the new post at a new place of posting without availing of]
+from: '(a)' (attached) context '. 11020/01/2017- Estt. (L), dated 11.12.2018)\n\n(1)(a) The leave'; 'Rule 26' (dropped_cap) context 't avail any vacation, earned leave will be as per Rule 26 instead o'; '(b)' (dropped_cap) context 'will be as per Rule 26 instead of Clauses (a) and (b).\n\nEXPLANA'
+
+--- indian_d1 c00057 (+36 prefix tokens)
+prefix: [refers to: (1) - Subject to the provisions of this rule, a female Government servant and single m] [refers to: 31 - Leave not due]
+from: '(1)' (attached) context 'tion of medical certificate contained in sub-rule (1) of Rule 3'; 'Rule 31' (attached) context 'ned in sub-rule (1) of Rule 30 or sub-rule (1) of Rule 31, leave of'

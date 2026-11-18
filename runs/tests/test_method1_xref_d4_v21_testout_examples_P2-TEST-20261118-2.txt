@@ -1,0 +1,21 @@
+method1_xref 2.1 D4 examples, Docling, T = 512 (run P2-TEST-20261118-2, data/chunks/tests/): 5 of 46 chunks with references, evenly spaced
+
+--- c00002 (126 + 39 prefix tokens), section path 'CHAPTER I Preliminary'
+prefix: [refers to: 4 - (1) Every public authority shall] [refers to: 5 - (1) Every public authority shall, within one hundred days of the enactment of th]
+references: '(1)' -> same_chunk; 'section 4' -> attached; '(1)' -> same_chunk; '(2)' -> same_chunk; 'section 5' -> attached
+
+--- c00016 (461 + 30 prefix tokens), section path '11. Third party information.'
+prefix: [refers to: 7 - (1) Subject to the proviso to sub-section (2) of section 5 or the proviso to sub]
+references: '(1)' -> same_chunk; 'section 7' -> attached; 'section 6' -> dropped_cap; '(2)' -> same_chunk; '(3)' -> same_chunk; 'section 19' -> ambiguous
+
+--- c00031 (458 + 13 prefix tokens), section path 'CHAPTER VI Miscellaneous'
+prefix: [refers to: 7 - Aviation Research Centre]
+references: 'section 7' -> attached; '(4)' -> ambiguous; '(1)' -> ambiguous
+
+--- c00048 (440 + 14 prefix tokens), section path '(e) information available to a person in his fiduciary relationship; u'
+prefix: [refers to: 6 - Narcotics Control Bureau]
+references: 'section 6' -> attached
+
+--- c00065 (492 + 13 prefix tokens), section path 'CHAPTER VI MISCELLANEOUS'
+prefix: [refers to: 7 - Aviation Research Centre]
+references: 'section 7' -> attached; '(2)' -> same_chunk

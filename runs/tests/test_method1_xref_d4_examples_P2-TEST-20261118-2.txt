@@ -1,0 +1,26 @@
+method1_xref D4 examples, Docling, T = 512 (run P2-TEST-20261118-2): 5 of 21 chunks with references, evenly spaced
+
+--- c00003 (468 + 16 prefix tokens), section path ['CHAPTER I Preliminary', '2. In this Act, unless the context otherwise requires,']
+prefix: [refers to: (i) - "record" includes]
+references in text: '(i)' -> attached n0030; '(ii)' -> unresolved; '(1)' -> unresolved; 'section 12' -> unresolved; '(1)' -> unresolved; '(2)' -> unresolved; 'section 5' -> unresolved; '(3) of section 12' -> unresolved
+text start: 2. In this Act, unless the context otherwise requires,-  (a) "appropriate Government" means in relation to a public authority which is established, constituted, owned, controlled or substantially fina
+
+--- c00011 (417 + 31 prefix tokens), section path ['7. (1) Subject to the proviso to sub-section (2) of section 5 or the proviso to sub', '(4) Where access to the record or a part thereof is required to be provided under th']
+prefix: [refers to: (1) - Subject to the proviso to sub-section (2) of section 5 or the proviso to subsect]
+references in text: '(6)' -> same_chunk n0094; '(1)' -> attached n0087; 'section 6' -> dropped_cap n0078; '(1)' -> duplicate n0087; '(5) of section 7' -> same_chunk n0093; '(5)' -> same_chunk n0093; '(1)' -> duplicate n0087; '(1)' -> duplicate n0087; 'section 11' -> dropped_cap n0119; '(1)' -> duplicate n0087
+text start: (4) Where access to the record or a part thereof is required to be provided under this Act and the person to whom access is to be provided is sensorily disabled, the Central Public Information Officer
+
+--- c00018 (335 + 49 prefix tokens), section path ['CHAPTER III The Central Information Commission', '13. (1) The Chief Information Commissioner shall hold office for a term of five year']
+prefix: [refers to: (3) - The Chief Information Commissioner and Information Commissioners shall be appoin] [refers to: 14 - (1) Subject to the provisions of sub-section (3), the Chief Information Commissi]
+references in text: '(3) of section 12' -> attached n0130; 'section 14' -> attached n0147
+text start: 13. (1) The Chief Information Commissioner shall hold office for a term of five years from the date on which he enters upon his office and shall not be eligible for reappointment:  Provided that no Ch
+
+--- c00043 (465 + 47 prefix tokens), section path ['Right to Information Act, 2005 · (Chapter IL-Right to information and obligations of public authorities )']
+prefix: [refers to: (c) - information, the disclosure of which would cause the   State Legislature;] [refers to: (d) - information including commercial confidence, trade secrets Or intellectual  prop]
+references in text: '(viii)' -> unresolved; '(ix)' -> unresolved; '(x)' -> unresolved; '(xi)' -> unresolved; '(xiii)' -> unresolved; '(xiv)' -> unresolved; '(xv)' -> unresolved; '(xvi)' -> unresolved; '(xvii)' -> unresolved; '(c)' -> attached n0345; '(d)' -> attached n0346; '(2)' -> unresolved; '(6)' -> unresolved
+text start: Right to Information Act, 2005  (Chapter IL-Right to information and obligations of public authorities )  (viii) a statement of the boards, councils, committees and other bodies consisting of two or m
+
+--- c00062 (439 + 26 prefix tokens), section path ['CHAPTER V', '(c) receiving evidence on affidavit;']
+prefix: [refers to: (a) - who has been unable t0 submit request to Central  Public   Information Officer o]
+references in text: '(e)' -> unresolved; '(a)' -> attached n0381; '(3) of section 7' -> unresolved; '(1)' -> same_chunk n0388; 'section 11' -> unresolved
+text start: (c) receiving evidence on affidavit;  requisitioning any public record or copies thereof from any court or office;  (e) summons for examination of witnesses or documents; and issuing  any other matter

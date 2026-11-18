@@ -57,6 +57,13 @@ def new_run_id(phase, source):
     return f"{prefix}-{max(numbers, default=0) + 1}"
 
 
+def new_test_run_id(phase, source):
+    """new_run_id, also skipping numbers already used by test records in runs/tests/."""
+    prefix, number = new_run_id(phase, source).rsplit("-", 1)
+    used = [int(path.stem.rsplit("-", 1)[1]) for path in (RUNS_DIR / "tests").glob(f"*{prefix}-*.json")]
+    return f"{prefix}-{max([int(number) - 1, *used]) + 1}"
+
+
 def build_manifest(run_id, spec_version, stack, inputs, outputs, costs, machine, config_path=None):
     return {
         "run_id": run_id,
