@@ -1,0 +1,9 @@
+parser,family,crossover_budget
+docling,fixed_token,
+docling,langchain_recursive,
+docling,method1_tree,
+docling,recursive,
+pdfplumber,fixed_token,
+pdfplumber,langchain_recursive,
+pdfplumber,method1_tree,
+pdfplumber,recursive,
