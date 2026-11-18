@@ -44,3 +44,4 @@ __pycache__/
 *.egg-info/
 scripts/rq5_hindi_ocr.py
 .venv-docling/
+Self_optimized_paper_draft/
