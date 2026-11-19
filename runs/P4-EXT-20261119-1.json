@@ -1,0 +1,228 @@
+{
+  "run_id": "P4-EXT-20261119-1",
+  "created_at": "2026-11-19T05:37:40+00:00",
+  "code": {
+    "commit": "278a1a7c39ada3d5a7e6f2ac9ee158a6052e1305",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "ext_analyse",
+    "scores_runs": [
+      "P3-LOCAL-20261105-4",
+      "P3-EXT-KN01-20261118-2"
+    ],
+    "original_run": "P3-LOCAL-20261105-2",
+    "retriever": "hybrid",
+    "budgets": [
+      1250,
+      750,
+      2000
+    ],
+    "main_budget": 1250,
+    "reference": "docling/langchain_recursive_size256_overlap0_noprefix",
+    "new_setups": [
+      "docling/docling_hybrid_noprefix",
+      "docling/dynamic_token_noprefix",
+      "docling/paragraph_group_noprefix",
+      "docling/section_table_prefix",
+      "pdfplumber/dynamic_token_noprefix",
+      "pdfplumber/section_table_prefix"
+    ],
+    "primary_settings_from": "P4-FINAL-20261106-1_primary_setups.csv",
+    "excluded_source": "Indian",
+    "table_rule": "p3_sanity.table_questions, source OHR-Bench",
+    "table_questions_found": 107,
+    "table_setups": [
+      "docling/dynamic_token_noprefix",
+      "docling/section_table_prefix",
+      "docling/method1_tree_T384_noprefix",
+      "docling/method1_tree_T512_noprefix"
+    ],
+    "expected_primary": {
+      "all": [
+        "docling/langchain_recursive_size256_overlap0_noprefix",
+        0.802,
+        -0.001,
+        -0.032,
+        0.03
+      ],
+      "without Indian": [
+        "docling/langchain_recursive_size512_overlap0_noprefix",
+        0.791,
+        -0.014,
+        -0.044,
+        0.014
+      ]
+    },
+    "seed": 42,
+    "resamples": 2000,
+    "level": 0.95,
+    "wall_seconds": 4.1,
+    "summary": {
+      "all / primary": {
+        "setups": 26,
+        "documents": 19,
+        "questions": 860,
+        "best_single": "docling/langchain_recursive_size256_overlap0_noprefix",
+        "best_recall": 0.8021709267168573,
+        "tied": 20,
+        "oracle": 0.8010991706382395,
+        "gap": -0.0010717560786177055,
+        "gap_low": -0.03240070590468831,
+        "gap_high": 0.03003036765300931,
+        "decision": "NO-GO"
+      },
+      "all / primary + new": {
+        "setups": 32,
+        "documents": 19,
+        "questions": 860,
+        "best_single": "docling/langchain_recursive_size256_overlap0_noprefix",
+        "best_recall": 0.8021709267168573,
+        "tied": 22,
+        "oracle": 0.8028810357074729,
+        "gap": 0.0007101089906156263,
+        "gap_low": -0.03853615919674849,
+        "gap_high": 0.04212685466347332,
+        "decision": "NO-GO"
+      },
+      "without Indian / primary": {
+        "setups": 26,
+        "documents": 16,
+        "questions": 290,
+        "best_single": "docling/langchain_recursive_size512_overlap0_noprefix",
+        "best_recall": 0.7905988396821286,
+        "tied": 15,
+        "oracle": 0.7770531329922105,
+        "gap": -0.013545706689918079,
+        "gap_low": -0.04393533073604661,
+        "gap_high": 0.014171113983699633,
+        "decision": "NO-GO"
+      },
+      "without Indian / primary + new": {
+        "setups": 32,
+        "documents": 16,
+        "questions": 290,
+        "best_single": "docling/langchain_recursive_size512_overlap0_noprefix",
+        "best_recall": 0.7905988396821286,
+        "tied": 16,
+        "oracle": 0.774954664822028,
+        "gap": -0.0156441748601006,
+        "gap_low": -0.04753097167058125,
+        "gap_high": 0.01445604423356591,
+        "decision": "NO-GO"
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-LOCAL-20261105-4.csv.gz",
+      "sha256": "10f2c1e6c436392d00992cc8bc2bade11bfda8b0ef33cd164a92da2aa1fa9889"
+    },
+    {
+      "path": "data/results/p3/P3-EXT-KN01-20261118-2.csv.gz",
+      "sha256": "3f5403fbe10e470fe83c6f864cb1283440d88ce179c5183328a058cdd0613809"
+    },
+    {
+      "path": "data/results/p4/P4-FINAL-20261106-1_primary_setups.csv",
+      "sha256": "86ab5e793ed34e0a65fc39fca0ae649ed7009ff7a70ebd6594ad8b8516efef58"
+    }
+  ],
+  "outputs": [
+    "data/results/ext/P4-EXT-20261119-1_versus_reference.csv",
+    "data/results/ext/P4-EXT-20261119-1_rq1.csv",
+    "data/results/ext/P4-EXT-20261119-1_rq1_setups.csv",
+    "data/results/ext/P4-EXT-20261119-1_table_questions.csv",
+    "data/results/ext/P4-EXT-20261119-1_table_pairs.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "versus_reference:all",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.361,
+        "peak_ram_mb": 1101.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "rq1:all",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.91,
+        "peak_ram_mb": 1101.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "versus_reference:without Indian",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.237,
+        "peak_ram_mb": 1088.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "rq1:without Indian",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.761,
+        "peak_ram_mb": 1074.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "table_questions",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.333,
+        "peak_ram_mb": 1117.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 2.602,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1117.3,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
