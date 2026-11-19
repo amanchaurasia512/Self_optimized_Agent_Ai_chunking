@@ -342,6 +342,59 @@ really answers it. 20 random questions per document (seed 42), about 600 charact
   the rate does not separate question defects from context length; held-out indian_d2 was not checked.
 - Section 8.6 shows that the RQ1 and RQ2 conclusions hold without the Indian documents.
 
+## 9. Extension: planned chunkers built after the main study
+
+Source: spec note "Extension result (2026-11-19)". P4-EXT-20261119-2 on scores P3-EXT-KN01-20261118-2 plus
+P3-LOCAL-20261105-4. **Tuning only**; the extension does not use the held-out set. Hybrid, Recall@1,250, seed 42,
+2,000 resamples. The first run, P4-EXT-20261119-1, is kept as a test (`data/results/ext/tests/`).
+
+**New setups against the tuning best single** (docling/langchain_recursive_256; Holm over the 6). ✅ Checked against
+`data/results/ext/P4-EXT-20261119-2_versus_reference.csv`.
+
+| Setup | Recall | New − best [95%] | Holm p | Without Indian: new − best [95%] | Holm p |
+|---|---|---|---|---|---|
+| Docling paragraph_group | 0.791 | −0.010 [−0.059, 0.044], tied | 0.710 | −0.003 [−0.061, 0.056], tied | 0.940 |
+| Docling dynamic_token | 0.745 | −0.055 [−0.108, −0.003] | 0.082 | −0.044 [−0.106, 0.015], tied | 0.268 |
+| pdfplumber dynamic_token | 0.717 | −0.086 [−0.170, −0.011] | 0.075 | −0.087 [−0.180, 0.004], tied | 0.174 |
+| Docling docling_hybrid | 0.719 | −0.081 [−0.122, −0.039] | < 0.01 | −0.075 [−0.124, −0.028] | 0.008 |
+| Docling section_table | 0.653 | −0.148 [−0.208, −0.078] | < 0.01 | −0.127 [−0.197, −0.051] | < 0.01 |
+| pdfplumber section_table | 0.618 | −0.184 [−0.253, −0.119] | < 0.01 | −0.158 [−0.228, −0.092] | < 0.01 |
+
+None beats the best. dynamic_token is lower, but not significant after Holm.
+
+**RQ1 with 32 setups.** ✅ Checked against `data/results/ext/P4-EXT-20261119-2_rq1.csv`. The original primary result
+(26 setups, 0.802, gap −0.001 [−0.032, 0.030]) was reproduced exactly first.
+
+| Scope | Best single | Gap [95%] | Decision |
+|---|---|---|---|
+| 32 setups, all documents (19 documents, 860 questions) | docling/langchain_recursive_256, 0.802 (22 tied) | +0.001 [−0.039, 0.042] | **NO-GO** |
+| 32 setups, without Indian (16 documents, 290 questions) | docling/langchain_recursive_512, 0.791 (16 tied) | −0.016 [−0.048, 0.014] | **NO-GO** |
+
+**Table questions** (107 OHR-Bench questions, Docling, 9 documents; descriptive). ✅ Checked against
+`P4-EXT-20261119-2_table_questions.csv` and `_table_pairs.csv`: method1_tree T512 0.860, T384 0.810, dynamic_token
+0.779, section_table 0.716. Only section_table − T512 excludes 0: −0.145 [−0.280, −0.008].
+
+**Diagnostics: no bugs.** ⚠️ No run record (read-only, as the supplementary analyses). ✅ Numbers checked against
+`data/results/ext/diagnostics/`.
+- paragraph_group, dynamic_token (both parsers) and pdfplumber section_table sit on the RQ2 size–recall curve, so
+  their results follow from chunk size (`size_curve.csv`).
+- Docling section_table sits below the curve: −0.095 at measured size, −0.086 at token-weighted size (post-hoc).
+  It has 5,363 one-row chunks (5,171 under 100 tokens). Row chunks are 1,329 of the 2,538 chunks ranked above the
+  gold chunk on its 211 far-below questions (post-hoc; `rules_summary.csv`, `posthoc_above_gold_summary.csv`).
+- **docling_hybrid caveat:** what was scored is HybridChunker plus our span mapping. 1,383 of 3,400 HybridChunker
+  chunks could not be located in the frozen extraction (1,246 of them tables serialised differently), and their text
+  was joined to neighbouring chunks. The result reflects the mapping as much as the chunker; it is not a test of
+  HybridChunker as used directly (`rules_summary.csv`, `posthoc_unlocated_summary.csv`).
+- Post-hoc (added after the first results, `posthoc_*.csv`): token-weighted sizes, causes of unlocated HybridChunker
+  chunks, and what ranks above the gold chunk.
+- Known edge cases, reported, not fixed:
+  - dynamic_token: 1 D5 cut by tokens, and 1 chunk under 128 tokens before a table.
+  - section_table: no prefix cap. One 1,056-token header prefix takes 84% of one question's budget; the largest
+    prefix share is 88%.
+  - the \x9f limitation.
+
+No frozen result or decision changes.
+
 ## Spec corrections
 
 The spec's Errata (2026-11-12) corrects:

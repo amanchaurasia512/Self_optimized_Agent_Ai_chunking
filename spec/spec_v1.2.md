@@ -1024,3 +1024,108 @@ below uses only the document's own tree (src/chunk/tree.py v4) and text; no word
   extraction, so gold and scorer are unaffected. Known limitation, accepted with no new version: section_table on
   Docling, 1 of 25 files fails Layer 1 (coverage 0.999987; two zero-token chunks from a \x9f control character, three
   such characters uncovered).
+
+- Clarification before any analysis (2026-11-19), extension analysis (scripts/ext_analyse.py): tuning scores
+  P3-LOCAL-20261105-4 plus P3-EXT-KN01-20261118-2; hybrid, main questions, QASPER excluded; seed 42, 2,000 resamples.
+  Primary choice set: the 26 setups in P4-FINAL-20261106-1_primary_setups.csv. Every part with all documents and
+  without source Indian (Holm separately in each).
+  (a) Reference: docling/langchain_recursive_size256_overlap0_noprefix (tuning primary best single), also without the
+      Indian documents. Per new setup: per-document means on the questions both setups scored; the paired document
+      bootstrap of (new - reference) gives the 95% interval and the two-sided bootstrap p (as rq5_parser_compare);
+      tie by S10 (tied_with_best on the same resamples). Holm over the 6 setups at Recall@1,250. Recall@750 and @2,000
+      descriptive (no Holm); at 750 only setups with fits_750 are reported. One seed-42 generator per variant and
+      budget, setups in name order.
+  (b) First full, original and primary are replayed on P3-LOCAL-20261105-4 in p4_analyse's order with one seed-42
+      generator; the primary result must equal 0.802, gap -0.001 [-0.032, 0.030] (without Indian: P4-NOINDIAN-
+      20261114-1, 0.791, gap -0.014 [-0.044, 0.014]). The extension scope (26 + 6 = 32 setups) is the next scope on the
+      same generator. Zero cost tables, as robust_no_indian (cost does not enter ties, best single, oracle or gap).
+      Go / no-go by the frozen rule (lower end of the gap interval above 0).
+  (d) Table questions: p3_sanity.table_questions (Docling questions with at least half of their gold characters
+      inside a Docling table element; the rule of the S14 damage test, 112 questions on tuning), restricted to source
+      OHR-Bench (107). Docling dynamic_token_noprefix, section_table_prefix, method1_tree_T384_noprefix and
+      method1_tree_T512_noprefix on the questions all four scored; Recall@1,250, mean of document means with a 95%
+      document bootstrap interval, and the paired differences of each pair; descriptive, no Holm. The OHR-Bench filter
+      already leaves out the Indian documents, so (d) is the same in both variants.
+
+- Diagnostics before reading any diagnostic result (2026-11-19), extension, read-only (scripts/ext_diagnostics.py; no
+  chunker, rule or score changes; tables in data/results/ext/diagnostics/, no run record, as the supplementary
+  analyses). Tuning only; scores P3-EXT-KN01-20261118-2 and P3-LOCAL-20261105-4, hybrid, Recall@1,250, main questions,
+  QASPER excluded. Definitions fixed now:
+  (1) Rules: each setup's spans are rebuilt from the frozen extraction with the frozen chunker code (no drift in src/
+      since e26e916) and must equal the saved chunks (spans, prefixes, token counts); then the rule checks per chunker
+      (paragraph_group windows and overlap; dynamic_token D1-D9; section_table sections, row chunks and header
+      prefix; docling_hybrid located/unlocated chunks and gap characters, i.e. non-space characters inside a span
+      that are not part of its located HybridChunker text).
+  (2) Size: tokens per chunk with prefix (mean, median); measured size as RQ2 (p3_size_by_source.measured_sizes).
+      Curve per parser over the in-scope settings of P3-LOCAL-20261105-4 plus the new setup, on the questions all of
+      them scored: least-squares line of recall on log(measured size) over the existing settings. The new setup is
+      "on the curve" when its residual lies within 2 standard deviations of the existing settings' residuals and its
+      size inside their size range; the 3 existing settings nearest in size are reported as a model-free check.
+  (3) Prefix cost (section_table): prefix tokens per chunk, and per question the prefix tokens read within 1,250 and
+      their share of the budget (scorer_v1 reading order).
+  (4) Failures (Docling, docling_hybrid and section_table): questions where the setup's recall is at least 0.5 below
+      docling/langchain_recursive_size256_overlap0_noprefix; 10 drawn with numpy default_rng(42) from the sorted
+      question ids. Per question: the gold chunks (chunks holding gold characters), whether the gold is whole in one
+      chunk, the size and hybrid rank of the chunk holding most gold, the same for the reference; recomputed recall
+      must equal the stored score.
+  (5) Suspicious: empty or zero-token chunks, duplicate spans or texts, chunks over 1,024 tokens (text, and text plus
+      prefix), offsets outside the text or text not equal to its span, overlaps (allowed only for paragraph_group),
+      and prefixes that are not the header row of the chunk's own table.
+
+## Extension result (2026-11-19), P4-EXT-20261119-2 on P3-EXT-KN01-20261118-2 (tuning)
+
+Analysis by the clarification of 2026-11-19 (scripts/ext_analyse.py, outputs data/results/ext/P4-EXT-20261119-2_*.csv;
+the first run P4-EXT-20261119-1 is kept as a test, its CSVs in data/results/ext/tests/). Hybrid, Recall@1,250, main
+questions, QASPER excluded; seed 42, 2,000 resamples. Holm p reported as < 0.01 where the bootstrap p is 0.
+
+- (a) None of the 6 new setups beats the tuning best single, docling/langchain_recursive_size256_overlap0_noprefix
+  (0.802 in the RQ1 scope; 0.800 on the 886 questions shared with each Docling setup, 0.802 on the 860 shared with
+  each pdfplumber setup). Differences new - reference, 95% interval, Holm over the 6:
+  | Setup | All documents | Holm p | Without Indian | Holm p |
+  |---|---|---|---|---|
+  | docling/paragraph_group | 0.791, -0.010 [-0.059, 0.044], tied | 0.710 | 0.772, -0.003 [-0.061, 0.056], tied | 0.940 |
+  | docling/dynamic_token | 0.745, -0.055 [-0.108, -0.003] | 0.082 | 0.730, -0.044 [-0.106, 0.015], tied | 0.268 |
+  | pdfplumber/dynamic_token | 0.717, -0.086 [-0.170, -0.011] | 0.075 | 0.690, -0.087 [-0.180, 0.004], tied | 0.174 |
+  | docling/docling_hybrid | 0.719, -0.081 [-0.122, -0.039] | < 0.01 | 0.699, -0.075 [-0.124, -0.028] | 0.008 |
+  | docling/section_table | 0.653, -0.148 [-0.208, -0.078] | < 0.01 | 0.648, -0.127 [-0.197, -0.051] | < 0.01 |
+  | pdfplumber/section_table | 0.618, -0.184 [-0.253, -0.119] | < 0.01 | 0.618, -0.158 [-0.228, -0.092] | < 0.01 |
+  paragraph_group is tied with the best. docling_hybrid and both section_table setups are significantly lower after
+  Holm, with and without the Indian documents. dynamic_token is lower (with all documents its interval excludes 0,
+  so it is not tied by S10) but not significant after Holm; without the Indian documents it is tied. Without
+  Indian the reference stays the same setup (decided 2026-11-19); the reference recall there is 0.775 (Docling
+  questions) and 0.777 (pdfplumber questions). Recall@750 and @2,000 are descriptive, in the same CSV.
+- (b) RQ1 extension. The original primary result was reproduced exactly first (26 setups: 0.802, gap -0.001 [-0.032,
+  0.030]; without Indian 0.791, gap -0.014 [-0.044, 0.014]). With the 6 new setups (32 setups, 19 documents, 860
+  questions) the best single stays docling/langchain_recursive_size256 (0.802, 22 tied) and the gap is +0.001
+  [-0.039, 0.042], NO-GO. Without Indian (16 documents, 290 questions): best docling/langchain_recursive_size512
+  (0.791, 16 tied), gap -0.016 [-0.048, 0.014], NO-GO.
+- (d) Table questions (107, OHR-Bench, Docling, 9 documents), descriptive: method1_tree T512 0.860, T384 0.810,
+  dynamic_token 0.779, section_table 0.716. Of the 6 pairwise differences only section_table - T512 excludes 0
+  (-0.145 [-0.280, -0.008]).
+- Diagnostics (scripts/ext_diagnostics.py, data/results/ext/diagnostics/): no bugs. All 6 setups were rebuilt
+  exactly from the frozen code; recomputed recall and tokens read equal the stored scores.
+  - paragraph_group, dynamic_token (both parsers) and pdfplumber section_table sit on the RQ2 size-recall curve
+    (residuals +0.008, +0.017, -0.014, -0.036; residual SD 0.028 Docling, 0.022 pdfplumber), so their results follow
+    from their chunk size. docling_hybrid is also on the curve by the pre-written rule (-0.020).
+  - Docling section_table sits below the curve: -0.095 at its measured size (383 tokens) and -0.086 at its
+    token-weighted size (413, post-hoc). It has 5,363 one-row chunks (5,171 under 100 tokens) next to 1,270 section
+    chunks (all 6,633 chunks: median 100 tokens, max 1,304). On its 211 questions far below the reference, the
+    chunk holding most gold has median 1,000 tokens and rank 3 (reference: 234 tokens, rank 1); row chunks are 1,329
+    of the 2,538 chunks ranked above it, and 66% of these questions have at least 1,250 tokens ranked above it
+    (post-hoc).
+  - docling_hybrid caveat: "What was scored is HybridChunker plus our span mapping: 1,383 of 3,400 HybridChunker
+    chunks could not be located in the frozen extraction (1,246 of them tables serialised differently) and their
+    text was joined to neighbouring chunks, so the result reflects the mapping as much as the chunker; it is not a
+    test of HybridChunker as used directly." The other 137 differ by inserted list numbers (70), added markup (33),
+    table-of-contents serialisation (20) and other (14); none is found earlier in the text (post-hoc). 844,816 of
+    2,452,841 non-space characters (34%) lie in gaps; token-weighted size 610 with 30% of tokens in chunks of 900+
+    (post-hoc).
+  - Pre-written: rules, sizes, size curve, prefix cost, failures, suspicious checks. Post-hoc (added after the first
+    results, tables posthoc_*): token-weighted sizes, causes of unlocated HybridChunker chunks, what ranks above the
+    gold chunk.
+- Known edge cases, reported not fixed: dynamic_token (Docling) has 1 D5 cut by tokens (a table over 1,024 tokens
+  with no row end in the window) and 1 chunk under 128 tokens that is not last (before a table); section_table has
+  no prefix cap, so one indian_d1 row carries a 1,056-token header prefix (1,304 tokens with its text, 84% of one
+  question's budget; the largest prefix share of any question is 88%, on jpmorgan, 1,102 prefix tokens over 6 row chunks read; mean
+  44.8 prefix tokens, 3.6% of the budget); the \x9f limitation (2 zero-token chunks, 3 uncovered characters).
+- No frozen result or decision changes; the extension does not use the held-out set.
