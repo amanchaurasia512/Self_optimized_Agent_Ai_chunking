@@ -1,0 +1,3 @@
+parser,questions,chunks_read,prefix_tokens_read,prefix_share,prefix_share_max
+docling,886,3.106094808126411,44.81038374717833,0.03584830699774266,0.8816
+pdfplumber,878,2.1150341685649203,0.0,0.0,0.0

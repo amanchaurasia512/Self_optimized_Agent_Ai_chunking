@@ -1,0 +1,7 @@
+parser,setting,empty,zero_tokens,no_letter_or_digit,duplicate_spans,duplicate_texts,text_over_1024,text_and_prefix_over_1024,offsets_outside,text_not_span,overlaps,prefix_where_none_expected,uncovered_nonspace_chars
+docling,docling_hybrid_noprefix,0,0,0,0,3,0,0,0,0,0,0,0
+docling,dynamic_token_noprefix,0,0,0,0,2,0,0,0,0,0,0,0
+docling,paragraph_group_noprefix,0,0,0,0,16,0,0,0,0,4360,0,0
+docling,section_table_prefix,0,2,3,0,134,0,1,0,0,0,0,3
+pdfplumber,dynamic_token_noprefix,0,0,0,0,1,0,0,0,0,0,0,0
+pdfplumber,section_table_prefix,0,0,0,0,1,0,0,0,0,0,0,0

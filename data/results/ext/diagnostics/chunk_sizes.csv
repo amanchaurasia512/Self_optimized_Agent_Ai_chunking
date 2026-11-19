@@ -1,0 +1,7 @@
+parser,setting,chunks,mean_tokens,median_tokens,max_tokens
+docling,paragraph_group_noprefix,4496,290.0889679715302,216.0,1024
+docling,dynamic_token_noprefix,1636,451.0574572127139,474.0,1022
+pdfplumber,dynamic_token_noprefix,1668,396.1294964028777,436.0,521
+docling,section_table_prefix,6633,159.68385345997285,100.0,1304
+pdfplumber,section_table_prefix,793,833.2206809583859,999.0,1024
+docling,docling_hybrid_noprefix,1640,449.97012195121954,393.0,1024
