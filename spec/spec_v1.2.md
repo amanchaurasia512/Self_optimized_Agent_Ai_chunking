@@ -1159,3 +1159,33 @@ Recall@1,250 from P4-LOCAL-20261105-1 (full grid).
 - Input tokens are the same for all three runs (same prompt and document text); only the output differs.
 - This completes the "at what cost" part of the main question for the setups tested: every other tested setup has
   no LLM tokens, so its cost is its index tokens. No result or decision changes.
+
+## Robustness embedder: nomic-embed-text-v1.5, design before any code (2026-11-19)
+- Why: spec v1 names nomic-embed-text-v1.5 as the robustness embedder; it was never run (every result rests on
+  bge-m3). Question: do RQ1, RQ2 and RQ3 hold with a different dense embedder? Tuning documents only; no held-out use.
+- Embedder: nomic-ai/nomic-embed-text-v1.5, revision pinned in the run record, float32, full 768 dimensions,
+  normalised, trust_remote_code as the model card requires. Task prefixes as spec v1: "search_document: " before
+  every chunk text (prefix + text, as indexed now), "search_query: " before every question. The task prefixes are
+  for the embedder only and do not count in token budgets.
+- Unchanged: the bge-m3 tokenizer stays the ruler for chunk sizes and budgets (spec v1: the tokenizer never
+  switches); chunks, gold, BM25 and scorer_v1 are unchanged. Only the dense ranking changes; hybrid = BM25 + nomic,
+  RRF k = 60.
+- Setups: (1) the 26 primary setups (RQ1); (2) for RQ3, the four size-swept families (overlap 0, no prefix) at sizes
+  256 and 1,024, both parsers: 16 setups, of which the 8 at size 256 are in (1) and the 8 at size 1,024 are new. In
+  all 34 setups are embedded. Embeddings on Kaggle GPU (notebook rob-kn01).
+- Analyses, fixed now, each repeated as for bge-m3:
+  - RQ1: p4_analyse on the 26 primary setups, tuning, hybrid Recall@1,250: best single, tied, split-half oracle,
+    gap, go/no-go; also dense-only.
+  - RQ2: pooled Spearman of measured size against recall per parser and budget (750 / 1,250 / 2,000), over the 34
+    embedded setups (17 per parser, sizes 256-1,024). The bge-m3 RQ2 used every in-scope setting (about 50 per
+    parser); for a like-for-like comparison the bge-m3 Spearman is recomputed on the same 34 setups from
+    P3-LOCAL-20261105-4 and reported next to it.
+  - RQ3: per family and parser, (256 - 1,024) in Recall@1,250, Recall@5 and Lift@5 with the random floor, as the
+    budget-sweep note; Holm over these 24.
+- "Holds" means, fixed now: RQ1 gives NO-GO; RQ2 size-recall correlations are negative at every budget; RQ3 shows the
+  same signs as with bge-m3 (Recall@1,250 > 0, Recall@5 < 0, Lift@5 > 0). Any result that does not hold is reported
+  as such, next to the bge-m3 result; nothing replaces it.
+- Reported with and without the Indian documents, as in RESULTS 8.6.
+- Two corrections to the first draft, made before any code: group (2) adds 8 new setups (the draft said most were
+  already in (1)); RQ2 runs on the 34 embedded setups with bge-m3 recomputed on the same set (the draft said the 26
+  primary setups, which span sizes 256-512 only, and "exactly as for bge-m3", which used the full grid).
