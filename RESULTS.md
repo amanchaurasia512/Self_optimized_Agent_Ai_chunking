@@ -193,6 +193,24 @@ Index tokens are the same for all three chunkers (no overlap, no prefix). **meth
 count**: it makes 6–11% more chunks than recursive. Its gain is recall, not storage. Per-document values were not
 saved by P4.
 
+**LLM tokens.** Source: spec note "LLM chunker cost (2026-11-19)". Gemini tokens from the run records P2-P2-KN03-20261103-13,
+-14 and -15 ✅ (summed from their cost stages; the chunk files of all 25 tuning documents name these runs), with index
+tokens and recall from P4-LOCAL-20261105-1 ✅ (`data/results/p4/P4-LOCAL-20261105-1_full_setups.csv`). Totals over 25
+tuning documents; per document over the 19 scored ones. Paid credits 0.
+
+| Setting | Parser | Input tokens | Output tokens | LLM tokens / doc | Index tokens / doc | Recall |
+|---|---|---|---|---|---|---|
+| llm_regex_run1 | Docling | 271,032 | 964 | 10,744 | 35,788 | 0.607 |
+| llm_regex_run2 | Docling | 271,032 | 826 | 10,740 | 35,788 | 0.629 |
+| llm_regex_run3 | Docling | 271,032 | 835 | 10,740 | 35,788 | 0.621 |
+| llm_regex_run1 | pdfplumber | 274,997 | 1,104 | 10,891 | 31,855 | 0.656 |
+| llm_regex_run2 | pdfplumber | 274,997 | 1,136 | 10,893 | 31,855 | 0.651 |
+| llm_regex_run3 | pdfplumber | 274,997 | 1,043 | 10,893 | 31,855 | 0.648 |
+
+Index tokens are the same for all no-overlap chunkers, so the LLM tokens are the only cost difference. By the spec
+v1.1 cost formula (index + LLM tokens), llm_regex costs about 30% more per document on Docling and 34% more on
+pdfplumber, with recall among the lowest (all six runs are among the 22 lowest of the 100 full-grid setups). Every other tested setup uses no LLM.
+
 ### 8.2 Retriever: BM25-only and dense-only (primary 26 setups, Recall@1,250)
 
 p4_analyse's own functions on P3-LOCAL-20261105-4 (tuning) and P3-FINAL-20261106-1 (held-out); the hybrid rows

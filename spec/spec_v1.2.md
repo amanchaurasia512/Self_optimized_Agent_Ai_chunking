@@ -1129,3 +1129,33 @@ questions, QASPER excluded; seed 42, 2,000 resamples. Holm p reported as < 0.01 
   question's budget; the largest prefix share of any question is 88%, on jpmorgan, 1,102 prefix tokens over 6 row chunks read; mean
   44.8 prefix tokens, 3.6% of the budget); the \x9f limitation (2 zero-token chunks, 3 uncovered characters).
 - No frozen result or decision changes; the extension does not use the held-out set.
+
+## LLM chunker cost (2026-11-19), reporting
+
+Gemini tokens of the llm_regex chunking runs that produced the scored tuning chunks: P2-P2-KN03-20261103-13 (run1),
+-14 (run2) and -15 (run3), 25 tuning documents x 2 parsers each, one call per document, all stages ok, paid credits
+0. The chunk files of all 25 tuning documents name these runs. Not used: the earlier local runs P2-LOCAL-20261102-11,
+-12, -13 (Indian documents only, superseded by the KN03 chunks) and the held-out runs P2-P4-KN01-20261105-47, -48, -49
+(sealed). Per-document means are over the 19 scored documents (QASPER excluded), next to index tokens and hybrid
+Recall@1,250 from P4-LOCAL-20261105-1 (full grid).
+
+| Setting | Parser | Documents | Input tokens | Output tokens | LLM tokens / doc (19) | Index tokens / doc | LLM / index | Recall |
+|---|---|---|---|---|---|---|---|---|
+| llm_regex_run1 | Docling | 25 | 271,032 | 964 | 10,744 | 35,788 | 0.30 | 0.607 |
+| llm_regex_run2 | Docling | 25 | 271,032 | 826 | 10,740 | 35,788 | 0.30 | 0.629 |
+| llm_regex_run3 | Docling | 25 | 271,032 | 835 | 10,740 | 35,788 | 0.30 | 0.621 |
+| llm_regex_run1 | pdfplumber | 25 | 274,997 | 1,104 | 10,891 | 31,855 | 0.34 | 0.656 |
+| llm_regex_run2 | pdfplumber | 25 | 274,997 | 1,136 | 10,893 | 31,855 | 0.34 | 0.651 |
+| llm_regex_run3 | pdfplumber | 25 | 274,997 | 1,043 | 10,893 | 31,855 | 0.34 | 0.648 |
+| Total | Docling | 75 calls | 813,096 | 2,625 | | | | |
+| Total | pdfplumber | 75 calls | 824,991 | 3,283 | | | | |
+
+- Index tokens are equal across the no-overlap chunkers (same text; RESULTS 8.1): over the 37 no-overlap, no-prefix
+  setups per parser in P4-LOCAL-20261105-1 (langchain_default left out: it uses LangChain's default overlap, 36,305
+  and 32,089) they range 35,788-35,803 per document on Docling and 31,855 on pdfplumber. So the LLM tokens are the only cost difference: by the spec v1.1 cost formula (index
+  tokens + LLM input and output tokens) llm_regex costs about 30% more per document on Docling (46,528-46,532) and
+  34% more on pdfplumber (42,746-42,748), while its recall is among the lowest (0.607-0.656 against the tuning best
+  0.802; the six runs are among the 22 lowest of the 100 full-grid setups).
+- Input tokens are the same for all three runs (same prompt and document text); only the output differs.
+- This completes the "at what cost" part of the main question for the setups tested: every other tested setup has
+  no LLM tokens, so its cost is its index tokens. No result or decision changes.
