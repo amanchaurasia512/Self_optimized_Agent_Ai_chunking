@@ -1017,3 +1017,10 @@ below uses only the document's own tree (src/chunk/tree.py v4) and text; no word
 - Analysis addition before any score (2026-11-18), extension: every comparison is reported with and without the
   Indian documents (their questions are LLM-generated, 20 of 60 invalid in the GOLDEN_200 check), as in RESULTS.md
   8.6. Part (c) of the analysis (cross-references against overlap) is dropped with method 1 v2.
+
+- Extension run imported (2026-11-19), EXT-KN01 at commit e26e916: 4 chunkers, 6 setups, 25 tuning documents, scores
+  P3-EXT-KN01-20261118-2 (frozen scorer_v1). Docling re-conversion: 14 of 25 documents identical to the frozen text,
+  11 differ (325 of 4.07M characters, at most 1.15% of one document); docling_hybrid spans are mapped onto the frozen
+  extraction, so gold and scorer are unaffected. Known limitation, accepted with no new version: section_table on
+  Docling, 1 of 25 files fails Layer 1 (coverage 0.999987; two zero-token chunks from a \x9f control character, three
+  such characters uncovered).
