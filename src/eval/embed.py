@@ -1,6 +1,7 @@
 """P3 (spec v1.2 S5, S5b): the texts to embed and the vector cache. Texts = unique chunk texts (prefix + text) of every
 chunk setting and the certain span-level gold questions of the chosen documents, keyed by SHA-256. The cache records
-its embedder and refuses a mismatch; chunk.json never holds vectors."""
+its embedder and refuses a mismatch; chunk.json never holds vectors. The robustness embedder (nomic, spec v1.2
+"Robustness embedder", 2026-11-19) keys its cache the same way; its task prefixes are added only when encoding."""
 import hashlib
 import json
 from pathlib import Path
@@ -11,17 +12,25 @@ from src.chunk.base import token_counts
 
 EMBEDDER = {"name": "BAAI/bge-m3", "revision": "5617a9f61b028005a4858fdac845db406aefb181", "dimension": 1024,
             "max_length": 8192, "dtype": "float32", "normalized": True}
+NOMIC = {"name": "nomic-ai/nomic-embed-text-v1.5", "revision": "e9b6763023c676ca8431644204f50c2b100d9aab", "dimension": 768,
+         "max_length": 8192, "dtype": "float32", "normalized": True, "trust_remote_code": False,
+         "model_class": "transformers built-in nomic_bert (Nomic's remote code, nomic-ai/nomic-bert-2048, fails on "
+                        "transformers 5.22.1; parity with it checked 2026-11-19)",
+         "prefixes": {"chunk": "search_document: ", "question": "search_query: "}}
+EMBEDDERS = {"bge-m3": EMBEDDER, "nomic": NOMIC}
+CACHE_FOLDERS = {"bge-m3": "bge-m3", "nomic": "nomic-v1.5"}
 
 
 def text_key(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def chunk_texts(chunk_root, docs):
-    """Unique chunk texts (prefix + text) with their token counts, in a stable order (parser, setting, document)."""
+def chunk_texts(chunk_root, docs, settings=None):
+    """Unique chunk texts (prefix + text) with their token counts, in a stable order (parser, setting, document);
+    settings (folder names) limits the settings read, default every one."""
     texts = {}
     for path in sorted(Path(chunk_root).glob("*/*/*.json")):
-        if path.stem in docs:
+        if path.stem in docs and (settings is None or path.parent.name in settings):
             for chunk in json.loads(path.read_text(encoding="utf-8"))["chunks"]:
                 text = (chunk["prefix"] or "") + chunk["text"]
                 texts.setdefault(text_key(text), {"kind": "chunk", "text": text,
@@ -48,29 +57,29 @@ def sample_windows(keys, share):
     return list(dict.fromkeys(keys[:size] + keys[middle:middle + size] + keys[-size:]))
 
 
-def check_embedder(folder):
+def check_embedder(folder, embedder=EMBEDDER):
     """The cache folder's embedder must be this one; a new folder records it."""
     record = Path(folder) / "embedder.json"
-    if record.exists() and json.loads(record.read_text(encoding="utf-8")) != EMBEDDER:
+    if record.exists() and json.loads(record.read_text(encoding="utf-8")) != embedder:
         raise ValueError(f"{folder} holds vectors of another embedder: {record.read_text(encoding='utf-8')}")
     record.parent.mkdir(parents=True, exist_ok=True)
-    record.write_text(json.dumps(EMBEDDER, indent=2), encoding="utf-8")
+    record.write_text(json.dumps(embedder, indent=2), encoding="utf-8")
 
 
-def load_cache(folder):
+def load_cache(folder, embedder=EMBEDDER):
     """{text key: row} and the vector matrix of every part in the folder (empty when there is none)."""
     folder = Path(folder)
     if not (folder / "embedder.json").exists():
-        return {}, np.zeros((0, EMBEDDER["dimension"]), dtype=np.float32)
-    check_embedder(folder)
+        return {}, np.zeros((0, embedder["dimension"]), dtype=np.float32)
+    check_embedder(folder, embedder)
     keys, parts = [], []
     for keys_path in sorted(folder.glob("*.keys.json")):
         keys += json.loads(keys_path.read_text(encoding="utf-8"))
         parts.append(np.load(keys_path.with_name(keys_path.name.replace(".keys.json", ".npy"))))
-    return {key: row for row, key in enumerate(keys)}, (np.vstack(parts) if parts else np.zeros((0, EMBEDDER["dimension"]), dtype=np.float32))
+    return {key: row for row, key in enumerate(keys)}, (np.vstack(parts) if parts else np.zeros((0, embedder["dimension"]), dtype=np.float32))
 
 
-def save_part(folder, name, keys, vectors):
-    check_embedder(folder)
+def save_part(folder, name, keys, vectors, embedder=EMBEDDER):
+    check_embedder(folder, embedder)
     np.save(Path(folder) / f"{name}.npy", vectors.astype(np.float32))
     (Path(folder) / f"{name}.keys.json").write_text(json.dumps(keys), encoding="utf-8")

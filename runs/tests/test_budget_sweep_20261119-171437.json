@@ -1,0 +1,220 @@
+{
+  "run_id": "test_budget_sweep_20261119-171437",
+  "created_at": "2026-11-19T11:44:59+00:00",
+  "code": {
+    "commit": "9c3031effadc24e2cbd8ef74c95de23c9ae146d4",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "rq3_budget_sweep",
+    "spec_note": "RQ3 controls: budget sweep and random floor (2026-11-18), amended",
+    "scorer": {
+      "version": "scorer_v1",
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75,
+        "idf": "log((N - n + 0.5) / (n + 0.5) + 1)",
+        "words": "lower-cased [\\w Devanagari]+"
+      },
+      "hybrid": {
+        "method": "reciprocal rank fusion",
+        "k": 60
+      },
+      "characters": "gold characters counted without whitespace"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "retriever": "hybrid",
+    "settings_from": "P3-LOCAL-20261105-4",
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ],
+    "settings": [
+      "method1_tree_T256_noprefix",
+      "method1_tree_T1024_noprefix"
+    ],
+    "documents": [
+      "cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement",
+      "cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement"
+    ],
+    "budgets": [
+      250,
+      500,
+      750,
+      1250,
+      2000,
+      4000
+    ],
+    "ks": [
+      1,
+      3,
+      5,
+      10
+    ],
+    "permutations": 20,
+    "seed": 42,
+    "resamples": 2000,
+    "level": 0.95,
+    "holm_family": [
+      "budget1250_recall",
+      "k5_lift",
+      "k5_recall"
+    ],
+    "questions": "certain span, main (QASPER excluded)",
+    "test": true
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "3af34b14a28ad2cb02bd32219f0f36d100524e84463219811913b0512aae892c"
+    },
+    {
+      "path": "data/gold/spans_docling_headings.jsonl",
+      "sha256": "f4edb642890a82e953fbc158b15870ad678eb6574945c4132e53b80bebd1eb93"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_off.jsonl",
+      "sha256": "be5d5d29705792992517e1ef744b7f73a4a868a72f54dc45753d405b1592bf62"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_rapidocr.jsonl",
+      "sha256": "ad42658902873774b3bc2299522e09e55f4208d5260e31de14f09d3f5271ba5f"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_scale_double.jsonl",
+      "sha256": "5e3660bb7a9316f534b7e5fa5974ca40c0f8cecd9b708b0944eac0689a6392a4"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_tesseract.jsonl",
+      "sha256": "8756b9b9c06abe89ec5e76647fad037c49fa216fcb0c8051a9c495bc95b738db"
+    },
+    {
+      "path": "data/gold/spans_docling_table_mode_switched.jsonl",
+      "sha256": "e15ac2b6b30d1261d5da0035adeb3114db1d12629633a252eba54b20b526e59b"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "8024a0f2d2bc691645173a90069ca25c4442a1457aa0e62b6137d48ac7e09239"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_layout.jsonl",
+      "sha256": "4637d4833abe473b34da463558d1b5ccc374f5ae85187b10fb1e893b18dd5b6a"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_tolerance_wide.jsonl",
+      "sha256": "27804cbb129386c81202ce39a6a2a30247bb082e91614581b7cda563a09fe478"
+    },
+    {
+      "path": "data/results/p3/P3-LOCAL-20261105-4.csv.gz",
+      "sha256": "10f2c1e6c436392d00992cc8bc2bade11bfda8b0ef33cd164a92da2aa1fa9889"
+    }
+  ],
+  "outputs": [
+    "data/results/tests/test_budget_sweep_20261119-171437.csv",
+    "data/results/tests/test_budget_sweep_20261119-171437_means.csv",
+    "data/results/tests/test_budget_sweep_20261119-171437_tests.csv",
+    "data/results/tests/test_budget_sweep_20261119-171437_crossover.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "sweep:docling:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.4,
+        "peak_ram_mb": 2683.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "sweep:docling:method1_tree_T1024_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 5.966,
+        "peak_ram_mb": 2684.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "sweep:pdfplumber:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.782,
+        "peak_ram_mb": 2684.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "sweep:pdfplumber:method1_tree_T1024_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 6.152,
+        "peak_ram_mb": 2684.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "analyse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.115,
+        "peak_ram_mb": 1042.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 16.415,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 2684.3,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

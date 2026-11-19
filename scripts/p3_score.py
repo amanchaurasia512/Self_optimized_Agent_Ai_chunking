@@ -1,7 +1,9 @@
 """P3 scorer v1 runner (spec v1.2): every discovered chunk setting x parser x tuning document x certain question x
 retriever (BM25, dense, hybrid) x budget (750, 1,250, 2,000). Writes one row per question, retriever and budget to
 data/results/p3/<run id>.csv.gz, a run record, and a short summary: Recall@1,250, document means then setting means,
-main questions (QASPER separately in the file)."""
+main questions (QASPER separately in the file). --embedder nomic takes the dense part from the robustness embedder's
+cache (spec v1.2 "Robustness embedder", 2026-11-19; hybrid = BM25 + nomic); the bge-m3 tokenizer stays the ruler.
+--test writes the scores to data/results/tests/ and the run record to runs/tests/."""
 import argparse
 import json
 from collections import defaultdict
@@ -10,9 +12,9 @@ import numpy as np
 import pandas as pd
 
 from src.common.cost_logger import CostLogger
-from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
+from src.common.manifest import PROJECT_ROOT, RUNS_DIR, build_manifest, new_run_id, new_test_run_id, write_manifest
 from src.common.split import tuning_ids
-from src.eval.embed import EMBEDDER, load_cache, text_key
+from src.eval.embed import CACHE_FOLDERS, EMBEDDERS, load_cache, text_key
 from src.eval.score import BM25, SCORER, Gold, dense_ranking, hybrid_ranking, measure, rank_metrics
 
 CHUNKS, EXTRACTED, GOLD = (PROJECT_ROOT / "data" / name for name in ("chunks", "extracted", "gold"))
@@ -48,7 +50,9 @@ def main():
     arg_parser.add_argument("--docs", nargs="+", help="doc ids; default: every tuning document in pdfs/split.csv")
     arg_parser.add_argument("--final", action="store_true", help="allow held-out documents (final evaluation only)")
     arg_parser.add_argument("--budgets", nargs="+", type=int, default=[750, 1250, 2000])
-    arg_parser.add_argument("--cache", default=PROJECT_ROOT / "data" / "embeddings" / "bge-m3")
+    arg_parser.add_argument("--embedder", choices=list(EMBEDDERS), default="bge-m3")
+    arg_parser.add_argument("--cache", help="default data/embeddings/<embedder folder>")
+    arg_parser.add_argument("--test", action="store_true", help="scores to data/results/tests/, run record to runs/tests/")
     arg_parser.add_argument("--machine", default="laptop")
     arg_parser.add_argument("--run-source", default="LOCAL")
     args = arg_parser.parse_args()
@@ -57,8 +61,10 @@ def main():
     docs = set(args.docs or tuning)
     if docs - tuning and not args.final:
         raise PermissionError(f"held-out documents need --final (final evaluation only): {sorted(docs - tuning)}")
-    cached, vectors = load_cache(args.cache)
-    run_id, logger, rows, largest, left_out = new_run_id(3, args.run_source), CostLogger(), [], {}, {}
+    embedder = EMBEDDERS[args.embedder]
+    cached, vectors = load_cache(args.cache or PROJECT_ROOT / "data" / "embeddings" / CACHE_FOLDERS[args.embedder], embedder)
+    run_id = new_test_run_id(3, args.run_source) if args.test else new_run_id(3, args.run_source)
+    logger, rows, largest, left_out = CostLogger(), [], {}, {}
     for parser in args.parsers:
         questions, left_out[parser] = gold_questions(parser, docs)
         by_doc = defaultdict(list)
@@ -96,13 +102,24 @@ def main():
 
     frame = pd.DataFrame(rows)
     frame["fits_750"] = [largest[(parser, setting)] <= 750 for parser, setting in zip(frame["parser"], frame["setting"])]
-    OUTPUT.mkdir(parents=True, exist_ok=True)
-    output = OUTPUT / f"{run_id}.csv.gz"
+    folder = OUTPUT.parent / "tests" if args.test else OUTPUT
+    folder.mkdir(parents=True, exist_ok=True)
+    output = folder / f"{'test_p3_score_' if args.test else ''}{run_id}.csv.gz"
+    if args.test and output.exists():
+        raise FileExistsError(f"test output already exists: {output}")
     frame.to_csv(output, index=False)
-    stack = {"scorer": SCORER, "embedder": EMBEDDER, "budgets": args.budgets, "parsers": args.parsers,
+    stack = {"scorer": SCORER, "embedder": embedder, "budgets": args.budgets, "parsers": args.parsers,
              "page_level_gold_left_out": left_out}
-    manifest_path = write_manifest(build_manifest(run_id, "v1.2", stack, sorted(GOLD.glob("spans_*.jsonl")), [output],
-                                                  logger.summary(), args.machine))
+    if args.settings or args.docs or args.test:
+        stack.update(settings=args.settings, documents=sorted(docs), test=args.test)
+    manifest = build_manifest(run_id, "v1.2", stack, sorted(GOLD.glob("spans_*.jsonl")), [output], logger.summary(), args.machine)
+    if args.test:
+        manifest_path = RUNS_DIR / "tests" / f"test_p3_score_{args.embedder}_{run_id}.json"
+        if manifest_path.exists():
+            raise FileExistsError(f"test record already exists: {manifest_path}")
+        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    else:
+        manifest_path = write_manifest(manifest)
 
     main_questions = frame[(frame["budget"] == 1250) & (frame["source"].str.lower() != "qasper")]
     table = (main_questions.groupby(["parser", "setting", "retriever", "doc_id"])["recall"].mean()

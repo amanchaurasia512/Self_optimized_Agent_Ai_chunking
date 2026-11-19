@@ -1189,3 +1189,7 @@ Recall@1,250 from P4-LOCAL-20261105-1 (full grid).
 - Two corrections to the first draft, made before any code: group (2) adds 8 new setups (the draft said most were
   already in (1)); RQ2 runs on the 34 embedded setups with bge-m3 recomputed on the same set (the draft said the 26
   primary setups, which span sizes 256-512 only, and "exactly as for bge-m3", which used the full grid).
+- Clarification before the Kaggle run (2026-11-19), robustness embedder: trust_remote_code is off; the model loads
+  through transformers' built-in nomic_bert class, because Nomic's remote code fails on transformers 5.22.1.
+  Parity checked on 50 tuning texts against the remote code (transformers 4.x, separate environment): minimum
+  cosine 1.0 (50 of 50 vectors bit-identical), identical rankings for 5 questions. No other change to the design.

@@ -71,9 +71,9 @@ def score_question(order, chunks, text, gold, rng):
             for cut, (recall, used) in hybrid.items()}
 
 
-def score(parsers, settings, docs, cache):
-    """One row per parser, setting, document, question and cut."""
-    cached, vectors = load_cache(cache)
+def score(parsers, settings, docs, cache, embedder=EMBEDDER):
+    """One row per parser, setting, document, question and cut; dense vectors from the cache of the given embedder."""
+    cached, vectors = load_cache(cache, embedder)
     rng, logger, rows = np.random.default_rng(SEED), CostLogger(), []
     for parser in parsers:
         questions = {question_id: question for question_id, question in gold_questions(parser, docs)[0].items()
@@ -91,7 +91,7 @@ def score(parsers, settings, docs, cache):
                     chunks = load_chunks(CHUNKS / parser / setting / f"{doc}.json")
                     missing = [chunk for chunk in chunks if text_key(chunk["index_text"]) not in cached]
                     if missing:
-                        raise KeyError(f"{len(missing)} chunks of {parser}/{setting}/{doc} are not in the bge-m3 cache")
+                        raise KeyError(f"{len(missing)} chunks of {parser}/{setting}/{doc} are not in the {embedder['name']} cache")
                     bm25 = BM25([chunk["index_text"] for chunk in chunks])
                     chunk_vectors = vectors[[cached[text_key(chunk["index_text"])] for chunk in chunks]]
                     chunk_tokens = np.mean([chunk["tokens"] + chunk["prefix_tokens"] for chunk in chunks])

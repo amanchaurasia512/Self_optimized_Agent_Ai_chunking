@@ -1,0 +1,12 @@
+# nomic parity check, 2026-11-19T17:26:51+05:30, commit 9c3031e (uncommitted changes); script runs/tests/test_nomic_parity_20261119.py
+## select
+selected 25 chunk texts (of 59,892, 34 setups) and 25 questions (of 849), seed 42, from 25 tuning documents
+## native
+native: transformers 5.22.1 | class transformers.models.nomic_bert.modeling_nomic_bert.NomicBertModel | dtype torch.float32 | 50 texts, 16-2488 model tokens
+## remote
+remote: transformers 4.57.6 | class transformers_modules.nomic_hyphen_ai.nomic_hyphen_bert_hyphen_2048.7710840340a098cfb869c4f65e87cf2b1b70caca.modeling_hf_nomic_bert.NomicBertModel | dtype torch.float32 | 50 texts
+## compare
+paired: bit-identical vectors 50 of 50 | cosine (float64) min 1.0000000000 mean 1.0000000000 | max abs difference 0.000e+00 | shape (50, 768)
+rankings of 20 chunk texts identical for 5 of 5 questions: [True, True, True, True, True]
+## bge-m3
+bge-m3: 20 cached texts re-embedded with the edited p3_embed code (CPU; cache made on Kaggle GPU) | bit-identical vectors 0 of 20 | cosine (float64) min 1.0000000000 mean 1.0000000000 | max abs difference 9.025e-07
