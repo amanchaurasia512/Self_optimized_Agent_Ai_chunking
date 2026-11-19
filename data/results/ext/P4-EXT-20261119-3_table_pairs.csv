@@ -1,0 +1,7 @@
+first,second,difference,low,high
+docling/dynamic_token_noprefix,docling/section_table_prefix,0.06288157379011161,-0.1071669158806839,0.20339554278740166
+docling/dynamic_token_noprefix,docling/method1_tree_T384_noprefix,-0.031649831649831595,-0.16666666666666663,0.08148148148148138
+docling/dynamic_token_noprefix,docling/method1_tree_T512_noprefix,-0.08172198172198186,-0.24603174603174593,0.07144901394901391
+docling/section_table_prefix,docling/method1_tree_T384_noprefix,-0.0945314054399432,-0.2253554897664703,0.03428986838077752
+docling/section_table_prefix,docling/method1_tree_T512_noprefix,-0.14460355551209347,-0.27991173090017496,-0.008491560807227235
+docling/method1_tree_T384_noprefix,docling/method1_tree_T512_noprefix,-0.05007215007215027,-0.18888888888888888,0.07022607022607008
