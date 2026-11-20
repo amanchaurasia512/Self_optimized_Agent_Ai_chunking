@@ -1248,3 +1248,30 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   page for scan check, parse/OCR, chunk and embed; answer time; peak memory; failures (documents that could not be
   processed, with the error). Digital and scanned reported separately.
 - The drawn document lists are saved to pdfs/agent_test4_picks.csv and never enter split.csv or catalog.csv.
+
+## Held-out set 2 (replication), design before any document is opened (2026-11-20)
+- Purpose: replicate RQ1 and RQ2 on new documents, to narrow the RQ1 interval (limitation G4) and give per-source
+  results where held-out 1 had 1-3 documents (G5). Held-out 1 (P4-FINAL-20261106-1) is kept and reported as is;
+  held-out 2 is reported next to it, never replacing it.
+- Sources (span-level gold only):
+  - CUAD: 30 contracts, by the P1 eligibility filter and gold rule (answers kept only if they occur once), at least
+    5 such questions per contract.
+  - OHR-Bench: 20 documents from the domains used on tuning (academic, administration, finance, law, manual), text
+    and table evidence only (p1_ohr_select.USABLE_SOURCES), at least 5 questions per document.
+  - Excluded: every document in pdfs/split.csv, pdfs/catalog.csv, pdfs/scanned_picks.csv, pdfs/agent_test_picks.csv
+    and pdfs/agent_test4_picks.csv (by source id and SHA-256).
+  - Drawn from the eligible lists with seed 42 using dataset metadata only; no PDF is opened before it is picked.
+- Split: rows added once to pdfs/split.csv as held_out_2; sealed. Scripts refuse it without --final; every step runs
+  on it once.
+- Pipeline, unchanged and frozen: pdfplumber extraction (P1 script) and Docling extraction (pinned 2.143.0, Kaggle
+  GPU, as P1-KN06); gold by the P1 certain rules and the frozen drop rule; the 26 primary setups (spec v1.2 held-out
+  plan); bge-m3 embedding; scorer_v1; p4_analyse as committed.
+- Primary analysis, fixed now: RQ1 on held-out 2 alone, hybrid Recall@1,250, primary choice set: best single, tied
+  set, split-half oracle (200 splits), gap with 95% document bootstrap interval; go/no-go by the frozen rule (GO only
+  if the lower end of the gap interval is above 0). Also reported: the setup chosen on tuning
+  (docling/langchain_recursive_256) and the held-out-1 best single (pdfplumber/method1_tree_T384), applied
+  unchanged.
+- Secondary, fixed now: (a) RQ1 pooled over held-out 1 and 2 (67 documents if all are scorable); (b) RQ2
+  size-recall curve per source (CUAD, OHR-Bench) on held-out 2; (c) with and without nothing else (no Indian
+  documents in held-out 2).
+- Reported: documents and questions kept and dropped (gold-drop rate per parser), as for held-out 1.
