@@ -1275,3 +1275,33 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   size-recall curve per source (CUAD, OHR-Bench) on held-out 2; (c) with and without nothing else (no Indian
   documents in held-out 2).
 - Reported: documents and questions kept and dropped (gold-drop rate per parser), as for held-out 1.
+
+## Held-out set 2: PeerQA (replication), design before any PDF is downloaded or opened (2026-11-20)
+- Purpose: replicate RQ1 and RQ2 on a dataset the project never used, to narrow the RQ1 interval (limitation G4).
+  Held-out 1 (P4-FINAL-20261106-1) is kept and reported as is; held-out 2 is reported next to it.
+- Source: PeerQA (Baumgartner, Briscoe, Gurevych, NAACL 2025; UKPLab/PeerQA), questions from peer reviews, answers
+  and evidence highlighted by the papers' authors. Licence: <from the dataset files>; research use with attribution.
+- Eligible: all papers with at least 2 answerable questions whose evidence is present in answer_evidence_mapped
+  (counted from metadata only, 2026-11-20): 93 papers. All 93 are used (no sampling).
+- PDFs: downloaded once from each paper's venue (OpenReview, ACL Anthology, EGU, F1000) by the dataset's own
+  identifiers; SHA-256 recorded in a new picks file. Papers whose PDF cannot be downloaded are listed and left out
+  before any extraction. After download, titles are checked against pdfs/catalog.csv (none matched for the 90 papers
+  checked from metadata).
+- Split: rows added once to pdfs/split.csv as held_out_2; sealed; every step runs once with --final.
+- Gold: each question's author-highlighted evidence (raw_answer_evidence) placed in each parser's text by the P1
+  matching and certain rules and the frozen drop rule; drop rates reported per parser. A paper is scored if at least
+  one question is kept (as held-out 1).
+- Pipeline, frozen: pdfplumber (P1 script) and Docling 2.143.0 (Kaggle GPU) extraction; the 26 primary setups; bge-m3;
+  scorer_v1; p4_analyse as committed.
+- Primary analysis, fixed now: RQ1 on held-out 2, hybrid Recall@1,250, primary choice set: best single, tied set,
+  split-half oracle (200 splits), gap with 95% document bootstrap interval; GO only if the interval's lower end is
+  above 0. Also reported: the tuning winner (docling/langchain_recursive_256) and the held-out-1 best single
+  (pdfplumber/method1_tree_T384), applied unchanged.
+- Secondary, fixed now: RQ1 pooled over held-out 1 and 2; RQ2 size-recall Spearman on held-out 2 at each budget;
+  results by venue group (OpenReview vs others), descriptive.
+- Limitation stated in advance: one domain (scientific papers); the downloaded PDF may differ from the annotated
+  version, which shows up as dropped questions.
+
+  - Licences: PeerQA QA data CC BY-NC-SA 4.0 (README): research use, attribution, non-commercial; shared files
+  derived from it keep that licence and are listed in NOTICE.md. Papers keep their venues' licences; PDFs are not
+  redistributed (git-ignored data/, private Kaggle dataset).
