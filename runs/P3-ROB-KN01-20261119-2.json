@@ -1,4 +1,4 @@
-Append to spec/spec_v1.2.md a dated result note, “Robustness embedder result (2026-11-20), P4-ROB-20261120-1 on P3-ROB-KN01-20261119-2”, and add a RESULTS.md section “10. Robustness: second embedder (nomic)”. Give the verdict table (all 16 hold), the nomic RQ1 gaps, the RQ2 Spearman ranges and the RQ3 ranges, with and without Indian. Add: “The bge-m3 RQ1 row is recomputed in a fresh random stream (the primary scope run alone), so its oracle and gap differ slightly from P4-LOCAL-20261105-1 (same best single, same decision); the bge-m3 RQ3 tests reproduce the stored results exactly.” State also that some lift comparisons without Indian have Holm p above 0.05; the “holds” rule is about signs, as fixed in the design. Check every number against data/results/rob/. Stage only.{
+{
   "run_id": "P3-ROB-KN01-20261119-2",
   "created_at": "2026-11-19T15:59:48+00:00",
   "code": {
