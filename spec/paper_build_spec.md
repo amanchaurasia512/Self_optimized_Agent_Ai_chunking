@@ -1,5 +1,7 @@
 # Paper 1 build spec (draft for approval, revised 2026-11-14)
 
+> `paper/`: removed 2026-11-20; see tag paper-v1.2. Every `paper/` path below refers to that tag.
+
 Paper 1 is the chunking study (RQ1–RQ5) in ACL LaTeX format. This spec fixes how `paper/` is built. Nothing outside
 `paper/` changes, except this file.
 

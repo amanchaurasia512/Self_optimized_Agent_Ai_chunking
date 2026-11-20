@@ -459,7 +459,7 @@ Found while planning the paper; the earlier note is left as written.
   the best sizes at 4,000 tokens (about 220-380 tokens); the conclusion (fixed k favours large chunks, an equal
   token budget reverses the ranking).
 - data/results/p3/fixedk_tuning.csv is left as written; the paper applies the filter in
-  paper/scripts/make_artifacts.py.
+  paper/scripts/make_artifacts.py (removed 2026-11-20; see tag paper-v1.2).
 ## Agent spec (2026-11-13)
 The agent design is in spec/agent_v1.md.
 
@@ -699,7 +699,7 @@ to code, spec or existing files: no `--final` run by Claude, no LLM call, no re-
 - A deduction from the second-pass file, assuming the 28 agreeing cases and the judge scores were unchanged, gives
   70% and kappa 0.451 or 0.465 (depending on the first-pass label of the one judge-0.5 case), not the recorded 0.48.
   The files cannot show the cause. The recorded values are kept as written and flagged; the paper takes them from
-  paper/data/manual_facts.csv with this note as source. No conclusion changes: the judge was a secondary measure
+  paper/data/manual_facts.csv (removed 2026-11-20; see tag paper-v1.2) with this note as source. No conclusion changes: the judge was a secondary measure
   because the first pass failed the 80% mark, which holds for every reconstruction.
 
 ## AQ judge check: size changed from 20 to 40 cases; judge amendment committed with the result (reporting, added 2026-11-15)
@@ -1193,3 +1193,7 @@ Recall@1,250 from P4-LOCAL-20261105-1 (full grid).
   through transformers' built-in nomic_bert class, because Nomic's remote code fails on transformers 5.22.1.
   Parity checked on 50 tuning texts against the remote code (transformers 4.x, separate environment): minimum
   cosine 1.0 (50 of 50 vectors bit-identical), identical rankings for 5 questions. No other change to the design.
+
+## ACL paper draft removed (2026-11-20)
+The ACL paper draft (paper/) was removed from the repository on 2026-11-20; it is kept at the tags paper-v1.1
+and paper-v1.2. The paper will be written in IEEE format, outside the repository, from the study files.

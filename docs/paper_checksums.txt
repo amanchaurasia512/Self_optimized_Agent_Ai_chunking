@@ -109,4 +109,5 @@ c24ab500131ad6b7e1be17fa4ed3448e7797db1c895e5382a0b5bddef3b70e4f  data/results/p
 9dd0079aee428f6576a2e4c146829b6b1266328fbb85c96e19fb754545747a89  data/results/golden_check/sample.csv
 78b6a9144ce1f3510016631c7277fd8060bd7bc247e7f93e0cf11ca585825f79  data/results/golden_check/report.txt
 b49b09e9c7b20cf0a832755c7b45e6c41013dbe11250bf37f0fd4f03dbfd49e9  data/results/repro-20261114/comparison/aq_judge_check.log
-7e3bebf7c879b83d55cfbed415db0b06e1fe79cdba0a837fce47a05bdfe0ded5  paper/data/manual_facts.csv
+# paper/data/manual_facts.csv: removed 2026-11-20; see tag paper-v1.2
+# 7e3bebf7c879b83d55cfbed415db0b06e1fe79cdba0a837fce47a05bdfe0ded5  paper/data/manual_facts.csv
