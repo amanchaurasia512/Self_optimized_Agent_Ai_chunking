@@ -45,3 +45,4 @@ __pycache__/
 scripts/rq5_hindi_ocr.py
 .venv-docling/
 Self_optimized_paper_draft/
+.~lock.*#
