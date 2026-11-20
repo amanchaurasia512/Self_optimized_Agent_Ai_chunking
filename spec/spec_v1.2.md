@@ -1315,3 +1315,31 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   environment variables, not stored); NLPeer PDFs from the NLPeer dataset (TUdatalib), downloaded in the browser; EGU
   from the journal sites; F1000 version 1, the version the reviews refer to. A paper whose PDF cannot be obtained is
   listed and left out before extraction.
+
+## Held-out set 2: ViDoRe V3 (replaces PeerQA), design before any document is opened (2026-11-20)
+- Why replaced: PeerQA ships no PDFs, and 64 of its 93 eligible papers can only be downloaded from OpenReview with a
+  login the author does not have. No PeerQA PDF was downloaded or opened. held_out_2 now refers to ViDoRe V3 only.
+- Source: ViDoRe V3 (Loison et al., ACL 2026), public English corpora HR, Industrial, Pharmaceuticals, Finance-EN,
+  Computer Science; downloaded from Hugging Face without login. Annotations CC BY 4.0; documents under their
+  per-document publisher licences (public domain, CC BY 4.0, or Distribution Statement A); not redistributed.
+- Eligible queries (from metadata only, 2026-11-20): English; evidence = the query's pages scored 2 (score-1 pages
+  ignored); at least one score-2 page; all score-2 pages in one document and labelled only Text and/or Table.
+  Eligible documents: at least 2 eligible queries and at most 200 pages (metadata page count), fixed before any
+  document was opened, to keep compute near held-out 1. Result: 53 documents, 286 queries, 2,822 pages (HR 13,
+  Industrial 11, Pharmaceuticals 29). All are used; no sampling. Overlap with pdfs/catalog.csv: none (SHA-256 and
+  names; 3 small files checked by hash after download).
+- Gold, a new rule fixed now: for each eligible query, the words inside each human box on its score-2 pages, read
+  with pdfplumber from the provided PDF (box pixel coordinates scaled to the PDF page size), joined in reading order,
+  are that query's evidence text. The evidence is placed in each parser's text by the P1 matching and certain rules
+  and the frozen drop rule. Boxes with no words (no text layer, figures) give no evidence; a query with no placed
+  evidence is dropped. Drop rates are reported per parser and corpus. Reference answers are not used.
+- Split: rows added once to pdfs/split.csv as held_out_2 (sealed; every step runs once with --final).
+- Pipeline, frozen: pdfplumber and Docling 2.143.0 (Kaggle GPU) extraction; the 26 primary setups; bge-m3;
+  scorer_v1; p4_analyse as committed.
+- Primary analysis, fixed now: RQ1 on held-out 2, hybrid Recall@1,250, primary choice set: best single, tied set,
+  split-half oracle (200 splits), gap with 95% document bootstrap interval; GO only if the lower end is above 0. Also
+  the tuning winner and the held-out-1 best single applied unchanged.
+- Secondary, fixed now: RQ1 pooled over held-out 1 and 2; RQ2 size-recall Spearman per corpus and budget;
+  descriptive per corpus.
+- Limitations stated in advance: questions about charts and images are excluded; scanned pages without a text
+  layer lose their evidence under the box rule (counted); documents over 200 pages are excluded.
