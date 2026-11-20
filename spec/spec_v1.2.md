@@ -1231,3 +1231,20 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   verdict changes.
 - Conclusion: RQ1, RQ2 and RQ3 hold with nomic as the dense embedder. Nothing replaces the bge-m3 results; no frozen
   result or decision changes.
+
+
+## Agent test 4 (scaled): unseen documents with gold answers, design before running (2026-11-20)
+- Purpose: test the released tool (spec/agent_v1.md) on documents the study never used. A test of the tool, not a
+  research claim; the study's sealed held-out set is not used.
+- Scanned: MP-DocVQA validation split, documents eligible by the rules of scripts/rq5_scanned_select.py (one page list
+  across a document's questions, 10-20 pages, at least 3 questions), excluding every document in pdfs/split.csv,
+  pdfs/scanned_picks.csv and pdfs/agent_test_picks.csv. 50 documents drawn with seed 42; 3 questions each (seed 42).
+  PDFs built as rq5_scanned_build.py does.
+- Digital: CUAD contracts not in pdfs/catalog.csv, 50 drawn with seed 42; 3 questions each from those with a gold span
+  that occurs once (the P1 CUAD rule), seed 42.
+- Run: batch mode, thorough (Docling), budget 1,250, the provider list in its order; laptop CPU, or Kaggle if the
+  OCR time is too long.
+- Reported: token F1 and "contained" against the gold answers (scripts/aq_run functions), "not found" count; time per
+  page for scan check, parse/OCR, chunk and embed; answer time; peak memory; failures (documents that could not be
+  processed, with the error). Digital and scanned reported separately.
+- The drawn document lists are saved to pdfs/agent_test4_picks.csv and never enter split.csv or catalog.csv.
