@@ -1305,3 +1305,13 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   - Licences: PeerQA QA data CC BY-NC-SA 4.0 (README): research use, attribution, non-commercial; shared files
   derived from it keep that licence and are listed in NOTICE.md. Papers keep their venues' licences; PDFs are not
   redistributed (git-ignored data/, private Kaggle dataset).
+
+## Held-out set 2: correction and PDF sources (2026-11-20)
+- The note "Held-out set 2 (replication)" (CUAD and OHR-Bench) is replaced by "Held-out set 2: PeerQA", before any
+  document of either was drawn or opened; the split name held_out_2 refers to PeerQA only.
+- The PeerQA licence: QA data CC BY-NC-SA 4.0 (README); research use, attribution, non-commercial; derived shared files
+  keep that licence. Papers keep their venues' licences; PDFs are not redistributed.
+- PDF sources: OpenReview PDFs are downloaded with the author's own OpenReview login (openreview-py, credentials from
+  environment variables, not stored); NLPeer PDFs from the NLPeer dataset (TUdatalib), downloaded in the browser; EGU
+  from the journal sites; F1000 version 1, the version the reviews refer to. A paper whose PDF cannot be obtained is
+  listed and left out before extraction.
