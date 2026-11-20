@@ -1,0 +1,25 @@
+parser,budget,documents,best_setting,best_size,best_recall,spearman,embedder,variant
+docling,750,19,langchain_recursive_size256_overlap0_noprefix,215,0.7557073462231918,-0.9460784313725492,bge-m3,all tuning
+docling,1250,19,langchain_recursive_size512_overlap0_noprefix,404,0.8031269505584062,-0.7892156862745099,bge-m3,all tuning
+docling,2000,19,sentence_sentences5_noprefix,258,0.8474188205537211,-0.7377450980392158,bge-m3,all tuning
+pdfplumber,750,19,langchain_recursive_size256_overlap0_noprefix,221,0.7354169242285437,-0.9240196078431374,bge-m3,all tuning
+pdfplumber,1250,19,method1_tree_T256_noprefix,222,0.7980642354825389,-0.9166666666666667,bge-m3,all tuning
+pdfplumber,2000,19,langchain_recursive_size256_overlap0_noprefix,221,0.8557654204470331,-0.8627450980392157,bge-m3,all tuning
+docling,750,16,langchain_recursive_size256_overlap0_noprefix,216,0.7348882478128778,-0.875,bge-m3,without Indian
+docling,1250,16,langchain_recursive_size512_overlap0_noprefix,402,0.7930925366336674,-0.7034313725490197,bge-m3,without Indian
+docling,2000,16,langchain_recursive_size512_overlap0_noprefix,402,0.832940332402226,-0.6421568627450981,bge-m3,without Indian
+pdfplumber,750,16,langchain_recursive_size256_overlap0_noprefix,223,0.7125022244745114,-0.8529411764705884,bge-m3,without Indian
+pdfplumber,1250,16,langchain_recursive_size256_overlap0_noprefix,223,0.771370312776226,-0.8897058823529412,bge-m3,without Indian
+pdfplumber,2000,16,langchain_recursive_size256_overlap0_noprefix,223,0.8354861903643414,-0.7843137254901962,bge-m3,without Indian
+docling,750,19,langchain_recursive_size256_overlap0_noprefix,215,0.7312586150190463,-0.8872549019607844,nomic,all tuning
+docling,1250,19,langchain_recursive_size384_overlap0_noprefix,305,0.8026736432888432,-0.8039215686274511,nomic,all tuning
+docling,2000,19,langchain_recursive_size256_overlap0_noprefix,215,0.867523947895491,-0.8333333333333335,nomic,all tuning
+pdfplumber,750,19,langchain_recursive_size256_overlap0_noprefix,221,0.7151783378798051,-0.9509803921568628,nomic,all tuning
+pdfplumber,1250,19,method1_tree_T256_noprefix,222,0.7916990365682267,-0.9338235294117647,nomic,all tuning
+pdfplumber,2000,19,langchain_recursive_size256_overlap0_noprefix,221,0.8555996517789923,-0.9436274509803922,nomic,all tuning
+docling,750,16,langchain_recursive_size384_overlap0_noprefix,304,0.7265672545638688,-0.8357843137254902,nomic,without Indian
+docling,1250,16,langchain_recursive_size384_overlap0_noprefix,304,0.8012379609723063,-0.752450980392157,nomic,without Indian
+docling,2000,16,langchain_recursive_size256_overlap0_noprefix,216,0.8549634403819668,-0.7622549019607844,nomic,without Indian
+pdfplumber,750,16,langchain_recursive_size256_overlap0_noprefix,223,0.6929200717364615,-0.9411764705882353,nomic,without Indian
+pdfplumber,1250,16,langchain_recursive_size256_overlap0_noprefix,223,0.7730214273611999,-0.9240196078431374,nomic,without Indian
+pdfplumber,2000,16,langchain_recursive_size256_overlap0_noprefix,223,0.8422671784607539,-0.9044117647058825,nomic,without Indian

@@ -1197,3 +1197,37 @@ Recall@1,250 from P4-LOCAL-20261105-1 (full grid).
 ## ACL paper draft removed (2026-11-20)
 The ACL paper draft (paper/) was removed from the repository on 2026-11-20; it is kept at the tags paper-v1.1
 and paper-v1.2. The paper will be written in IEEE format, outside the repository, from the study files.
+
+## Robustness embedder result (2026-11-20), P4-ROB-20261120-1 on P3-ROB-KN01-20261119-2
+Analysis by the design note "Robustness embedder: nomic-embed-text-v1.5, design before any code (2026-11-19)"
+(scripts/rob_analyse.py at 073ef99, outputs data/results/rob/P4-ROB-20261120-1_*.csv). Scores P3-ROB-KN01-20261119-2
+(Kaggle, commit ce4f459; vectors P3-ROB-KN01-20261119-1, nomic revision e9b6763); bge-m3 from P3-LOCAL-20261105-4 on
+the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questions (QASPER excluded), seed 42.
+- Verdicts: all 16 hold (RQ1 NO-GO hybrid and dense, RQ2 Spearman < 0 at every budget, RQ3 24 of 24 signs as
+  expected; for nomic and bge-m3, with and without the Indian documents).
+- RQ1 nomic (26 primary setups, Recall@1,250; 19 documents / 860 questions, without Indian 16 / 290):
+  - hybrid: best docling/langchain_recursive_size384 0.809 (17 tied), oracle 0.808, gap -0.000 [-0.036, 0.034];
+    without Indian 0.809 (10 tied), oracle 0.788, gap -0.020 [-0.056, 0.017]. NO-GO.
+  - dense: best docling/recursive_size256 0.758 (11 tied), oracle 0.747, gap -0.012 [-0.056, 0.036]; without Indian
+    0.745 (12 tied), oracle 0.723, gap -0.022 [-0.074, 0.035]. NO-GO.
+  - bge-m3, recomputed: hybrid docling/langchain_recursive_size256 0.802 (21 tied), gap +0.002 [-0.030, 0.035];
+    without Indian docling/langchain_recursive_size512 0.791 (15 tied), gap -0.016 [-0.048, 0.013]; dense
+    pdfplumber/langchain_recursive_size256 0.783, gap -0.015 [-0.046, 0.015]; without Indian 0.763, gap -0.026
+    [-0.063, 0.008]. All NO-GO.
+- RQ2 (pooled Spearman, 34 embedded setups, budgets 750 / 1,250 / 2,000): nomic -0.951 to -0.804, without Indian
+  -0.941 to -0.752; bge-m3 on the same 34 setups -0.946 to -0.738, without Indian -0.890 to -0.642. 6 of 6 negative
+  in each case. Best sizes: nomic 215-305 tokens (216-304 without Indian), bge-m3 215-404 (216-402).
+- RQ3 (256 - 1,024, four families x two parsers, Holm over the 24): nomic Recall@1,250 +0.101 to +0.268, Recall@5
+  -0.099 to -0.062, Lift@5 +0.101 to +0.165; without Indian +0.092 to +0.258, -0.114 to -0.071, +0.111 to +0.179.
+  bge-m3 +0.113 to +0.203, -0.137 to -0.088, +0.106 to +0.150; without Indian +0.095 to +0.186, -0.156 to -0.104,
+  +0.117 to +0.159.
+- The bge-m3 RQ1 row is recomputed in a fresh random stream (the primary scope run alone), so its oracle and gap
+  differ slightly from P4-NOINDIAN-20261114-1 (same best single, same decision); the bge-m3 RQ3 tests reproduce the
+  stored results exactly. (P4-NOINDIAN-20261114-1, primary: oracle 0.801, gap -0.001 [-0.032, 0.030], 20 tied;
+  without Indian oracle 0.777, gap -0.014 [-0.044, 0.014], 15 tied.)
+- Without the Indian documents some comparisons have Holm p above 0.05: bge-m3 5 of 8 Lift@5 comparisons
+  (0.055-0.069); nomic 3 Docling comparisons (langchain_recursive Recall@5, method1_tree Recall@1,250 and Lift@5,
+  0.066 each). All their 95% intervals exclude 0. The "holds" rule is about signs, as fixed in the design, so no
+  verdict changes.
+- Conclusion: RQ1, RQ2 and RQ3 hold with nomic as the dense embedder. Nothing replaces the bge-m3 results; no frozen
+  result or decision changes.

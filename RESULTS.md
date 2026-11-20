@@ -413,6 +413,84 @@ None beats the best. dynamic_token is lower, but not significant after Holm.
 
 No frozen result or decision changes.
 
+## 10. Robustness: second embedder (nomic)
+
+Source: spec note "Robustness embedder result (2026-11-20)". P4-ROB-20261120-1 on scores P3-ROB-KN01-20261119-2
+(nomic-ai/nomic-embed-text-v1.5, revision e9b6763, Kaggle T4) and P3-LOCAL-20261105-4 (bge-m3, recomputed on the
+same setups). **Tuning only**. Main questions (QASPER excluded), seed 42. The dense ranking is the only change;
+chunks, gold, BM25, the bge-m3 tokenizer as ruler and scorer_v1 are unchanged; hybrid = BM25 + dense, RRF k = 60.
+✅ Every number checked against `data/results/rob/P4-ROB-20261120-1_*.csv`.
+
+**Verdicts: all 16 hold** (`_verdicts.csv`; "holds" as fixed in the design: RQ1 NO-GO, RQ2 Spearman < 0 at every
+budget, RQ3 signs as with bge-m3).
+
+| Conclusion | Variant | Embedder | Verdict | Detail |
+|---|---|---|---|---|
+| RQ1 NO-GO (hybrid) | all tuning | bge-m3 | holds | gap +0.002 [−0.030, 0.035] |
+| RQ1 NO-GO (dense) | all tuning | bge-m3 | holds | gap −0.015 [−0.046, 0.015] |
+| RQ2 Spearman < 0 at every budget | all tuning | bge-m3 | holds | 6 of 6 negative |
+| RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0) | all tuning | bge-m3 | holds | 24 of 24 as expected |
+| RQ1 NO-GO (hybrid) | all tuning | nomic | holds | gap −0.000 [−0.036, 0.034] |
+| RQ1 NO-GO (dense) | all tuning | nomic | holds | gap −0.012 [−0.056, 0.036] |
+| RQ2 Spearman < 0 at every budget | all tuning | nomic | holds | 6 of 6 negative |
+| RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0) | all tuning | nomic | holds | 24 of 24 as expected |
+| RQ1 NO-GO (hybrid) | without Indian | bge-m3 | holds | gap −0.016 [−0.048, 0.013] |
+| RQ1 NO-GO (dense) | without Indian | bge-m3 | holds | gap −0.026 [−0.063, 0.008] |
+| RQ2 Spearman < 0 at every budget | without Indian | bge-m3 | holds | 6 of 6 negative |
+| RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0) | without Indian | bge-m3 | holds | 24 of 24 as expected |
+| RQ1 NO-GO (hybrid) | without Indian | nomic | holds | gap −0.020 [−0.056, 0.017] |
+| RQ1 NO-GO (dense) | without Indian | nomic | holds | gap −0.022 [−0.074, 0.035] |
+| RQ2 Spearman < 0 at every budget | without Indian | nomic | holds | 6 of 6 negative |
+| RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0) | without Indian | nomic | holds | 24 of 24 as expected |
+
+**RQ1** (26 primary setups, Recall@1,250; 19 documents / 860 questions, without Indian 16 / 290; `_rq1.csv`).
+
+| Embedder | Variant | Retriever | Best single, recall | Tied | Oracle | Gap [95%] | Rule |
+|---|---|---|---|---|---|---|---|
+| nomic | all tuning | hybrid | docling / langchain_recursive_384, 0.809 | 17 | 0.808 | −0.000 [−0.036, 0.034] | NO-GO |
+| nomic | all tuning | dense | docling / recursive_256, 0.758 | 11 | 0.747 | −0.012 [−0.056, 0.036] | NO-GO |
+| nomic | without Indian | hybrid | docling / langchain_recursive_384, 0.809 | 10 | 0.788 | −0.020 [−0.056, 0.017] | NO-GO |
+| nomic | without Indian | dense | docling / recursive_256, 0.745 | 12 | 0.723 | −0.022 [−0.074, 0.035] | NO-GO |
+| bge-m3 | all tuning | hybrid | docling / langchain_recursive_256, 0.802 | 21 | 0.804 | +0.002 [−0.030, 0.035] | NO-GO |
+| bge-m3 | all tuning | dense | pdfplumber / langchain_recursive_256, 0.783 | 9 | 0.768 | −0.015 [−0.046, 0.015] | NO-GO |
+| bge-m3 | without Indian | hybrid | docling / langchain_recursive_512, 0.791 | 15 | 0.774 | −0.016 [−0.048, 0.013] | NO-GO |
+| bge-m3 | without Indian | dense | pdfplumber / langchain_recursive_256, 0.763 | 12 | 0.737 | −0.026 [−0.063, 0.008] | NO-GO |
+
+The bge-m3 RQ1 row is recomputed in a fresh random stream (the primary scope run alone), so its oracle and gap
+differ slightly from P4-NOINDIAN-20261114-1 (same best single, same decision); the bge-m3 RQ3 tests reproduce the
+stored results exactly. (Reference, primary scope in P4-NOINDIAN-20261114-1: hybrid oracle 0.801, gap −0.001
+[−0.032, 0.030], 20 tied; without Indian oracle 0.777, gap −0.014 [−0.044, 0.014], 15 tied; see 8.2 and 8.6. The
+bge-m3 dense rows match 8.2 in best single and tied count.)
+
+**RQ2** (pooled Spearman of measured size against hybrid recall, per parser and budget 750 / 1,250 / 2,000, over the
+34 embedded setups, 17 per parser; `_rq2.csv`). bge-m3 is recomputed on the same 34 setups, so it differs from the
+full-grid values in 8.6.
+
+| Embedder | Variant | Spearman range (6 values) | Per parser | Best sizes (tokens) |
+|---|---|---|---|---|
+| nomic | all tuning | −0.951 to −0.804 | docling −0.887 to −0.804; pdfplumber −0.951 to −0.934 | 215–305 |
+| nomic | without Indian | −0.941 to −0.752 | docling −0.836 to −0.752; pdfplumber −0.941 to −0.904 | 216–304 |
+| bge-m3 | all tuning | −0.946 to −0.738 | docling −0.946 to −0.738; pdfplumber −0.924 to −0.863 | 215–404 |
+| bge-m3 | without Indian | −0.890 to −0.642 | docling −0.875 to −0.642; pdfplumber −0.890 to −0.784 | 216–402 |
+
+**RQ3** (size 256 − 1,024 for the four size-swept families × 2 parsers, hybrid; Holm over the 24 per embedder and
+variant; 19 documents, without Indian 16; `_rq3.csv`). Ranges of the difference over the 8 family-parser pairs:
+
+| Embedder | Variant | Recall@1,250 | Recall@5 | Lift@5 | Signs as expected | Holm p > 0.05 |
+|---|---|---|---|---|---|---|
+| nomic | all tuning | +0.101 to +0.268 | −0.099 to −0.062 | +0.101 to +0.165 | 24 of 24 | 0 (max 0.040) |
+| nomic | without Indian | +0.092 to +0.258 | −0.114 to −0.071 | +0.111 to +0.179 | 24 of 24 | 3 (max 0.066) |
+| bge-m3 | all tuning | +0.113 to +0.203 | −0.137 to −0.088 | +0.106 to +0.150 | 24 of 24 | 0 (max 0.036) |
+| bge-m3 | without Indian | +0.095 to +0.186 | −0.156 to −0.104 | +0.117 to +0.159 | 24 of 24 | 5 (max 0.069) |
+
+Without the Indian documents some comparisons have Holm p above 0.05: for bge-m3, 5 of the 8 Lift@5 comparisons
+(0.055–0.069); for nomic, 3 comparisons, all Docling (langchain_recursive Recall@5, method1_tree Recall@1,250 and
+method1_tree Lift@5, each 0.066). Their 95% intervals all exclude 0. The "holds" rule is about signs, as fixed in
+the design, so these do not change a verdict; they are reported, not hidden.
+
+RQ1, RQ2 and RQ3 hold with nomic as the dense embedder, with and without the Indian documents. Nothing replaces
+the bge-m3 results; no frozen result or decision changes.
+
 ## Spec corrections
 
 The spec's Errata (2026-11-12) corrects:

@@ -1,0 +1,17 @@
+conclusion,variant,embedder,holds,detail
+RQ1 NO-GO (hybrid),all tuning,bge-m3,True,"gap 0.002 [-0.030, 0.035]"
+RQ1 NO-GO (dense),all tuning,bge-m3,True,"gap -0.015 [-0.046, 0.015]"
+RQ2 size-recall Spearman < 0 at every budget,all tuning,bge-m3,True,6 of 6 negative
+"RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0)",all tuning,bge-m3,True,24 of 24 signs as expected
+RQ1 NO-GO (hybrid),all tuning,nomic,True,"gap -0.000 [-0.036, 0.034]"
+RQ1 NO-GO (dense),all tuning,nomic,True,"gap -0.012 [-0.056, 0.036]"
+RQ2 size-recall Spearman < 0 at every budget,all tuning,nomic,True,6 of 6 negative
+"RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0)",all tuning,nomic,True,24 of 24 signs as expected
+RQ1 NO-GO (hybrid),without Indian,bge-m3,True,"gap -0.016 [-0.048, 0.013]"
+RQ1 NO-GO (dense),without Indian,bge-m3,True,"gap -0.026 [-0.063, 0.008]"
+RQ2 size-recall Spearman < 0 at every budget,without Indian,bge-m3,True,6 of 6 negative
+"RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0)",without Indian,bge-m3,True,24 of 24 signs as expected
+RQ1 NO-GO (hybrid),without Indian,nomic,True,"gap -0.020 [-0.056, 0.017]"
+RQ1 NO-GO (dense),without Indian,nomic,True,"gap -0.022 [-0.074, 0.035]"
+RQ2 size-recall Spearman < 0 at every budget,without Indian,nomic,True,6 of 6 negative
+"RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0)",without Indian,nomic,True,24 of 24 signs as expected

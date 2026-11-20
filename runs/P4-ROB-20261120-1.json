@@ -1,0 +1,297 @@
+{
+  "run_id": "P4-ROB-20261120-1",
+  "created_at": "2026-11-20T06:21:31+00:00",
+  "code": {
+    "commit": "073ef99319f7f92c636233ad785a17de090fbce5",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "robustness_embedder",
+    "spec_note": "Robustness embedder: nomic-embed-text-v1.5 (2026-11-19)",
+    "embedder": {
+      "name": "nomic-ai/nomic-embed-text-v1.5",
+      "revision": "e9b6763023c676ca8431644204f50c2b100d9aab",
+      "dimension": 768,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true,
+      "trust_remote_code": false,
+      "model_class": "transformers built-in nomic_bert (Nomic's remote code, nomic-ai/nomic-bert-2048, fails on transformers 5.22.1; parity with it checked 2026-11-19)",
+      "prefixes": {
+        "chunk": "search_document: ",
+        "question": "search_query: "
+      }
+    },
+    "scores_run": "P3-ROB-KN01-20261119-2",
+    "bge_m3_scores_run": "P3-LOCAL-20261105-4",
+    "bge_m3_sweep_rows": "budget_sweep_tuning.csv",
+    "bge_m3_sweep_reproduced": true,
+    "settings": [
+      "fixed_token_size1024_overlap0_noprefix",
+      "fixed_token_size256_overlap0_noprefix",
+      "fixed_token_size384_overlap0_noprefix",
+      "fixed_token_size512_overlap0_noprefix",
+      "langchain_recursive_size1024_overlap0_noprefix",
+      "langchain_recursive_size256_overlap0_noprefix",
+      "langchain_recursive_size384_overlap0_noprefix",
+      "langchain_recursive_size512_overlap0_noprefix",
+      "method1_tree_T1024_noprefix",
+      "method1_tree_T256_noprefix",
+      "method1_tree_T384_noprefix",
+      "method1_tree_T512_noprefix",
+      "recursive_size1024_overlap0_noprefix",
+      "recursive_size256_overlap0_noprefix",
+      "recursive_size384_overlap0_noprefix",
+      "recursive_size512_overlap0_noprefix",
+      "sentence_sentences5_noprefix"
+    ],
+    "primary_settings": [
+      "fixed_token_size256_overlap0_noprefix",
+      "fixed_token_size384_overlap0_noprefix",
+      "fixed_token_size512_overlap0_noprefix",
+      "langchain_recursive_size256_overlap0_noprefix",
+      "langchain_recursive_size384_overlap0_noprefix",
+      "langchain_recursive_size512_overlap0_noprefix",
+      "method1_tree_T256_noprefix",
+      "method1_tree_T384_noprefix",
+      "method1_tree_T512_noprefix",
+      "recursive_size256_overlap0_noprefix",
+      "recursive_size384_overlap0_noprefix",
+      "recursive_size512_overlap0_noprefix",
+      "sentence_sentences5_noprefix"
+    ],
+    "sweep_settings": [
+      "fixed_token_size256_overlap0_noprefix",
+      "fixed_token_size1024_overlap0_noprefix",
+      "recursive_size256_overlap0_noprefix",
+      "recursive_size1024_overlap0_noprefix",
+      "langchain_recursive_size256_overlap0_noprefix",
+      "langchain_recursive_size1024_overlap0_noprefix",
+      "method1_tree_T256_noprefix",
+      "method1_tree_T1024_noprefix"
+    ],
+    "sweep_documents": [
+      "cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement",
+      "cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+      "cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement",
+      "cuad_gigglesn_hugs_inc_06_23_2016_ex_10_2_strategic_alliance_agreement",
+      "cuad_tomonlineinc_20060501_20_f_ex_4_46_749700_ex_4_46_co_branding_agreement",
+      "cuad_vitaminshoppecominc_09_13_1999_ex_10_26_sponsorship_agreement",
+      "indian_d1",
+      "indian_d3_fundamental_rules",
+      "indian_d4_rti_act",
+      "ohr_academic_2310_11511v1",
+      "ohr_academic_2405_14831v1",
+      "ohr_administration_dude_e79deb02a0c0e87511080836c5d4347b",
+      "ohr_administration_dude_eefcc78eed46846c09810b37f92e4cfb",
+      "ohr_finance_amazon_2017_10k",
+      "ohr_finance_jpmorgan_2023q2_10q",
+      "ohr_law_asiandragongroupinc_08_11_2005_ex_10_5_reseller_agreement",
+      "ohr_law_mplxlp_06_17_2015_ex_10_1_transportation_services_agreement",
+      "ohr_manual_2021_apple_catalog",
+      "ohr_manual_mi_phone",
+      "qasper_1806_03369",
+      "qasper_1911_01680",
+      "qasper_2001_09899",
+      "unidoc_finance_0458505",
+      "unidoc_healthcare_3428789",
+      "unidoc_healthcare_4671258"
+    ],
+    "excluded_source": "Indian",
+    "excluded_documents": [
+      "indian_d1",
+      "indian_d3_fundamental_rules",
+      "indian_d4_rti_act"
+    ],
+    "seed": 42,
+    "resamples": 2000,
+    "level": 0.95,
+    "test": false,
+    "verdicts": [
+      {
+        "conclusion": "RQ1 NO-GO (hybrid)",
+        "variant": "all tuning",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "gap -0.000 [-0.036, 0.034]"
+      },
+      {
+        "conclusion": "RQ1 NO-GO (dense)",
+        "variant": "all tuning",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "gap -0.012 [-0.056, 0.036]"
+      },
+      {
+        "conclusion": "RQ2 size-recall Spearman < 0 at every budget",
+        "variant": "all tuning",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "6 of 6 negative"
+      },
+      {
+        "conclusion": "RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0)",
+        "variant": "all tuning",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "24 of 24 signs as expected"
+      },
+      {
+        "conclusion": "RQ1 NO-GO (hybrid)",
+        "variant": "without Indian",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "gap -0.020 [-0.056, 0.017]"
+      },
+      {
+        "conclusion": "RQ1 NO-GO (dense)",
+        "variant": "without Indian",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "gap -0.022 [-0.074, 0.035]"
+      },
+      {
+        "conclusion": "RQ2 size-recall Spearman < 0 at every budget",
+        "variant": "without Indian",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "6 of 6 negative"
+      },
+      {
+        "conclusion": "RQ3 signs (R@1,250 > 0, R@5 < 0, Lift@5 > 0)",
+        "variant": "without Indian",
+        "embedder": "nomic",
+        "holds": true,
+        "detail": "24 of 24 signs as expected"
+      }
+    ]
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-LOCAL-20261105-4.csv.gz",
+      "sha256": "10f2c1e6c436392d00992cc8bc2bade11bfda8b0ef33cd164a92da2aa1fa9889"
+    },
+    {
+      "path": "data/results/p3/P3-ROB-KN01-20261119-2.csv.gz",
+      "sha256": "9e291dbd455346c70df752300e26d5ddafa55074974c36af325f4ba65d28dc2f"
+    },
+    {
+      "path": "data/results/p3/budget_sweep_tuning.csv",
+      "sha256": "0f74750f50e4ba65b9cffc0b12eeca631e87411066b959b0a3881f0f49dc9542"
+    },
+    {
+      "path": "data/results/p3/budget_sweep_tuning_tests.csv",
+      "sha256": "bbc52671681f3e0a428e07a3fec9fe8a95d1aebeb96a32d5bb986a786daa0b51"
+    },
+    {
+      "path": "data/results/p4/P4-FINAL-20261106-1_primary_setups.csv",
+      "sha256": "86ab5e793ed34e0a65fc39fca0ae649ed7009ff7a70ebd6594ad8b8516efef58"
+    },
+    {
+      "path": "data/gold/spans_docling.jsonl",
+      "sha256": "3af34b14a28ad2cb02bd32219f0f36d100524e84463219811913b0512aae892c"
+    },
+    {
+      "path": "data/gold/spans_docling_headings.jsonl",
+      "sha256": "f4edb642890a82e953fbc158b15870ad678eb6574945c4132e53b80bebd1eb93"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_off.jsonl",
+      "sha256": "be5d5d29705792992517e1ef744b7f73a4a868a72f54dc45753d405b1592bf62"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_rapidocr.jsonl",
+      "sha256": "ad42658902873774b3bc2299522e09e55f4208d5260e31de14f09d3f5271ba5f"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_scale_double.jsonl",
+      "sha256": "5e3660bb7a9316f534b7e5fa5974ca40c0f8cecd9b708b0944eac0689a6392a4"
+    },
+    {
+      "path": "data/gold/spans_docling_ocr_tesseract.jsonl",
+      "sha256": "8756b9b9c06abe89ec5e76647fad037c49fa216fcb0c8051a9c495bc95b738db"
+    },
+    {
+      "path": "data/gold/spans_docling_table_mode_switched.jsonl",
+      "sha256": "e15ac2b6b30d1261d5da0035adeb3114db1d12629633a252eba54b20b526e59b"
+    },
+    {
+      "path": "data/gold/spans_llamaparse_agentic.jsonl",
+      "sha256": "d52dedd8aa5832794940f3c3ee4e2884c5a70fd896e8a4ad14c4dcca76f77c97"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber.jsonl",
+      "sha256": "8024a0f2d2bc691645173a90069ca25c4442a1457aa0e62b6137d48ac7e09239"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_layout.jsonl",
+      "sha256": "4637d4833abe473b34da463558d1b5ccc374f5ae85187b10fb1e893b18dd5b6a"
+    },
+    {
+      "path": "data/gold/spans_pdfplumber_tolerance_wide.jsonl",
+      "sha256": "27804cbb129386c81202ce39a6a2a30247bb082e91614581b7cda563a09fe478"
+    }
+  ],
+  "outputs": [
+    "data/results/rob/P4-ROB-20261120-1_rq1.csv",
+    "data/results/rob/P4-ROB-20261120-1_rq2.csv",
+    "data/results/rob/P4-ROB-20261120-1_rq3.csv",
+    "data/results/rob/P4-ROB-20261120-1_rq3_rows.csv",
+    "data/results/rob/P4-ROB-20261120-1_verdicts.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "rq3_sweep",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1720.657,
+        "peak_ram_mb": 1486.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "analyse",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 8.642,
+        "peak_ram_mb": 1556.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 1729.299,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 1556.1,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
