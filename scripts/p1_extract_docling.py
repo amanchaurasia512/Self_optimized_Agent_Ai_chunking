@@ -7,6 +7,7 @@ import pandas as pd
 
 from src.common.cost_logger import CostLogger
 from src.common.manifest import build_manifest, new_run_id, write_manifest
+from src.common.split import tuning_ids
 from src.parse.docling_parser import make_converter, parse_pdf
 from src.parse.docling_parser import VARIANTS, make_converter, parse_pdf
 
@@ -23,13 +24,17 @@ def main():
     arg_parser.add_argument("--ocr-lang", nargs="+")
     arg_parser.add_argument("--only", nargs="+", help="doc ids to run; default: all PDFs under --input")
     arg_parser.add_argument("--variant", default="default", choices=list(VARIANTS), help="RQ5a parser variant")
+    arg_parser.add_argument("--final", action="store_true", help="allow held-out documents (final evaluation only)")
     args = arg_parser.parse_args()
-    
+
+    pdf_paths = [path for path in sorted(args.input.rglob("*.pdf")) if not args.only or path.stem in args.only]
+    sealed = sorted({path.stem for path in pdf_paths} - tuning_ids())
+    if sealed and not args.final:
+        raise PermissionError(f"held-out documents need --final (final evaluation only): {len(sealed)}, e.g. {sealed[:3]}")
     converter, parser_info = make_converter(args.force_full_page_ocr, args.ocr_lang, args.variant)
     args.output.mkdir(parents=True, exist_ok=True)
     logger = CostLogger()
     inputs, outputs = [], []
-    pdf_paths = [path for path in sorted(args.input.rglob("*.pdf")) if not args.only or path.stem in args.only]
     for pdf_path in pdf_paths:
         output_path = args.output / f"{pdf_path.stem}.json"
         if output_path.exists():

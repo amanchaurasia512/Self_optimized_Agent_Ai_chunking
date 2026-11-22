@@ -1,0 +1,1056 @@
+{
+  "run_id": "P1-LOCAL-20261122-1",
+  "created_at": "2026-11-22T06:53:52+00:00",
+  "code": {
+    "commit": "639eb33996e8f2526de6dcf1892dcc12238938ad",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1",
+  "config": null,
+  "stack": {
+    "parser": {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/raw/vidore_v3/hr/a_demographic_perspective_on_the_future_of_european-KJ0125152ENN.pdf",
+      "sha256": "685ecfda8fa0c1ab537d8120a5dd1f04c703bde671de3c7104a992fd8edf26e0"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/employment_and_social_developments_in_europe_2024-KEBD24002ENN.pdf",
+      "sha256": "07151bec7bcdbedcf7b7efed07953cbd05e21f8a124d365d2edac195866c5b62"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/employment_and_social_developments_in_europe-KE0125067ENN.pdf",
+      "sha256": "1b347c2b832740be3abf136eeedc6f7bbacbf162c33c0227fa611cbfb9e31615"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/european_network_of_public_employment_services_annual-KE0124024ENN.pdf",
+      "sha256": "df8794d0bf1f00124e66a705f91915e824d4077ec0ac9edfb550608b1c08337f"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/joint_employment_report_2025-KE0125018ENN.pdf",
+      "sha256": "e88b437140a6407e03bfcbd1c01f3fbb4d1f3540c953e678c0d8ed59ca39692e"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/recruitment_working_conditions_career_development-KI0124000ENN.pdf",
+      "sha256": "412ea0cd6a31a0fa3cade6952249583a3c6549fffc936b0690670994c62ccff7"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/research_perspectives_on_the_future_of_work-KI0124087ENN.pdf",
+      "sha256": "1d2cfad34e3730be47abed627d0c97c706345a44324a5baee7ce350d9ed522d3"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/undeclared_care_work_in_the_eu-TJ0125004ENN.pdf",
+      "sha256": "77cd118bcda7694be496ced12a80c9f456f7131ecae5a4d0dbb94f3fe8c67f46"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/future-oriented_occupations_in_the_eu-KE0125043ENN.pdf",
+      "sha256": "5bf0319a97dbeb45b6941547912ceb19198841bd0f75d57a8a569ff4fe770965"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/labour_market_and_wage_developments_in_europe-KEBN24001ENN.pdf",
+      "sha256": "078435e3a5d09510ea9cc9f057b2bb231107b79628dbbc754ee68af4b37459a5"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/posting_of_workers-KE0224850ENN.pdf",
+      "sha256": "b9e64a44d1c13a38e13c2c7cb836537073353c787a83026cf822d49746e4e899"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/estimating_labour_market_transitions_and_skills_investment-KE0125066ENN.pdf",
+      "sha256": "0ea898b80b584e64a0d1c19ec5dc49873281e500a53f27c6d603584ed1cb9106"
+    },
+    {
+      "path": "data/raw/vidore_v3/hr/access_for_domestic_workers_to_labour_and_social_protection-KE0124002ENN.pdf",
+      "sha256": "139828daea6050681122a19927aa1edf63df92ccb1b6db8db23c07ba2c7a2aef"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/AFD-091005-056.pdf",
+      "sha256": "496308680f89cd50afceb89279535ac70e4eca388c4377190aa625f930e8a3e2"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/AFD-091005-062.pdf",
+      "sha256": "808268dba577ddaf314615931074721324072bf10065ed43017246437263e3fb"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_00-25-172.pdf",
+      "sha256": "9ccaceebb01eb660c7cc2198a162c415a40c6fe6a7f57a8fa4861e3d2cf63139"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_00-25-172CL-1.pdf",
+      "sha256": "e0a62ae5e76597cad9aa4f76ced71d5e10e5400b2ebab8001fae25cbce8839aa"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_00-25-172CL-3.pdf",
+      "sha256": "13d03fd55e9dffa11361933e86d313d19acd45a7096337a81c85bdec3ee5e1b3"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_00-25-172CL-4.pdf",
+      "sha256": "ef467680f6395a4c44e0fd660ab0d014b8ce73ea62a9b0c61b8f61ea8997aa83"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_00-25-172CL-5.pdf",
+      "sha256": "9e43a548758c39d4690b1dd292c61e285d4eab626e714a716ec408f220ed842e"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_00-25-203.pdf",
+      "sha256": "de4697494d6af4f64511e6d661aec9b34921b0a6da4684ce2bc5bc0012a9a8ca"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_00-5-15.pdf",
+      "sha256": "cdded0d2cd38f76273cc50b18062d1100ca3f1521e27ddd136cf852256ce929c"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_35-1-18.pdf",
+      "sha256": "0dc38b49ccf9ab3b91f9aa5eb53cbc123f7015a3dd3114ebfe6b609a27625077"
+    },
+    {
+      "path": "data/raw/vidore_v3/industrial/TO_35-1-3.pdf",
+      "sha256": "9d4231d4fc0daa6458095c6a8833c014528f983070a4d3dde359a51987e953b0"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/AAMGRxBiosimsSept2018_UHL.pdf",
+      "sha256": "13c2e3619de20d98078574e4c02dc182b60cddda0fb990a296ee5a4c13699969"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/AAMkeynoteChoe2021.pdf",
+      "sha256": "0b8304aea317c0600ceb865ad1a337ac5602a92a1720932cc84cf98bd5bd22f7"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/Biosimilar_and_Interchangeable_Products_The_US_FDA_Perspective.pdf",
+      "sha256": "97e4348a2ecadf8d06c5118be29b0bfabd892563083df8250903ffee74bb7ed8"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/Biosimilar_Regulatory_Policy_Understanding_the_Landscape_and_Relevance_to_Medical_Practice.pdf",
+      "sha256": "cd40593f19eea03682dbb8833e2fe18fc654eb162ffb9ad35c541a8aedbd7181"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/Cavazzoni_Presentation_FDLI2020.pdf",
+      "sha256": "1b91b51c7997ba5ea9b802b9df7ecc5b676baa7b789a2355ec42dccb6967aee2"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/CDER_New_Drugs_Program_2017_Update.pdf",
+      "sha256": "7a3bc13ff7ecc72cc86142004dced1802700529aed442286d44a4bac1d66bcef"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/CDER_New_Drugs_Program_2019_Update.pdf",
+      "sha256": "b4b772ce6b07346a52929d6ff10797bc9e6d04b48d92310cfec36aea5e0615a2"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/CDER_Office_of_Surveillance_and_Epidemiology_2017_Update.pdf",
+      "sha256": "c3e56c62891c9b9690fa94aef65791bec1e7681807b8c7724bc05eaf0f2386a7"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/CDER_Office_of_Surveillance_and_Epidemiology_2018_Update.pdf",
+      "sha256": "44091089bbe994fa22819f0a83c5b9144ca2603f1926159cc34586e19ae94059"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/CDER_SEND_Webinar_June_2020.pdf",
+      "sha256": "df0f179bf8e6f4b21400202586b6e50b93be824352c6dd4f7276a7c5e338c03b"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/CDER_Update_Presentation.pdf",
+      "sha256": "7de30929e7219edf879e93dbefaf37e7c60472a91df3fb7e472f8f9b3e947799"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/DDI_Medication_Errors_CE_March_2020_DMEPA_and_ISMP_combined_slides_FINAL.pdf",
+      "sha256": "dab03498a8e5ec0ad2dbc39c1d84510947b50ae5a4adaba46cb67806b7cbc69d"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/FDA_Office_of_Generic_Drugs_OGD_Keynote_Address_GDUFA_Past_Present_and_Future.pdf",
+      "sha256": "8a149c328896d68ca2801a0285c4ddbe36afe2e7d359a6de83bc3f456c81e008"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/final_ce_dental_caries.pdf",
+      "sha256": "ad60eb8edf5e3b2a0d2aa4bd405c4503d51a8027d7a5d31396a61db2eabcfde0"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/FinalFDACMSSummit1_10_18KSCorrected.pdf",
+      "sha256": "6db8712d0eaa8eee633c20be6b55b00681859f25410464d05a926cb0bbd2fa90"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/olugbengaokubadejoAAM2021.pdf",
+      "sha256": "272342a7bde865f099f3fcba1d2cda8a2b574d2873f047d1c03d96b2544aa885"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/OngoingFDAWorkRelatedtoOpioidOverdosePrevention.pdf",
+      "sha256": "a2481a99534f9c28156f3f860ad936e79b86919ab4e8f29f32658af414028eaa"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/PCCA_InternationalSeminarOn102518_JAD_100418_stats_update.pdf",
+      "sha256": "72fcdf65cfedcc2b5c22cf03abfcf32cb1fccdc62be8a94e6e1335665df5685e"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/PDA_FDA_Slides2021_Cavazzoni.pdf",
+      "sha256": "9f5c6e8c9895e0dcafb7221503b8babf994ae3c67b685de47e9bb1b7d5380f9d"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/Presentation_Bridging_Justifications_Supporting_the_Safety_of_Excipients_in_Generic_Drug_Products.pdf",
+      "sha256": "1a5fff9f8b766bc630c2b04ec835133e4d1e956327095bc64a942faa06b43949"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/Presentation_CDER_2016_Update_for_Rare_Diseases.pdf",
+      "sha256": "223b501cdf0f1ebd71a7d2a14443d4a1a4283556dd62c97613f67d126b6362c6"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/Presentation_Douglas_Throckmorton_FDAs_Role_in_Confronting_the_Opioid_Epidemic.pdf",
+      "sha256": "f6af4efd9399f6bddeea2a8151ca090673eed03afc0d691c7c8da8d59390efa8"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/Presentation_FDAs_Role_in_Confronting_the_Opioid_Epidemic.pdf",
+      "sha256": "0449a5eec35db2973d314b8023fdee329de89fe32b7b05a312d2d53bd23bb7c2"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/SearchforBalanceFDAsApproachtotheOpioidsCrisis_79.pdf",
+      "sha256": "03fa7e128950c8da5fce5272e502509982ab12955c85cdcd7f743c3303830d0a"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/State_of_CDER_FDLI2021_PCavazzoni_20210515.pdf",
+      "sha256": "df7eda7e193dcc96ec171d69cec1cd6fd9d437372123f7f24a522354eee480f0"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/State_of_OGD_Pivoting_to_GDUFA_II.pdf",
+      "sha256": "56eb4ebcac051dc319367faf499080b96b9e2943cb8247e304674182fed032b6"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/The_Public_Health_Role_of_Drug_Regulation_in_the_US.pdf",
+      "sha256": "171d0c83940192e702b5e436edfadb0f0769bb72a75a2020e1f190d780e86bf4"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/The_Role_of_Social_Science_in_Prescription_Drug_Promotion_at_FDA_and_Preview_of_Upcoming_Studies.pdf",
+      "sha256": "ed50eda6c04b1596cef934c94544d77148125e1ba5307df2dfadb616d69e192b"
+    },
+    {
+      "path": "data/raw/vidore_v3/pharmaceuticals/UseofBayesianHierarchicalModelsinthePresentationofSubgroupAnalyses.pdf",
+      "sha256": "47ce82a9b196eb115d86736db975693bebb597e199e3e969700d31b9a2db722a"
+    }
+  ],
+  "outputs": [
+    "data/extracted/pdfplumber/vidore_hr_a_demographic_perspective_on_the_future_of_european_kj0125152enn.json",
+    "data/extracted/pdfplumber/vidore_hr_employment_and_social_developments_in_europe_2024_kebd24002enn.json",
+    "data/extracted/pdfplumber/vidore_hr_employment_and_social_developments_in_europe_ke0125067enn.json",
+    "data/extracted/pdfplumber/vidore_hr_european_network_of_public_employment_services_annual_ke0124024enn.json",
+    "data/extracted/pdfplumber/vidore_hr_joint_employment_report_2025_ke0125018enn.json",
+    "data/extracted/pdfplumber/vidore_hr_recruitment_working_conditions_career_development_ki0124000enn.json",
+    "data/extracted/pdfplumber/vidore_hr_research_perspectives_on_the_future_of_work_ki0124087enn.json",
+    "data/extracted/pdfplumber/vidore_hr_undeclared_care_work_in_the_eu_tj0125004enn.json",
+    "data/extracted/pdfplumber/vidore_hr_future_oriented_occupations_in_the_eu_ke0125043enn.json",
+    "data/extracted/pdfplumber/vidore_hr_labour_market_and_wage_developments_in_europe_kebn24001enn.json",
+    "data/extracted/pdfplumber/vidore_hr_posting_of_workers_ke0224850enn.json",
+    "data/extracted/pdfplumber/vidore_hr_estimating_labour_market_transitions_and_skills_investment_ke0125066enn.json",
+    "data/extracted/pdfplumber/vidore_hr_access_for_domestic_workers_to_labour_and_social_protection_ke0124002enn.json",
+    "data/extracted/pdfplumber/vidore_industrial_afd_091005_056.json",
+    "data/extracted/pdfplumber/vidore_industrial_afd_091005_062.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_00_25_172.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_00_25_172cl_1.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_00_25_172cl_3.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_00_25_172cl_4.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_00_25_172cl_5.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_00_25_203.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_00_5_15.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_35_1_18.json",
+    "data/extracted/pdfplumber/vidore_industrial_to_35_1_3.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_aamgrxbiosimssept2018_uhl.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_aamkeynotechoe2021.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_biosimilar_and_interchangeable_products_the_us_fda_perspective.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_biosimilar_regulatory_policy_understanding_the_landscape_and_relevance_to_medical_practice.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_cavazzoni_presentation_fdli2020.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_cder_new_drugs_program_2017_update.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_cder_new_drugs_program_2019_update.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2017_update.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2018_update.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_cder_send_webinar_june_2020.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_cder_update_presentation.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_ddi_medication_errors_ce_march_2020_dmepa_and_ismp_combined_slides_final.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_fda_office_of_generic_drugs_ogd_keynote_address_gdufa_past_present_and_future.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_final_ce_dental_caries.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_finalfdacmssummit1_10_18kscorrected.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_olugbengaokubadejoaam2021.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_ongoingfdaworkrelatedtoopioidoverdoseprevention.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_pcca_internationalseminaron102518_jad_100418_stats_update.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_pda_fda_slides2021_cavazzoni.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_presentation_bridging_justifications_supporting_the_safety_of_excipients_in_generic_drug_products.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_presentation_cder_2016_update_for_rare_diseases.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_presentation_douglas_throckmorton_fdas_role_in_confronting_the_opioid_epidemic.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_presentation_fdas_role_in_confronting_the_opioid_epidemic.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_searchforbalancefdasapproachtotheopioidscrisis_79.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_state_of_cder_fdli2021_pcavazzoni_20210515.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_state_of_ogd_pivoting_to_gdufa_ii.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_the_public_health_role_of_drug_regulation_in_the_us.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_the_role_of_social_science_in_prescription_drug_promotion_at_fda_and_preview_of_upcoming_studies.json",
+    "data/extracted/pdfplumber/vidore_pharmaceuticals_useofbayesianhierarchicalmodelsinthepresentationofsubgroupanalyses.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "parse:vidore_hr_a_demographic_perspective_on_the_future_of_european_kj0125152enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 50317,
+        "empty_pages": 2,
+        "wall_seconds": 3.212,
+        "peak_ram_mb": 779.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_employment_and_social_developments_in_europe_2024_kebd24002enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 425790,
+        "empty_pages": 2,
+        "wall_seconds": 14.23,
+        "peak_ram_mb": 1566.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_employment_and_social_developments_in_europe_ke0125067enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 59968,
+        "empty_pages": 1,
+        "wall_seconds": 1.963,
+        "peak_ram_mb": 1688.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_european_network_of_public_employment_services_annual_ke0124024enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 62421,
+        "empty_pages": 0,
+        "wall_seconds": 1.782,
+        "peak_ram_mb": 1819.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_joint_employment_report_2025_ke0125018enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 659050,
+        "empty_pages": 1,
+        "wall_seconds": 27.167,
+        "peak_ram_mb": 2156.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_recruitment_working_conditions_career_development_ki0124000enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 122104,
+        "empty_pages": 0,
+        "wall_seconds": 4.982,
+        "peak_ram_mb": 2445.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_research_perspectives_on_the_future_of_work_ki0124087enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 104047,
+        "empty_pages": 0,
+        "wall_seconds": 3.258,
+        "peak_ram_mb": 2617.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_undeclared_care_work_in_the_eu_tj0125004enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 191801,
+        "empty_pages": 5,
+        "wall_seconds": 5.398,
+        "peak_ram_mb": 2601.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_future_oriented_occupations_in_the_eu_ke0125043enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 139322,
+        "empty_pages": 1,
+        "wall_seconds": 3.779,
+        "peak_ram_mb": 2593.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_labour_market_and_wage_developments_in_europe_kebn24001enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 490586,
+        "empty_pages": 2,
+        "wall_seconds": 15.19,
+        "peak_ram_mb": 2593.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_posting_of_workers_ke0224850enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 181572,
+        "empty_pages": 1,
+        "wall_seconds": 12.042,
+        "peak_ram_mb": 2563.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_estimating_labour_market_transitions_and_skills_investment_ke0125066enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 107735,
+        "empty_pages": 3,
+        "wall_seconds": 4.467,
+        "peak_ram_mb": 2563.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_hr_access_for_domestic_workers_to_labour_and_social_protection_ke0124002enn",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 329392,
+        "empty_pages": 1,
+        "wall_seconds": 12.174,
+        "peak_ram_mb": 2563.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_afd_091005_056",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 15173,
+        "empty_pages": 3,
+        "wall_seconds": 0.377,
+        "peak_ram_mb": 2540.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_afd_091005_062",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 4154,
+        "empty_pages": 0,
+        "wall_seconds": 0.115,
+        "peak_ram_mb": 2540.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_00_25_172",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 306333,
+        "empty_pages": 9,
+        "wall_seconds": 9.311,
+        "peak_ram_mb": 2540.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_00_25_172cl_1",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 25484,
+        "empty_pages": 3,
+        "wall_seconds": 0.486,
+        "peak_ram_mb": 2492.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_00_25_172cl_3",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 46394,
+        "empty_pages": 7,
+        "wall_seconds": 0.879,
+        "peak_ram_mb": 2492.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_00_25_172cl_4",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 87529,
+        "empty_pages": 17,
+        "wall_seconds": 1.665,
+        "peak_ram_mb": 2492.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_00_25_172cl_5",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 60583,
+        "empty_pages": 16,
+        "wall_seconds": 1.602,
+        "peak_ram_mb": 2492.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_00_25_203",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 162731,
+        "empty_pages": 7,
+        "wall_seconds": 3.816,
+        "peak_ram_mb": 2492.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_00_5_15",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 341515,
+        "empty_pages": 0,
+        "wall_seconds": 9.468,
+        "peak_ram_mb": 2447.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_35_1_18",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 77559,
+        "empty_pages": 0,
+        "wall_seconds": 2.798,
+        "peak_ram_mb": 2395.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_industrial_to_35_1_3",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 295829,
+        "empty_pages": 4,
+        "wall_seconds": 8.673,
+        "peak_ram_mb": 2395.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_aamgrxbiosimssept2018_uhl",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 26295,
+        "empty_pages": 1,
+        "wall_seconds": 0.796,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_aamkeynotechoe2021",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 4181,
+        "empty_pages": 1,
+        "wall_seconds": 0.244,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_biosimilar_and_interchangeable_products_the_us_fda_perspective",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 8216,
+        "empty_pages": 0,
+        "wall_seconds": 0.252,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_biosimilar_regulatory_policy_understanding_the_landscape_and_relevance_to_medical_practice",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 18347,
+        "empty_pages": 0,
+        "wall_seconds": 0.541,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_cavazzoni_presentation_fdli2020",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 4987,
+        "empty_pages": 0,
+        "wall_seconds": 0.17,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_cder_new_drugs_program_2017_update",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 15084,
+        "empty_pages": 1,
+        "wall_seconds": 0.557,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_cder_new_drugs_program_2019_update",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 18750,
+        "empty_pages": 1,
+        "wall_seconds": 0.543,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2017_update",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 5750,
+        "empty_pages": 1,
+        "wall_seconds": 0.248,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2018_update",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 10780,
+        "empty_pages": 1,
+        "wall_seconds": 0.717,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_cder_send_webinar_june_2020",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 25662,
+        "empty_pages": 0,
+        "wall_seconds": 1.214,
+        "peak_ram_mb": 2341.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_cder_update_presentation",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 8821,
+        "empty_pages": 0,
+        "wall_seconds": 0.249,
+        "peak_ram_mb": 2340.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_ddi_medication_errors_ce_march_2020_dmepa_and_ismp_combined_slides_final",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 30461,
+        "empty_pages": 1,
+        "wall_seconds": 1.109,
+        "peak_ram_mb": 2340.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_fda_office_of_generic_drugs_ogd_keynote_address_gdufa_past_present_and_future",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 19361,
+        "empty_pages": 1,
+        "wall_seconds": 0.87,
+        "peak_ram_mb": 2340.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_final_ce_dental_caries",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 25508,
+        "empty_pages": 1,
+        "wall_seconds": 0.869,
+        "peak_ram_mb": 2340.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_finalfdacmssummit1_10_18kscorrected",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 9112,
+        "empty_pages": 1,
+        "wall_seconds": 0.319,
+        "peak_ram_mb": 2340.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_olugbengaokubadejoaam2021",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 10712,
+        "empty_pages": 1,
+        "wall_seconds": 0.405,
+        "peak_ram_mb": 2340.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_ongoingfdaworkrelatedtoopioidoverdoseprevention",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 13860,
+        "empty_pages": 0,
+        "wall_seconds": 0.692,
+        "peak_ram_mb": 2340.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_pcca_internationalseminaron102518_jad_100418_stats_update",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 28236,
+        "empty_pages": 0,
+        "wall_seconds": 1.049,
+        "peak_ram_mb": 2279.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_pda_fda_slides2021_cavazzoni",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 9489,
+        "empty_pages": 1,
+        "wall_seconds": 0.429,
+        "peak_ram_mb": 2261.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_presentation_bridging_justifications_supporting_the_safety_of_excipients_in_generic_drug_products",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 12687,
+        "empty_pages": 1,
+        "wall_seconds": 0.473,
+        "peak_ram_mb": 2261.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_presentation_cder_2016_update_for_rare_diseases",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 11828,
+        "empty_pages": 0,
+        "wall_seconds": 0.418,
+        "peak_ram_mb": 2261.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_presentation_douglas_throckmorton_fdas_role_in_confronting_the_opioid_epidemic",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 13683,
+        "empty_pages": 1,
+        "wall_seconds": 0.565,
+        "peak_ram_mb": 2261.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_presentation_fdas_role_in_confronting_the_opioid_epidemic",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 7821,
+        "empty_pages": 1,
+        "wall_seconds": 0.288,
+        "peak_ram_mb": 2261.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_searchforbalancefdasapproachtotheopioidscrisis_79",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 22678,
+        "empty_pages": 0,
+        "wall_seconds": 0.856,
+        "peak_ram_mb": 2261.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_state_of_cder_fdli2021_pcavazzoni_20210515",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 11120,
+        "empty_pages": 0,
+        "wall_seconds": 0.52,
+        "peak_ram_mb": 2259.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_state_of_ogd_pivoting_to_gdufa_ii",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 21127,
+        "empty_pages": 1,
+        "wall_seconds": 1.445,
+        "peak_ram_mb": 2240.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_the_public_health_role_of_drug_regulation_in_the_us",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 14889,
+        "empty_pages": 2,
+        "wall_seconds": 0.831,
+        "peak_ram_mb": 2218.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_the_role_of_social_science_in_prescription_drug_promotion_at_fda_and_preview_of_upcoming_studies",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 9842,
+        "empty_pages": 1,
+        "wall_seconds": 0.39,
+        "peak_ram_mb": 2218.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "parse:vidore_pharmaceuticals_useofbayesianhierarchicalmodelsinthepresentationofsubgroupanalyses",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "chars": 16632,
+        "empty_pages": 0,
+        "wall_seconds": 0.934,
+        "peak_ram_mb": 2218.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 166.827,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 2617.1,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

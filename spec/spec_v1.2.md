@@ -1343,3 +1343,23 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   descriptive per corpus.
 - Limitations stated in advance: questions about charts and images are excluded; scanned pages without a text
   layer lose their evidence under the box rule (counted); documents over 200 pages are excluded.
+## Held-out set 2: extraction (pdfplumber on the laptop, Docling as H2-KN01), design before running (2026-11-22)
+- Scope: the 53 held_out_2 documents only (pdfs/split.csv). No other held-out set is read; no tuning document is
+  re-extracted (existing outputs are skipped, as always).
+- Access gate, no change to any parser: scripts/p1_extract_pdfplumber.py gains `--split` (catalogue rows of one split
+  only) and `--final`; scripts/p1_extract_docling.py gains `--final`. Both now refuse any non-tuning document without
+  `--final`. Parser settings, output format and run records are unchanged (frozen P1 pdfplumber and Docling 2.143.0
+  defaults).
+- pdfplumber: `python -m scripts.p1_extract_pdfplumber --split held_out_2 --final` on the laptop (run P1-LOCAL-...).
+  Reported per corpus: documents, pages, characters, and pages with no extracted text (no text layer, or image-only),
+  because box evidence on such pages gives no gold under the box rule.
+- Docling: notebook notebooks/kaggle/h2-kn01.ipynb (GPU T4), modelled on P1-KN06 with the ext-kn01 install cell and a
+  fail-fast cell (imports, Docling version, GPU, one page converted). Input: private Kaggle dataset H2-KD01 built by
+  scripts/h2_kaggle_bundle.py --final: the 53 PDFs only, each saved as <doc_id>.pdf (so Docling's output name is the
+  doc id), SHA-256 checked against pdfs/catalog.csv; the script and the notebook refuse any other document. Run source
+  H2-KN01 (run P1-H2-KN01-...), output data/extracted/docling/<doc_id>.json.
+- Time estimate (from P1-KN06: 1,034 s for 1,493 pages on a T4, 0.69 s per page): 2,822 pages, about 33 minutes of
+  conversion (39 minutes at the OHR-Bench rate of 0.81 s per page), plus install and model download.
+- Disclosure: the pdfplumber extraction P1-LOCAL-20261122-1 ran before the --final gate edits were committed
+  (uncommitted_changes: true). The edits only add the gate (--split/--final); parser code and settings are unchanged,
+  as the commit after this note shows. The run is kept and not repeated.

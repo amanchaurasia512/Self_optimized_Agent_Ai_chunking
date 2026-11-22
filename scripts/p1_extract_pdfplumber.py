@@ -7,6 +7,7 @@ import pandas as pd
 from src.common.cost_logger import CostLogger
 from src.common.manifest import PROJECT_ROOT, build_manifest, new_run_id, write_manifest
 from src.common.pdf_catalog import PDF_MANIFEST
+from src.common.split import SPLIT_FILE, tuning_ids
 from src.parse.pdfplumber_parser import PARSER, VARIANTS, parse_pdf
 
 
@@ -18,17 +19,25 @@ def main():
     arg_parser = argparse.ArgumentParser(description=__doc__)
     arg_parser.add_argument("--variant", default="default", choices=list(VARIANTS), help="RQ5a parser variant")
     arg_parser.add_argument("--only", nargs="+", help="doc ids to run; default: every PDF in the catalogue")
+    arg_parser.add_argument("--split", help="only catalogue rows of this split (pdfs/split.csv), e.g. held_out_2")
+    arg_parser.add_argument("--final", action="store_true", help="allow held-out documents (final evaluation only)")
     args = arg_parser.parse_args()
 
     output_dir = OUTPUT_DIR if args.variant == "default" else OUTPUT_DIR.with_name(f"pdfplumber_{args.variant}")
     parser_info = PARSER if args.variant == "default" else {**PARSER, "variant": args.variant, "settings": VARIANTS[args.variant]}
     catalog = pd.read_csv(PDF_MANIFEST)
+    if args.split:
+        split = pd.read_csv(SPLIT_FILE)
+        catalog = catalog[catalog["doc_id"].isin(split.loc[split["split"] == args.split, "doc_id"])]
+    if args.only:
+        catalog = catalog[catalog["doc_id"].isin(args.only)]
+    sealed = sorted(set(catalog["doc_id"]) - tuning_ids())
+    if sealed and not args.final:
+        raise PermissionError(f"held-out documents need --final (final evaluation only): {len(sealed)}, e.g. {sealed[:3]}")
     output_dir.mkdir(parents=True, exist_ok=True)
     logger = CostLogger()
     inputs, outputs, skipped = [], [], []
     for record in catalog.itertuples(index=False):
-        if args.only and record.doc_id not in args.only:
-            continue
         output_path = output_dir / f"{record.doc_id}.json"
         if output_path.exists():
             skipped.append(record.doc_id)
