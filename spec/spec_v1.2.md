@@ -1539,3 +1539,12 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   P4-FINAL-20261106-1, machine laptop), with the imported vectors. scorer_v1 (src/eval/score.py) is unchanged; how
   the runner selects each check's gold (file and fields) is fixed in a step 4 note before any score.
 - Runs once with --final; nothing is re-run after vectors are seen; a problem gets a new dated note.
+
+## Paper draft tracking, clarification (2026-11-23)
+- `paper/` is untracked (removed in 1030777) and ignored (`.gitignore`, `paper/`).
+- The earlier ACL drafts are kept at tag paper-v1.2 (a636e0d) and paper-v1.1; the last tracked state is 76c5802.
+- The IEEE draft is kept outside git (`Self_optimized_paper_draft/`, ignored).
+- No study result, decision or frozen part changes.
+- Commit 1030777 also appended a pointer to two earlier dated notes in place (spec_v1.2.md lines 462 and 702: the
+  fixed-k erratum and the AQ judge-check note); only the pointer was added, no wording or decision changed. They are
+  left as they are and disclosed here.
