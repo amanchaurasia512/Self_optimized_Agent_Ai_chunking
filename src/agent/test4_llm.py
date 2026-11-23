@@ -7,7 +7,7 @@ claim: no study document is used (sealed study PDFs are refused), so no --final 
     .venv-docling/bin/python -m src.agent.test4_llm contexts
     .venv/bin/python -m src.agent.test4_llm answers --model gemini
     .venv/bin/python -m src.agent.test4_llm answers --model qwen
-    .venv/bin/python -m src.agent.test4_llm summary      token counts per model -> llm_summary.json
+    .venv/bin/python -m src.agent.test4_llm summary      measures and token counts -> llm_summary.json, llm_pairs.csv
 Each answer line holds the token counts from the model's own response (Gemini usage metadata: input, output, thinking;
 Ollama prompt_eval_count and eval_count), never estimates.
 Prints ids and counts only."""
@@ -19,14 +19,18 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
-from scripts.aq_run import ANSWER_PROMPT, INTERVAL
+from scripts.aq_run import ANSWER_PROMPT, INTERVAL, contained, token_f1
+from scripts.p4_analyse import resampled_means
+from scripts.rq5_parser_compare import holm
 from src.agent import providers
 from src.agent.pipeline import SPEC
 from src.common import manifest
 from src.common.manifest import RUNS_DIR, project_path
 from src.common.paths import DATA
+from src.eval.stats import LEVEL, RESAMPLES, SEED
 
 BUDGET = 1250
 OUTPUT = DATA / "agent_test4"
@@ -288,13 +292,73 @@ def token_summary(lines, fields):
     return summary
 
 
+KINDS = ("digital", "scanned")
+
+
+def pairs_table(output_dir):
+    """One row per qid with a context: context-contained, and per model F1, answer-contained, not found, seconds
+    (empty where the model has no answer)."""
+    rows = {line["qid"]: {"qid": line["qid"], "pdf": line["pdf"], "kind": line["kind"],
+                          "context_contained": contained(line["context"], line["gold"]), "gold": line["gold"]}
+            for line in read_lines(Path(output_dir) / CONTEXTS) if "context" in line}
+    for key, spec in MODELS.items():
+        for line in read_lines(Path(output_dir) / spec["file"]):
+            if "answer" in line:
+                gold = rows[line["qid"]]["gold"]
+                rows[line["qid"]].update({f"f1_{key}": token_f1(line["answer"], gold),
+                                          f"contained_{key}": contained(line["answer"], gold),
+                                          f"not_found_{key}": line["answer"].strip().lower().startswith("not found"),
+                                          f"answer_seconds_{key}": line["answer_seconds"]})
+    return pd.DataFrame(rows.values()).drop(columns="gold")
+
+
+def document_mean(frame, column):
+    """Question values averaged per document first, then over documents."""
+    return round(float(frame.dropna(subset=[column]).groupby("pdf")[column].mean().mean()), 3)
+
+
+def paired_difference(frame):
+    """Paired document bootstrap of F1 Gemini minus qwen2.5:3b over qids both answered: mean, 95% CI, two-sided p."""
+    both = frame.dropna(subset=["f1_gemini", "f1_qwen"])
+    difference = both.assign(difference=both["f1_gemini"] - both["f1_qwen"]).groupby("pdf")["difference"].mean()
+    means = resampled_means(difference.to_numpy()[:, None], np.random.default_rng(SEED))[:, 0]
+    low, high = np.quantile(means, [(1 - LEVEL) / 2, (1 + LEVEL) / 2])
+    return {"documents": len(difference), "questions": len(both), "difference": round(float(difference.mean()), 3),
+            "low": round(float(low), 3), "high": round(float(high), 3),
+            "p": float(min(1.0, 2 * min((means <= 0).mean(), (means >= 0).mean())))}
+
+
+def failures(lines):
+    return {"count": sum("failure" in line for line in lines),
+            "reasons": [{"qid": line["qid"], "reason": line["failure"]} for line in lines if "failure" in line]}
+
+
 def summary(output_dir):
-    """llm_summary.json: token counts per model, from the counts saved with each answer."""
-    path = Path(output_dir) / "llm_summary.json"
-    result = {"tokens": {spec["model"]: token_summary(read_lines(Path(output_dir) / spec["file"]), TOKEN_FIELDS[key])
-                         for key, spec in MODELS.items()}}
-    path.write_text(json.dumps(result, indent=2), encoding="utf-8")
-    print(json.dumps(result["tokens"]), f"\n-> {project_path(path)}")
+    """llm_summary.json (spec note "Agent test 4: LLM comparison", measures and token counts) and llm_pairs.csv."""
+    output_dir = Path(output_dir)
+    pairs = pairs_table(output_dir)
+    pairs.to_csv(output_dir / "llm_pairs.csv", index=False)
+    kinds = {kind: pairs[pairs["kind"] == kind] for kind in KINDS}
+    comparison = {kind: paired_difference(frame) for kind, frame in kinds.items()}
+    for kind, holm_p in zip(KINDS, holm(np.array([comparison[kind]["p"] for kind in KINDS]))):
+        comparison[kind]["holm_p"] = float(holm_p)
+    answer_lines = {key: read_lines(output_dir / spec["file"]) for key, spec in MODELS.items()}
+    result = {
+        "context_contained": {kind: document_mean(frame, "context_contained") for kind, frame in kinds.items()},
+        "models": {spec["model"]: {
+            **{kind: {"questions": int(frame[f"f1_{key}"].notna().sum()), "f1": document_mean(frame, f"f1_{key}"),
+                      "answer_contained": document_mean(frame, f"contained_{key}"),
+                      "not_found": document_mean(frame, f"not_found_{key}")} for kind, frame in kinds.items()},
+            "step_b_failures": failures(answer_lines[key]),
+            "answer_seconds": {"median": float(pairs[f"answer_seconds_{key}"].median()),
+                               "iqr": [float(pairs[f"answer_seconds_{key}"].quantile(quantile)) for quantile in (0.25, 0.75)]}}
+            for key, spec in MODELS.items()},
+        "f1_gemini_minus_qwen": {"resamples": RESAMPLES, "seed": SEED, "level": LEVEL, **comparison},
+        "step_a_failures": failures(read_lines(output_dir / CONTEXTS)),
+        "tokens": {spec["model"]: token_summary(answer_lines[key], TOKEN_FIELDS[key]) for key, spec in MODELS.items()}}
+    (output_dir / "llm_summary.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    print(json.dumps({key: value for key, value in result.items() if key != "tokens"}),
+          f"\n-> {project_path(output_dir / 'llm_summary.json')}, {project_path(output_dir / 'llm_pairs.csv')}")
 
 
 def main():
