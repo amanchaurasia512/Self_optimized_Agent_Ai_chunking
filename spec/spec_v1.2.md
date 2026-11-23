@@ -1363,3 +1363,96 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
 - Disclosure: the pdfplumber extraction P1-LOCAL-20261122-1 ran before the --final gate edits were committed
   (uncommitted_changes: true). The edits only add the gate (--split/--final); parser code and settings are unchanged,
   as the commit after this note shows. The run is kept and not repeated.
+## Held-out set 2: Docling H2-KN01 imported; Industrial pages without text (2026-11-23, found after the run)
+- Import: run P1-H2-KN01-20261122-1 (commit 1588e9a, uncommitted_changes: false; Kaggle T4, 2,238 s) imported as
+  is: exactly the 53 held_out_2 documents, input SHA-256 equal to pdfs/catalog.csv, page counts equal to the
+  catalogue, all 53 stages ok. Outputs in data/extracted/docling/, pip freeze in data/external/kaggle_out/H2-KN01/.
+  Per corpus (pages; Docling vs pdfplumber P1-LOCAL-20261122-1 characters; pages with no text): HR 908 pages,
+  4,104,700 vs 2,924,105, 28 vs 19; Industrial 833, 2,416,889 vs 1,423,284, 70 vs 66; Pharmaceuticals 1,081,
+  509,575 vs 435,919, 29 vs 19.
+- Pipeline unchanged: the frozen Docling 2.143.0 defaults (as P1-KN06): do_ocr: true, do_table_structure: true,
+  force_full_page_ocr: false, OcrAutoOptions. The OCR packages were installed (easyocr 1.7.2, rapidocr 3.10.0),
+  and the log shows no OCR errors.
+- Found after the run: Docling recovered 0 of the 66 Industrial pages that pdfplumber found without text. Four
+  more Industrial pages are empty in Docling only (to_00_25_172 pages 58 and 114; to_35_1_18 pages 50 and 86).
+- Docling also has more pages without text than pdfplumber in HR (28 vs 19) and Pharmaceuticals (29 vs 19). These
+  were not examined further; their gold losses are counted the same way.
+- Diagnostic from the Docling JSONs only (no PDF opened, no text read): all 70 pages have zero saved elements.
+  This follows from the saved format, which keeps only elements with text (src/parse/docling_parser.py), so
+  picture-only pages cannot be told apart from blank ones without the PDFs. The cause is not established.
+- Consequence: under the box rule, the 66 pages empty in both parsers give no gold for either parser; the 4 pages
+  empty only in Docling give no gold for Docling only. Such losses are counted and reported per parser and corpus,
+  as stated in advance. Nothing was re-run and no setting was changed; the run stands as the frozen pipeline's
+  result.
+
+## Held-out set 2: gold implementation (scripts/h2_gold_boxes.py), design before running (2026-11-23)
+- Applies the committed gold rule of "Held-out set 2: ViDoRe V3" unchanged; this note fixes only how it is carried
+  out. Run once with --final for both parsers on the frozen extractions pdfplumber P1-LOCAL-20261122-1 and Docling
+  P1-H2-KN01-20261122-1 (run P1-H2-GOLD-...). The script refuses held_out_2 without --final, before any network,
+  PDF or extraction access, and never overwrites an output.
+- Scaling, page by page: each box is scaled from image pixels to PDF points by PDF width / image width and PDF
+  height / image height of that page. The ViDoRe metadata holds no image size (corpus, documents_metadata and qrels
+  columns checked), so the width and height are read from the image header of the 422 score-2 page images only
+  (PIL opens lazily; no pixel is decoded and no image is saved). How much the image and PDF page shapes differ
+  (|aspect ratio difference|) is reported; no correction is made.
+- Several annotators: the words of all annotators' boxes are joined as a union, each word once. Score-2 pages
+  with several annotators: 131 of 422 (2 annotators 110, 3 annotators 21), reported again by the run.
+- Word in box: a pdfplumber word (extract_words, default settings, the same tolerances as the frozen pdfplumber
+  extract_text) counts if its centre is inside a scaled box; the words are joined in pdfplumber's reading order.
+- Evidence source: the box words are read once from the PDF text layer (pdfplumber words), the same for both
+  parsers, then placed into each parser's extracted text. A box on a page without a text layer has no words ("no
+  words in box") and gives no gold for either parser, even when Docling's OCR has text there. The gold therefore
+  favours text-layer pages; the run reports how often this happens per corpus. Earlier held-out 2 notes say 'the
+  frozen drop rule'; it is replaced by certain-only gold as for held-out 1 (commit 6192058), so both sets use the
+  same gold standard.
+- Pages: page_number_in_doc starts at 0; PDF page = n + 1. Checked before any work: min 0, and no value at or
+  above the document's page count in pdfs/catalog.csv; the script stops otherwise.
+- Placement: each score-2 page is placed separately (one evidence per page, page-guided at n + 1) by the P1 place
+  function and P1-R06 certain rule. As for held-out 1, the gold is certain-only as in commit 6192058: "P1-R06:
+  certain-only gold (exact/normalised at one place, or piecewise with every piece exact); drop rule no longer
+  applied". No drop-rule threshold is used.
+- Page outcome, with one reason when not placed: no words in box; parser page empty; not placed (a piece not
+  found); not certain.
+- Primary: a query keeps gold only if all its score-2 pages are placed (54 of 286 queries have 2 to 12 such
+  pages). Sensitivity: kept if at least one page is placed. Both are reported per parser and corpus (questions in,
+  with gold, dropped, drop rate, drop reasons). Span rows carry keep_primary and keep_sensitivity; the primary
+  analysis uses keep_primary.
+- The Industrial pages without text (66 in both parsers, 4 only in Docling) are listed separately with the number
+  of score-2 pages on them. A metadata check (2026-11-23, no PDF opened) found none, because eligibility required
+  Text/Table pages; the run confirms this.
+- Outputs (git-ignored): data/heldout2/page_sizes.csv, data/heldout2/box_evidence.jsonl,
+  data/gold/h2_spans_<parser>.jsonl. Existing span files of tuning and held-out 1 are not touched. Nothing is printed
+  but counts.
+
+## Held-out set 2: step 4 analysis (2026-11-23, before any held-out 2 score)
+- Side by side, for each held-out set separately: the tuning winner applied (docling/langchain_recursive_256), the
+  held-out-1 best single applied (pdfplumber/method1_tree_T384), the oracle (split-half, as in held-out 1), the gap
+  with a 95% document bootstrap interval, and the GO verdict. Held-out 2 is reported next to held-out 1 and never
+  replaces it. The held-out-1 verdict stands as recorded.
+- Pooled (secondary):
+  - Unit: document means over both sets, every document weighted equally.
+  - Interval: bootstrap stratified by set, resampling documents within each set (2,000 resamples, seed 42).
+  - Choice set and setups: the same primary choice set. The single setup is the tuning winner, applied unchanged;
+    nothing is re-chosen on held-out data. The oracle is defined as in held-out 1.
+  - Reporting: the gap and interval are reported, and the GO rule is applied but labelled secondary.
+  - Gold: the two sets use different gold sources (P1 spans vs box text). This is accepted, stated as a
+    limitation, and the per-set results are always shown.
+  - Tooling: a new script reads both score runs. p4_analyse.py is not changed.
+- RQ2 per corpus:
+  - Method: hybrid retrieval at 750 / 1,250 / 2,000. Spearman of measured size (the same measure as tuning RQ2,
+    p3_size_by_source.measured_sizes) against mean recall over the 26 setups.
+  - Scope: per corpus and for all of held-out 2, each with 95% document bootstrap intervals.
+  - Verdict: one check only, the same as tuning, on all of held-out 2: "negative at every budget". Per-corpus
+    results are descriptive only, because the corpora are small (HR 13, Industrial 11 documents).
+
+## Held-out set 2: run steps (2026-11-23)
+- Step 0, extraction: done. pdfplumber P1-LOCAL-20261122-1 and Docling P1-H2-KN01-20261122-1; results and the
+  pages without text are in the note "Held-out set 2: Docling H2-KN01 imported".
+- Step 1, gold: scripts/h2_gold_boxes.py, run once with --final, as in the note "Held-out set 2: gold
+  implementation".
+- Step 2, chunk: the 26 primary setups (P4-FINAL-20261106-1_primary_setups.csv), unchanged from held-out 1.
+- Step 3, embed: on Kaggle, the same embedder and settings as held-out 1 (bge-m3).
+- Step 4, score and analyse: scorer_v1 and p4_analyse as in held-out 1, plus held-out 2 next to held-out 1, the
+  pooled result and RQ2 per corpus, as fixed in the note "Held-out set 2: step 4 analysis" before step 4 runs.
+- Each step runs once on the sealed data. Nothing is re-run after results are seen; any problem gets a new dated
+  note.
