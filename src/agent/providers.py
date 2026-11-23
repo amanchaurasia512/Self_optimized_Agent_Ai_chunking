@@ -43,7 +43,13 @@ def limit_kind(detail):
     return "daily" if DAILY.search(detail) else "minute"
 
 
-def ask_gemini(model, key, prompt):
+def ask_gemini(model, key, prompt, settings=None):
+    return gemini_reply(model, key, prompt, settings)["answer"]
+
+
+def gemini_reply(model, key, prompt, settings=None):
+    """{answer, input_tokens, output_tokens, thinking_tokens, model_version}, the counts from the response's usage
+    metadata (None where Gemini reports none). settings: extra GenerateContentConfig fields; none by default."""
     from google import genai
     from google.genai import errors, types
     try:
@@ -51,7 +57,7 @@ def ask_gemini(model, key, prompt):
         # and its __del__ closes the HTTP connection before the request is sent ("client has been closed").
         with genai.Client(api_key=key) as client:
             response = client.models.generate_content(model=model, contents=prompt,
-                                                      config=types.GenerateContentConfig(temperature=0))
+                                                      config=types.GenerateContentConfig(temperature=0, **(settings or {})))
     except errors.APIError as error:
         detail = f"{error.message} {error.details}"
         if error.code == 429:
@@ -60,7 +66,10 @@ def ask_gemini(model, key, prompt):
         if error.code == 503:
             raise Overloaded() from None
         raise
-    return response.text or ""
+    usage = response.usage_metadata
+    return {"answer": response.text or "", "input_tokens": usage.prompt_token_count if usage else None,
+            "output_tokens": usage.candidates_token_count if usage else None,
+            "thinking_tokens": usage.thoughts_token_count if usage else None, "model_version": response.model_version}
 
 
 def ask_groq(model, key, prompt):
@@ -79,6 +88,59 @@ def ask_groq(model, key, prompt):
 
 
 ADAPTERS = {"gemini": ask_gemini, "groq": ask_groq}
+OLLAMA_URL = "http://localhost:11434"
+
+
+def ask_ollama(model, prompt, options, url=OLLAMA_URL):
+    """A local model through Ollama (no key): {answer, input_tokens, output_tokens}, the counts from the response
+    (prompt_eval_count, eval_count; None where Ollama reports none)."""
+    import httpx
+    with httpx.Client(timeout=600) as client:
+        response = client.post(f"{url}/api/generate", json={"model": model, "prompt": prompt, "stream": False,
+                                                            "options": options})
+        response.read()
+    response.raise_for_status()
+    body = response.json()
+    return {"answer": body.get("response") or "", "input_tokens": body.get("prompt_eval_count"),
+            "output_tokens": body.get("eval_count")}
+
+
+def ollama_model(model, url=OLLAMA_URL):
+    """{tag, digest, ollama_version} of an installed Ollama model; ProviderError when it is not installed."""
+    import httpx
+    with httpx.Client(timeout=30) as client:
+        tags = client.get(f"{url}/api/tags").json()["models"]
+        server = client.get(f"{url}/api/version").json()["version"]
+    found = next((tag for tag in tags if tag["name"] == model), None)
+    if found is None:
+        raise ProviderError(f"Ollama model {model} is not installed (ollama pull {model})")
+    return {"tag": model, "digest": found["digest"], "ollama_version": server}
+
+
+def named_entry(name, config_file=CONFIG_FILE, adapters=ADAPTERS):
+    """The provider entry called name (its key file path, never the key)."""
+    entry = next((entry for entry in load_entries(config_file, adapters) if entry["name"] == name), None)
+    if entry is None:
+        raise ProviderError(f"no provider entry '{name}' in {config_file}")
+    return entry
+
+
+REPLY_ADAPTERS = {"gemini": gemini_reply}
+
+
+def ask_entry(entry, prompt, settings=None, adapters=REPLY_ADAPTERS):
+    """One call to this entry only, no rotation, no waits, no state file: the reply with the response's token counts.
+    RateLimit and Overloaded pass through; any other error is raised as ProviderError with the key redacted."""
+    if entry["provider"] not in adapters:
+        raise ProviderError(f"entry '{entry['name']}': no adapter with token counts for {entry['provider']}")
+    key = read_key(entry)
+    try:
+        return adapters[entry["provider"]](entry["model"], key, prompt, settings)
+    except (RateLimit, Overloaded):
+        raise
+    except Exception as error:
+        raise ProviderError(f"provider entry '{entry['name']}' ({entry['provider']}, {entry['model']}) failed: "
+                            f"{redact(f'{type(error).__name__}: {error}', key)}") from None
 
 
 def load_entries(config_file, adapters):

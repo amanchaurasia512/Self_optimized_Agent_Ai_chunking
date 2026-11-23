@@ -1,0 +1,70 @@
+{
+  "run_id": "A-TEST-20261123-9",
+  "created_at": "2026-11-23T11:42:26+00:00",
+  "code": {
+    "commit": "8b79926237b625e9589efc3685837095b0ce9447",
+    "uncommitted_changes": true
+  },
+  "spec_version": "agent_v1",
+  "config": null,
+  "stack": {
+    "agent_mode": "test4_answers_gemini",
+    "llm": {
+      "entry": "gemini-a",
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "temperature": 0,
+      "max_output_tokens": 256,
+      "thinking_sent": {
+        "thinking_level": "MINIMAL"
+      },
+      "thinking_fallback_reason": "{'thinking_budget': 0} refused: lash-lite) failed: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'Request contains an invalid argument.', 'status': 'INVALID_ARGUMENT'}}",
+      "paced_seconds": 4.286
+    },
+    "answer_prompt": "Answer the question using only the context below, which comes from one document. If the context does not contain the answer, reply exactly: not found\n\nContext:\n{context}\n\nQuestion: {question}\nAnswer (briefly):",
+    "contexts": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7956f717-c81e-4aed-a70c-49f249944d05/scratchpad/at4llm-test/run2/contexts.jsonl",
+    "questions": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7956f717-c81e-4aed-a70c-49f249944d05/scratchpad/at4llm-test/questions2.csv",
+    "output": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7956f717-c81e-4aed-a70c-49f249944d05/scratchpad/at4llm-test/run2/answers_gemini-3.5-flash-lite.jsonl",
+    "continues": "A-TEST-20261123-8",
+    "started_at": "2026-11-23T11:42:21+00:00",
+    "ended_at": "2026-11-23T11:42:26+00:00",
+    "skipped_already_saved": 1,
+    "skipped_step_a_failures": 0,
+    "qids_done": [
+      "29d81a35431c"
+    ],
+    "failures": [],
+    "stopped": null,
+    "bge_m3_loaded": false
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7956f717-c81e-4aed-a70c-49f249944d05/scratchpad/at4llm-test/questions2.csv",
+      "sha256": "be684b7b964b24a827b688861c0968a38b50ea8243661767a5d75005e97dab1c"
+    },
+    {
+      "path": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7956f717-c81e-4aed-a70c-49f249944d05/scratchpad/at4llm-test/run2/contexts.jsonl",
+      "sha256": "ea0da9d8debc07336c1b9cd27c14a5fd5ccc85477943f69e2487cf93606fba59"
+    }
+  ],
+  "outputs": [
+    "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/7956f717-c81e-4aed-a70c-49f249944d05/scratchpad/at4llm-test/run2/answers_gemini-3.5-flash-lite.jsonl"
+  ],
+  "costs": {}
+}

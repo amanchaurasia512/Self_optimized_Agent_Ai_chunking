@@ -1579,3 +1579,13 @@ Replaces the answer part of "Agent test 4 (scaled)" (2026-11-20); documents, que
 - Expectation, fixed before running: Gemini is expected to be best; the question is the size of the gap.
 - Outputs: contexts.jsonl, answers_gemini-3.5-flash-lite.jsonl, answers_qwen2.5-3b.jsonl, llm_summary.json,
   llm_pairs.csv; the session run records of steps A and B.
+
+## Agent test 4: LLM comparison, amendment before running (2026-11-23)
+Adds to "Agent test 4: LLM comparison, design before running" (2026-11-23), before any full run; nothing else changes.
+- Token counts: each answer line in answers_<model>.jsonl holds the counts from the model's own response, never
+  estimates: Gemini input, output and thinking tokens from the usage metadata; Ollama prompt_eval_count (input) and
+  eval_count (output). A count the response does not give is stored as null. llm_summary.json reports per model the
+  total and the median per answer of each count, over answered qids, with the number of answers that carried it.
+- Settings found in the 2-question test (runs/tests/test_at4llm_A-TEST-20261123-*): gemini-3.5-flash-lite refuses
+  thinking off (thinking_budget 0, 400 INVALID_ARGUMENT), so its lowest level, thinking_level MINIMAL, is sent, as the
+  design allows. Ollama is sent num_ctx 8,192 so its default window never cuts the context; input tokens are recorded.
