@@ -1548,3 +1548,34 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
 - Commit 1030777 also appended a pointer to two earlier dated notes in place (spec_v1.2.md lines 462 and 702: the
   fixed-k erratum and the AQ judge-check note); only the pointer was added, no wording or decision changed. They are
   left as they are and disclosed here.
+
+## Agent test 4: LLM comparison, design before running (2026-11-23)
+Replaces the answer part of "Agent test 4 (scaled)" (2026-11-20); documents, questions, index (AT4-KN01) and budget
+1,250 unchanged. A test of the tool, not a research claim; no study document is used. Both models run on the laptop.
+- Models: Gemini gemini-3.5-flash-lite (paced as scripts/aq_run, 4.3 s; thinking off, or the model's lowest thinking
+  level if off is not accepted; the setting sent is recorded) and qwen2.5:3b via Ollama (local, not paced; tag and
+  digest recorded). Groq is left out: its free-tier daily token limit does not cover 300 contexts of about 1,250 tokens.
+- Question id: qid = first 12 hex characters of SHA-256 of "pdf|question" from data/agent_test4/questions.csv.
+- Step A (contexts): thorough mode, budget 1,250, retrieval only, no LLM call. Each question's retrieved context, the
+  exact text placed in ANSWER_PROMPT, is appended as one JSON line to data/agent_test4/contexts.jsonl (qid, pdf, kind,
+  question, gold, context, tokens read, chunk ids). A question that cannot get a context (its document failed to index,
+  or retrieval fails) is appended as a step-A failure with the reason. On restart, qids already saved are skipped.
+- Step B (answers): from contexts.jsonl only; starts only when every qid has a context or a recorded step-A failure.
+  Same prompt (aq_run.ANSWER_PROMPT) built from the context and question only; the gold is never in the prompt.
+  Temperature 0, max output tokens 256 for both models. Each result is appended as one complete JSON line to
+  data/agent_test4/answers_<model>.jsonl, keyed by qid; on restart, qids already present are skipped, so a question
+  with a valid answer is never asked again. Qwen runs only after step A has finished, in a process that does not load
+  bge-m3 (memory).
+- Errors in step B: quota and rate-limit errors stop the session without saving anything for that qid, so a restart
+  asks it again. Any other error gets 3 tries with a fixed 30 s wait between them; the qid is then saved as a failure
+  with the reason.
+- Run records: one per session (each start or restart), with a continues field naming the previous session's record;
+  no record is rewritten. Each holds start, end, machine, qids done and failures.
+- Measures: token F1 per model (aq_run.token_f1), digital and scanned separately, document means first.
+  Context-contained (gold inside the saved context) reported once, as it is the same for both models; answer-contained
+  and "not found" per model. Paired document bootstrap of the F1 difference Gemini minus qwen2.5:3b (2,000 resamples,
+  seed 42, 95% CI, two-sided p), per kind, Holm over the 2 kinds. Step-A failures, step-B failures (count and
+  reasons) and time per answer (median, IQR) per model.
+- Expectation, fixed before running: Gemini is expected to be best; the question is the size of the gap.
+- Outputs: contexts.jsonl, answers_gemini-3.5-flash-lite.jsonl, answers_qwen2.5-3b.jsonl, llm_summary.json,
+  llm_pairs.csv; the session run records of steps A and B.
