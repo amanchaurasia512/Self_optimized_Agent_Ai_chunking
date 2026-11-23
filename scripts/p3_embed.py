@@ -15,7 +15,9 @@ import torch
 from sentence_transformers import SentenceTransformer
 
 from src.common.manifest import PROJECT_ROOT, RUNS_DIR
-from src.eval.embed import CACHE_FOLDERS, EMBEDDERS, chunk_texts, load_cache, question_texts, sample_windows, save_part
+from src.chunk.base import token_counts
+from src.eval.embed import (CACHE_FOLDERS, EMBEDDERS, chunk_texts, load_cache, question_texts, sample_windows, save_part,
+                            text_key)
 from src.common.cost_logger import CostLogger
 from src.common.manifest import build_manifest, new_run_id, new_test_run_id, write_manifest
 from src.common.split import all_ids, tuning_ids
@@ -28,6 +30,14 @@ def load_model(embedder, device):
                                 model_kwargs={"dtype": torch.float32}, **remote)
     model.max_seq_length = embedder["max_length"]
     return model
+
+
+def listed_questions(path, docs):
+    """Unique question texts of the listed rows of the documents, keyed and counted as question_texts does."""
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    questions = {text_key(row["question"]): {"kind": "question", "text": row["question"]} for row in rows if row["doc_id"] in docs}
+    counts = token_counts(item["text"] for item in questions.values())
+    return {key: {**item, "tokens": count} for (key, item), count in zip(questions.items(), counts)}
 
 
 def main():
@@ -45,6 +55,8 @@ def main():
     arg_parser.add_argument("--machine", default="kaggle")
     arg_parser.add_argument("--run-source", default="KN01", help="run id source, e.g. KN01")
     arg_parser.add_argument("--final", action="store_true", help="include held-out documents (final evaluation only)")
+    arg_parser.add_argument("--questions", type=Path, help="jsonl of doc_id + question rows to embed instead of the "
+                                                           "gold-derived questions (held-out 2: every query)")
     args = arg_parser.parse_args()
 
     embedder = EMBEDDERS[args.embedder]
@@ -54,7 +66,8 @@ def main():
         if set(args.docs) - docs:
             raise PermissionError(f"not allowed without --final (final evaluation only): {sorted(set(args.docs) - docs)}")
         docs = set(args.docs)
-    chunks, questions = chunk_texts(args.chunks, docs, args.settings), question_texts(args.gold, docs)
+    chunks = chunk_texts(args.chunks, docs, args.settings)
+    questions = listed_questions(args.questions, docs) if args.questions else question_texts(args.gold, docs)
     cached, cache_vectors = load_cache(cache, embedder)
     todo = {key: item for key, item in {**chunks, **questions}.items() if key not in cached}
     chunk_keys = [key for key, item in todo.items() if item["kind"] == "chunk"]
@@ -92,8 +105,8 @@ def main():
     if args.settings or args.docs or args.test:
         stack.update(settings=args.settings, documents=sorted(docs), test=args.test)
     outputs = [cache / f"{args.name}.npy", cache / f"{args.name}.keys.json", cache / "embedder.json"]
-    manifest = build_manifest(run_id, "v1.2", stack, sorted(args.gold.glob("spans_*.jsonl")), outputs, logger.summary(),
-                              args.machine)
+    inputs = [args.questions] if args.questions else sorted(args.gold.glob("spans_*.jsonl"))
+    manifest = build_manifest(run_id, "v1.2", stack, inputs, outputs, logger.summary(), args.machine)
     if args.test:
         manifest_path = RUNS_DIR / "tests" / f"test_p3_embed_{args.embedder}_{run_id}.json"
         if manifest_path.exists():

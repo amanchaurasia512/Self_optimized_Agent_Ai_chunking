@@ -1513,3 +1513,29 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   corpus) uses this primary gold, with certain-only reported as a sensitivity check and the 11-page exclusion as an
   extra check on the RQ1 primary result. The "Evidence source" bullet of the gold implementation note ("replaced
   by certain-only gold as for held-out 1, so both sets use the same gold standard") is superseded by this note.
+
+## Held-out set 2: step 3 embedding on Kaggle (H2-KN02), design before running (2026-11-23)
+- Embedder unchanged from held-out 1 (P3-P4-KN01-20261105-1): bge-m3, revision 5617a9f, float32, normalised,
+  max length 8,192, batch 16, Kaggle T4; scripts/p3_embed.py as committed plus the option below.
+- Texts: every unique chunk text (prefix + text) of the 26 primary setups (13 settings x 2 parsers,
+  P4-FINAL-20261106-1_primary_setups.csv) on the 53 held_out_2 documents (step 2 runs P2-LOCAL-20261123-1 to -13),
+  and every held_out_2 query (286). All queries are embedded, whatever their gold, so the vectors do not depend on
+  the gold rule; the scorer later uses only the questions of each check (primary, sensitivity, certain-only).
+- Code change, no change to any vector: p3_embed.py gains --questions <jsonl> (doc_id + question rows) to embed
+  those questions instead of the gold-derived ones (src/eval/embed.question_texts reads spans_*.jsonl with
+  certain == True only). Same text key and token count as question_texts; without the option the script is
+  unchanged (checked 2026-11-23 in memory on tuning data, nothing written: the committed and the edited main() give
+  identical question keys, texts and token counts, 849 questions, and identical chunk texts).
+- Bundle H2-KD02 (scripts/h2_embed_bundle.py --final): the 1,378 chunk files, data/heldout2/questions.jsonl (doc id
+  and question only; no gold, boxes or rule fields), and the vectors of those texts already in the local bge-m3 cache
+  (part H2-KD02-cached), so only new texts are embedded and no key is held twice. Every file is checked by SHA-256 in
+  the notebook against BUNDLE.json and this commit's split; any other document stops the notebook.
+- Notebook notebooks/kaggle/h2-kn02.ipynb: the install cell is copied unchanged from the held-out 1 embedding
+  notebook (p4-kn01.ipynb), plus the extra-pins cell copied from rob-kn01.ipynb and a fail-fast import cell. Run
+  source H2-KN02, run record P3-H2-KN02-..., new part data/embeddings/bge-m3/H2-KN02-heldout2.*. It checks that every
+  needed text has a vector and that no key is held twice, then zips the part, the run record and the pip freeze.
+- Estimate: 92,923 unique chunk texts, 28.7 M tokens, about 2.4 h at the held-out-1 speed (3,337 tokens/s).
+- Step 4, where it runs: scoring and analysis run on the laptop, as for held-out 1 (P3-FINAL-20261106-1 and
+  P4-FINAL-20261106-1, machine laptop), with the imported vectors. scorer_v1 (src/eval/score.py) is unchanged; how
+  the runner selects each check's gold (file and fields) is fixed in a step 4 note before any score.
+- Runs once with --final; nothing is re-run after vectors are seen; a problem gets a new dated note.

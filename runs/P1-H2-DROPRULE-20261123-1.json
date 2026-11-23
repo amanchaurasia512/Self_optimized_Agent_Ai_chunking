@@ -1,0 +1,93 @@
+{
+  "run_id": "P1-H2-DROPRULE-20261123-1",
+  "created_at": "2026-11-23T06:36:39+00:00",
+  "code": {
+    "commit": "b54b92c93d59fc99b635c1e6f65a834252d4b491",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": {
+    "path": "configs/gold_drop_rule.json",
+    "sha256": "0842e7a36fdde6b0f4639056df1d5bf19266c23d411a815772ac11fc01a091a4"
+  },
+  "stack": {
+    "gold_rule": "P1 judge() with the frozen drop rule",
+    "threshold": 0.604,
+    "placements_from": "P1-H2-GOLD-20261123-1"
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/heldout2/queries.jsonl",
+      "sha256": "eb3f08b95bb48ecc3188a594f0ae5e553943b34a3ccfffd9585607c8da40b243"
+    },
+    {
+      "path": "data/heldout2/box_evidence.jsonl",
+      "sha256": "e2e882e443e63736db9c8946ab9e84b37238b36533029221dc2e4d02cc6d52b1"
+    },
+    {
+      "path": "data/gold/h2_spans_pdfplumber.jsonl",
+      "sha256": "89ed3fdaf2b5fe6f154aa77ec4404a126a4ff764257c19d25a9b8e71a75726c2"
+    },
+    {
+      "path": "data/gold/h2_spans_docling.jsonl",
+      "sha256": "c3b8ee26c5517027ce3a116299d162b55b44e498a88f18f442c4ce0b624e31b8"
+    }
+  ],
+  "outputs": [
+    "data/gold/h2_spans_droprule_pdfplumber.jsonl",
+    "data/gold/h2_spans_droprule_docling.jsonl"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "drop_rule:pdfplumber",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.017,
+        "peak_ram_mb": 641.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "drop_rule:docling",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.019,
+        "peak_ram_mb": 645.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 0.036,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 645.0,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
