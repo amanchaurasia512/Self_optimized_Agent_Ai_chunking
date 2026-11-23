@@ -1456,3 +1456,60 @@ the same setups, its RQ3 from budget_sweep_tuning.csv. Tuning only, main questio
   pooled result and RQ2 per corpus, as fixed in the note "Held-out set 2: step 4 analysis" before step 4 runs.
 - Each step runs once on the sealed data. Nothing is re-run after results are seen; any problem gets a new dated
   note.
+
+## Held-out set 2: gold run P1-H2-GOLD-20261123-1, results and findings (2026-11-23, facts only, after the run)
+- Run: scripts/h2_gold_boxes.py --final, once (commit c36f7e5, uncommitted_changes: false; 127 s). Page numbers
+  0-146, none at or above a document's page count. No rule was changed and nothing was re-run.
+- Pages: 422 score-2 pages; 131 with several annotators (2: 110, 3: 21). Image vs PDF |aspect ratio difference|:
+  median 0.0, 95th percentile 0.0003; 11 pages over 5% (0.107-1.515), all HR, 7 documents, none a 90-degree
+  rotation. "No words in box": HR 1, Industrial 2, Pharmaceuticals 1 pages. Industrial pages without text
+  (pdfplumber 66, Docling 70): no score-2 page falls on them.
+- Questions with gold, certain-only (as run), primary / sensitivity, of HR 109, Industrial 81, Pharmaceuticals 96:
+  pdfplumber 55/66, 52/61, 77/77; Docling 51/67, 45/56, 15/18. Primary drop rates: pdfplumber 0.495, 0.358, 0.198;
+  Docling 0.532, 0.444, 0.844. Drop reasons (primary): almost all "not certain" (pdfplumber 98, Docling 170
+  questions); "no words in box" 4 per parser; "not placed" Docling 2.
+- Finding 1, high drops: 20-84% of questions lose gold under certain-only. The "not certain" pages are fuzzy
+  placements (whole evidence fuzzy, or some pieces fuzzy); 3-4 per parser have exact pieces placed only nearest.
+- Finding 2, parser lean: in Pharmaceuticals, 77 questions keep gold for pdfplumber and 15 for Docling. Docling's
+  85 not-certain Pharmaceuticals pages have median alignment score 96.9 and median word coverage 1.00; they fail
+  the certain rule on method (fuzzy), not on content. The box words are read from the PDF text layer, the source
+  pdfplumber also extracts from.
+- Finding 3, 11 HR pages: image and PDF page shapes differ by 10.7-151.5% (no correction, as fixed). They belong to
+  11 questions; under certain-only 1 (pdfplumber) and 0 (Docling) keep gold (primary), 0 in both parsers.
+- For reference, computed from the stored placements without re-running: the frozen drop rule named in the ViDoRe
+  note (threshold 0.604, configs/gold_drop_rule.json, judge()) would keep, primary, pdfplumber 89/68/91 and
+  Docling 90/62/85 questions; questions with gold in both parsers: certain-only HR 40, Industrial 40,
+  Pharmaceuticals 15 (95); drop rule HR 85, Industrial 61, Pharmaceuticals 83 (229).
+- Held-out 1, for comparison: gold per parser (p3_score.gold_questions), RQ1 on the questions scored by every
+  setup (p4_analyse.question_matrix): 530 questions, 98 left out (91 lacking on pdfplumber, 7 on Docling).
+- No fix is chosen in this note.
+
+## Held-out set 2: gold rule amendment (2026-11-23, after gold counts, before any score)
+- Primary gold: the frozen drop rule named in the committed ViDoRe note (threshold 0.604,
+  configs/gold_drop_rule.json, P1 judge()), applied to the stored placements of P1-H2-GOLD-20261123-1 by
+  scripts/h2_gold_droprule.py (--final, once; output data/gold/h2_spans_droprule_<parser>.jsonl). No new
+  threshold, no re-placement. A page is placed if judge() keeps every piece; pages without placements (no words in
+  box, parser page empty) are not placed; primary and sensitivity query rules as in the gold implementation note.
+- Field use: gold rows are the pieces of placed pages only. Drop-rule primary: data/gold/h2_spans_droprule_<parser>.jsonl,
+  rows with keep_primary true (the "certain" field equals keep_primary, so the P3 filter certain == True selects
+  them). Drop-rule sensitivity: the same file, rows with keep_sensitivity and page_keep true. Certain-only primary:
+  data/gold/h2_spans_<parser>.jsonl, rows with keep_primary true (its "certain" field is per page, not per query,
+  and is not used alone). Every placed certain-only page is also placed under the drop rule, so the drop-rule
+  sensitivity set holds every question of the three checks.
+- Reason: certain-only was fixed for short answer-string gold (held-out 1). On box evidence it drops pages on
+  method, not content (Docling Pharmaceuticals: 85 not-certain pages, median word coverage 1.00), and it leans
+  towards pdfplumber (Pharmaceuticals primary: pdfplumber 77, Docling 15 questions).
+- Certain-only stays as a pre-stated sensitivity check (data/gold/h2_spans_<parser>.jsonl) and is always reported
+  next to the primary result.
+- RQ1 uses the common set (p4_analyse.question_matrix: questions scored by every setup), as held-out 1 did:
+  229 questions primary (HR 85, Industrial 61, Pharmaceuticals 83); 95 under certain-only (40, 40, 15).
+- Extra check: the primary result without the 7 common-set questions on the 11 HR pages whose image and PDF shapes
+  differ by more than 5% (data/heldout2/page_sizes.csv).
+- Timing: the choice was made after seeing gold counts (note "gold run P1-H2-GOLD-20261123-1") but before any
+  chunking, embedding or retrieval score on held-out 2.
+- Pooled: the two sets now differ in gold source (P1 spans vs box text) and in gold rule (held-out 1 certain-only,
+  held-out 2 drop rule). This is stated as a limitation, and per-set results are always shown.
+- Amends the note "Held-out set 2: step 4 analysis": every held-out 2 result there (side by side, pooled, RQ2 per
+  corpus) uses this primary gold, with certain-only reported as a sensitivity check and the 11-page exclusion as an
+  extra check on the RQ1 primary result. The "Evidence source" bullet of the gold implementation note ("replaced
+  by certain-only gold as for held-out 1, so both sets use the same gold standard") is superseded by this note.
