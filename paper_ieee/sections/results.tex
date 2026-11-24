@@ -56,3 +56,24 @@ from the replication, not from pooling.
 
 Selecting a chunking setup per document therefore does not improve retrieval
 over a single small-chunk setup under a fixed token budget.
+
+\subsection{RQ2: chunk size at a fixed token budget}\label{sec:rq2}
+
+\input{generated/rq2_h2}
+\input{generated/figures/rq2_fig}
+
+At a fixed token budget, smaller chunks retrieve more of the gold text. On
+tuning data, Spearman's $\rho$ between measured chunk size and recall is
+negative for every parser and budget, ranging from \RQtwoRhoRange{}, so RQ2
+holds as pre-registered. The best setups have measured chunk sizes of
+\RQtwoBestSizes{} tokens. The OHR-Bench documents of held-out set~1 show the
+same pattern ($\rho$ from \RQtwoHeldOutOHRRhoRange{}, best sizes
+\RQtwoHeldOutOHRBestSizes{} tokens).
+
+Held-out set~2 confirms it (Table~\ref{tab:rq2h2}). All
+\RQtwoHTwoNegative{} of the \RQtwoHTwoValues{} values of $\rho$ (three gold
+variants, two parsers and three budgets, each over
+\RQtwoHTwoSetupsPerParser{} setups per parser) are negative. The effect is
+weakest at the largest budget: at 2,000 tokens,
+\RQtwoHTwoLargestBudgetIncludeZero{} of the
+\RQtwoHTwoLargestBudgetValues{} intervals include zero.
