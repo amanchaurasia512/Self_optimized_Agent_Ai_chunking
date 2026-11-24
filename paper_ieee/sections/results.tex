@@ -1,0 +1,58 @@
+\section{Results}\label{sec:results}
+
+\subsection{RQ1: one fixed setup versus a choice per document}\label{sec:rq1}
+
+\input{generated/rq1}
+
+Table~\ref{tab:rq1} gives the oracle gap on both held-out sets. On held-out
+set~1 (\RQoneDocuments{} documents, \RQoneQuestions{} questions), the best
+single setup is \RQoneBest{}, with hybrid Recall@1,250 of \RQoneBestRecall{},
+and \RQoneTied{} of the \RQoneSetups{} setups are statistically tied with it.
+The cross-fitted oracle reaches \RQoneOracle{}, a gap of \RQonePrimaryGap{}
+\RQonePrimaryGapCI{}. The lower end of the interval is below zero, so the
+pre-registered rule gives \RQoneDecision{}. An oracle that picks and scores on
+the same questions would show a gain of \RQoneRawGap{}; this is the selection
+effect that cross-fitting removes. Larger choice sets do not change the
+verdict: the gap is \RQoneFullGap{} \RQoneFullGapCI{} with the full set and
+\RQoneOriginalGap{} \RQoneOriginalGapCI{} with the original set.
+
+The result replicates on held-out set~2. Under the primary gold rule
+(\RQoneHTwoDropRuleDocuments{} documents, \RQoneHTwoDropRuleQuestions{}
+questions), the best single setup is \RQoneHTwoDropRuleBest{}
+(\RQoneHTwoDropRuleBestRecall{}), the oracle reaches
+\RQoneHTwoDropRuleOracle{}, and the gap is \RQoneHTwoDropRuleGap{}
+\RQoneHTwoDropRuleGapCI{}. The sensitivity gold gives
+\RQoneHTwoSensitivityGap{} \RQoneHTwoSensitivityGapCI{}, an interval entirely
+below zero, and the certain-only gold (\RQoneHTwoCertainOnlyDocuments{}
+documents, \RQoneHTwoCertainOnlyQuestions{} questions) gives
+\RQoneHTwoCertainOnlyGap{} \RQoneHTwoCertainOnlyGapCI{}. All three are
+NO-GO. With three times as many documents, the upper end of the primary
+interval is much closer to zero than on held-out set~1, so the replication,
+not held-out set~1, sets the tighter bound on any possible gain.
+A pre-stated check removes the \RQoneHRCheckExcludedQuestions{} questions on
+the \RQoneHRCheckPages{} HR pages whose image and PDF shapes differ by more
+than 5\%. In the check's own bootstrap, the primary gap is
+\RQoneHRCheckWithoutGap{} \RQoneHRCheckWithoutGapCI{} without these questions
+and \RQoneHRCheckWithGap{} \RQoneHRCheckWithGapCI{} with them; the second
+figure differs slightly from the main gap above only because the check draws
+its own bootstrap. Both are NO-GO.
+
+The setup chosen on tuning data, applied unchanged, is statistically tied
+with the best single setup on every held-out set and gold variant. On
+held-out set~2 it ranks \RQoneHTwoDropRuleTuningWinnerRank{} of
+\RQoneSetups{} (\RQoneHTwoDropRuleTuningWinnerRecall{}).
+The setup chosen on tuning data, \RQoneTuningWinner{}, applied unchanged, is
+statistically tied with the best single setup on every held-out set and gold
+variant. On held-out set~1 it ranks only \RQoneTuningWinnerRank{} of
+\RQoneSetups{} by mean, but within a large group of tied setups; on held-out
+set~2 it ranks \RQoneHTwoDropRuleTuningWinnerRank{}
+(\RQoneHTwoDropRuleTuningWinnerRecall{}).
+Pooled over both sets (\RQonePooledDocuments{} documents,
+\RQonePooledQuestions{} questions; secondary), the oracle
+(\RQonePooledOracle{}) stays below the tuning winner
+(\RQonePooledTuningWinnerRecall{}), a gap of \RQonePooledGap{}
+\RQonePooledGapCI{}. Pooling does not narrow the interval, so the bound comes
+from the replication, not from pooling.
+
+Selecting a chunking setup per document therefore does not improve retrieval
+over a single small-chunk setup under a fixed token budget.
