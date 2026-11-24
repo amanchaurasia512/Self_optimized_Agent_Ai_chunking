@@ -1,19 +1,202 @@
 \section{Method}\label{sec:method}
 
+We ask one question first: how much retrieval quality is lost when a single
+parse-and-chunk setup is used for every PDF, and how much of that loss an
+oracle could recover by choosing a setup per document. To answer it fairly, we
+fixed the design before looking at held-out data, placed gold evidence with one
+rule for every parser, and compared setups by how much text they let the reader
+see rather than by how many chunks they return. This section describes each
+part in turn.
+
 \subsection{Pre-registration}\label{sec:prereg}
-% What was fixed before held-out data were opened (design, scorer, decision rule) and when.
+
+We fixed the design, the scorer and the decision rule before any held-out score
+existed, so that held-out results could not shape the rules used to judge them.
+The decisions were kept in versioned specifications: v1 on 26~October 2026,
+v1.1 on 1~November (chunker pool, oracle and cost) and v1.2 from 3~November
+(held-out sets, scorer and analysis rules). The scorer was frozen on
+5~November, and held-out set~1 was scored once, on 6~November.
+
+A second held-out set was added later as a replication. Its document
+selection, gold rule, one gold amendment and analysis code were written into
+dated notes before it was scored, and it was also scored once, on
+24~November 2026. Commit and first-push times for each step are given in
+Table~\ref{tab:timeline}. Where we departed from the specification we say so:
+Table~\ref{tab:deviations} lists 21 deviations and 5 corrections.
 
 \subsection{Documents and questions}\label{sec:docs}
-% Tuning set, held-out set 1 (17 PDFs, 530 questions), held-out set 2 (ViDoRe V3, 52 PDFs, 229 questions).
+
+We use three document sets, kept apart throughout.
+
+\textbf{Tuning.} 25 documents, 19 of them with questions (860 in total), drawn
+from CUAD contracts~\cite{hendrycks2021cuad}, OHR-Bench~\cite{zhang2024ocr}, an Indian
+regulatory benchmark~\cite{singh2026parser}, QASPER~\cite{dasigi2021qasper} and
+UniDoc-Bench~\cite{peng2025unidoc}. All design choices were made on this set.
+
+\textbf{Held-out set 1.} 31 sealed documents: unseen documents from the known
+sources, one new document for each known document type, and out-of-domain
+documents, including FinanceBench~\cite{islam2023financebench}. Some cannot be scored:
+the Hindi pair has no question source, UniDoc documents have only page-level
+gold, and some documents have only QASPER questions. This leaves 17 documents
+with 530 questions.
+
+\textbf{Held-out set 2.} To test whether the first result replicates on a
+source the study had never used, we took the public English HR, Industrial and
+Pharmaceuticals corpora of ViDoRe~V3~\cite{loison2026vidore}. Documents were selected
+from metadata alone, before any was opened. We kept queries whose evidence
+pages are all text or table pages within one document, and documents with at
+least two such queries and at most 200 pages. This gives 53 documents
+(13 HR, 11 Industrial, 29 Pharmaceuticals) and 286 queries, none overlapping
+the other sets. Under the primary gold rule (Section~\ref{sec:gold}),
+52 documents and 229 questions can be scored.
+
+Scanned PDFs for RQ5(a) come from MP-DocVQA~\cite{tito2023mpdocvqa}.
 
 \subsection{Gold}\label{sec:gold}
-% Span-level vs box-level gold; Hit and Full rules.
+
+Each question needs its evidence located in the text a parser produces. One
+matching rule places the gold evidence as character spans in each parser's
+own output. For held-out set~1 the evidence is the answer string given by each
+source; if the rule cannot place it with certainty, the question is dropped.
+This removes 16.3\% of held-out-1 questions for Docling and 27.6\% for
+pdfplumber.
+
+For held-out set~2 the evidence is the words inside the human-drawn evidence
+boxes, read from the PDF text layer. Under the primary rule, a page is kept
+when the matcher's frozen drop rule (threshold 0.604) accepts every piece of
+its box text. Two variants serve as sensitivity checks: one keeps a query if
+any of its evidence pages is placed, and a stricter certain-only variant
+applies the held-out-1 rule. Certain-only was designed for short answer
+strings. On box text it drops pages because of how they are matched rather
+than what they contain, and it keeps far more questions for pdfplumber than
+for Docling. We therefore moved it to a pre-stated sensitivity check on
+23~November, before any held-out-2 score.
+
+All comparisons use only the questions kept for every setup being compared.
+This keeps the comparison fair, but a parser that places more gold, as Docling
+does, gets no credit for it in recall. We report the drop rates above so that
+this coverage difference stays visible. In held-out set~2 the gold comes from
+the boxes and does not depend on the parser at the source, but it still has
+to be placed in each parser's text.
 
 \subsection{Setups}\label{sec:setups}
-% Two parsers x thirteen chunker settings = 26 setups.
+
+A setup is one parser combined with one chunker setting. The parsers are
+Docling~2.143.0~\cite{auer2024docling} with default settings (Table~\ref{tab:docling})
+and pdfplumber~0.11.10. The chunkers (Table~\ref{tab:chunkers}) are
+fixed-token, recursive, LangChain recursive (including its default settings),
+sentence groups, semantic, LLM-regex and page-based chunking, plus our own
+structure-tree method, M1. Every chunker shares one final step: chunks shorter
+than 100 tokens are merged, and chunks longer than 1,024 tokens are split
+again.
+
+M1 builds a tree from the blocks the parser returns. A node that fits within
+the target size $T$ is kept whole; one that does not is opened, and its
+children are handled the same way. Neighbouring pieces under the same parent
+are packed together, and a block that is still too large is cut between
+sentences or, for tables, between rows, with the table header repeated in
+each piece. Optionally, each chunk carries a prefix with its ancestors'
+labels, limited to 10\% of $T$.
+
+The primary choice set was fixed before held-out set~1 was opened: recursive,
+LangChain recursive, fixed-token and M1 without prefix, each at 256, 384 and
+512 tokens, plus sentence groups of five. That gives 13 settings and, with two
+parsers, 26 setups. Spec~v1.1 also planned paragraph groups, dynamic token
+size, section- and table-aware chunking and Docling's HybridChunker. These were
+built later and tested on tuning data only, as an extension
+(Section~\ref{sec:extension}). A cross-reference feature planned for M1 was
+dropped and never built.
 
 \subsection{Retrieval and scoring}\label{sec:scoring}
-% Hybrid BM25 + bge-m3, reading ranked chunks up to 1,250 tokens; Recall@B.
+
+Each setup is scored with three retrievers: BM25~\cite{bm25} ($k_1=1.5$,
+$b=0.75$), dense retrieval with bge-m3~\cite{chen2024m3} (1,024 dimensions), and a
+hybrid that combines the two by reciprocal rank fusion~\cite{rrf} with $k=60$.
+
+Our main measure is Recall@$B$. We read the ranked chunks in order until $B$
+tokens have been used and count the share of gold characters (ignoring
+whitespace) that appear in the text read. Prefix tokens count toward the
+budget, text already read is counted once, and the last chunk is cut at the
+budget. Fixing $B$ means every setup shows the reader the same amount of text,
+so setups are compared on what they retrieve, not on how much. We use
+$B \in \{750, 1{,}250, 2{,}000\}$; the headline result is hybrid
+Recall@1,250.
+
+Before freezing the scorer, we checked that it responds to chunk quality:
+chunks cut at random positions score 0.14--0.17 lower, and splitting every
+table lowers recall by 0.08--0.10 on 112 table questions. As a robustness
+check named in spec~v1, we repeated the analysis on tuning data with
+nomic-embed-text-v1.5~\cite{nomic} as the dense embedder.
 
 \subsection{Statistics}\label{sec:stats}
-% Paired document bootstrap, split-half cross-fitting for the oracle, Holm correction, decision rule.
+
+The document is the unit of analysis. Question scores are averaged within each
+document, and confidence intervals come from a bootstrap over
+documents~\cite{bootstrap} (2,000 resamples, 95\% level, seed 42). Two setups
+are tied when the paired interval of their per-document difference contains
+zero. The best single setup is the one with the highest mean, and cost does
+not break ties.
+
+This tie rule changed during the study. Specs~v1 and v1.1 said that the
+cheaper setup wins a tie and defined the oracle as the cheapest tied setup. A
+development run on tuning data showed two problems with this. First, setups
+without overlap index almost the same text, so their costs differ by about
+0.1 token per document, and the cheapest tied setup was chosen by noise: the
+best single setup became pdfplumber with groups of eight sentences (0.748),
+while the top setup scored 0.802. Second, per-document tie tests have almost
+no power on documents with few questions (98 of 100 setups tied at four
+questions), so the cheapest-tied oracle fell below the best single setup on
+8 documents. An amendment on 5~November, the day before held-out set~1 was
+scored, therefore made the rule recall-only and introduced the split-half
+oracle described below. Cost is reported separately, on two Pareto fronts,
+index tokens and chunk count (Table~\ref{tab:cost}).
+
+An oracle that picks each document's best setup using the same questions it is
+scored on would gain from chance alone. We avoid this with split-half
+cross-fitting: over 200 random splits, the oracle picks the best setup on one
+half of a document's questions and is measured on the other half. The gap is
+the mean over documents of the oracle's recall minus that of the best single
+setup. The decision rule was fixed before held-out set~1 was opened: a
+per-document chooser is worth building only if the lower end of the gap's
+interval is above zero. Multiple comparisons use Holm's correction~\cite{holm}.
+
+For held-out set~2, the following were fixed before scoring: the same rule for
+each gold variant; an extra check that leaves out the questions on 11 HR pages
+whose image and PDF shapes differ by more than 5\%; and, as a secondary
+result, a gap pooled over both held-out sets. The pooled gap compares the
+split-half oracle with the tuning winner applied unchanged, weights documents
+equally and uses a bootstrap stratified by set. It measures a different
+quantity from the per-set gap, and the two are never combined.
+
+RQ2 uses tuning data. For each parser and budget, we compute Spearman's $\rho$
+between measured chunk size and recall over that parser's 13 setups, with a
+document-bootstrap interval. RQ2 holds only if every $\rho$ is negative.
+
+\subsection{Answer quality}\label{sec:aq}
+
+Recall@$B$ shows whether the gold text is read, not whether a language model
+can answer from it. To check that answers rank setups the way recall does, we
+fixed a separate design on 10~November 2026, before running it. It uses
+held-out set~1 a third time, for this question only, and we disclose it as
+such.
+
+From each PDF we sample 20\% of its questions (rounded up, at least one;
+seed 42). On tuning and held-out documents, the pool is the questions with
+certain gold spans shared by both parsers. For scanned PDFs it is all 110
+MP-DocVQA questions, since no located gold is needed. On digital PDFs we
+compare seven Docling setups: M1 at 256 and 384 tokens, LangChain recursive at
+256 and 512, recursive at 512, fixed-token at 1,024 and LangChain's default,
+all without prefix or overlap. On scanned PDFs we compare the five RQ5
+settings with Docling's default OCR against the same settings with Tesseract
+OCR.
+
+The context for each question is exactly what the scorer reads: hybrid
+retrieval, with chunks in rank order up to 1,250 tokens. Gemini~3.5 Flash-Lite
+answers at temperature 0 with one fixed prompt that asks it to answer only
+from the context or reply ``not found''. Each answer is compared with the
+source's own reference answer. The primary measures are token F1 and whether
+the reference answer is contained in the response. An LLM judge gives a
+secondary score; an amendment on 11~November changed it from Gemini to an
+open-weight model, Qwen3-8B (4-bit, greedy decoding). Setups are compared with
+the same paired document bootstrap and Holm correction as above, and we report
+Spearman's $\rho$ between F1 and Recall@1,250 across setups.
