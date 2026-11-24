@@ -1,3 +1,4 @@
+b79d5116c36db5fcdc94c9fd9df1e54e38c11e2f8f8a501c1c1f835dff02c9ba  MACROS_RESULTS.md
 059d3319321fb0c6130f761d44e4f82f59c10dcc79f9383c621dfc2a5e323bed  a1_index_cost.tex
 451a31cf2f80bdd3aa865e9cc8edbc949e78a2c00729f2436d76fb1b933e8271  a2_retrievers.tex
 c744d3fafd83d9b8f23dfa9b2a41fa826114eab9a56ac057cb9c8c4026908ae9  a3_timeline.tex
@@ -12,7 +13,7 @@ eb27bc1b38fe34c0a50a8dd5212edfbf62f6e2248013ca9c72024d0e3ddbeccb  figures/rq2.te
 a96bc32eef03b7ae7fe77cab59c0421c25a253442e8f7f9d4962700403f37e04  figures/rq5.tex
 2786592242491a6af295af3cf6b3288862aaca7b75ae69b272e20f8fdf13b046  grid.tex
 67579bd358442b40979a9e5665809371fabfdfde97ce9c6aa09561aa3d3d454d  key.tex
-85c63ac1e6e25f1172cb72d6b46a34c7bd424ff4e74f1b189e23f09cd869ea68  numbers.tex
+e50dc1ae82c4df83fb0bea2a35db0dcf1093fa2ee4e4e945ff3a939f47ede2f5  numbers.tex
 caa8c1c453f2f00f3dc1f2ef26575fb92af56481140a530349ca23c5553f3ac2  rq1.tex
 04048a67d022c350b2632b106733f742896e54f033a47ed7812a0d40f874b7a0  rq2_h2.tex
 d047fcd14aa6de487e65f61203039ba11a6e8c71275da485373c65dcf6c5ad10  rq3_erratum.tex
@@ -43,6 +44,8 @@ ba42be5efeb08da46d9969ce77fd5fe4925c1bcef6fe41a9d50300d895a504d3  data/results/p
 7bdae1efb3fd94b21ea7022eb2c79cad9db588d033fb45f699dee10a954f455c  data/results/p4/P4-H2-20261124-3_primary_setups.csv (docs/paper_checksums_v1.3.txt)
 dc27729a9ca964e3c0c43e62e5c50eb2e4e14e3b6f6cafc7bbd24e62ba427f59  runs/P4-H2-20261124-1.json (docs/paper_checksums_v1.3.txt)
 9f5c062b5e5dfe178c011b999f2814e8cfccaf97be70ca8bb34ae83cb7c4d3ba  data/results/p4/P4-H2-20261124-1_primary_setups.csv (docs/paper_checksums_v1.3.txt)
+9e227f20d2c3fbe07879e483c0f13ea4bdbdf9ca242f780b7f850bf83f39bcf6  data/results/h2/P4-H2-20261124-5_exclusion.csv (docs/paper_checksums_v1.3.txt)
+744adb47d904d4fc3de06666d069c2a3d1c46e7cec989e61c5ac690ed8ebf84c  runs/P4-H2-20261124-5.json (docs/paper_checksums_v1.3.txt)
 6e0c58c4e24997c42e6fec8e7360d70fe46fc1660f31f6bb3730f2d0cd375ebc  data/results/h2/P4-H2-20261124-6_pooled.csv (docs/paper_checksums_v1.3.txt)
 ba321292c5caada5fd5ab82a7f0f32035e7183a96f3c34a6682df0b955df644a  data/results/h2/P4-H2-20261124-7_rq2.csv (docs/paper_checksums_v1.3.txt)
 c345d95abfca8a689818ff0280e426b3725c467fa03df6bba36adaa66c8c4ad6  runs/P4-H2-20261124-2.json (docs/paper_checksums_v1.3.txt)

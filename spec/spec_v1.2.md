@@ -1716,9 +1716,10 @@ Implements the notes "Held-out set 2: step 4 analysis" and "gold rule amendment"
 Reporting only: no result, decision or frozen part (scorer_v1, chunker versions, spec decisions) changes; nothing is
 re-run. The IEEE paper's generator (paper_ieee/scripts/make_artifacts.py, based on the paper-v1.2 generator) reads
 inputs made after the tag paper-v1.2, so they get their own checksum file.
-- New inputs, checksum file `docs/paper_checksums_v1.3.txt` (SHA-256, 10 files): held-out 2
-  (runs/P4-H2-20261124-1, -2, -3 records; data/results/p4/P4-H2-20261124-1, -2, -3 `_primary_setups.csv`;
-  data/results/h2/P4-H2-20261124-6_pooled.csv, P4-H2-20261124-7_rq2.csv), extension
+- New inputs, checksum file `docs/paper_checksums_v1.3.txt` (SHA-256, 12 files): held-out 2
+  (runs/P4-H2-20261124-1, -2, -3, -5 records; data/results/p4/P4-H2-20261124-1, -2, -3 `_primary_setups.csv`;
+  data/results/h2/P4-H2-20261124-5_exclusion.csv, P4-H2-20261124-6_pooled.csv, P4-H2-20261124-7_rq2.csv; the two
+  -5 files added the same day for the HR-page check macros), extension
   (data/results/ext/P4-EXT-20261119-2_rq1.csv) and second embedder (data/results/rob/P4-ROB-20261120-1_rq1.csv).
   `docs/paper_checksums.txt` is unchanged. The generator fails on any input missing from, or differing from, its
   checksum file: paper-v1.2 inputs against `docs/paper_checksums.txt` as tagged, the new inputs against the v1.3 file.

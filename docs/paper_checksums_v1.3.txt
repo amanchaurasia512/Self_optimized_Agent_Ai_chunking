@@ -1,6 +1,7 @@
 # paper-v1.3 lock (2026-11-24): SHA-256 of the inputs made after paper-v1.2 (held-out 2, extension, second embedder).
 # Inputs frozen at paper-v1.2 stay in docs/paper_checksums.txt (unchanged). Checked by paper_ieee/scripts/make_artifacts.py.
 9d7588a290554a45532737d49fe0efccecef1b17f1349160b6d9742d9eccde68  data/results/ext/P4-EXT-20261119-2_rq1.csv
+9e227f20d2c3fbe07879e483c0f13ea4bdbdf9ca242f780b7f850bf83f39bcf6  data/results/h2/P4-H2-20261124-5_exclusion.csv
 6e0c58c4e24997c42e6fec8e7360d70fe46fc1660f31f6bb3730f2d0cd375ebc  data/results/h2/P4-H2-20261124-6_pooled.csv
 ba321292c5caada5fd5ab82a7f0f32035e7183a96f3c34a6682df0b955df644a  data/results/h2/P4-H2-20261124-7_rq2.csv
 9f5c062b5e5dfe178c011b999f2814e8cfccaf97be70ca8bb34ae83cb7c4d3ba  data/results/p4/P4-H2-20261124-1_primary_setups.csv
@@ -10,3 +11,4 @@ ba321292c5caada5fd5ab82a7f0f32035e7183a96f3c34a6682df0b955df644a  data/results/h
 dc27729a9ca964e3c0c43e62e5c50eb2e4e14e3b6f6cafc7bbd24e62ba427f59  runs/P4-H2-20261124-1.json
 c345d95abfca8a689818ff0280e426b3725c467fa03df6bba36adaa66c8c4ad6  runs/P4-H2-20261124-2.json
 37f2fcd701d5d759b70b7f4c0e7b60e96beb2ec91f142f1ffac13e4605de89f3  runs/P4-H2-20261124-3.json
+744adb47d904d4fc3de06666d069c2a3d1c46e7cec989e61c5ac690ed8ebf84c  runs/P4-H2-20261124-5.json
