@@ -14,7 +14,7 @@ from src.common.split import tuning_ids
 DOCS = ["cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement", "ohr_academic_2405_14831v1",
         "indian_d3_fundamental_rules"]
 PARSERS = ["docling", "pdfplumber"]
-STUDY_SETTING = "method1_tree_T384_noprefix"
+STUDY_SETTING = "langchain_recursive_size256_overlap0_noprefix"
 SCHEMA = json.loads((PROJECT_ROOT / "spec" / "chunk.schema.json").read_text(encoding="utf-8"))
 
 

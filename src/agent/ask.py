@@ -5,13 +5,12 @@ import hashlib
 from contextlib import contextmanager
 
 from src.agent import index, providers
-from src.agent.pipeline import SPEC, agent_run_id, build, chunker_info, plan, plan_inputs, plan_stack
+from src.agent.pipeline import SETTING, SPEC, agent_run_id, build, chunker_info, plan, plan_inputs, plan_stack
 from src.common import manifest
 from src.common.cost_logger import CostLogger
 from src.common.paths import AGENT_CACHE
 from src.eval.embed import EMBEDDER
 
-SETTING = "method1_tree_T384_noprefix"
 
 
 def text_record(text, record_text):

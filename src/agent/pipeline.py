@@ -1,5 +1,5 @@
-"""Agent chunk mode (spec/agent_v1.md): PDF -> scan check -> parser choice -> study parser -> method1_tree T384 no prefix
--> chunk.json, plus a run record. Reuses the study's parsers, chunker, chunk builder, validator and run manifest."""
+"""Agent chunk mode (spec/agent_v1.md): PDF -> scan check -> parser choice -> study parser -> the tuning winner
+(langchain_recursive 256, overlap 0, no prefix) -> chunk.json, plus a run record. Reuses the study's parsers, chunker, chunk builder, validator and run manifest."""
 import json
 from datetime import datetime
 from functools import cache
@@ -15,7 +15,10 @@ from src.common.cost_logger import CostLogger
 from src.common.pdf_catalog import PDF_MANIFEST
 from src.common.validate import layer1_report, load_validator
 
-CHUNKER_NAME, CHUNKER_SETTINGS, HEADING_PREFIX = "method1_tree", {"T": 384}, False
+# The tuning winner (spec/agent_v1.md, "Default chunker", 2026-11-24); named as scripts/p2_chunk.setting_name names it.
+CHUNKER_NAME, CHUNKER_SETTINGS, HEADING_PREFIX = "langchain_recursive", {"size": 256, "overlap": 0}, False
+SETTING = "_".join([CHUNKER_NAME, *(f"{key}{value}" for key, value in CHUNKER_SETTINGS.items()),
+                    "prefix" if HEADING_PREFIX else "noprefix"])
 SPEC = "agent_v1"
 
 
@@ -116,10 +119,11 @@ def build(planned, run_id, logger):
             document = parse(planned["pdf"], planned["parser"], planned["pdf"].stem, planned["reason"])
             source = {"sha256": planned["pdf_sha"], "file": planned["pdf"].name}
     entry = CHUNKERS[CHUNKER_NAME]
+    nodes = entry["nodes"](document) if "nodes" in entry else None  # as scripts/p2_chunk builds the study's files
+    prefix_budget = int(entry["prefix_share"] * CHUNKER_SETTINGS["T"]) if "prefix_share" in entry else None
     with logger.stage("chunk") as stage:
         spans = entry["function"](document, **CHUNKER_SETTINGS)
-        chunk_doc = chunk_document(document, spans, chunker_info(), run_id, source, HEADING_PREFIX, entry["nodes"](document),
-                                   int(entry["prefix_share"] * CHUNKER_SETTINGS["T"]))
+        chunk_doc = chunk_document(document, spans, chunker_info(), run_id, source, HEADING_PREFIX, nodes, prefix_budget)
         stage["chunks"] = len(chunk_doc["chunks"])
         chunk_doc["quality"]["layer1"] = layer1_report(chunk_doc, document["text"], load_validator())
     return document, chunk_doc

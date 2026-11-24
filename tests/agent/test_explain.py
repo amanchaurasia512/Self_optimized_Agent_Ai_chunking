@@ -17,13 +17,17 @@ def test_chunker_line_is_read_from_the_run_record():
     assert explain.chunker_line(record()) == "Chunker: method1_tree (structure-tree), 384 tokens, no prefix · parser: Docling"
     assert (explain.chunker_line(record("fixed_token", 256, True, "pdfplumber"))
             == "Chunker: fixed_token, 256 tokens, heading prefix · parser: pdfplumber")
+    langchain = {"stack": {"chunker": {"name": "langchain_recursive", "settings": {"size": 256, "overlap": 0,
+                                                                                    "heading_prefix": False}},
+                           "parser": {"name": "docling"}}}
+    assert explain.chunker_line(langchain) == "Chunker: langchain_recursive (LangChain recursive), 256 tokens, no prefix · parser: Docling"
 
 
 def test_every_number_in_the_reasons_is_in_results():
     plain = lambda text: text.replace("−", "-").replace(",", "")  # thousands commas and minus signs vary
     results = plain(RESULTS)
     numbers = {number for point in explain.WHY for number in re.findall(r"-?\d+(?:\.\d+)?", plain(point))}
-    assert {"0.772", "0.752", "15", "26", "0.123", "0.065", "0.10", "0.12", "-0.007", "-0.045", "0.023", "1250"} <= numbers
+    assert {"256", "0.715", "20", "0.772", "15", "26", "0.123", "0.10", "0.12", "-0.007", "-0.045", "0.023", "1250"} <= numbers
     assert not [number for number in numbers if number not in results]
     assert "−0.007 [−0.045, 0.023]" in RESULTS and "15 of 26" in RESULTS
 

@@ -80,7 +80,7 @@ def test_upload_index_ask_twice_download(app, tmp_path):
     chunks = len(at.session_state["session"]["chunks"])
     assert any('data-state="done"' in body and f"{chunks} chunks ready" in body for body in shown)
     assert not any('data-state="running"' in body for body in shown)
-    assert explain.chunker_line(index_record) == "Chunker: method1_tree (structure-tree), 384 tokens, no prefix · parser: pdfplumber"
+    assert explain.chunker_line(index_record) == "Chunker: langchain_recursive (LangChain recursive), 256 tokens, no prefix · parser: pdfplumber"
     assert any(explain.chunker_line(index_record) == caption.value for caption in at.caption)
     assert [expander.label for expander in at.sidebar.expander] == ["Why these settings?"]
 

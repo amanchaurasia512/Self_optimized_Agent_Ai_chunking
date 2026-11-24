@@ -491,6 +491,46 @@ the design, so these do not change a verdict; they are reported, not hidden.
 RQ1, RQ2 and RQ3 hold with nomic as the dense embedder, with and without the Indian documents. Nothing replaces
 the bge-m3 results; no frozen result or decision changes.
 
+## 11. Held-out set 2 (replication, ViDoRe V3)
+
+Source: spec note "Held-out set 2: step 4 results (2026-11-24)". Scores P3-H2-20261124-1 (drop-rule primary), -2
+(drop-rule sensitivity), -3 (certain-only); p4_analyse P4-H2-20261124-1 to -3; h2_analyse P4-H2-20261124-4 to -7.
+53 documents, 286 queries, box-level gold; hybrid, Recall@1,250, 13 primary setups per parser. ☑️ run record.
+
+| Set | Docs / questions | Best single, recall | Oracle | Gap [95%] | Rule |
+|---|---|---|---|---|---|
+| Held-out 1 | 17 / 530 | pdfplumber / method1_tree_T384, 0.772 | 0.765 | −0.007 [−0.045, 0.023] | NO-GO |
+| H2 primary | 52 / 229 | docling / method1_tree_T256, 0.836 | 0.792 | −0.045 [−0.096, 0.002] | NO-GO |
+| H2 sensitivity | 52 / 240 | docling / method1_tree_T256, 0.838 | 0.789 | −0.049 [−0.101, −0.001] | NO-GO |
+| H2 certain-only | 29 / 95 | docling / langchain_recursive_256, 0.916 | 0.895 | −0.021 [−0.058, 0.018] | NO-GO |
+| Pooled (secondary) | 69 / 759 | oracle − tuning winner | | −0.014 [−0.059, 0.030] | NO-GO |
+
+- The pooled gap (split-half oracle minus the tuning winner) is not the per-set gap (oracle minus the best single).
+- Tuning winner applied unchanged: rank 2, 3 and 1 on held-out 2 (0.828, 0.826, 0.916), tied with the best;
+  rank 20 on held-out 1.
+- Exclusion (7 questions on 11 HR pages): −0.042 [−0.093, 0.006] with, −0.053 [−0.105, −0.005] without; NO-GO.
+- RQ2 (per parser and budget): all 18 Spearmans negative (holds); at 2,000, 5 of the 6 intervals include 0. Primary
+  docling −0.885 / −0.830 / −0.148, pdfplumber −0.714 / −0.599 / −0.231 (750 / 1,250 / 2,000).
+- Dropped documents: 1 (primary, sensitivity), 23 (certain-only).
+
+## 12. Agent test 4: LLM comparison (reference only, not in paper 1)
+
+Source: spec notes "Agent test 4: LLM comparison" (2026-11-23) and the two 2026-11-24 notes; `llm_summary.json`.
+300 questions (150 digital, 150 scanned), budget 1,250, same contexts for both models. ⚠️ Gemini has a run record
+(A-LOCAL-20261123-2); qwen2.5:3b has one for 100 of 300 answers (A-LOCAL-20261123-3); 200 have none (disclosed).
+
+| | Gemini 3.5 Flash-Lite | qwen2.5:3b |
+|---|---|---|
+| F1 digital / scanned | 0.276 / 0.397 | 0.158 / 0.224 |
+| Answer contained digital / scanned | 0.173 / 0.473 | 0.080 / 0.413 |
+| "not found" digital / scanned | 0.500 / 0.420 | 0.667 / 0.320 |
+| Median input / output tokens | 1,215.5 / 3 | 1,248 / 14 |
+| Median answer seconds | 4.617 (includes pacing wait) | 27.952 |
+
+- Context contained: digital 0.54, scanned 0.64. F1 difference Gemini − qwen: digital +0.117 [0.070, 0.167],
+  scanned +0.173 [0.116, 0.235], Holm p < 0.001. No step-A or step-B failures.
+- Gemini times include the 4.3 s pacing wait and are not comparable with qwen's.
+
 ## Spec corrections
 
 The spec's Errata (2026-11-12) corrects:

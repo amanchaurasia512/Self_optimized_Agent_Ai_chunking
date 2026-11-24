@@ -250,3 +250,23 @@ Hindi and other languages; per-document tuning; tables as structured data; user 
 - The reading budget is a user setting (750 / 1,250 / 2,000 tokens, default 1,250); the agent does not choose it.
 - The app (App v1, v1.1 and the Docker image) was built on 2026-11-13, before tests 4 and 5, which are still not
   done. This departs from "Out of scope (v1)", which said the app and deployment come after these tests pass.
+
+## Default chunker (2026-11-24)
+- The agent's default chunker is the fixed tuning winner, docling/langchain_recursive_size256_overlap0_noprefix,
+  chosen from tuning only (P4-LOCAL-20261105-1). No per-document chunker selection (held-out 1 and 2: NO-GO).
+- Unchanged: the parser switch per document (fast mode) and the reading budget as a user setting.
+- Current code differs: pipeline.py and ask.py use method1_tree T384 (no prefix), the held-out-1 best single, as in
+  Defaults above. No per-document chunker choice is switched on: the chunker is a constant, and the app offers mode
+  and budget only. The code is not changed yet. The change will also touch Defaults, test 2 (reproduction against
+  method1_tree_T384 files), the app's chunker line and "Why these settings?" text, and existing index caches.
+- Code changed (2026-11-24): pipeline.py (CHUNKER_NAME langchain_recursive, size 256, overlap 0, no prefix; SETTING
+  derived as p2_chunk names it) and ask.py use the tuning winner; test 2 reproduces the study's
+  langchain_recursive_size256_overlap0_noprefix files; the app's chunker line and "Why these settings?" follow.
+  The parser switch is unchanged. New indexes get a new cache folder; old method1_tree caches are left as they are.
+  test4.py, test4_llm.py and baseline.py keep their recorded method1_tree T384 setups (AT4-KN01 and earlier runs).
+
+## Agent test 5 dropped from paper 1 (2026-11-24)
+- Test 5 (repeat test 4's timing on the deployment machine) is dropped from paper 1: server timing is not needed
+  for the paper's claims. It may come back in later work.
+- Test 4 was run on 2026-11-23 (A-LOCAL-20261123-1 to -3); its LLM comparison is reference only, not in paper 1
+  (spec_v1.2.md, 2026-11-24 notes). This updates "tests 4 and 5 ... still not done" in the 2026-11-18 clarification.

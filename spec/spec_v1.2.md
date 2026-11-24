@@ -1649,3 +1649,64 @@ Implements the notes "Held-out set 2: step 4 analysis" and "gold rule amendment"
   set of that parser's setups at each budget, sizes measured on the 1,250 common set, no fits_750 filter. Verdict on
   all held-out 2 only: negative for every parser and budget (6 Spearmans < 0). Per corpus is also per parser and
   descriptive only. This replaces the reading "one Spearman over the 26 setups" of the analysis note.
+
+## Held-out set 2: step 4 results (2026-11-24, facts only, after the run)
+- Runs, once each, commit 38bac40: scores P3-H2-20261124-1 (drop-rule primary), -2 (drop-rule sensitivity), -3
+  (certain-only); p4_analyse P4-H2-20261124-1 to -3; h2_analyse side -4, exclusion -5, pooled -6, rq2 -7. Nothing
+  was re-run.
+- RQ1, primary scope (hybrid, Recall@1,250; best single / split-half oracle / gap [95% interval]):
+  held-out 1 (17 docs, 530 q): pdfplumber/method1_tree_T384 0.772 / 0.765 / -0.007 [-0.045, 0.023], NO-GO;
+  H2 primary (52, 229): docling/method1_tree_T256 0.836 / 0.792 / -0.045 [-0.096, 0.002], NO-GO;
+  H2 sensitivity (52, 240): docling/method1_tree_T256 0.838 / 0.789 / -0.049 [-0.101, -0.001], NO-GO;
+  H2 certain-only (29, 95): docling/langchain_recursive_256 0.916 / 0.895 / -0.021 [-0.058, 0.018], NO-GO.
+  In every set the oracle is below the best single. The sensitivity interval lies entirely below 0.
+- Tuning winner (docling/langchain_recursive_256), applied unchanged: held-out 1 0.715, rank 20 of 26; held-out 2
+  0.828 rank 2 (primary), 0.826 rank 3 (sensitivity), 0.916 rank 1 (certain-only); tied with the best in all.
+- Exclusion (primary, the step's own bootstrap, for the with/without comparison only): all 229 q -0.042
+  [-0.093, 0.006]; without the 7 questions on the 11 HR pages (222 q) -0.053 [-0.105, -0.005]; NO-GO in both.
+- Pooled (secondary; split-half oracle minus the tuning winner, not the per-set p4_analyse gap): 69 documents
+  (17 + 52), 759 questions, -0.014 [-0.059, 0.030], NO-GO. Interval width 0.089, wider than held-out 1 alone
+  (0.068): pooling did not narrow the RQ1 interval.
+- RQ2 (per parser and budget, 13 setups; Spearman [95% interval]), primary: docling 750 -0.885 [-0.929, -0.313],
+  1,250 -0.830 [-0.901, -0.412], 2,000 -0.148 [-0.648, 0.495]; pdfplumber -0.714 [-0.863, -0.121], -0.599
+  [-0.841, 0.033], -0.231 [-0.731, 0.533]. Sensitivity: docling -0.885, -0.764, -0.352; pdfplumber -0.665,
+  -0.516, -0.225. Certain-only: docling -0.813, -0.582, -0.632; pdfplumber -0.681, -0.484, -0.055. Verdict:
+  negative at every parser and budget in all three runs (holds). The correlation fades at 2,000: 5 of the 6
+  intervals there include 0.
+- Per corpus (descriptive only): at 2,000, HR and Industrial turn positive on both parsers (primary);
+  Pharmaceuticals is negative at every budget on both parsers.
+- Dropped documents (no question in the common set): primary and sensitivity 1 (Pharmaceuticals); certain-only
+  23 (HR 2, Industrial 4, Pharmaceuticals 17). Primary common set leaves out 27 questions (lacking on Docling 19,
+  pdfplumber 8).
+
+## Agent test 4: 200 qwen2.5:3b answers without a session record (2026-11-24, facts only, found after the run)
+- Lines 1-200 of data/agent_test4/answers_qwen2.5-3b.jsonl (150 scanned, 50 digital; 67 PDFs) have no session
+  record. Lines 201-300 are A-LOCAL-20261123-3 (skipped_already_saved 200, continues null). Nothing was re-run.
+- Cause: answers() writes its record only after the loop and catches only RateLimit; the first qwen session was
+  stopped at 19:28:12 IST (in-flight request cancelled, Ollama log), so its lines stayed and no record was written.
+  What stopped it is not known (shell history has no timestamps).
+- Time span (Ollama journal, IST): 200 successful /api/generate calls 17:54:40-19:27:47, between the Gemini session
+  A-LOCAL-20261123-2 (ended 17:50:41) and A-LOCAL-20261123-3 (started 19:29:25).
+- At 19:05:52 the kernel OOM killer killed Ollama's llama-server; the call returned 500, Ollama restarted, and the
+  retry succeeded (line 156, tries 2).
+- Evidence for the lines: per-call durations in the Ollama log match answer_seconds in file order (median
+  difference 0.014 s; 197 of 200 within 1 s); the only weights loaded were blob sha256:5ee4f07c..., which the
+  qwen2.5:3b manifest (config digest 357c53fb..., as recorded in A-LOCAL-20261123-3) names; every line has model
+  qwen2.5:3b and settings temperature 0, num_predict 256, num_ctx 8192. Code: HEAD daa5c5d throughout;
+  A-LOCAL-20261123-2 and -3 both record daa5c5d with uncommitted_changes false; the answering code is unchanged
+  up to 1d82b1e (summary only).
+- Missing: session start/end, qids_done and failures from the code; per-line timestamps, session ids and model
+  digests; proof of a clean working tree during the span. Lines 50 and 51 differ from the log by 23.3 s and 8.9 s
+  (the log shows 1m0s and 2m0s); unexplained.
+- The answers are kept, with this disclosure. The code is not changed. The LLM comparison of agent test 4 is
+  reference only and not reported in paper 1 (decision 2026-11-24).
+
+## Agent test 4: Gemini answer times include the pacing wait (2026-11-24, facts only, found after the run)
+- answer_with_retries (src/agent/test4_llm.py) starts its timer before caller(prompt); GeminiCaller.__call__ first
+  sleeps until 4.286 s after the previous call's start (the aq_run pacing), so each Gemini answer_seconds holds that
+  wait as well as the model call. Qwen is not paced; its times are call times only.
+- Gemini, A-LOCAL-20261123-2: 300 answers in 1,607 s of session time (11:53:54-12:20:41 UTC); answer_seconds sum
+  1,534.5 s, median 4.617 [IQR 3.793, 6.455]. The wait cannot be separated from the call afterwards.
+- So the Gemini times in llm_summary.json are time per paced answer, not model latency, and are not comparable with
+  the qwen2.5:3b times (median 27.952). F1, contained, not found and token counts are not affected.
+- The code is not changed and nothing is re-run; the LLM comparison is reference only, not in paper 1.
