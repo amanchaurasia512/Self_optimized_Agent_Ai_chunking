@@ -1710,3 +1710,24 @@ Implements the notes "Held-out set 2: step 4 analysis" and "gold rule amendment"
 - So the Gemini times in llm_summary.json are time per paced answer, not model latency, and are not comparable with
   the qwen2.5:3b times (median 27.952). F1, contained, not found and token counts are not affected.
 - The code is not changed and nothing is re-run; the LLM comparison is reference only, not in paper 1.
+
+## paper-v1.3 lock (2026-11-24)
+
+Reporting only: no result, decision or frozen part (scorer_v1, chunker versions, spec decisions) changes; nothing is
+re-run. The IEEE paper's generator (paper_ieee/scripts/make_artifacts.py, based on the paper-v1.2 generator) reads
+inputs made after the tag paper-v1.2, so they get their own checksum file.
+- New inputs, checksum file `docs/paper_checksums_v1.3.txt` (SHA-256, 10 files): held-out 2
+  (runs/P4-H2-20261124-1, -2, -3 records; data/results/p4/P4-H2-20261124-1, -2, -3 `_primary_setups.csv`;
+  data/results/h2/P4-H2-20261124-6_pooled.csv, P4-H2-20261124-7_rq2.csv), extension
+  (data/results/ext/P4-EXT-20261119-2_rq1.csv) and second embedder (data/results/rob/P4-ROB-20261120-1_rq1.csv).
+  `docs/paper_checksums.txt` is unchanged. The generator fails on any input missing from, or differing from, its
+  checksum file: paper-v1.2 inputs against `docs/paper_checksums.txt` as tagged, the new inputs against the v1.3 file.
+- Two inputs are read from the tag with `git show paper-v1.2:<path>` and checked against the tagged checksums:
+  `paper/data/manual_facts.csv` (removed from the tree on 2026-11-20) and `pdfs/split.csv` (53 held-out 2 rows added
+  since the tag; the paper-v1.2 numbers use the tagged rows).
+- Code check narrowed: the paper-v1.2 generator required all of `src/`, `scripts/p4_analyse.py` and
+  `scripts/aq_run.py` to equal the tag. It now checks the 7 files whose constants it imports (src/chunk/base.py,
+  src/chunk/chunkers.py, src/eval/stats.py, scripts/p4_analyse.py, scripts/aq_run.py, scripts/golden_check.py,
+  scripts/p3_fixedk.py) and allows additions only: no line may be removed or changed since the tag. Reason: after the
+  tag, `src/` gained new chunkers (extension, agent) and new modules; these additions do not change any frozen
+  constant (chunk limits, prefix cap, resamples, level, splits, budgets), but the whole-`src/` check refused them.

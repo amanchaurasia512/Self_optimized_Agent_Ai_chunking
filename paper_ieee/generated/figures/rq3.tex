@@ -1,0 +1,8 @@
+\begin{tikzpicture}
+\begin{axis}[scale only axis, width=\columnwidth-2.4cm, height=4.5cm, xmin=0.4, xmax=6.2, xtick={1.0,2.0,3.0,4.0,5.6}, xticklabels={R@5,R@10,Hit@1,MRR,R@4000}, x tick label style={rotate=35, anchor=north east}, extra x ticks={4.8}, extra x tick labels={}, extra x tick style={grid=major, major grid style={dashed}}, ylabel={Best chunk size (tokens)}, legend style={at={(0.5,-0.42)}, anchor=north, legend columns=-1, /tikz/every even column/.append style={column sep=0.3cm}}]
+\addplot+[black, only marks, mark=*] coordinates {(1.0,978) (2.0,879) (3.0,295) (4.0,715) (5.6,309)};
+\addlegendentry{Docling}
+\addplot+[black, only marks, mark=square*] coordinates {(1.0,980) (2.0,875) (3.0,820) (4.0,820) (5.6,249)};
+\addlegendentry{pdfplumber}
+\end{axis}
+\end{tikzpicture}
