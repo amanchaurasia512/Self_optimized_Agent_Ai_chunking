@@ -3,7 +3,9 @@ retriever (BM25, dense, hybrid) x budget (750, 1,250, 2,000). Writes one row per
 data/results/p3/<run id>.csv.gz, a run record, and a short summary: Recall@1,250, document means then setting means,
 main questions (QASPER separately in the file). --embedder nomic takes the dense part from the robustness embedder's
 cache (spec v1.2 "Robustness embedder", 2026-11-19; hybrid = BM25 + nomic); the bge-m3 tokenizer stays the ruler.
---test writes the scores to data/results/tests/ and the run record to runs/tests/."""
+--test writes the scores to data/results/tests/ and the run record to runs/tests/.
+--split, --gold-pattern and --gold-rows (spec v1.2 "Held-out set 2: step 4 code") choose the documents, gold file and
+gold rows; their defaults leave the output unchanged."""
 import argparse
 import json
 from collections import defaultdict
@@ -13,20 +15,25 @@ import pandas as pd
 
 from src.common.cost_logger import CostLogger
 from src.common.manifest import PROJECT_ROOT, RUNS_DIR, build_manifest, new_run_id, new_test_run_id, write_manifest
-from src.common.split import tuning_ids
+from src.common.split import SPLIT_FILE, tuning_ids
 from src.eval.embed import CACHE_FOLDERS, EMBEDDERS, load_cache, text_key
 from src.eval.score import BM25, SCORER, Gold, dense_ranking, hybrid_ranking, measure, rank_metrics
 
 CHUNKS, EXTRACTED, GOLD = (PROJECT_ROOT / "data" / name for name in ("chunks", "extracted", "gold"))
 OUTPUT = PROJECT_ROOT / "data" / "results" / "p3"
+GOLD_PATTERN = "spans_{parser}.jsonl"
+GOLD_ROWS = {"certain": lambda record: str(record["certain"]) == "True",
+             "keep_primary": lambda record: record["keep_primary"] is True,
+             "sensitivity": lambda record: record["keep_sensitivity"] is True and record["page_keep"] is True}
 
 
-def gold_questions(parser, docs):
-    """Certain span-level questions with their pieces (D3: page-level gold left out and counted)."""
-    questions, page_level = defaultdict(lambda: {"pieces": []}), 0
-    for line in (GOLD / f"spans_{parser}.jsonl").read_text(encoding="utf-8").splitlines():
+def gold_questions(parser, docs, pattern=GOLD_PATTERN, rows="certain"):
+    """Span-level questions of the chosen gold rows (default: certain) with their pieces (D3: page-level gold left
+    out and counted)."""
+    questions, page_level, keep = defaultdict(lambda: {"pieces": []}), 0, GOLD_ROWS[rows]
+    for line in (GOLD / pattern.format(parser=parser)).read_text(encoding="utf-8").splitlines():
         record = json.loads(line)
-        if record["doc_id"] not in docs or str(record["certain"]) != "True":
+        if record["doc_id"] not in docs or not keep(record):
             continue
         if record["kind"] != "span" or record["method"] == "page":
             page_level += 1
@@ -48,6 +55,9 @@ def main():
     arg_parser.add_argument("--parsers", nargs="+", default=["docling", "pdfplumber"])
     arg_parser.add_argument("--settings", nargs="*", help="setting folder names; default: every complete setting")
     arg_parser.add_argument("--docs", nargs="+", help="doc ids; default: every tuning document in pdfs/split.csv")
+    arg_parser.add_argument("--split", help="every document of this split in pdfs/split.csv (instead of --docs)")
+    arg_parser.add_argument("--gold-pattern", default=GOLD_PATTERN, help="gold file name in data/gold, with {parser}")
+    arg_parser.add_argument("--gold-rows", choices=list(GOLD_ROWS), default="certain", help="which gold rows are scored")
     arg_parser.add_argument("--final", action="store_true", help="allow held-out documents (final evaluation only)")
     arg_parser.add_argument("--budgets", nargs="+", type=int, default=[750, 1250, 2000])
     arg_parser.add_argument("--embedder", choices=list(EMBEDDERS), default="bge-m3")
@@ -58,7 +68,10 @@ def main():
     args = arg_parser.parse_args()
 
     tuning = tuning_ids()
-    docs = set(args.docs or tuning)
+    split = pd.read_csv(SPLIT_FILE)
+    docs = set(args.docs or (split.loc[split["split"] == args.split, "doc_id"] if args.split else tuning))
+    if args.split and not docs:
+        raise SystemExit(f"no documents in split {args.split}")
     if docs - tuning and not args.final:
         raise PermissionError(f"held-out documents need --final (final evaluation only): {sorted(docs - tuning)}")
     embedder = EMBEDDERS[args.embedder]
@@ -66,7 +79,7 @@ def main():
     run_id = new_test_run_id(3, args.run_source) if args.test else new_run_id(3, args.run_source)
     logger, rows, largest, left_out = CostLogger(), [], {}, {}
     for parser in args.parsers:
-        questions, left_out[parser] = gold_questions(parser, docs)
+        questions, left_out[parser] = gold_questions(parser, docs, args.gold_pattern, args.gold_rows)
         by_doc = defaultdict(list)
         for question_id, question in questions.items():
             by_doc[question["doc_id"]].append((question_id, question))
@@ -110,9 +123,14 @@ def main():
     frame.to_csv(output, index=False)
     stack = {"scorer": SCORER, "embedder": embedder, "budgets": args.budgets, "parsers": args.parsers,
              "page_level_gold_left_out": left_out}
-    if args.settings or args.docs or args.test:
+    if args.settings or args.docs or args.split or args.test:
         stack.update(settings=args.settings, documents=sorted(docs), test=args.test)
-    manifest = build_manifest(run_id, "v1.2", stack, sorted(GOLD.glob("spans_*.jsonl")), [output], logger.summary(), args.machine)
+    default_gold = args.gold_pattern == GOLD_PATTERN and args.gold_rows == "certain"
+    if not default_gold or args.split:
+        stack.update(split=args.split, gold_pattern=args.gold_pattern, gold_rows=args.gold_rows)
+    gold_files = (sorted(GOLD.glob("spans_*.jsonl")) if default_gold
+                  else [GOLD / args.gold_pattern.format(parser=parser) for parser in args.parsers])
+    manifest = build_manifest(run_id, "v1.2", stack, gold_files, [output], logger.summary(), args.machine)
     if args.test:
         manifest_path = RUNS_DIR / "tests" / f"test_p3_score_{args.embedder}_{run_id}.json"
         if manifest_path.exists():

@@ -1,0 +1,148 @@
+{
+  "run_id": "P3-H2-KN02-20261123-1",
+  "created_at": "2026-11-23T15:35:02+00:00",
+  "code": {
+    "commit": "d92630f7f07da4fd04ab455d9ec87e627bb46cdd",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "device": "cuda",
+    "share": 1.0,
+    "batch_size": 16,
+    "settings": [
+      "fixed_token_size256_overlap0_noprefix",
+      "fixed_token_size384_overlap0_noprefix",
+      "fixed_token_size512_overlap0_noprefix",
+      "langchain_recursive_size256_overlap0_noprefix",
+      "langchain_recursive_size384_overlap0_noprefix",
+      "langchain_recursive_size512_overlap0_noprefix",
+      "method1_tree_T256_noprefix",
+      "method1_tree_T384_noprefix",
+      "method1_tree_T512_noprefix",
+      "recursive_size256_overlap0_noprefix",
+      "recursive_size384_overlap0_noprefix",
+      "recursive_size512_overlap0_noprefix",
+      "sentence_sentences5_noprefix"
+    ],
+    "documents": [
+      "vidore_hr_a_demographic_perspective_on_the_future_of_european_kj0125152enn",
+      "vidore_hr_access_for_domestic_workers_to_labour_and_social_protection_ke0124002enn",
+      "vidore_hr_employment_and_social_developments_in_europe_2024_kebd24002enn",
+      "vidore_hr_employment_and_social_developments_in_europe_ke0125067enn",
+      "vidore_hr_estimating_labour_market_transitions_and_skills_investment_ke0125066enn",
+      "vidore_hr_european_network_of_public_employment_services_annual_ke0124024enn",
+      "vidore_hr_future_oriented_occupations_in_the_eu_ke0125043enn",
+      "vidore_hr_joint_employment_report_2025_ke0125018enn",
+      "vidore_hr_labour_market_and_wage_developments_in_europe_kebn24001enn",
+      "vidore_hr_posting_of_workers_ke0224850enn",
+      "vidore_hr_recruitment_working_conditions_career_development_ki0124000enn",
+      "vidore_hr_research_perspectives_on_the_future_of_work_ki0124087enn",
+      "vidore_hr_undeclared_care_work_in_the_eu_tj0125004enn",
+      "vidore_industrial_afd_091005_056",
+      "vidore_industrial_afd_091005_062",
+      "vidore_industrial_to_00_25_172",
+      "vidore_industrial_to_00_25_172cl_1",
+      "vidore_industrial_to_00_25_172cl_3",
+      "vidore_industrial_to_00_25_172cl_4",
+      "vidore_industrial_to_00_25_172cl_5",
+      "vidore_industrial_to_00_25_203",
+      "vidore_industrial_to_00_5_15",
+      "vidore_industrial_to_35_1_18",
+      "vidore_industrial_to_35_1_3",
+      "vidore_pharmaceuticals_aamgrxbiosimssept2018_uhl",
+      "vidore_pharmaceuticals_aamkeynotechoe2021",
+      "vidore_pharmaceuticals_biosimilar_and_interchangeable_products_the_us_fda_perspective",
+      "vidore_pharmaceuticals_biosimilar_regulatory_policy_understanding_the_landscape_and_relevance_to_medical_practice",
+      "vidore_pharmaceuticals_cavazzoni_presentation_fdli2020",
+      "vidore_pharmaceuticals_cder_new_drugs_program_2017_update",
+      "vidore_pharmaceuticals_cder_new_drugs_program_2019_update",
+      "vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2017_update",
+      "vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2018_update",
+      "vidore_pharmaceuticals_cder_send_webinar_june_2020",
+      "vidore_pharmaceuticals_cder_update_presentation",
+      "vidore_pharmaceuticals_ddi_medication_errors_ce_march_2020_dmepa_and_ismp_combined_slides_final",
+      "vidore_pharmaceuticals_fda_office_of_generic_drugs_ogd_keynote_address_gdufa_past_present_and_future",
+      "vidore_pharmaceuticals_final_ce_dental_caries",
+      "vidore_pharmaceuticals_finalfdacmssummit1_10_18kscorrected",
+      "vidore_pharmaceuticals_olugbengaokubadejoaam2021",
+      "vidore_pharmaceuticals_ongoingfdaworkrelatedtoopioidoverdoseprevention",
+      "vidore_pharmaceuticals_pcca_internationalseminaron102518_jad_100418_stats_update",
+      "vidore_pharmaceuticals_pda_fda_slides2021_cavazzoni",
+      "vidore_pharmaceuticals_presentation_bridging_justifications_supporting_the_safety_of_excipients_in_generic_drug_products",
+      "vidore_pharmaceuticals_presentation_cder_2016_update_for_rare_diseases",
+      "vidore_pharmaceuticals_presentation_douglas_throckmorton_fdas_role_in_confronting_the_opioid_epidemic",
+      "vidore_pharmaceuticals_presentation_fdas_role_in_confronting_the_opioid_epidemic",
+      "vidore_pharmaceuticals_searchforbalancefdasapproachtotheopioidscrisis_79",
+      "vidore_pharmaceuticals_state_of_cder_fdli2021_pcavazzoni_20210515",
+      "vidore_pharmaceuticals_state_of_ogd_pivoting_to_gdufa_ii",
+      "vidore_pharmaceuticals_the_public_health_role_of_drug_regulation_in_the_us",
+      "vidore_pharmaceuticals_the_role_of_social_science_in_prescription_drug_promotion_at_fda_and_preview_of_upcoming_studies",
+      "vidore_pharmaceuticals_useofbayesianhierarchicalmodelsinthepresentationofsubgroupanalyses"
+    ],
+    "test": false
+  },
+  "environment": {
+    "machine": "kaggle",
+    "host": "f68b590f8dd0",
+    "python": "3.13.16",
+    "os": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "packages": {
+      "docling": "2.143.0",
+      "pdfplumber": null,
+      "torch": "2.11.0+cu130",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "2.3.3",
+      "numpy": "2.1.3"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/heldout2/questions.jsonl",
+      "sha256": "f8c18ebbdf677091c9c1a82bb06a2b6acb49a73c4315861e7d90bb460c2bcb75"
+    }
+  ],
+  "outputs": [
+    "data/embeddings/bge-m3/H2-KN02-heldout2.npy",
+    "data/embeddings/bge-m3/H2-KN02-heldout2.keys.json",
+    "data/embeddings/bge-m3/embedder.json"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "embed",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "texts": 93209,
+        "tokens": 28719593,
+        "wall_seconds": 7898.501,
+        "peak_ram_mb": 7675.5,
+        "gpu_name": "Tesla T4",
+        "gpu_peak_mb": 2959.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 7898.501,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 7675.5,
+      "gpu_peak_mb": 2959.0
+    }
+  }
+}

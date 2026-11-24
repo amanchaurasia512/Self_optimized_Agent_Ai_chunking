@@ -1,0 +1,426 @@
+{
+  "run_id": "P3-TESTGOLD-20261123-1",
+  "created_at": "2026-11-23T16:36:30+00:00",
+  "code": {
+    "commit": "1d82b1ed82fd2cfb85c0074b794418b5ff34b2f0",
+    "uncommitted_changes": true
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "scorer": {
+      "version": "scorer_v1",
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75,
+        "idf": "log((N - n + 0.5) / (n + 0.5) + 1)",
+        "words": "lower-cased [\\w Devanagari]+"
+      },
+      "hybrid": {
+        "method": "reciprocal rank fusion",
+        "k": 60
+      },
+      "characters": "gold characters counted without whitespace"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "budgets": [
+      750,
+      1250,
+      2000
+    ],
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ],
+    "page_level_gold_left_out": {
+      "docling": 0,
+      "pdfplumber": 0
+    },
+    "settings": [
+      "fixed_token_size256_overlap0_noprefix",
+      "fixed_token_size384_overlap0_noprefix",
+      "fixed_token_size512_overlap0_noprefix",
+      "langchain_recursive_size256_overlap0_noprefix",
+      "langchain_recursive_size384_overlap0_noprefix",
+      "langchain_recursive_size512_overlap0_noprefix",
+      "method1_tree_T256_noprefix",
+      "method1_tree_T384_noprefix",
+      "method1_tree_T512_noprefix",
+      "recursive_size256_overlap0_noprefix",
+      "recursive_size384_overlap0_noprefix",
+      "recursive_size512_overlap0_noprefix",
+      "sentence_sentences5_noprefix"
+    ],
+    "documents": [
+      "cuad_bizzingoinc_20120322_8_k_ex_10_17_7504499_ex_10_17_endorsement_agreement",
+      "cuad_changepointcorp_03_08_2000_ex_10_6_license_and_hosting_agreement",
+      "ohr_academic_2310_11511v1",
+      "ohr_administration_dude_e79deb02a0c0e87511080836c5d4347b"
+    ],
+    "test": true,
+    "split": null,
+    "gold_pattern": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/8519a128-a608-4f17-a082-d2f1b35629ea/scratchpad/gold/synthetic_{parser}.jsonl",
+    "gold_rows": "certain"
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/8519a128-a608-4f17-a082-d2f1b35629ea/scratchpad/gold/synthetic_docling.jsonl",
+      "sha256": "a9912a9356426db91aa63841a2a7a81f4191db5ab33bb6d4676b4cd304f36f58"
+    },
+    {
+      "path": "/tmp/claude-1000/-home-chaurasia008-Project-files-Self-optimized-Agent-Ai-chunking/8519a128-a608-4f17-a082-d2f1b35629ea/scratchpad/gold/synthetic_pdfplumber.jsonl",
+      "sha256": "14ee5dbee3c679327f1bc428c5f7dad0ec6e2b27cdb1a2290202e00c84cc9540"
+    }
+  ],
+  "outputs": [
+    "data/results/tests/test_p3_score_P3-TESTGOLD-20261123-1.csv.gz"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "score:docling:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.466,
+        "peak_ram_mb": 2901.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:fixed_token_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.704,
+        "peak_ram_mb": 2901.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.884,
+        "peak_ram_mb": 2901.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.528,
+        "peak_ram_mb": 2902.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.624,
+        "peak_ram_mb": 2902.6,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.835,
+        "peak_ram_mb": 2902.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.544,
+        "peak_ram_mb": 2903.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T384_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.648,
+        "peak_ram_mb": 2903.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T512_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.02,
+        "peak_ram_mb": 2904.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.473,
+        "peak_ram_mb": 2904.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.685,
+        "peak_ram_mb": 2904.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.875,
+        "peak_ram_mb": 2905.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:sentence_sentences5_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.661,
+        "peak_ram_mb": 2905.7,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.489,
+        "peak_ram_mb": 2905.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.58,
+        "peak_ram_mb": 2906.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.712,
+        "peak_ram_mb": 2906.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.441,
+        "peak_ram_mb": 2906.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.548,
+        "peak_ram_mb": 2907.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.663,
+        "peak_ram_mb": 2907.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.445,
+        "peak_ram_mb": 2907.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T384_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.562,
+        "peak_ram_mb": 2908.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T512_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.635,
+        "peak_ram_mb": 2908.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.453,
+        "peak_ram_mb": 2908.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.532,
+        "peak_ram_mb": 2909.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.68,
+        "peak_ram_mb": 2909.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:sentence_sentences5_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.583,
+        "peak_ram_mb": 2909.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 18.27,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 2909.8,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

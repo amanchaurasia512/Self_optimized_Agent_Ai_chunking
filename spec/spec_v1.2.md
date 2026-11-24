@@ -1589,3 +1589,63 @@ Adds to "Agent test 4: LLM comparison, design before running" (2026-11-23), befo
 - Settings found in the 2-question test (runs/tests/test_at4llm_A-TEST-20261123-*): gemini-3.5-flash-lite refuses
   thinking off (thinking_budget 0, 400 INVALID_ARGUMENT), so its lowest level, thinking_level MINIMAL, is sent, as the
   design allows. Ollama is sent num_ctx 8,192 so its default window never cuts the context; input tokens are recorded.
+
+## Held-out set 2: H2-KN02 imported (2026-11-23)
+- Import: run P3-H2-KN02-20261123-1 (commit d92630f, uncommitted_changes: false; Kaggle T4, 7,899 s), unpacked to
+  staging and copied without overwriting: part data/embeddings/bge-m3/H2-KN02-heldout2.*, the run record, and the
+  pip freeze in data/external/kaggle_out/H2-KN02/.
+- Embedder as held-out 1 (P3-P4-KN01-20261105-1): bge-m3 5617a9f, float32, normalised, max length 8,192, batch 16,
+  cuda, share 1.0. The record lists exactly the 53 held_out_2 documents and the 13 settings x 2 parsers.
+- Vectors: 93,209 keys, all unique, finite, norm 1.000: 92,923 chunk texts + 286 queries. Missing: 0. No key is
+  shared with an existing part; no file was overwritten.
+- Source field: the record has none; source H2-KN02 shows only in the run id, as in earlier records.
+- Older parts, found at import: 23,950 keys are held in 2-5 of 7 parts (EXT-KN01-new, P3-KN01-full, P3-KN02-new,
+  P3-KN03-grid, P3-KN04-prefix, P4-KN01-heldout, RQ5-KN01). 12,193 are identical; the rest differ by at most
+  8.4e-5 (max absolute). load_cache keeps the copy in the last part by name. The held-out 2 vectors are not
+  affected; nothing is changed or re-run.
+
+## Held-out set 2: step 4 code, design before running (2026-11-23)
+Implements the notes "Held-out set 2: step 4 analysis" and "gold rule amendment"; no analysis rule changes. scorer_v1
+(src/eval/score.py) and scripts/p4_analyse.py are not changed.
+- Tuning winner: docling/langchain_recursive_size256_overlap0_noprefix, fixed by P4-LOCAL-20261105-1 (scores
+  P3-LOCAL-20261105-4, scope full, best single 0.802). P3-LOCAL-20261105-2 is only the original-grid run that
+  p4_analyse's --original-run takes, as in held-out 1 (P4-FINAL-20261106-1); it is passed unchanged.
+- scripts/p3_score.py (runner only) gains, with defaults that leave its output unchanged:
+  --split <name> (every document of that split; refused without --final unless tuning), --gold-pattern (file name in
+  data/gold with {parser}, default spans_{parser}.jsonl) and --gold-rows: certain (default, certain == True),
+  keep_primary (keep_primary true) or sensitivity (keep_sensitivity and page_keep true). The run record lists the
+  gold files actually read and, when not default, the pattern and rows. Inputs for held-out 2, run source H2:
+  drop-rule primary h2_spans_droprule_{parser}.jsonl + certain; drop-rule sensitivity the same file + sensitivity;
+  certain-only h2_spans_{parser}.jsonl + keep_primary. Settings: the 13 primary settings.
+- p4_analyse.py runs on each of the three score runs as in held-out 1 (--original-run P3-LOCAL-20261105-2,
+  --settings the 13 primary settings, --run-source H2).
+- New scripts/h2_analyse.py, four steps; every step refuses held-out data without --final; --test writes to
+  data/results/tests/ and runs/tests/. Run id P4-H2-<date>-n, one record per step.
+  - side: reads the recorded primary scope of P4-FINAL-20261106-1 and of the held-out 2 P4 runs (run record summary
+    and <run>_primary_setups.csv); nothing is recomputed. Per set: setups, documents, questions, the tuning winner
+    and the held-out-1 best single (pdfplumber/method1_tree_T384_noprefix) with recall, rank and tied, the best single,
+    oracle, gap [95% interval] and GO (lower end above 0).
+  - exclusion: on the primary score run, the common set (question_matrix, 13 primary settings, hybrid, 1,250) with and
+    without the questions that have an evidence page with |image/PDF aspect ratio - 1| > 0.05 in
+    data/heldout2/page_sizes.csv (the gold-run formula); p4_analyse.analyse on each, each with a fresh seed-42 rng.
+    The primary RQ1 interval is p4_analyse's (its primary scope); the exclusion step's own bootstrap serves only the
+    with/without comparison.
+  - pooled: per set the common set (held-out 1 P3-FINAL-20261106-1, held-out 2 primary); per document the split-half
+    oracle (p4_analyse.split_half_oracle; one-question documents take the winner's value, as analyse does) minus the
+    tuning winner; mean over all documents, equal weight; interval from 2,000 resamples, seed 42, resampling documents
+    within each set; GO labelled secondary. This pooled gap (split-half oracle minus the tuning winner) is not the
+    same quantity as the per-set RQ1 gap of p4_analyse (oracle minus the best single on that set); the two are
+    reported separately and never compared as one number.
+  - rq2: per parser and budget 750 / 1,250 / 2,000, as clarified below; measured size
+    p3_size_by_source.measured_sizes; Spearman of size against mean recall (question means per document, then
+    document means); for all held-out 2 and per corpus (from data/heldout2/queries.jsonl), 95% interval from 2,000
+    document resamples, seed 42; resamples where Spearman is undefined (equal recall for every setup) are counted
+    and left out of the interval. Run on the primary run; certain-only reported as the sensitivity check.
+- Tests on tuning documents only (runs/tests/, data/results/tests/): p3_score without the new options gives the same
+  scores as the committed script; tuning gold with the three --gold-rows (fields copied from certain) gives the
+  same scores; every h2_analyse step runs on tuning test runs.
+- Clarification (2026-11-24, before any held-out 2 score): RQ2 uses the tuning RQ2 unit
+  (robust_no_indian.size_rows): per parser and budget, Spearman over that parser's 13 primary setups, on the common
+  set of that parser's setups at each budget, sizes measured on the 1,250 common set, no fits_750 filter. Verdict on
+  all held-out 2 only: negative for every parser and budget (6 Spearmans < 0). Per corpus is also per parser and
+  descriptive only. This replaces the reading "one Spearman over the 26 setups" of the analysis note.
