@@ -1,0 +1,80 @@
+{
+  "run_id": "P4-H2-20261124-7",
+  "created_at": "2026-11-24T06:01:07+00:00",
+  "code": {
+    "commit": "38bac402406a7867279c1b3f1925f8bfea217622",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "h2_rq2",
+    "scores_runs": [
+      "P3-H2-20261124-1",
+      "P3-H2-20261124-2",
+      "P3-H2-20261124-3"
+    ],
+    "budgets": [
+      750,
+      1250,
+      2000
+    ],
+    "unit": "per parser and budget, 13 setups",
+    "negative_at_every_parser_and_budget_all": {
+      "P3-H2-20261124-1": true,
+      "P3-H2-20261124-2": true,
+      "P3-H2-20261124-3": true
+    },
+    "tuning_winner": "docling/langchain_recursive_size256_overlap0_noprefix",
+    "resamples": 2000,
+    "level": 0.95,
+    "seed": 42,
+    "final": true,
+    "test": false
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [],
+  "outputs": [
+    "data/results/h2/P4-H2-20261124-7_rq2.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "h2_analyse:rq2",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 218.323,
+        "peak_ram_mb": 875.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 218.323,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 875.4,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

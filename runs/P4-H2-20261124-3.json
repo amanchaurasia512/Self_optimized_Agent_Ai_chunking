@@ -1,0 +1,233 @@
+{
+  "run_id": "P4-H2-20261124-3",
+  "created_at": "2026-11-24T05:56:58+00:00",
+  "code": {
+    "commit": "38bac402406a7867279c1b3f1925f8bfea217622",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "analysis": "p4_v2",
+    "scores_run": "P3-H2-20261124-3",
+    "original_run": "P3-LOCAL-20261105-2",
+    "retriever": "hybrid",
+    "budget": 1250,
+    "metric": "recall",
+    "resamples": 2000,
+    "level": 0.95,
+    "seed": 42,
+    "splits": 200,
+    "cost": "index tokens (chunk + prefix) and chunk count per document; LLM tokens not included",
+    "summary": {
+      "full": {
+        "setups": 26,
+        "documents": 29,
+        "questions": 95,
+        "questions_left_out": 105,
+        "documents_left_out": [
+          "vidore_hr_a_demographic_perspective_on_the_future_of_european_kj0125152enn",
+          "vidore_hr_undeclared_care_work_in_the_eu_tj0125004enn",
+          "vidore_industrial_afd_091005_056",
+          "vidore_industrial_afd_091005_062",
+          "vidore_industrial_to_00_25_203",
+          "vidore_industrial_to_35_1_18",
+          "vidore_pharmaceuticals_biosimilar_and_interchangeable_products_the_us_fda_perspective",
+          "vidore_pharmaceuticals_cder_new_drugs_program_2019_update",
+          "vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2018_update",
+          "vidore_pharmaceuticals_cder_update_presentation",
+          "vidore_pharmaceuticals_ddi_medication_errors_ce_march_2020_dmepa_and_ismp_combined_slides_final",
+          "vidore_pharmaceuticals_final_ce_dental_caries",
+          "vidore_pharmaceuticals_olugbengaokubadejoaam2021",
+          "vidore_pharmaceuticals_ongoingfdaworkrelatedtoopioidoverdoseprevention",
+          "vidore_pharmaceuticals_pcca_internationalseminaron102518_jad_100418_stats_update",
+          "vidore_pharmaceuticals_pda_fda_slides2021_cavazzoni",
+          "vidore_pharmaceuticals_presentation_bridging_justifications_supporting_the_safety_of_excipients_in_generic_drug_products",
+          "vidore_pharmaceuticals_presentation_cder_2016_update_for_rare_diseases",
+          "vidore_pharmaceuticals_presentation_douglas_throckmorton_fdas_role_in_confronting_the_opioid_epidemic",
+          "vidore_pharmaceuticals_presentation_fdas_role_in_confronting_the_opioid_epidemic",
+          "vidore_pharmaceuticals_searchforbalancefdasapproachtotheopioidscrisis_79",
+          "vidore_pharmaceuticals_the_role_of_social_science_in_prescription_drug_promotion_at_fda_and_preview_of_upcoming_studies",
+          "vidore_pharmaceuticals_useofbayesianhierarchicalmodelsinthepresentationofsubgroupanalyses"
+        ],
+        "best_single": "docling/langchain_recursive_size256_overlap0_noprefix",
+        "best_single_recall": 0.9164297563079757,
+        "tied_with_best": 7,
+        "oracle": 0.89574062605981,
+        "raw_max_oracle": 0.9614893094312584,
+        "gap": -0.020689130248165793,
+        "gap_interval": [
+          -0.056176785318964154,
+          0.022350960342970867
+        ],
+        "raw_gap": 0.045059553123282456
+      },
+      "original": {
+        "setups": 12,
+        "documents": 29,
+        "questions": 95,
+        "questions_left_out": 105,
+        "documents_left_out": [
+          "vidore_hr_a_demographic_perspective_on_the_future_of_european_kj0125152enn",
+          "vidore_hr_undeclared_care_work_in_the_eu_tj0125004enn",
+          "vidore_industrial_afd_091005_056",
+          "vidore_industrial_afd_091005_062",
+          "vidore_industrial_to_00_25_203",
+          "vidore_industrial_to_35_1_18",
+          "vidore_pharmaceuticals_biosimilar_and_interchangeable_products_the_us_fda_perspective",
+          "vidore_pharmaceuticals_cder_new_drugs_program_2019_update",
+          "vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2018_update",
+          "vidore_pharmaceuticals_cder_update_presentation",
+          "vidore_pharmaceuticals_ddi_medication_errors_ce_march_2020_dmepa_and_ismp_combined_slides_final",
+          "vidore_pharmaceuticals_final_ce_dental_caries",
+          "vidore_pharmaceuticals_olugbengaokubadejoaam2021",
+          "vidore_pharmaceuticals_ongoingfdaworkrelatedtoopioidoverdoseprevention",
+          "vidore_pharmaceuticals_pcca_internationalseminaron102518_jad_100418_stats_update",
+          "vidore_pharmaceuticals_pda_fda_slides2021_cavazzoni",
+          "vidore_pharmaceuticals_presentation_bridging_justifications_supporting_the_safety_of_excipients_in_generic_drug_products",
+          "vidore_pharmaceuticals_presentation_cder_2016_update_for_rare_diseases",
+          "vidore_pharmaceuticals_presentation_douglas_throckmorton_fdas_role_in_confronting_the_opioid_epidemic",
+          "vidore_pharmaceuticals_presentation_fdas_role_in_confronting_the_opioid_epidemic",
+          "vidore_pharmaceuticals_searchforbalancefdasapproachtotheopioidscrisis_79",
+          "vidore_pharmaceuticals_the_role_of_social_science_in_prescription_drug_promotion_at_fda_and_preview_of_upcoming_studies",
+          "vidore_pharmaceuticals_useofbayesianhierarchicalmodelsinthepresentationofsubgroupanalyses"
+        ],
+        "best_single": "docling/recursive_size512_overlap0_noprefix",
+        "best_single_recall": 0.9007328838024113,
+        "tied_with_best": 5,
+        "oracle": 0.892164811611767,
+        "raw_max_oracle": 0.9502635604332016,
+        "gap": -0.008568072190644475,
+        "gap_interval": [
+          -0.04161102900370918,
+          0.024274627152660665
+        ],
+        "raw_gap": 0.04953067663079007
+      },
+      "primary": {
+        "setups": 26,
+        "documents": 29,
+        "questions": 95,
+        "questions_left_out": 105,
+        "documents_left_out": [
+          "vidore_hr_a_demographic_perspective_on_the_future_of_european_kj0125152enn",
+          "vidore_hr_undeclared_care_work_in_the_eu_tj0125004enn",
+          "vidore_industrial_afd_091005_056",
+          "vidore_industrial_afd_091005_062",
+          "vidore_industrial_to_00_25_203",
+          "vidore_industrial_to_35_1_18",
+          "vidore_pharmaceuticals_biosimilar_and_interchangeable_products_the_us_fda_perspective",
+          "vidore_pharmaceuticals_cder_new_drugs_program_2019_update",
+          "vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2018_update",
+          "vidore_pharmaceuticals_cder_update_presentation",
+          "vidore_pharmaceuticals_ddi_medication_errors_ce_march_2020_dmepa_and_ismp_combined_slides_final",
+          "vidore_pharmaceuticals_final_ce_dental_caries",
+          "vidore_pharmaceuticals_olugbengaokubadejoaam2021",
+          "vidore_pharmaceuticals_ongoingfdaworkrelatedtoopioidoverdoseprevention",
+          "vidore_pharmaceuticals_pcca_internationalseminaron102518_jad_100418_stats_update",
+          "vidore_pharmaceuticals_pda_fda_slides2021_cavazzoni",
+          "vidore_pharmaceuticals_presentation_bridging_justifications_supporting_the_safety_of_excipients_in_generic_drug_products",
+          "vidore_pharmaceuticals_presentation_cder_2016_update_for_rare_diseases",
+          "vidore_pharmaceuticals_presentation_douglas_throckmorton_fdas_role_in_confronting_the_opioid_epidemic",
+          "vidore_pharmaceuticals_presentation_fdas_role_in_confronting_the_opioid_epidemic",
+          "vidore_pharmaceuticals_searchforbalancefdasapproachtotheopioidscrisis_79",
+          "vidore_pharmaceuticals_the_role_of_social_science_in_prescription_drug_promotion_at_fda_and_preview_of_upcoming_studies",
+          "vidore_pharmaceuticals_useofbayesianhierarchicalmodelsinthepresentationofsubgroupanalyses"
+        ],
+        "best_single": "docling/langchain_recursive_size256_overlap0_noprefix",
+        "best_single_recall": 0.9164297563079757,
+        "tied_with_best": 7,
+        "oracle": 0.8954697219256509,
+        "raw_max_oracle": 0.9614893094312584,
+        "gap": -0.020960034382324896,
+        "gap_interval": [
+          -0.057940107683431684,
+          0.01788100226718017
+        ],
+        "raw_gap": 0.045059553123282456
+      }
+    }
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/results/p3/P3-H2-20261124-3.csv.gz",
+      "sha256": "393d01cd63aab5e812b543d33206e88f43ff0b92e11465de25a240e5c004802c"
+    }
+  ],
+  "outputs": [
+    "data/results/p4/P4-H2-20261124-3_full_documents.csv",
+    "data/results/p4/P4-H2-20261124-3_full_setups.csv",
+    "data/results/p4/P4-H2-20261124-3_full_left_out.csv",
+    "data/results/p4/P4-H2-20261124-3_original_documents.csv",
+    "data/results/p4/P4-H2-20261124-3_original_setups.csv",
+    "data/results/p4/P4-H2-20261124-3_original_left_out.csv",
+    "data/results/p4/P4-H2-20261124-3_primary_documents.csv",
+    "data/results/p4/P4-H2-20261124-3_primary_setups.csv",
+    "data/results/p4/P4-H2-20261124-3_primary_left_out.csv"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "analyse:full",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.871,
+        "peak_ram_mb": 751.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "analyse:original",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 0.884,
+        "peak_ram_mb": 751.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "analyse:primary",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.94,
+        "peak_ram_mb": 753.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 4.695,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 753.1,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "run_id": "P3-H2-20261124-3",
+  "created_at": "2026-11-24T05:56:21+00:00",
+  "code": {
+    "commit": "38bac402406a7867279c1b3f1925f8bfea217622",
+    "uncommitted_changes": false
+  },
+  "spec_version": "v1.2",
+  "config": null,
+  "stack": {
+    "scorer": {
+      "version": "scorer_v1",
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75,
+        "idf": "log((N - n + 0.5) / (n + 0.5) + 1)",
+        "words": "lower-cased [\\w Devanagari]+"
+      },
+      "hybrid": {
+        "method": "reciprocal rank fusion",
+        "k": 60
+      },
+      "characters": "gold characters counted without whitespace"
+    },
+    "embedder": {
+      "name": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 8192,
+      "dtype": "float32",
+      "normalized": true
+    },
+    "budgets": [
+      750,
+      1250,
+      2000
+    ],
+    "parsers": [
+      "docling",
+      "pdfplumber"
+    ],
+    "page_level_gold_left_out": {
+      "docling": 0,
+      "pdfplumber": 0
+    },
+    "settings": [
+      "fixed_token_size256_overlap0_noprefix",
+      "fixed_token_size384_overlap0_noprefix",
+      "fixed_token_size512_overlap0_noprefix",
+      "langchain_recursive_size256_overlap0_noprefix",
+      "langchain_recursive_size384_overlap0_noprefix",
+      "langchain_recursive_size512_overlap0_noprefix",
+      "method1_tree_T256_noprefix",
+      "method1_tree_T384_noprefix",
+      "method1_tree_T512_noprefix",
+      "recursive_size256_overlap0_noprefix",
+      "recursive_size384_overlap0_noprefix",
+      "recursive_size512_overlap0_noprefix",
+      "sentence_sentences5_noprefix"
+    ],
+    "documents": [
+      "vidore_hr_a_demographic_perspective_on_the_future_of_european_kj0125152enn",
+      "vidore_hr_access_for_domestic_workers_to_labour_and_social_protection_ke0124002enn",
+      "vidore_hr_employment_and_social_developments_in_europe_2024_kebd24002enn",
+      "vidore_hr_employment_and_social_developments_in_europe_ke0125067enn",
+      "vidore_hr_estimating_labour_market_transitions_and_skills_investment_ke0125066enn",
+      "vidore_hr_european_network_of_public_employment_services_annual_ke0124024enn",
+      "vidore_hr_future_oriented_occupations_in_the_eu_ke0125043enn",
+      "vidore_hr_joint_employment_report_2025_ke0125018enn",
+      "vidore_hr_labour_market_and_wage_developments_in_europe_kebn24001enn",
+      "vidore_hr_posting_of_workers_ke0224850enn",
+      "vidore_hr_recruitment_working_conditions_career_development_ki0124000enn",
+      "vidore_hr_research_perspectives_on_the_future_of_work_ki0124087enn",
+      "vidore_hr_undeclared_care_work_in_the_eu_tj0125004enn",
+      "vidore_industrial_afd_091005_056",
+      "vidore_industrial_afd_091005_062",
+      "vidore_industrial_to_00_25_172",
+      "vidore_industrial_to_00_25_172cl_1",
+      "vidore_industrial_to_00_25_172cl_3",
+      "vidore_industrial_to_00_25_172cl_4",
+      "vidore_industrial_to_00_25_172cl_5",
+      "vidore_industrial_to_00_25_203",
+      "vidore_industrial_to_00_5_15",
+      "vidore_industrial_to_35_1_18",
+      "vidore_industrial_to_35_1_3",
+      "vidore_pharmaceuticals_aamgrxbiosimssept2018_uhl",
+      "vidore_pharmaceuticals_aamkeynotechoe2021",
+      "vidore_pharmaceuticals_biosimilar_and_interchangeable_products_the_us_fda_perspective",
+      "vidore_pharmaceuticals_biosimilar_regulatory_policy_understanding_the_landscape_and_relevance_to_medical_practice",
+      "vidore_pharmaceuticals_cavazzoni_presentation_fdli2020",
+      "vidore_pharmaceuticals_cder_new_drugs_program_2017_update",
+      "vidore_pharmaceuticals_cder_new_drugs_program_2019_update",
+      "vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2017_update",
+      "vidore_pharmaceuticals_cder_office_of_surveillance_and_epidemiology_2018_update",
+      "vidore_pharmaceuticals_cder_send_webinar_june_2020",
+      "vidore_pharmaceuticals_cder_update_presentation",
+      "vidore_pharmaceuticals_ddi_medication_errors_ce_march_2020_dmepa_and_ismp_combined_slides_final",
+      "vidore_pharmaceuticals_fda_office_of_generic_drugs_ogd_keynote_address_gdufa_past_present_and_future",
+      "vidore_pharmaceuticals_final_ce_dental_caries",
+      "vidore_pharmaceuticals_finalfdacmssummit1_10_18kscorrected",
+      "vidore_pharmaceuticals_olugbengaokubadejoaam2021",
+      "vidore_pharmaceuticals_ongoingfdaworkrelatedtoopioidoverdoseprevention",
+      "vidore_pharmaceuticals_pcca_internationalseminaron102518_jad_100418_stats_update",
+      "vidore_pharmaceuticals_pda_fda_slides2021_cavazzoni",
+      "vidore_pharmaceuticals_presentation_bridging_justifications_supporting_the_safety_of_excipients_in_generic_drug_products",
+      "vidore_pharmaceuticals_presentation_cder_2016_update_for_rare_diseases",
+      "vidore_pharmaceuticals_presentation_douglas_throckmorton_fdas_role_in_confronting_the_opioid_epidemic",
+      "vidore_pharmaceuticals_presentation_fdas_role_in_confronting_the_opioid_epidemic",
+      "vidore_pharmaceuticals_searchforbalancefdasapproachtotheopioidscrisis_79",
+      "vidore_pharmaceuticals_state_of_cder_fdli2021_pcavazzoni_20210515",
+      "vidore_pharmaceuticals_state_of_ogd_pivoting_to_gdufa_ii",
+      "vidore_pharmaceuticals_the_public_health_role_of_drug_regulation_in_the_us",
+      "vidore_pharmaceuticals_the_role_of_social_science_in_prescription_drug_promotion_at_fda_and_preview_of_upcoming_studies",
+      "vidore_pharmaceuticals_useofbayesianhierarchicalmodelsinthepresentationofsubgroupanalyses"
+    ],
+    "test": false,
+    "split": "held_out_2",
+    "gold_pattern": "h2_spans_{parser}.jsonl",
+    "gold_rows": "keep_primary"
+  },
+  "environment": {
+    "machine": "laptop",
+    "host": "chaurasia008-Nitro-AN515-52",
+    "python": "3.14.4",
+    "os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "packages": {
+      "docling": null,
+      "pdfplumber": "0.11.10",
+      "torch": "2.15.0",
+      "sentence-transformers": "6.2.0",
+      "transformers": "5.22.1",
+      "langchain-text-splitters": "1.1.3",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "inputs": [
+    {
+      "path": "data/gold/h2_spans_docling.jsonl",
+      "sha256": "c3b8ee26c5517027ce3a116299d162b55b44e498a88f18f442c4ce0b624e31b8"
+    },
+    {
+      "path": "data/gold/h2_spans_pdfplumber.jsonl",
+      "sha256": "89ed3fdaf2b5fe6f154aa77ec4404a126a4ff764257c19d25a9b8e71a75726c2"
+    }
+  ],
+  "outputs": [
+    "data/results/p3/P3-H2-20261124-3.csv.gz"
+  ],
+  "costs": {
+    "stages": [
+      {
+        "stage": "score:docling:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.662,
+        "peak_ram_mb": 2965.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:fixed_token_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.971,
+        "peak_ram_mb": 2965.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.226,
+        "peak_ram_mb": 2965.9,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.831,
+        "peak_ram_mb": 2967.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.024,
+        "peak_ram_mb": 2967.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:langchain_recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.157,
+        "peak_ram_mb": 2968.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.931,
+        "peak_ram_mb": 2974.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T384_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.953,
+        "peak_ram_mb": 2974.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:method1_tree_T512_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.032,
+        "peak_ram_mb": 2974.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.811,
+        "peak_ram_mb": 2976.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 1.988,
+        "peak_ram_mb": 2976.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.104,
+        "peak_ram_mb": 2976.2,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:docling:sentence_sentences5_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.292,
+        "peak_ram_mb": 2978.0,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.385,
+        "peak_ram_mb": 2995.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.707,
+        "peak_ram_mb": 2995.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:fixed_token_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 3.413,
+        "peak_ram_mb": 2996.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.339,
+        "peak_ram_mb": 2998.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.686,
+        "peak_ram_mb": 2998.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:langchain_recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 3.11,
+        "peak_ram_mb": 2999.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T256_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.353,
+        "peak_ram_mb": 3001.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T384_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.691,
+        "peak_ram_mb": 3001.5,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:method1_tree_T512_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.989,
+        "peak_ram_mb": 3002.3,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size256_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.412,
+        "peak_ram_mb": 3004.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size384_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.679,
+        "peak_ram_mb": 3004.4,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:recursive_size512_overlap0_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 3.066,
+        "peak_ram_mb": 3005.1,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      },
+      {
+        "stage": "score:pdfplumber:sentence_sentences5_noprefix",
+        "status": "ok",
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "paid_credits": 0.0,
+        "wall_seconds": 2.859,
+        "peak_ram_mb": 3006.8,
+        "gpu_name": "none",
+        "gpu_peak_mb": 0.0
+      }
+    ],
+    "totals": {
+      "wall_seconds": 62.671,
+      "llm_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "paid_credits": 0.0,
+      "peak_ram_mb": 3006.8,
+      "gpu_peak_mb": 0.0
+    }
+  }
+}
