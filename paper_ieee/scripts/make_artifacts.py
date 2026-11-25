@@ -2,7 +2,7 @@
 generated from locked result files only (data/results/, runs/, and the manual facts as tagged); nothing is re-run.
 Based on the paper-v1.2 generator (paper/scripts/make_artifacts.py). Inputs frozen at paper-v1.2 are checked against
 docs/paper_checksums.txt as tagged; inputs made after the tag (held-out 2, extension, second embedder) are checked
-against docs/paper_checksums_v1.3.txt (paper-v1.3 lock). Outputs go to paper_ieee/generated/ only and are byte-identical
+against docs/paper_checksums_v1.3.txt (paper-v1.3 lock), as tagged at paper-v1.3.1, or by a checksummed run record. Outputs go to paper_ieee/generated/ only and are byte-identical
 between runs. --no-tag-check skips the tag checks (tests on fake data only)."""
 import argparse
 import hashlib
@@ -21,7 +21,7 @@ import pandas as pd
 from scripts.aq_run import BUDGET, RECALL_RUNS, SHARE as AQ_SHARE, cohen_kappa
 from scripts.golden_check import DOCS as GOLDEN_DOCS, wilson
 from scripts.p3_fixedk import MEASURES, best_sizes
-from scripts.p4_analyse import SPLITS, in_scope
+from scripts.p4_analyse import SPLITS, in_scope, question_matrix
 from src.chunk.base import MAX_TOKENS, MIN_TOKENS
 from src.chunk.chunkers import CHUNKERS
 from src.eval.stats import LEVEL, RESAMPLES
@@ -90,7 +90,18 @@ INPUTS = {
     "h2_exclusion_record": "runs/P4-H2-20261124-5.json",
     "ext_rq1": "data/results/ext/P4-EXT-20261119-2_rq1.csv",
     "rob_rq1": "data/results/rob/P4-ROB-20261120-1_rq1.csv",
+    # tracked at LOCK_TAG, not in a checksum file: must equal the file as tagged (TAG_LOCKED)
+    "sweep_tests": "data/results/p3/budget_sweep_tuning_tests.csv",
+    "sweep_crossover": "data/results/p3/budget_sweep_tuning_crossover.csv",
+    "extension_versus": "data/results/ext/P4-EXT-20261119-2_versus_reference.csv",
+    "extension_rules": "data/results/ext/diagnostics/rules_summary.csv",
+    "robustness_rq3": "data/results/rob/P4-ROB-20261120-1_rq3.csv",
+    # not tracked: its SHA-256 is the recorded input of the checksummed record h2_drop (RECORD_LOCKED)
+    "scores_h2": "data/results/p3/P3-H2-20261124-1.csv.gz",
+    "aq_tuning": "data/results/aq/analysis_tuning.csv",
 }
+TAG_LOCKED = {"sweep_tests", "sweep_crossover", "extension_versus", "extension_rules", "robustness_rq3"}
+RECORD_LOCKED = {"scores_h2": "h2_drop"}
 TAGGED_INPUTS = {"manual", "split"}  # removed or extended (held-out 2 rows) since the tag: read with git show <TAG>:<path>, checked against the tagged checksum file
 AFTER_TAG = {key for key in INPUTS if key.startswith(("h2_", "ext_", "rob_"))}  # checked against CHECKSUMS_LOCK
 H2_SETS = {"h2_drop": "Drop rule", "h2_sensitivity": "Sensitivity", "h2_certain": "Certain-only"}  # gold variants, spec v1.2
@@ -219,6 +230,11 @@ class Inputs:
         """A tracked file as it is at the paper tag."""
         return self.git("show", f"{TAG}:{path}")
 
+    def tagged_digest(self, path):
+        """SHA-256 of a tracked file as it is at LOCK_TAG."""
+        content = subprocess.run(["git", "-C", str(self.root), "show", f"{LOCK_TAG}:{path}"], capture_output=True, check=True).stdout
+        return hashlib.sha256(content).hexdigest()
+
     def changed_since_tag(self, paths):
         """Files whose diff against the paper tag removes or changes a line (pure additions are allowed), and paths
         that are missing."""
@@ -251,6 +267,11 @@ def verify(root, keys, tag_check=True):
     for key in sorted(keys):
         relative, checksums = INPUTS[key], CHECKSUMS_LOCK if key in AFTER_TAG else CHECKSUMS
         listed = lists[checksums]
+        if key in TAG_LOCKED:
+            checksums, listed = LOCK_TAG, {relative: read.tagged_digest(relative)}
+        elif key in RECORD_LOCKED:
+            record = INPUTS[RECORD_LOCKED[key]]
+            checksums, listed = record, {each["path"]: each["sha256"] for each in read.json(RECORD_LOCKED[key])["inputs"]}
         if relative not in listed:
             problems.append(f"not in {checksums}: {relative}")
         elif not (key in TAGGED_INPUTS or read.path(key).exists()):
@@ -303,18 +324,10 @@ def escape(text):
     return str(text).replace("\\", r"\textbackslash{}").replace("_", r"\_").replace("%", r"\%").replace("&", r"\&")
 
 
-def setup_name(setup):
-    """'pdfplumber/method1_tree_T384_noprefix' -> 'pdfplumber / method1\\_tree T384' (LaTeX)."""
-    parser, setting = setup.split("/", 1) if "/" in setup else ("", setup)
-    for old, new in (("_overlap0", ""), ("_noprefix", ""), ("_size", " "), ("_sentences", " "), ("_T", " T"), ("_prefix", " prefix")):
-        setting = setting.replace(old, new)
-    return escape(f"{parser} / {setting}" if parser else setting)
-
-
 FAMILIES = [("langchain_recursive", "LC"), ("langchain_default", "LC-def"), ("method1_tree", "M1"), ("fixed_token", "FT"),
             ("recursive", "Rec"), ("sentence", "Sent"), ("semantic", "Sem"), ("llm_regex", "LLM"),
             ("page", "Page")]  # longer names first: langchain_recursive before recursive
-PARSERS = {"docling": "D", "pdfplumber": "P"}
+PARSERS = {"docling": "D", "docling_ocr_tesseract": "D-Tess", "pdfplumber": "P"}
 DISPLAY = {"held_out": "Held-out", "tuning": "Tuning", "bm25": "BM25", "dense": "Dense", "hybrid": "Hybrid",
            "primary": "Primary", "full": "Full", "original": "Original", "study": "Study runs", "tests": "Test runs",
            "docling": "Docling", "pdfplumber": "pdfplumber"}
@@ -347,6 +360,13 @@ def short(setup):
             + (f"-r{run.group(1)}" if run else "") + ("+p" if rest.endswith("_prefix") else ""))
     code = register(text, "setting", setting)
     return f"{PARSERS[parser]}/{code}" if parser else code
+
+
+def erratum_name(setting):
+    """A fixed-k setting by its short name; a superseded one ('_v11') marked with its version."""
+    version = re.search(r"_v(\d)(\d)$", setting)
+    name = short(setting[:version.start()] if version else setting)
+    return f"{name} (v{version[1]}.{version[2]})" if version else name
 
 
 def short_family(family, parser):
@@ -481,10 +501,10 @@ def rq1(read):
     primary = record["primary"]
     numbers |= {name: (value, INPUTS["p4_final"]) for name, value in {
         "RQoneSetups": primary["setups"], "RQoneDocuments": primary["documents"], "RQoneQuestions": primary["questions"],
-        "RQoneBest": setup_name(primary["best_single"]), "RQoneBestRecall": fixed(primary["best_single_recall"]),
+        "RQoneBest": short(primary["best_single"]), "RQoneBestRecall": fixed(primary["best_single_recall"]),
         "RQoneTied": primary["tied_with_best"], "RQoneOracle": fixed(primary["oracle"]), "RQoneRawGap": signed(primary["raw_gap"]),
         "RQoneDecision": "GO" if primary["gap_interval"][0] > 0 else "NO-GO"}.items()}
-    numbers |= {"RQoneTuningWinner": (setup_name(winner), INPUTS["tuning_p4"]),
+    numbers |= {"RQoneTuningWinner": (short(winner), INPUTS["tuning_p4"]),
                 "RQoneTuningWinnerRecall": (fixed(setups.loc[winner, "recall"]), INPUTS["p4_primary"]),
                 "RQoneTuningWinnerRank": (int(rank[winner]), INPUTS["p4_primary"]),
                 "RQoneTuningWinnerTied": ("tied" if setups.loc[winner, "tied_with_best"] else "not tied", INPUTS["p4_primary"])}
@@ -510,7 +530,7 @@ def rq1_held_out_2(read, winner):
         rank = setups["recall"].rank(ascending=False, method="min")
         name = f"RQoneHTwo{letters(label)}"
         numbers |= {f"{name}{part}": (value, source) for part, value in {
-            "Documents": summary["documents"], "Questions": summary["questions"], "Best": setup_name(summary["best_single"]),
+            "Documents": summary["documents"], "Questions": summary["questions"], "Best": short(summary["best_single"]),
             "BestRecall": fixed(summary["best_single_recall"]), "Tied": summary["tied_with_best"],
             "Oracle": fixed(summary["oracle"]), "Gap": signed(summary["gap"]), "GapCI": interval(low, high),
             "Decision": "GO" if low > 0 else "NO-GO"}.items()}
@@ -640,7 +660,7 @@ def rq3(read):
         details = details.rename(columns={"best setting": "best", "chunk tokens": "tokens"})
         for row in details[details["scope"] == "all settings"].itertuples(index=False):
             name = f"RQthree{letters(parser)}{letters(row.measure)}"
-            numbers |= {f"{name}Best": (setup_name(row.best), INPUTS["fixedk"]), f"{name}Score": (fixed(row.score), INPUTS["fixedk"]),
+            numbers |= {f"{name}Best": (short(row.best), INPUTS["fixedk"]), f"{name}Score": (fixed(row.score), INPUTS["fixedk"]),
                         f"{name}Size": (row.tokens, INPUTS["fixedk"])}
     return {"figures/rq3.tex": rq3_figure(read, kept), "tables/rq3_erratum.tex": fixedk_erratum(frame, kept, labels)}, numbers
 
@@ -684,8 +704,8 @@ def fixedk_erratum(frame, kept, labels):
         return {parser: best_sizes(table)[1].query("scope == 'all settings'").set_index("measure")
                 for parser, table in fixedk_tables(part).items()}
     corrected, first = best(frame[frame["setting"].isin(kept)]), best(frame)
-    rows = [[display(parser), labels[measure], f"{setup_name(first[parser].loc[measure, 'best setting'])} ({fixed(first[parser].loc[measure, 'score'])})",
-             f"{setup_name(corrected[parser].loc[measure, 'best setting'])} ({fixed(corrected[parser].loc[measure, 'score'])})"]
+    rows = [[display(parser), labels[measure], f"{erratum_name(first[parser].loc[measure, 'best setting'])} ({fixed(first[parser].loc[measure, 'score'])})",
+             f"{erratum_name(corrected[parser].loc[measure, 'best setting'])} ({fixed(corrected[parser].loc[measure, 'score'])})"]
             for parser in sorted(corrected) for measure in MEASURES
             if first[parser].loc[measure, "best setting"] != corrected[parser].loc[measure, "best setting"]]
     return tabular("llll", ["Parser", "Measure", "First reported (all settings)", "Corrected (in scope)"], rows)
@@ -782,7 +802,7 @@ def comparison_macros(prefix, versus, source):
     numbers = {}
     for row in versus.itertuples(index=False):
         name = prefix + setting_part(row.parser, row.setting)
-        numbers |= {f"{name}Setup": (setup_name(f"{row.parser}/{row.setting}"), source),
+        numbers |= {f"{name}Setup": (short(f"{row.parser}/{row.setting}"), source),
                     f"{name}Diff": (signed(row.difference), source), f"{name}CI": (interval(row.low, row.high), source),
                     f"{name}Holm": (holm_text(row.holm_p, len(versus)), source)}
     return numbers
@@ -793,11 +813,11 @@ def aq_scanned(read):
     Holm (p < 0.05), and the largest difference."""
     setups, versus, source = read.csv("aq_scanned"), read.csv("aq_scanned_vs_best"), INPUTS["aq_scanned_vs_best"]
     best, top = setups.loc[setups["f1"].idxmax()], versus.loc[versus["difference"].idxmax()]
-    numbers = {"RQfourScannedBest": (setup_name(f"{best.parser}/{best.setting}"), INPUTS["aq_scanned"]),
+    numbers = {"RQfourScannedBest": (short(f"{best.parser}/{best.setting}"), INPUTS["aq_scanned"]),
                "RQfourScannedBestFOne": (fixed(best.f1), INPUTS["aq_scanned"]),
                "RQfourScannedComparisons": (len(versus), source),
                "RQfourScannedSignificant": (int((versus["holm_p"] < 0.05).sum()), source),
-               "RQfourScannedTopSetup": (setup_name(f"{top.parser}/{top.setting}"), source),
+               "RQfourScannedTopSetup": (short(f"{top.parser}/{top.setting}"), source),
                "RQfourScannedTopDiff": (signed(top.difference), source), "RQfourScannedTopCI": (interval(top.low, top.high), source),
                "RQfourScannedTopHolm": (holm_text(top.holm_p, len(versus)), source)}
     for parser, group in versus.groupby("parser"):
@@ -812,7 +832,7 @@ def rq4(read):
     rows = [[short(f"{row.parser}/{row.setting}"), signed(row.difference), interval(row.low, row.high), holm_text(row.holm_p, len(versus))]
             for row in versus.sort_values("difference", ascending=False).itertuples(index=False)]
     tuning = read.csv("aq_tuning_vs_best")
-    numbers = {"RQfourBest": (setup_name(f"{best.parser}/{best.setting}"), INPUTS["aq_held_out"]),
+    numbers = {"RQfourBest": (short(f"{best.parser}/{best.setting}"), INPUTS["aq_held_out"]),
                "RQfourBestFOne": (fixed(best.f1), INPUTS["aq_held_out"]),
                "RQfourComparisons": (len(versus), INPUTS["aq_held_out_vs_best"]),
                "RQfourTuningMinHolm": (fixed(tuning["holm_p"].min(), 2), INPUTS["aq_tuning_vs_best"])}
@@ -1174,6 +1194,99 @@ def manual(read):
                                               + (" (percent)" if row.unit.startswith("proportion") else "")) for row in facts.itertuples(index=False)}
 
 
+# --- facts behind the claims and disclosures ------------------------------------------------------------------------
+
+def spread(values, sign=signed):
+    return f"{sign(values.min())} to {sign(values.max())}"
+
+
+def gap_width(record):
+    low, high = record["gap_interval"]
+    return fixed(high - low)
+
+
+def question_counts(read):
+    """Documents with few questions (RQ1), interval widths, and held-out 2 questions kept per parser."""
+    final, drop = read.json("p4_final")["stack"]["summary"], read.json("h2_drop")["stack"]["summary"]["primary"]
+    scores = read.csv("scores_h2")
+    scores = scores[(scores["retriever"] == "hybrid") & (scores["budget"] == 1250)]
+    common = question_matrix(scores, scores["setting"].unique())[0].groupby(level="doc_id").size()
+    if (len(common), int(common.sum())) != (drop["documents"], drop["questions"]):
+        raise ValueError("held-out 2 common set differs from the P4 record")
+    held_out_1 = read.csv("p4_primary_documents")["questions"]
+    numbers = {"RQonePrimaryGapWidth": (gap_width(final["primary"]), INPUTS["p4_final"]),
+               "RQoneHTwoDropRuleGapWidth": (gap_width(drop), INPUTS["h2_drop"]),
+               "RQoneOriginalSetups": (final["original"]["setups"], INPUTS["p4_final"]),
+               "RQoneOneQuestionDocuments": (int((held_out_1 == 1).sum()), INPUTS["p4_primary_documents"]),
+               "RQoneHTwoOneQuestionDocuments": (int((common == 1).sum()), INPUTS["scores_h2"]),
+               "RQoneHTwoTwoQuestionDocuments": (int((common == 2).sum()), INPUTS["scores_h2"]),
+               "RQoneHTwoMedianQuestions": (f"{common.median():g}", INPUTS["scores_h2"])}
+    kept = scores.groupby("parser")[["doc_id", "question_id"]].apply(lambda part: len(part.drop_duplicates()))
+    numbers |= {f"HTwoKept{letters(parser)}": (int(count), INPUTS["scores_h2"]) for parser, count in kept.items()}
+    return {}, numbers
+
+
+def rq2_caveats(read):
+    """RQ2 per corpus on held-out 2 (drop-rule gold), intervals including zero per budget, held-out 1 CUAD and FinanceBench."""
+    frame, source = read.csv("h2_rq2"), INPUTS["h2_rq2"]
+    run = read.json("h2_drop")["stack"]["scores_run"]
+    every = frame[frame["corpus"] == "all"]
+    zero = every[(every["low"] <= 0) & (every["high"] >= 0)].groupby("budget").size()
+    numbers = {f"RQtwoHTwoIncludeZero{letters(budget)}": (int(zero.get(budget, 0)), source) for budget in (750, 1250)}
+    numbers |= {f"RQtwoHTwo{letters(row.corpus)}{letters(row.parser)}{letters(row.budget)}": (signed(row.spearman), source)
+                for row in frame[(frame["scores_run"] == run) & frame["corpus"].isin(["hr", "industrial"])].itertuples(index=False)}
+    numbers |= {f"RQtwoHTwoDropRule{letters(row.parser)}{letters(row.budget)}CI": (interval(row.low, row.high), source)
+                for row in every[(every["scores_run"] == run) & (every["budget"] == 2000)].itertuples(index=False)}
+    final, source = read.csv("size_final_summary"), INPUTS["size_final_summary"]
+    cuad = final[final["source"] == "CUAD"].sort_values("budget")
+    for parser, part in cuad.groupby("parser"):
+        numbers |= {f"RQtwoHeldOutCUAD{letters(parser)}Rhos": (", ".join(fixed(rho, 2) for rho in part["spearman_size_recall"]), source),
+                    f"RQtwoHeldOutCUAD{letters(parser)}LargestBestSize": (part["best_size"].iloc[-1], source)}
+    numbers["RQtwoHeldOutCUADDocuments"] = (cuad["documents"].iloc[0], source)
+    drop = read.csv("gold_drop_final").query("source == 'FinanceBench' and gold_file == 'docling'").iloc[0]
+    numbers |= {"FinanceBenchQuestions": (drop["total"], INPUTS["gold_drop_final"]), "FinanceBenchKept": (drop["kept"], INPUTS["gold_drop_final"])}
+    return {}, numbers
+
+
+def rq3_controls(read):
+    """RQ3 budget sweep and random floor (tuning): size 256 minus size 1,024, the 24 tested comparisons."""
+    tests, source = read.csv("sweep_tests").query("tested"), INPUTS["sweep_tests"]
+    if read.csv("sweep_crossover")["crossover_budget"].notna().any():
+        raise ValueError("a crossover exists: the text says none")
+    numbers = {"RQthreeSweepTests": (len(tests), source), "RQthreeSweepSignificant": (int((tests["holm_p"] < 0.05).sum()), source),
+               "RQthreeSweepMaxHolm": (fixed(tests["holm_p"].max()), source), "RQthreeSweepDocuments": (tests["documents"].iloc[0], source)}
+    for name, cut, kind in (("Budget", "budget", "recall"), ("Recall", "k", "recall"), ("Lift", "k", "lift")):
+        numbers[f"RQthreeSweep{name}"] = (spread(tests[(tests["measure"] == cut) & (tests["value"] == kind)]["difference"]), source)
+    return {}, numbers
+
+
+def disclosures(read):
+    """Containment (RQ4), RQ5 sample sizes, extension results, the nomic tests and the Indian share of the questions."""
+    numbers = {"RQfourSetups": (len(read.csv("aq_held_out")), INPUTS["aq_held_out"]),
+               "RQfiveADigitalDocuments": (read.csv("rq5_digital")["documents"].iloc[0], INPUTS["rq5_digital"]),
+               "RQfiveBDocuments": (read.csv("rq5_chunker")["documents"].iloc[0], INPUTS["rq5_chunker"])}
+    for name, key in (("HeldOut", "aq_held_out"), ("Tuning", "aq_tuning"), ("Scanned", "aq_scanned")):
+        table = read.csv(key).sort_values("contained")
+        numbers |= {f"RQfourContained{name}{part}": (value, INPUTS[key]) for part, value in {
+            "Best": short(f"{table['parser'].iloc[-1]}/{table['setting'].iloc[-1]}"), "BestValue": fixed(table["contained"].iloc[-1]),
+            "Lowest": short(f"{table['parser'].iloc[0]}/{table['setting'].iloc[0]}"), "LowestValue": fixed(table["contained"].iloc[0])}.items()}
+    versus, source = read.csv("extension_versus").query("budget == 1250 and variant == 'all'").set_index("setup"), INPUTS["extension_versus"]
+    numbers |= {"ExtSetups": (len(versus), source), "ExtLower": (int(((versus["difference"] < 0) & (versus["holm_p"] < 0.05)).sum()), source)}
+    for name, setup in (("Hybrid", "docling/docling_hybrid_noprefix"), ("SectionDocling", "docling/section_table_prefix"),
+                        ("SectionPdfplumber", "pdfplumber/section_table_prefix")):
+        numbers |= {f"Ext{name}Diff": (signed(versus.loc[setup, "difference"]), source),
+                    f"Ext{name}CI": (interval(versus.loc[setup, "low"], versus.loc[setup, "high"]), source)}
+    rules = read.csv("extension_rules").query("setting == 'docling_hybrid_noprefix'").iloc[0]
+    numbers |= {"ExtHybridChunks": (f"{int(rules['hybrid_chunks']):,}", INPUTS["extension_rules"]),
+                "ExtHybridUnlocated": (f"{int(rules['unlocated']):,}", INPUTS["extension_rules"])}
+    nomic = read.csv("robustness_rq3").query("embedder == 'nomic' and variant == 'without Indian'")
+    numbers |= {"RobNomicTests": (len(nomic), INPUTS["robustness_rq3"]), "RobNomicAboveHolm": (int((nomic["holm_p"] > 0.05).sum()), INPUTS["robustness_rq3"])}
+    for name, key in (("Tuning", "tuning_p4"), ("HeldOut", "held_out_no_indian")):
+        questions = read.csv(key).query("scope == 'primary'")["questions"]
+        numbers[f"Indian{name}Questions"] = (questions.max() - questions.min(), INPUTS[key])
+    return {}, numbers
+
+
 BUILDERS = {
     rq1: {"p4_final", "p4_primary", "tuning_p4", "h2_pooled"} | {key + part for key in H2_SETS for part in ("", "_setups")},
     rq2_held_out_2: {"h2_rq2"} | set(H2_SETS),
@@ -1198,6 +1311,11 @@ BUILDERS = {
     grid: {"p4_tuning_full", "p4_primary"},
     deviations: set(),
     sanity: {"sanity_log"},
+    question_counts: {"p4_final", "h2_drop", "scores_h2", "p4_primary_documents"},
+    rq2_caveats: {"h2_rq2", "h2_drop", "size_final_summary", "gold_drop_final"},
+    rq3_controls: {"sweep_tests", "sweep_crossover"},
+    disclosures: {"aq_held_out", "aq_tuning", "aq_scanned", "rq5_digital", "rq5_chunker", "extension_versus", "extension_rules",
+                  "robustness_rq3", "tuning_p4", "held_out_no_indian"},
     timeline: {"github_page1", "github_page2", "pdfplumber_record", "chunking_final_record", "p3_final_record", "p4_final"},
 }
 
@@ -1230,10 +1348,10 @@ FIGURES = {  # figure body -> (label, caption, wide); the caption sits below the
     "rq3": ("fig:rq3", "RQ3 on tuning: the same settings scored with a fixed number of chunks and with a fixed token budget. "
             "Both series use the same questions (QASPER included), so Recall@1,250 here differs slightly (up to 0.029) from the "
             "tuning per-setting means that exclude QASPER; trend lines are least-squares fits for display only. "
-            r"Recall@4,000, a pre-registered RQ3 measure outside the main budgets, also favours small chunks: best setups "
+            r"Recall@4,000, a measure named in the diagnostic's design and outside the main budgets, also favours small chunks: best setups "
             r"\RQthreeDoclingRecallFourZeroZeroZeroBest{} (\RQthreeDoclingRecallFourZeroZeroZeroSize{} tokens) on Docling and "
             r"\RQthreePdfplumberRecallFourZeroZeroZeroBest{} (\RQthreePdfplumberRecallFourZeroZeroZeroSize{} tokens) on pdfplumber.", False),
-    "rq5": ("fig:rq5", "RQ5: (a) parser variants minus default, digital PDFs; (b) tuned size minus default, held-out set~1. "
+    "rq5": ("fig:rq5", r"RQ5: (a) parser variants minus default, \RQfiveADigitalDocuments{} digital tuning PDFs; (b) tuned size minus default, held-out set~1. "
             r"Bars: 95\% document bootstrap intervals. Filled marks are significant after Holm correction.", False),
 }
 FIGURE_ROOT = "generated/figures"  # the bodies' folder as main.tex (in paper_ieee/) inputs them
@@ -1253,7 +1371,7 @@ def ieee_float(name, body):
     label, caption, wide = FLOATS[name]
     environment = "table*" if wide else "table"
     return "\n".join([f"% Generated by paper_ieee/scripts/make_artifacts.py; do not edit.", f"\\begin{{{environment}}}[!t]",
-                      r"\centering", f"\\caption{{{caption}}}", f"\\label{{{label}}}", r"\footnotesize",
+                      r"\centering", f"\\caption{{{caption}}}", f"\\label{{{label}}}", r"\scriptsize" if name == "key" else r"\footnotesize",
                       body.rstrip("\n"), f"\\end{{{environment}}}", ""])
 
 

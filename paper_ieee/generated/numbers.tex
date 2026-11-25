@@ -53,6 +53,18 @@
 \newcommand{\DeviationCount}{21}  % spec/spec_v1.2.md at paper-v1.2, rows of kind deviation in tables/deviations.tex
 \newcommand{\DoclingVersion}{2.143.0}  % runs/P1-RQ5-KN01-20261109-4.json
 \newcommand{\EmbedDim}{1{,}024}  % runs/P3-LOCAL-20261105-4.json
+\newcommand{\ExtHybridCI}{[$-$0.122, $-$0.039]}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\ExtHybridChunks}{3{,}400}  % data/results/ext/diagnostics/rules_summary.csv
+\newcommand{\ExtHybridDiff}{$-$0.081}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\ExtHybridUnlocated}{1{,}383}  % data/results/ext/diagnostics/rules_summary.csv
+\newcommand{\ExtLower}{3}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\ExtSectionDoclingCI}{[$-$0.208, $-$0.078]}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\ExtSectionDoclingDiff}{$-$0.148}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\ExtSectionPdfplumberCI}{[$-$0.253, $-$0.119]}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\ExtSectionPdfplumberDiff}{$-$0.184}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\ExtSetups}{6}  % data/results/ext/P4-EXT-20261119-2_versus_reference.csv
+\newcommand{\FinanceBenchKept}{1}  % data/results/p3/gold_drop_final.csv
+\newcommand{\FinanceBenchQuestions}{7}  % data/results/p3/gold_drop_final.csv
 \newcommand{\FixedKBudget}{4{,}000}  % runs/P3-FIXEDK-20261112-1.json
 \newcommand{\GoldDropThreshold}{0.604}  % configs/gold_drop_rule.json at paper-v1.2
 \newcommand{\GoldenIndianDFourRtiActInvalid}{8}  % data/results/golden_check/labels.csv
@@ -78,11 +90,15 @@
 \newcommand{\GoldenOverallUnsure}{8}  % data/results/golden_check/labels.csv
 \newcommand{\GoldenSampled}{60}  % data/results/golden_check/labels.csv
 \newcommand{\GoldenUnsure}{8}  % data/results/golden_check/labels.csv
+\newcommand{\HTwoKeptDocling}{237}  % data/results/p3/P3-H2-20261124-1.csv.gz
+\newcommand{\HTwoKeptPdfplumber}{248}  % data/results/p3/P3-H2-20261124-1.csv.gz
 \newcommand{\HTwoSelectedDocuments}{53}  % pdfs/split.csv at paper-v1.3.1
 \newcommand{\HTwoSelectedHr}{13}  % pdfs/split.csv at paper-v1.3.1
 \newcommand{\HTwoSelectedIndustrial}{11}  % pdfs/split.csv at paper-v1.3.1
 \newcommand{\HTwoSelectedPharmaceuticals}{29}  % pdfs/split.csv at paper-v1.3.1
 \newcommand{\HeldOutSetups}{98}  % runs/P4-FINAL-20261106-1.json
+\newcommand{\IndianHeldOutQuestions}{171}  % data/results/p4/P4-FINAL-NOINDIAN-20261114-1_p4.csv
+\newcommand{\IndianTuningQuestions}{570}  % data/results/p4/P4-NOINDIAN-20261114-1_p4.csv
 \newcommand{\JudgeCases}{40}  % data/results/aq/judge_check.csv
 \newcommand{\JudgeDisagreements}{12}  % reconstruction from judge_check.csv, judgements.jsonl, manual_facts.csv
 \newcommand{\JudgeReconKappaHigh}{0.46}  % reconstruction from judge_check.csv, judgements.jsonl, manual_facts.csv
@@ -101,6 +117,7 @@
 \newcommand{\PdfplumberVersion}{0.11.10}  % runs/P1-LOCAL-20261106-1.json
 \newcommand{\PrefixCap}{10\%}  % src/chunk/base.py and src/chunk/chunkers.py and src/eval/stats.py and scripts/p4_analyse.py and scripts/aq_run.py and scripts/golden_check.py and scripts/p3_fixedk.py at paper-v1.2
 \newcommand{\RQfiveADigitalDoclingRecall}{0.827}  % data/results/rq5/P5-LOCAL-20261110-1_digital.csv
+\newcommand{\RQfiveADigitalDocuments}{5}  % data/results/rq5/P5-LOCAL-20261110-1_digital.csv
 \newcommand{\RQfiveADigitalMaxAbsDiff}{0.007}  % data/results/rq5/P5-LOCAL-20261110-1_digital.csv
 \newcommand{\RQfiveADigitalMinHolm}{0.29}  % data/results/rq5/P5-LOCAL-20261110-1_digital.csv
 \newcommand{\RQfiveADigitalPdfplumberRecall}{0.797--0.798}  % data/results/rq5/P5-LOCAL-20261110-1_digital.csv
@@ -111,6 +128,7 @@
 \newcommand{\RQfiveAScannedHolm}{0.50}  % data/results/rq5/P5-LOCAL-20261111-1_scanned.csv
 \newcommand{\RQfiveAScannedQuestions}{34}  % data/results/rq5/P5-LOCAL-20261111-1_scanned.csv
 \newcommand{\RQfiveBComparisons}{8}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
+\newcommand{\RQfiveBDocuments}{17}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
 \newcommand{\RQfiveBFixedTokenDoclingCI}{[$-$0.027, 0.121]}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
 \newcommand{\RQfiveBFixedTokenDoclingDefault}{0.687}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
 \newcommand{\RQfiveBFixedTokenDoclingDiff}{+0.042}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
@@ -151,36 +169,48 @@
 \newcommand{\RQfiveBRecursivePdfplumberDiff}{+0.025}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
 \newcommand{\RQfiveBRecursivePdfplumberHolm}{0.760}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
 \newcommand{\RQfiveBRecursivePdfplumberTuned}{0.738}  % data/results/rq5/P5-LOCAL-20261110-2_chunker.csv
-\newcommand{\RQfourBest}{docling / method1\_tree T256}  % data/results/aq/analysis_held_out.csv
+\newcommand{\RQfourBest}{D/M1-256}  % data/results/aq/analysis_held_out.csv
 \newcommand{\RQfourBestFOne}{0.393}  % data/results/aq/analysis_held_out.csv
 \newcommand{\RQfourComparisons}{6}  % data/results/aq/analysis_held_out_vs_best.csv
+\newcommand{\RQfourContainedHeldOutBest}{D/M1-256}  % data/results/aq/analysis_held_out.csv
+\newcommand{\RQfourContainedHeldOutBestValue}{0.371}  % data/results/aq/analysis_held_out.csv
+\newcommand{\RQfourContainedHeldOutLowest}{D/FT-1024}  % data/results/aq/analysis_held_out.csv
+\newcommand{\RQfourContainedHeldOutLowestValue}{0.244}  % data/results/aq/analysis_held_out.csv
+\newcommand{\RQfourContainedScannedBest}{D/Rec-256}  % data/results/aq/analysis_scanned.csv
+\newcommand{\RQfourContainedScannedBestValue}{0.575}  % data/results/aq/analysis_scanned.csv
+\newcommand{\RQfourContainedScannedLowest}{D-Tess/M1-256}  % data/results/aq/analysis_scanned.csv
+\newcommand{\RQfourContainedScannedLowestValue}{0.242}  % data/results/aq/analysis_scanned.csv
+\newcommand{\RQfourContainedTuningBest}{D/M1-256}  % data/results/aq/analysis_tuning.csv
+\newcommand{\RQfourContainedTuningBestValue}{0.452}  % data/results/aq/analysis_tuning.csv
+\newcommand{\RQfourContainedTuningLowest}{D/LC-def}  % data/results/aq/analysis_tuning.csv
+\newcommand{\RQfourContainedTuningLowestValue}{0.370}  % data/results/aq/analysis_tuning.csv
 \newcommand{\RQfourDoclingFixedTokenSizeOneZeroTwoFourCI}{[0.050, 0.210]}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingFixedTokenSizeOneZeroTwoFourDiff}{+0.123}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingFixedTokenSizeOneZeroTwoFourHolm}{$<$0.01}  % data/results/aq/analysis_held_out_vs_best.csv
-\newcommand{\RQfourDoclingFixedTokenSizeOneZeroTwoFourSetup}{docling / fixed\_token 1024}  % data/results/aq/analysis_held_out_vs_best.csv
+\newcommand{\RQfourDoclingFixedTokenSizeOneZeroTwoFourSetup}{D/FT-1024}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainDefaultCI}{[0.002, 0.099]}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainDefaultDiff}{+0.048}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainDefaultHolm}{0.176}  % data/results/aq/analysis_held_out_vs_best.csv
-\newcommand{\RQfourDoclingLangchainDefaultSetup}{docling / langchain\_default}  % data/results/aq/analysis_held_out_vs_best.csv
+\newcommand{\RQfourDoclingLangchainDefaultSetup}{D/LC-def}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainRecursiveSizeFiveOneTwoCI}{[$-$0.033, 0.051]}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainRecursiveSizeFiveOneTwoDiff}{+0.010}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainRecursiveSizeFiveOneTwoHolm}{1.000}  % data/results/aq/analysis_held_out_vs_best.csv
-\newcommand{\RQfourDoclingLangchainRecursiveSizeFiveOneTwoSetup}{docling / langchain\_recursive 512}  % data/results/aq/analysis_held_out_vs_best.csv
+\newcommand{\RQfourDoclingLangchainRecursiveSizeFiveOneTwoSetup}{D/LC-512}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainRecursiveSizeTwoFiveSixCI}{[$-$0.021, 0.117]}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainRecursiveSizeTwoFiveSixDiff}{+0.035}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingLangchainRecursiveSizeTwoFiveSixHolm}{1.000}  % data/results/aq/analysis_held_out_vs_best.csv
-\newcommand{\RQfourDoclingLangchainRecursiveSizeTwoFiveSixSetup}{docling / langchain\_recursive 256}  % data/results/aq/analysis_held_out_vs_best.csv
+\newcommand{\RQfourDoclingLangchainRecursiveSizeTwoFiveSixSetup}{D/LC-256}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingMethodOneTreeTThreeEightFourCI}{[0.010, 0.137]}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingMethodOneTreeTThreeEightFourDiff}{+0.065}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingMethodOneTreeTThreeEightFourHolm}{0.025}  % data/results/aq/analysis_held_out_vs_best.csv
-\newcommand{\RQfourDoclingMethodOneTreeTThreeEightFourSetup}{docling / method1\_tree T384}  % data/results/aq/analysis_held_out_vs_best.csv
+\newcommand{\RQfourDoclingMethodOneTreeTThreeEightFourSetup}{D/M1-384}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingRecursiveSizeFiveOneTwoCI}{[$-$0.028, 0.113]}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingRecursiveSizeFiveOneTwoDiff}{+0.030}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourDoclingRecursiveSizeFiveOneTwoHolm}{1.000}  % data/results/aq/analysis_held_out_vs_best.csv
-\newcommand{\RQfourDoclingRecursiveSizeFiveOneTwoSetup}{docling / recursive 512}  % data/results/aq/analysis_held_out_vs_best.csv
+\newcommand{\RQfourDoclingRecursiveSizeFiveOneTwoSetup}{D/Rec-512}  % data/results/aq/analysis_held_out_vs_best.csv
 \newcommand{\RQfourScannedAboveDocling}{4}  % data/results/aq/analysis_scanned_vs_best.csv
 \newcommand{\RQfourScannedAboveDoclingOcrTesseract}{5}  % data/results/aq/analysis_scanned_vs_best.csv
-\newcommand{\RQfourScannedBest}{docling / recursive 256}  % data/results/aq/analysis_scanned.csv
+\newcommand{\RQfourScannedBest}{D/Rec-256}  % data/results/aq/analysis_scanned.csv
 \newcommand{\RQfourScannedBestFOne}{0.545}  % data/results/aq/analysis_scanned.csv
 \newcommand{\RQfourScannedComparisons}{9}  % data/results/aq/analysis_scanned_vs_best.csv
 \newcommand{\RQfourScannedCountDocling}{4}  % data/results/aq/analysis_scanned_vs_best.csv
@@ -189,13 +219,14 @@
 \newcommand{\RQfourScannedTopCI}{[0.065, 0.420]}  % data/results/aq/analysis_scanned_vs_best.csv
 \newcommand{\RQfourScannedTopDiff}{+0.243}  % data/results/aq/analysis_scanned_vs_best.csv
 \newcommand{\RQfourScannedTopHolm}{0.036}  % data/results/aq/analysis_scanned_vs_best.csv
-\newcommand{\RQfourScannedTopSetup}{docling\_ocr\_tesseract / fixed\_token 256}  % data/results/aq/analysis_scanned_vs_best.csv
+\newcommand{\RQfourScannedTopSetup}{D-Tess/FT-256}  % data/results/aq/analysis_scanned_vs_best.csv
+\newcommand{\RQfourSetups}{7}  % data/results/aq/analysis_held_out.csv
 \newcommand{\RQfourSpearmanHeldOutFOne}{0.43}  % data/results/aq/answers_f1.csv, data/results/p3/P3-FINAL-20261106-1.csv.gz
 \newcommand{\RQfourSpearmanHeldOutJudge}{0.64}  % data/results/aq/judgements.jsonl, data/results/p3/P3-FINAL-20261106-1.csv.gz
 \newcommand{\RQfourSpearmanTuningFOne}{0.75}  % data/results/aq/answers_f1.csv, data/results/p3/P3-LOCAL-20261105-4.csv.gz
 \newcommand{\RQfourSpearmanTuningJudge}{0.75}  % data/results/aq/judgements.jsonl, data/results/p3/P3-LOCAL-20261105-4.csv.gz
 \newcommand{\RQfourTuningMinHolm}{1.00}  % data/results/aq/analysis_tuning_vs_best.csv
-\newcommand{\RQoneBest}{pdfplumber / method1\_tree T384}  % runs/P4-FINAL-20261106-1.json
+\newcommand{\RQoneBest}{P/M1-384}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQoneBestRecall}{0.772}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQoneDecision}{NO-GO}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQoneDocuments}{17}  % runs/P4-FINAL-20261106-1.json
@@ -211,7 +242,7 @@
 \newcommand{\RQoneHRCheckWithoutGap}{$-$0.053}  % data/results/h2/P4-H2-20261124-5_exclusion.csv
 \newcommand{\RQoneHRCheckWithoutGapCI}{[$-$0.105, $-$0.005]}  % data/results/h2/P4-H2-20261124-5_exclusion.csv
 \newcommand{\RQoneHRCheckWithoutQuestions}{222}  % data/results/h2/P4-H2-20261124-5_exclusion.csv
-\newcommand{\RQoneHTwoCertainOnlyBest}{docling / langchain\_recursive 256}  % runs/P4-H2-20261124-3.json
+\newcommand{\RQoneHTwoCertainOnlyBest}{D/LC-256}  % runs/P4-H2-20261124-3.json
 \newcommand{\RQoneHTwoCertainOnlyBestRecall}{0.916}  % runs/P4-H2-20261124-3.json
 \newcommand{\RQoneHTwoCertainOnlyDecision}{NO-GO}  % runs/P4-H2-20261124-3.json
 \newcommand{\RQoneHTwoCertainOnlyDocuments}{29}  % runs/P4-H2-20261124-3.json
@@ -223,19 +254,22 @@
 \newcommand{\RQoneHTwoCertainOnlyTuningWinnerRank}{1}  % data/results/p4/P4-H2-20261124-3_primary_setups.csv
 \newcommand{\RQoneHTwoCertainOnlyTuningWinnerRecall}{0.916}  % data/results/p4/P4-H2-20261124-3_primary_setups.csv
 \newcommand{\RQoneHTwoCertainOnlyTuningWinnerTied}{tied}  % data/results/p4/P4-H2-20261124-3_primary_setups.csv
-\newcommand{\RQoneHTwoDropRuleBest}{docling / method1\_tree T256}  % runs/P4-H2-20261124-1.json
+\newcommand{\RQoneHTwoDropRuleBest}{D/M1-256}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleBestRecall}{0.836}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleDecision}{NO-GO}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleDocuments}{52}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleGap}{$-$0.045}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleGapCI}{[$-$0.096, 0.002]}  % runs/P4-H2-20261124-1.json
+\newcommand{\RQoneHTwoDropRuleGapWidth}{0.098}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleOracle}{0.792}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleQuestions}{229}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleTied}{16}  % runs/P4-H2-20261124-1.json
 \newcommand{\RQoneHTwoDropRuleTuningWinnerRank}{2}  % data/results/p4/P4-H2-20261124-1_primary_setups.csv
 \newcommand{\RQoneHTwoDropRuleTuningWinnerRecall}{0.828}  % data/results/p4/P4-H2-20261124-1_primary_setups.csv
 \newcommand{\RQoneHTwoDropRuleTuningWinnerTied}{tied}  % data/results/p4/P4-H2-20261124-1_primary_setups.csv
-\newcommand{\RQoneHTwoSensitivityBest}{docling / method1\_tree T256}  % runs/P4-H2-20261124-2.json
+\newcommand{\RQoneHTwoMedianQuestions}{3}  % data/results/p3/P3-H2-20261124-1.csv.gz
+\newcommand{\RQoneHTwoOneQuestionDocuments}{6}  % data/results/p3/P3-H2-20261124-1.csv.gz
+\newcommand{\RQoneHTwoSensitivityBest}{D/M1-256}  % runs/P4-H2-20261124-2.json
 \newcommand{\RQoneHTwoSensitivityBestRecall}{0.838}  % runs/P4-H2-20261124-2.json
 \newcommand{\RQoneHTwoSensitivityDecision}{NO-GO}  % runs/P4-H2-20261124-2.json
 \newcommand{\RQoneHTwoSensitivityDocuments}{52}  % runs/P4-H2-20261124-2.json
@@ -247,9 +281,12 @@
 \newcommand{\RQoneHTwoSensitivityTuningWinnerRank}{3}  % data/results/p4/P4-H2-20261124-2_primary_setups.csv
 \newcommand{\RQoneHTwoSensitivityTuningWinnerRecall}{0.826}  % data/results/p4/P4-H2-20261124-2_primary_setups.csv
 \newcommand{\RQoneHTwoSensitivityTuningWinnerTied}{tied}  % data/results/p4/P4-H2-20261124-2_primary_setups.csv
+\newcommand{\RQoneHTwoTwoQuestionDocuments}{17}  % data/results/p3/P3-H2-20261124-1.csv.gz
+\newcommand{\RQoneOneQuestionDocuments}{1}  % data/results/p4/P4-FINAL-20261106-1_primary_documents.csv
 \newcommand{\RQoneOracle}{0.765}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQoneOriginalGap}{$-$0.042}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQoneOriginalGapCI}{[$-$0.084, 0.002]}  % runs/P4-FINAL-20261106-1.json
+\newcommand{\RQoneOriginalSetups}{42}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQonePooledDecision}{NO-GO}  % data/results/h2/P4-H2-20261124-6_pooled.csv
 \newcommand{\RQonePooledDocuments}{69}  % data/results/h2/P4-H2-20261124-6_pooled.csv
 \newcommand{\RQonePooledGap}{$-$0.014}  % data/results/h2/P4-H2-20261124-6_pooled.csv
@@ -259,6 +296,7 @@
 \newcommand{\RQonePooledTuningWinnerRecall}{0.800}  % data/results/h2/P4-H2-20261124-6_pooled.csv
 \newcommand{\RQonePrimaryGap}{$-$0.007}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQonePrimaryGapCI}{[$-$0.045, 0.023]}  % runs/P4-FINAL-20261106-1.json
+\newcommand{\RQonePrimaryGapWidth}{0.068}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQonePrimarySentenceWindow}{5}  % data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
 \newcommand{\RQonePrimarySettings}{13}  % data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
 \newcommand{\RQonePrimarySizes}{256, 384 and 512}  % data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
@@ -266,42 +304,49 @@
 \newcommand{\RQoneRawGap}{+0.058}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQoneSetups}{26}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\RQoneTied}{15}  % runs/P4-FINAL-20261106-1.json
-\newcommand{\RQoneTuningWinner}{docling / langchain\_recursive 256}  % data/results/p4/P4-NOINDIAN-20261114-1_p4.csv
+\newcommand{\RQoneTuningWinner}{D/LC-256}  % data/results/p4/P4-NOINDIAN-20261114-1_p4.csv
 \newcommand{\RQoneTuningWinnerRank}{20}  % data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
 \newcommand{\RQoneTuningWinnerRecall}{0.715}  % data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
 \newcommand{\RQoneTuningWinnerTied}{tied}  % data/results/p4/P4-FINAL-20261106-1_primary_setups.csv
-\newcommand{\RQthreeDoclingHitOneBest}{method1\_tree T384}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreeDoclingHitOneBest}{M1-384}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingHitOneScore}{0.622}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingHitOneSize}{295}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreeDoclingMrrBest}{method1\_tree T1024}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreeDoclingMrrBest}{M1-1024}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingMrrScore}{0.742}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingMrrSize}{715}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreeDoclingRecallFiveBest}{fixed\_token 1024}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreeDoclingRecallFiveBest}{FT-1024}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingRecallFiveScore}{0.904}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingRecallFiveSize}{978}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreeDoclingRecallFourZeroZeroZeroBest}{method1\_tree T384 prefix}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreeDoclingRecallFourZeroZeroZeroBest}{M1-384+p}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingRecallFourZeroZeroZeroScore}{0.925}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingRecallFourZeroZeroZeroSize}{309}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreeDoclingRecallOneZeroBest}{fixed\_token 896}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreeDoclingRecallOneZeroBest}{FT-896}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingRecallOneZeroScore}{0.964}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeDoclingRecallOneZeroSize}{879}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreePdfplumberHitOneBest}{recursive 1024}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreePdfplumberHitOneBest}{Rec-1024}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberHitOneScore}{0.632}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberHitOneSize}{820}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreePdfplumberMrrBest}{recursive 1024}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreePdfplumberMrrBest}{Rec-1024}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberMrrScore}{0.748}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberMrrSize}{820}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreePdfplumberRecallFiveBest}{fixed\_token 1024}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreePdfplumberRecallFiveBest}{FT-1024}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberRecallFiveScore}{0.904}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberRecallFiveSize}{980}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreePdfplumberRecallFourZeroZeroZeroBest}{sentence 5}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreePdfplumberRecallFourZeroZeroZeroBest}{Sent-5}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberRecallFourZeroZeroZeroScore}{0.928}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberRecallFourZeroZeroZeroSize}{249}  % data/results/p3/fixedk_tuning.csv
-\newcommand{\RQthreePdfplumberRecallOneZeroBest}{fixed\_token 896}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreePdfplumberRecallOneZeroBest}{FT-896}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberRecallOneZeroScore}{0.968}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreePdfplumberRecallOneZeroSize}{875}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeSettingsKept}{50}  % data/results/p3/fixedk_tuning.csv
 \newcommand{\RQthreeSettingsLeftOut}{13}  % data/results/p3/fixedk_tuning.csv
+\newcommand{\RQthreeSweepBudget}{+0.113 to +0.203}  % data/results/p3/budget_sweep_tuning_tests.csv
+\newcommand{\RQthreeSweepDocuments}{19}  % data/results/p3/budget_sweep_tuning_tests.csv
+\newcommand{\RQthreeSweepLift}{+0.106 to +0.150}  % data/results/p3/budget_sweep_tuning_tests.csv
+\newcommand{\RQthreeSweepMaxHolm}{0.036}  % data/results/p3/budget_sweep_tuning_tests.csv
+\newcommand{\RQthreeSweepRecall}{$-$0.137 to $-$0.088}  % data/results/p3/budget_sweep_tuning_tests.csv
+\newcommand{\RQthreeSweepSignificant}{24}  % data/results/p3/budget_sweep_tuning_tests.csv
+\newcommand{\RQthreeSweepTests}{24}  % data/results/p3/budget_sweep_tuning_tests.csv
 \newcommand{\RQtwoBestSizes}{209--439}  % data/results/p3/size_by_source_summary_P3-LOCAL-20261105-4.csv
 \newcommand{\RQtwoHTwoCertainOnlyDoclingOneTwoFiveZero}{$-$0.582}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoCertainOnlyDoclingSevenFiveZero}{$-$0.813}  % data/results/h2/P4-H2-20261124-7_rq2.csv
@@ -312,9 +357,25 @@
 \newcommand{\RQtwoHTwoDropRuleDoclingOneTwoFiveZero}{$-$0.830}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoDropRuleDoclingSevenFiveZero}{$-$0.885}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoDropRuleDoclingTwoZeroZeroZero}{$-$0.148}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoDropRuleDoclingTwoZeroZeroZeroCI}{[$-$0.648, 0.495]}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoDropRulePdfplumberOneTwoFiveZero}{$-$0.599}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoDropRulePdfplumberSevenFiveZero}{$-$0.714}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoDropRulePdfplumberTwoZeroZeroZero}{$-$0.231}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoDropRulePdfplumberTwoZeroZeroZeroCI}{[$-$0.731, 0.533]}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoHrDoclingOneTwoFiveZero}{$-$0.495}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoHrDoclingSevenFiveZero}{$-$0.852}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoHrDoclingTwoZeroZeroZero}{+0.302}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoHrPdfplumberOneTwoFiveZero}{$-$0.302}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoHrPdfplumberSevenFiveZero}{$-$0.632}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoHrPdfplumberTwoZeroZeroZero}{+0.236}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIncludeZeroOneTwoFiveZero}{3}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIncludeZeroSevenFiveZero}{1}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIndustrialDoclingOneTwoFiveZero}{$-$0.643}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIndustrialDoclingSevenFiveZero}{$-$0.835}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIndustrialDoclingTwoZeroZeroZero}{+0.110}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIndustrialPdfplumberOneTwoFiveZero}{+0.066}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIndustrialPdfplumberSevenFiveZero}{$-$0.720}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHTwoIndustrialPdfplumberTwoZeroZeroZero}{+0.462}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoLargestBudgetIncludeZero}{5}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoLargestBudgetValues}{6}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoNegative}{18}  % data/results/h2/P4-H2-20261124-7_rq2.csv
@@ -326,6 +387,11 @@
 \newcommand{\RQtwoHTwoSensitivityPdfplumberTwoZeroZeroZero}{$-$0.225}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoSetupsPerParser}{13}  % data/results/h2/P4-H2-20261124-7_rq2.csv
 \newcommand{\RQtwoHTwoValues}{18}  % data/results/h2/P4-H2-20261124-7_rq2.csv
+\newcommand{\RQtwoHeldOutCUADDoclingLargestBestSize}{216}  % data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
+\newcommand{\RQtwoHeldOutCUADDoclingRhos}{$-$0.74, $-$0.65, $-$0.52}  % data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
+\newcommand{\RQtwoHeldOutCUADDocuments}{3}  % data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
+\newcommand{\RQtwoHeldOutCUADPdfplumberLargestBestSize}{685}  % data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
+\newcommand{\RQtwoHeldOutCUADPdfplumberRhos}{$-$0.59, $-$0.51, $-$0.26}  % data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
 \newcommand{\RQtwoHeldOutOHRBestSizes}{216--318}  % data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
 \newcommand{\RQtwoHeldOutOHRRhoRange}{$-$0.84 to $-$0.93}  % data/results/p3/size_by_source_summary_P3-FINAL-20261106-1.csv
 \newcommand{\RQtwoRhoRange}{$-$0.61 to $-$0.97}  % data/results/p3/size_by_source_summary_P3-LOCAL-20261105-4.csv
@@ -337,12 +403,14 @@
 \newcommand{\RobDenseOnlyHeldOutOneGapCI}{[$-$0.074, 0.055]}  % data/results/supplementary-20261114/retriever_summary.csv
 \newcommand{\RobGridSixChunkersThreeTwoTuningGap}{+0.001}  % data/results/ext/P4-EXT-20261119-2_rq1.csv
 \newcommand{\RobGridSixChunkersThreeTwoTuningGapCI}{[$-$0.039, 0.042]}  % data/results/ext/P4-EXT-20261119-2_rq1.csv
+\newcommand{\RobNomicAboveHolm}{3}  % data/results/rob/P4-ROB-20261120-1_rq3.csv
 \newcommand{\RobNomicDenseTuningGap}{$-$0.012}  % data/results/rob/P4-ROB-20261120-1_rq1.csv
 \newcommand{\RobNomicDenseTuningGapCI}{[$-$0.056, 0.036]}  % data/results/rob/P4-ROB-20261120-1_rq1.csv
 \newcommand{\RobNomicHybridTuningGap}{$-$0.000}  % data/results/rob/P4-ROB-20261120-1_rq1.csv
 \newcommand{\RobNomicHybridTuningGapCI}{[$-$0.036, 0.034]}  % data/results/rob/P4-ROB-20261120-1_rq1.csv
 \newcommand{\RobNomicHybridWOIndianTuningGap}{$-$0.020}  % data/results/rob/P4-ROB-20261120-1_rq1.csv
 \newcommand{\RobNomicHybridWOIndianTuningGapCI}{[$-$0.056, 0.017]}  % data/results/rob/P4-ROB-20261120-1_rq1.csv
+\newcommand{\RobNomicTests}{24}  % data/results/rob/P4-ROB-20261120-1_rq3.csv
 \newcommand{\RobWithoutIndianHeldOutOneGap}{$-$0.007}  % data/results/p4/P4-FINAL-NOINDIAN-20261114-1_p4.csv
 \newcommand{\RobWithoutIndianHeldOutOneGapCI}{[$-$0.047, 0.028]}  % data/results/p4/P4-FINAL-NOINDIAN-20261114-1_p4.csv
 \newcommand{\SanityDamageCases}{3}  % runs/tests/test_p3_sanity_floor_damage.txt
