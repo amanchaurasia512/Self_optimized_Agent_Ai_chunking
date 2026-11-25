@@ -1735,3 +1735,9 @@ inputs made after the tag paper-v1.2, so they get their own checksum file.
 
 Fig. rq3 (2026-11-25): descriptive re-aggregation of locked per-question scores over the fixed-k question set (88,200 rows;
 2 qasper_2001_09899 questions without fixed-k rows dropped); no test, display only.
+
+## RQ2 on tuning is descriptive (disclosure, 2026-11-25)
+
+RQ2 on tuning was defined after the tuning scores (2026-11-12) and is descriptive (per source, all in-scope settings, no
+test); the confirmatory RQ2 rule (13 primary setups, intervals, every rho negative) was fixed before held-out set 2 and is
+tested only there.

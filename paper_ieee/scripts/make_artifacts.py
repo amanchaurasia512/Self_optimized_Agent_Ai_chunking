@@ -157,11 +157,20 @@ DEVIATIONS = [
     ("disclosure", ["## AQ judge check: first-pass labels overwritten in place (reporting, added 2026-11-14)"],
      "First-pass judge-check labels were overwritten; the recorded first-pass agreement cannot be recomputed."),
 ]
+LATER_DISCLOSURES = [  # recorded after the tag: anchored to the working spec, same rules
+    ("disclosure", ["## RQ2 on tuning is descriptive (disclosure, 2026-11-25)"],
+     "RQ2 on tuning was defined after the tuning scores (2026-11-12) and is descriptive (per source, all in-scope settings, "
+     "no test); the confirmatory RQ2 rule (13 primary setups, intervals, every rho negative) was fixed before held-out "
+     "set 2 and is tested only there."),
+]
 SIZE_FAMILIES = {"fixed_token": r"fixed_token_size(\d+)_overlap0_noprefix", "recursive": r"recursive_size(\d+)_overlap0_noprefix",
                  "langchain_recursive": r"langchain_recursive_size(\d+)_overlap0_noprefix", "method1_tree": r"method1_tree_T(\d+)_noprefix"}
 IST = timezone(timedelta(hours=5, minutes=30))  # the timeline (Appendix A3) reports Indian Standard Time
 SPEC_COMMITS = {"DateSpecVone": ("607d29c", "spec/spec_v1.md"), "DateSpecVoneOne": ("de4aff3", "spec/spec_v1.1.md"),
                 "DateSpecVoneTwo": ("b1bd7d1", "spec/spec_v1.2.md")}  # the commit that first adds each spec file
+LOCK_TAG = "paper-v1.3.1"  # freezes the files made after TAG
+DROP_RULE = "configs/gold_drop_rule.json"
+CHEAPEST_TIE_RUN = "runs/tests/dev_p4_v1_cheapest_tie_rule_P4-LOCAL-20261105-1.json"
 SCORER_TAG, SCORER_COMMIT = "scorer_v1", "448173c"
 
 
@@ -481,7 +490,7 @@ def rq1(read):
                 "RQoneTuningWinnerTied": ("tied" if setups.loc[winner, "tied_with_best"] else "not tied", INPUTS["p4_primary"])}
     h2_rows, h2_numbers = rq1_held_out_2(read, winner)
     header = ["Choice set", "Setups", "Best single", "Recall", "Tied", "Oracle", r"Gap [95\%]", "Rule"]
-    groups = {f"Held-out 1: {primary['documents']} documents, {primary['questions']} questions": rows} | h2_rows
+    groups = {f"Held-out set~1: {primary['documents']} documents, {primary['questions']} questions": rows} | h2_rows
     return {"tables/rq1.tex": grouped_tabular("lrlrrrll", header, groups)}, numbers | h2_numbers
 
 
@@ -520,7 +529,7 @@ def rq1_held_out_2(read, winner):
         "Documents": pooled["documents"], "Questions": pooled["questions"], "TuningWinnerRecall": fixed(pooled["tuning_winner"]),
         "Oracle": fixed(pooled["oracle"]), "Gap": signed(pooled["gap_oracle_minus_tuning_winner"]),
         "GapCI": interval(pooled["gap_low"], pooled["gap_high"]), "Decision": decision}.items()}
-    return {"Held-out 2 (ViDoRe V3), primary choice set": rows, "Pooled, secondary": [pooled_row]}, numbers
+    return {"Held-out set~2 (ViDoRe V3), primary choice set": rows, "Pooled, secondary": [pooled_row]}, numbers
 
 
 def hr_check(read):
@@ -1011,6 +1020,25 @@ def design(read):
     return {}, numbers
 
 
+def method_facts(read):
+    """Method numbers: the held-out 2 documents from the split file and the gold drop threshold, the first (cheapest-tie)
+    tuning run and the answer temperature as tagged; the top tuning setup and the scanned questions from locked inputs."""
+    corpora = pd.read_csv(io.StringIO(read.git("show", f"{LOCK_TAG}:{INPUTS['split']}")))
+    corpora = corpora[corpora["split"] == "held_out_2"]["doc_id"].str.split("_").str[1].value_counts()
+    threshold, first = (json.loads(read.tagged_file(path)) for path in (DROP_RULE, CHEAPEST_TIE_RUN))
+    temperature = re.search(r"temperature=(\d+)", read.tagged_file("src/chunk/llm.py")).group(1)
+    drop = read.csv("gold_drop_final")
+    scanned = drop[(drop["split"] == "scanned_rq5") & (drop["gold_file"] == "docling")]
+    split = f"{INPUTS['split']} at {LOCK_TAG}"
+    numbers = {f"HTwoSelected{letters(corpus)}": (int(count), split) for corpus, count in corpora.items()}
+    return {}, numbers | {"HTwoSelectedDocuments": (int(corpora.sum()), split),
+                          "GoldDropThreshold": (threshold["threshold"], f"{DROP_RULE} at {TAG}"),
+                          "CheapestTieBestRecall": (fixed(first["stack"]["summary"]["full"]["best_single_recall"]), f"{CHEAPEST_TIE_RUN} at {TAG}"),
+                          "TuningTopRecall": (fixed(read.json("p4_tuning_record")["stack"]["summary"]["full"]["best_single_recall"]), INPUTS["p4_tuning_record"]),
+                          "ScannedQuestions": (int(scanned["total"].sum()), INPUTS["gold_drop_final"]),
+                          "AnswerTemperature": (temperature, f"src/chunk/llm.py at {TAG}")}
+
+
 def setups_scoring(read):
     """Method facts on parsers, chunkers, retrieval and scoring: versions and scorer settings from the run records,
     the size grid from the tuning setup table, setup counts from the P4 records, and the shared post-processing and
@@ -1116,9 +1144,10 @@ def anchor_lines(text, anchor):
 
 
 def deviations(read):
-    """The deviations table and its count, from the spec as tagged (rows anchored to its lines, see DEVIATIONS)."""
-    text, rows = read.tagged_file(SPEC), []
-    for kind, anchors, summary in DEVIATIONS:
+    """The deviations table and its count, from the spec as tagged (rows anchored to its lines, see DEVIATIONS),
+    and the disclosures added to the spec after the tag (LATER_DISCLOSURES)."""
+    tagged, working, rows = read.tagged_file(SPEC), (read.root / SPEC).read_text(encoding="utf-8"), []
+    for text, (kind, anchors, summary) in [(tagged, row) for row in DEVIATIONS] + [(working, row) for row in LATER_DISCLOSURES]:
         found = [anchor_lines(text, anchor) for anchor in anchors]
         if any(len(lines) != 1 for lines in found):
             raise ValueError(f"spec anchor not on exactly one line: {[anchor for anchor, lines in zip(anchors, found) if len(lines) != 1]}")
@@ -1163,6 +1192,7 @@ BUILDERS = {
     a7_golden: {"golden_labels", "golden_sample"},
     manual: {"manual"},
     design: {"split", "scores_tuning", "p3_final_record", "p4_tuning_record"},
+    method_facts: {"gold_drop_final", "p4_tuning_record"},
     setups_scoring: {"docling_record", "pdfplumber_record", "p3_tuning_record", "fixedk_record", "p4_tuning_full", "p4_tuning_record", "p4_final"},
     statistics_aq: {"p4_final", "aq_sample", "manual", "judge_check", "judge_check_keys", "aq_judgements", "golden_labels"},
     grid: {"p4_tuning_full", "p4_primary"},
@@ -1175,12 +1205,12 @@ BUILDERS = {
 # --- IEEE floats: caption above the table, booktabs, table* for wide tables -------------------------------------------
 
 FLOATS = {  # table body -> (label, caption, wide)
-    "rq1": ("tab:rq1", r"RQ1: hybrid Recall@1,250, primary choice set unless named. Held-out 2 rows give documents / "
+    "rq1": ("tab:rq1", r"RQ1: hybrid Recall@1,250, primary choice set unless named. Held-out set~2 rows give documents / "
             r"questions. $^\dagger$Secondary: oracle minus the tuning winner, not the per-set gap; bootstrap stratified by set.", True),
-    "rq2_h2": ("tab:rq2h2", r"RQ2 on held-out 2: Spearman's $\rho$ of chunk size against Recall@$B$ per parser, with 95\% "
+    "rq2_h2": ("tab:rq2h2", r"RQ2 on held-out set~2: Spearman's $\rho$ of chunk size against Recall@$B$ per parser, with 95\% "
                r"document bootstrap intervals.", True),
     "ext_rob": ("tab:robust", "Robustness of RQ1 (hybrid Recall@1,250 unless named; 26 setups unless named).", True),
-    "rq4": ("tab:rq4", "RQ4 on held-out 1: token F1 of the best setup minus each setup.", False),
+    "rq4": ("tab:rq4", "RQ4 on held-out set~1: token F1 of the best setup minus each setup.", False),
     "rq3_erratum": ("tab:rq3err", "RQ3 erratum: superseded settings removed.", True),
     "a1_index_cost": ("tab:cost", "Index cost at 384 tokens (mean per document).", True),
     "a2_retrievers": ("tab:retrievers", "RQ1 by retriever (primary choice set).", True),

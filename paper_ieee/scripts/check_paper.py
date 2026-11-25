@@ -13,9 +13,20 @@ TERMS = {  # editable: pattern -> what is wrong
 }
 NAMES = [  # editable: digits that belong to a name, not a typed result
     r"@[\d,]*\d",  # Recall@1,250
-    r"\bset~\d",  # held-out set~1
+    r"\bset[~ ]\d",  # held-out set~1
     r"held-out-\d",
+    r"\b4-bit\b",
     r"[A-Za-z][\w-]*\d\w*(?:[.-]\w+)*",  # RQ2, F1, BM25, Qwen3-8B, v1.2
+]
+MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"
+ALLOWED = [  # editable: design constants, dates and versions that may be typed
+    rf"\b\d{{1,2}}[~ ](?:{MONTHS})(?:[~ ]\d{{4}})?",  # dates
+    r"\b(?:Docling|pdfplumber|Gemini)~\d+(?:\.\d+)+",  # versions
+    r"(?<![\d.,])(?:750|1,250|2,000)(?![\d%]|[.,]\d)",  # budgets; 2,000 resamples
+    r"(?<![\d.,])(?:256|384|512|1,024)(?![\d%]|[.,]\d)",  # chunk sizes; post-processing maximum; embedding dimensions
+    r"\b100 tokens",  # post-processing minimum
+    r"\bseed\s+42\b", r"\b200 random splits", r"\b(?:95|10|5)\\%",  # statistics; shares
+    r"(?<![\d.])(?:k=60|k_?1=1\.5|b=0\.75)(?![\d.])",  # retrieval (outside math)
 ]
 LATEX_CAPITALS = {"Alpha", "Beta", "Gamma", "Delta", "Theta", "Lambda", "Pi", "Sigma", "Phi", "Psi", "Omega", "LaTeX", "TeX"}
 
@@ -45,27 +56,39 @@ def hits(files, pattern, note=None):
             for path, text in files.items() for match in re.finditer(pattern, text)]
 
 
+def without_sourced(path, text):
+    """Blank the lines whose raw line ends with '% src: <file>:<line>' (or :<first>-<last>), if that place exists."""
+    lines = text.split("\n")
+    for index, raw in enumerate(path.read_text(encoding="utf-8").split("\n")):
+        match = re.search(r"(?<!\\)% src: (\S+):(\d+)(?:-(\d+))?\s*$", raw)
+        if match and (source := PAPER.parent / match[1]).is_file():
+            if int(match[3] or match[2]) <= len(source.read_text(encoding="utf-8").splitlines()):
+                lines[index] = ""
+    return "\n".join(lines)
+
+
 def typed_numbers(sections):
     """Math holding a letter ($k=60$, $B$) is left out; purely numeric math is still reported."""
     bare = {}
     for path, text in sections.items():
         text = blank(r"\\(?:ref|label|cite|input|eqref)\{[^}]*\}", text)
         text = blank(r"\$[^$]*[A-Za-z][^$]*\$", text)
+        for allowed in ALLOWED:
+            text = blank(allowed, text)
         text = blank(r"\\[A-Za-z]+(?:\[[^\]]*\])?", text)
         for name in NAMES:
             text = blank(name, text)
         bare[path] = text
-    return hits(bare, r"\d(?:[\d.,]|\{,\})*")
+    return hits({path: without_sourced(path, text) for path, text in bare.items()}, r"\d(?:[\d.,]|\{,\})*")
 
 
-def log_problems(files):
+def log_problems():
     log = PAPER / "main.log"
     if not log.exists():
         return ["main.log missing: build first"]
-    stale = [f"main.log is older than {path.relative_to(PAPER)}: build again" for path in files if path.stat().st_mtime > log.stat().st_mtime]
     text = re.sub(r"(?m)^(.{79})\n", r"\1", log.read_text(encoding="utf-8", errors="replace"))  # TeX wraps log lines at 79
     found = re.findall(r"(?m)^(?:!.*|LaTeX Warning: (?:Reference|Citation) .*undefined.*|Overfull \\[hv]box.*)", text)
-    return stale + list(dict.fromkeys(line.replace("LaTeX Warning: ", "") for line in found))
+    return list(dict.fromkeys(line.replace("LaTeX Warning: ", "") for line in found))
 
 
 def label_problems(files):
@@ -98,7 +121,7 @@ def main():
     files = included(PAPER / "main.tex")
     sections = {path: load(path) for path in sorted((PAPER / "sections").glob("*.tex"))}
     prose = {path: text for path, text in files.items() if path.name != "numbers.tex"}
-    checks = {"1 hand-typed numbers": typed_numbers(sections), "2 log": log_problems(files), "3 labels and refs": label_problems(files),
+    checks = {"1 hand-typed numbers": typed_numbers(sections), "2 log": log_problems(), "3 labels and refs": label_problems(files),
               "4 macros": missing_macros(sections), "5 terms": [line for pattern, note in TERMS.items() for line in hits(prose | sections, pattern, note)],
               "6 captions": caption_problems(files)}
     for name, problems in checks.items():

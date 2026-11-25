@@ -63,12 +63,13 @@ over a single small-chunk setup under a fixed token budget.
 \input{generated/figures/rq2_fig}
 
 At a fixed token budget, smaller chunks retrieve more of the gold text. On
-tuning data, Spearman's $\rho$ between measured chunk size and recall is
-negative for every parser and budget (Fig.~\ref{fig:rq2}), ranging from \RQtwoRhoRange{}, so RQ2
-holds as pre-registered. The best setups have measured chunk sizes of
-\RQtwoBestSizes{} tokens. The OHR-Bench documents of held-out set~1 show the
-same pattern ($\rho$ from \RQtwoHeldOutOHRRhoRange{}, best sizes
-\RQtwoHeldOutOHRBestSizes{} tokens).
+tuning data, the descriptive analysis finds Spearman's $\rho$ between measured
+chunk size and recall negative for every parser, budget and source
+(Fig.~\ref{fig:rq2}), ranging from \RQtwoRhoRange{}; the best setups have
+measured chunk sizes of \RQtwoBestSizes{} tokens. The OHR-Bench documents of
+held-out set~1 show the same pattern ($\rho$ from \RQtwoHeldOutOHRRhoRange{},
+best sizes \RQtwoHeldOutOHRBestSizes{} tokens). The pre-registered test is on
+held-out set~2.
 
 Held-out set~2 confirms it (Table~\ref{tab:rq2h2}). All
 \RQtwoHTwoNegative{} of the \RQtwoHTwoValues{} values of $\rho$ (three gold
@@ -130,7 +131,7 @@ significant after correction (Holm $p$ =
 clearly (Section~\ref{sec:rq5}). The remaining setups differ by
 \RQfourDoclingLangchainRecursiveSizeFiveOneTwoDiff{} to
 \RQfourDoclingLangchainRecursiveSizeTwoFiveSixDiff{}, with Holm $p$ =
-1.000. On tuning data (\AQTuningQuestions{} questions), no difference is
+\RQfourDoclingLangchainRecursiveSizeFiveOneTwoHolm{}. On tuning data (\AQTuningQuestions{} questions), no difference is
 significant.
 Across setups, answer F1 follows recall: Spearman's $\rho$ between F1 and
 Recall@1,250 is \RQfourSpearmanTuningFOne{} on tuning and

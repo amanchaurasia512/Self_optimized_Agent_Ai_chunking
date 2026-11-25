@@ -8,12 +8,14 @@
 \newcommand{\AccountingRemovedOwnHindiTrack}{2}  % pdfs/split.csv
 \newcommand{\AccountingRemovedQASPER}{3}  % pdfs/split.csv
 \newcommand{\AccountingRemovedUniDocBench}{9}  % pdfs/split.csv
+\newcommand{\AnswerTemperature}{0}  % src/chunk/llm.py at paper-v1.2
 \newcommand{\BMKone}{1.5}  % runs/P3-LOCAL-20261105-4.json
 \newcommand{\BMb}{0.75}  % runs/P3-LOCAL-20261105-4.json
 \newcommand{\BudgetHigh}{2{,}000}  % runs/P3-LOCAL-20261105-4.json
 \newcommand{\BudgetLow}{750}  % runs/P3-LOCAL-20261105-4.json
 \newcommand{\BudgetMain}{1{,}250}  % runs/P3-LOCAL-20261105-4.json
 \newcommand{\CILevel}{95}  % runs/P4-FINAL-20261106-1.json
+\newcommand{\CheapestTieBestRecall}{0.748}  % runs/tests/dev_p4_v1_cheapest_tie_rule_P4-LOCAL-20261105-1.json at paper-v1.2
 \newcommand{\ChunkMax}{1{,}024}  % src/chunk/base.py and src/chunk/chunkers.py and src/eval/stats.py and scripts/p4_analyse.py and scripts/aq_run.py and scripts/golden_check.py and scripts/p3_fixedk.py at paper-v1.2
 \newcommand{\ChunkMin}{100}  % src/chunk/base.py and src/chunk/chunkers.py and src/eval/stats.py and scripts/p4_analyse.py and scripts/aq_run.py and scripts/golden_check.py and scripts/p3_fixedk.py at paper-v1.2
 \newcommand{\CorrectionCount}{5}  % spec/spec_v1.2.md at paper-v1.2, rows of kind correction in tables/deviations.tex
@@ -52,6 +54,7 @@
 \newcommand{\DoclingVersion}{2.143.0}  % runs/P1-RQ5-KN01-20261109-4.json
 \newcommand{\EmbedDim}{1{,}024}  % runs/P3-LOCAL-20261105-4.json
 \newcommand{\FixedKBudget}{4{,}000}  % runs/P3-FIXEDK-20261112-1.json
+\newcommand{\GoldDropThreshold}{0.604}  % configs/gold_drop_rule.json at paper-v1.2
 \newcommand{\GoldenIndianDFourRtiActInvalid}{8}  % data/results/golden_check/labels.csv
 \newcommand{\GoldenIndianDFourRtiActLabelled}{20}  % data/results/golden_check/labels.csv
 \newcommand{\GoldenIndianDFourRtiActRate}{0.400}  % data/results/golden_check/labels.csv
@@ -75,6 +78,10 @@
 \newcommand{\GoldenOverallUnsure}{8}  % data/results/golden_check/labels.csv
 \newcommand{\GoldenSampled}{60}  % data/results/golden_check/labels.csv
 \newcommand{\GoldenUnsure}{8}  % data/results/golden_check/labels.csv
+\newcommand{\HTwoSelectedDocuments}{53}  % pdfs/split.csv at paper-v1.3.1
+\newcommand{\HTwoSelectedHr}{13}  % pdfs/split.csv at paper-v1.3.1
+\newcommand{\HTwoSelectedIndustrial}{11}  % pdfs/split.csv at paper-v1.3.1
+\newcommand{\HTwoSelectedPharmaceuticals}{29}  % pdfs/split.csv at paper-v1.3.1
 \newcommand{\HeldOutSetups}{98}  % runs/P4-FINAL-20261106-1.json
 \newcommand{\JudgeCases}{40}  % data/results/aq/judge_check.csv
 \newcommand{\JudgeDisagreements}{12}  % reconstruction from judge_check.csv, judgements.jsonl, manual_facts.csv
@@ -347,6 +354,7 @@
 \newcommand{\SanityFloorCases}{6}  % runs/tests/test_p3_sanity_floor_damage.txt
 \newcommand{\SanityFloorFailedOriginal}{6}  % runs/tests/test_p3_sanity_floor_damage.txt
 \newcommand{\SanityFloorLower}{0.14--0.17}  % runs/tests/test_p3_sanity_floor_damage.txt
+\newcommand{\ScannedQuestions}{110}  % data/results/p3/gold_drop_final.csv
 \newcommand{\SizeMax}{1{,}024}  % data/results/p4/P4-LOCAL-20261105-1_full_setups.csv
 \newcommand{\SizeMin}{256}  % data/results/p4/P4-LOCAL-20261105-1_full_setups.csv; sizes shared by fixed_token, recursive, langchain_recursive, method1_tree; also {'recursive': [600]}
 \newcommand{\SizeStep}{128}  % data/results/p4/P4-LOCAL-20261105-1_full_setups.csv
@@ -358,3 +366,4 @@
 \newcommand{\TuningMainQuestions}{860}  % runs/P4-LOCAL-20261105-1.json
 \newcommand{\TuningScoredDocuments}{20}  % data/results/p3/P3-LOCAL-20261105-4.csv.gz (hybrid, Recall@1250)
 \newcommand{\TuningSetups}{100}  % runs/P4-LOCAL-20261105-1.json
+\newcommand{\TuningTopRecall}{0.802}  % runs/P4-LOCAL-20261105-1.json

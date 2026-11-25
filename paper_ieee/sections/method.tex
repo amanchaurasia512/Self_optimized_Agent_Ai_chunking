@@ -23,33 +23,33 @@ selection, gold rule, one gold amendment and analysis code were written into
 dated notes before it was scored, and it was also scored once, on
 24~November 2026. Commit and first-push times for each step are given in
 Table~\ref{tab:timeline}. Where we departed from the specification we say so:
-Table~\ref{tab:deviations} lists 21 deviations and 5 corrections.
+Table~\ref{tab:deviations} lists \DeviationCount{} deviations and \CorrectionCount{} corrections.
 
 \subsection{Documents and questions}\label{sec:docs}
 
 We use three document sets, kept apart throughout.
 
-\textbf{Tuning.} 25 documents, 19 of them with questions (860 in total), drawn
+\textbf{Tuning.} \TuningDocuments{} documents, \TuningMainDocuments{} of them with questions (\TuningMainQuestions{} in total), drawn
 from CUAD contracts~\cite{hendrycks2021cuad}, OHR-Bench~\cite{zhang2024ocr}, an Indian
 regulatory benchmark~\cite{singh2026parser}, QASPER~\cite{dasigi2021qasper} and
 UniDoc-Bench~\cite{peng2025unidoc}. All design choices were made on this set.
 
-\textbf{Held-out set 1.} 31 sealed documents: unseen documents from the known
+\textbf{Held-out set 1.} \AccountingHeldOut{} sealed documents: unseen documents from the known
 sources, one new document for each known document type, and out-of-domain
 documents, including FinanceBench~\cite{islam2023financebench}. Some cannot be scored:
 the Hindi pair has no question source, UniDoc documents have only page-level
-gold, and some documents have only QASPER questions. This leaves 17 documents
-with 530 questions.
+gold, and some documents have only QASPER questions. This leaves \AccountingMain{} documents
+with \RQoneQuestions{} questions.
 
 \textbf{Held-out set 2.} To test whether the first result replicates on a
 source the study had never used, we took the public English HR, Industrial and
 Pharmaceuticals corpora of ViDoRe~V3~\cite{loison2026vidore}. Documents were selected
 from metadata alone, before any was opened. We kept queries whose evidence
 pages are all text or table pages within one document, and documents with at
-least two such queries and at most 200 pages. This gives 53 documents
-(13 HR, 11 Industrial, 29 Pharmaceuticals) and 286 queries, none overlapping
+least two such queries and at most 200 pages. This gives \HTwoSelectedDocuments{} documents % src: spec/spec_v1.2.md:1327-1328
+(\HTwoSelectedHr{} HR, \HTwoSelectedIndustrial{} Industrial, \HTwoSelectedPharmaceuticals{} Pharmaceuticals) and 286 queries, none overlapping % src: spec/spec_v1.2.md:1328
 the other sets. Under the primary gold rule (Section~\ref{sec:gold}),
-52 documents and 229 questions can be scored.
+\RQoneHTwoDropRuleDocuments{} documents and \RQoneHTwoDropRuleQuestions{} questions can be scored.
 
 Scanned PDFs for RQ5(a) come from MP-DocVQA~\cite{tito2023mpdocvqa}.
 
@@ -59,19 +59,19 @@ Each question needs its evidence located in the text a parser produces. One
 matching rule places the gold evidence as character spans in each parser's
 own output. For held-out set~1 the evidence is the answer string given by each
 source; if the rule cannot place it with certainty, the question is dropped.
-This removes 16.3\% of held-out-1 questions for Docling and 27.6\% for
+This removes \CoverageHeldOutDoclingShare{} of held-out set~1 questions for Docling and \CoverageHeldOutPdfplumberShare{} for
 pdfplumber.
 
 For held-out set~2 the evidence is the words inside the human-drawn evidence
 boxes, read from the PDF text layer. Under the primary rule, a page is kept
-when the matcher's frozen drop rule (threshold 0.604) accepts every piece of
+when the matcher's frozen drop rule (threshold \GoldDropThreshold{}) accepts every piece of
 its box text. Two variants serve as sensitivity checks: one keeps a query if
 any of its evidence pages is placed, and a stricter certain-only variant
-applies the held-out-1 rule. Certain-only was designed for short answer
+applies the held-out set~1 rule. Certain-only was designed for short answer
 strings. On box text it drops pages because of how they are matched rather
 than what they contain, and it keeps far more questions for pdfplumber than
 for Docling. We therefore moved it to a pre-stated sensitivity check on
-23~November, before any held-out-2 score.
+23~November, before any held-out set~2 score.
 
 All comparisons use only the questions kept for every setup being compared.
 This keeps the comparison fair, but a parser that places more gold, as Docling
@@ -101,8 +101,8 @@ labels, limited to 10\% of $T$.
 
 The primary choice set was fixed before held-out set~1 was opened: recursive,
 LangChain recursive, fixed-token and M1 without prefix, each at 256, 384 and
-512 tokens, plus sentence groups of five. That gives 13 settings and, with two
-parsers, 26 setups. Spec~v1.1 also planned paragraph groups, dynamic token
+512 tokens, plus sentence groups of five. That gives \RQonePrimarySettings{} settings and, with two
+parsers, \RQoneSetups{} setups. Spec~v1.1 also planned paragraph groups, dynamic token
 size, section- and table-aware chunking and Docling's HybridChunker. These were
 built later and tested on tuning data only, as an extension
 (Section~\ref{sec:extension}). A cross-reference feature planned for M1 was
@@ -124,8 +124,8 @@ $B \in \{750, 1{,}250, 2{,}000\}$; the headline result is hybrid
 Recall@1,250.
 
 Before freezing the scorer, we checked that it responds to chunk quality:
-chunks cut at random positions score 0.14--0.17 lower, and splitting every
-table lowers recall by 0.08--0.10 on 112 table questions. As a robustness
+chunks cut at random positions score \SanityFloorLower{} lower, and splitting every
+table lowers recall by \SanityDamageDrop{} on \SanityDamageQuestions{} table questions. As a robustness
 check named in spec~v1, we repeated the analysis on tuning data with
 nomic-embed-text-v1.5~\cite{nomic} as the dense embedder.
 
@@ -142,12 +142,12 @@ This tie rule changed during the study. Specs~v1 and v1.1 said that the
 cheaper setup wins a tie and defined the oracle as the cheapest tied setup. A
 development run on tuning data showed two problems with this. First, setups
 without overlap index almost the same text, so their costs differ by about
-0.1 token per document, and the cheapest tied setup was chosen by noise: the
-best single setup became pdfplumber with groups of eight sentences (0.748),
-while the top setup scored 0.802. Second, per-document tie tests have almost
-no power on documents with few questions (98 of 100 setups tied at four
+0.1 token per document, and the cheapest tied setup was chosen by noise: the % src: spec/spec_v1.2.md:140-143
+best single setup became pdfplumber with groups of eight sentences (\CheapestTieBestRecall{}),
+while the top setup scored \TuningTopRecall{}. Second, per-document tie tests have almost
+no power on documents with few questions (98 of \TuningSetups{} setups tied at four % src: spec/spec_v1.2.md:140-143
 questions), so the cheapest-tied oracle fell below the best single setup on
-8 documents. An amendment on 5~November, the day before held-out set~1 was
+8 documents. An amendment on 5~November, the day before held-out set~1 was % src: spec/spec_v1.2.md:140-143
 scored, therefore made the rule recall-only and introduced the split-half
 oracle described below. Cost is reported separately, on two Pareto fronts,
 index tokens and chunk count (Table~\ref{tab:cost}).
@@ -162,16 +162,20 @@ per-document chooser is worth building only if the lower end of the gap's
 interval is above zero. Multiple comparisons use Holm's correction~\cite{holm}.
 
 For held-out set~2, the following were fixed before scoring: the same rule for
-each gold variant; an extra check that leaves out the questions on 11 HR pages
+each gold variant; an extra check that leaves out the questions on \RQoneHRCheckPages{} HR pages
 whose image and PDF shapes differ by more than 5\%; and, as a secondary
 result, a gap pooled over both held-out sets. The pooled gap compares the
 split-half oracle with the tuning winner applied unchanged, weights documents
 equally and uses a bootstrap stratified by set. It measures a different
 quantity from the per-set gap, and the two are never combined.
 
-RQ2 uses tuning data. For each parser and budget, we compute Spearman's $\rho$
-between measured chunk size and recall over that parser's 13 setups, with a
-document-bootstrap interval. RQ2 holds only if every $\rho$ is negative.
+RQ2 was first examined on tuning data as a descriptive analysis, added on
+12~November after the tuning scores were known: for each parser, budget and
+source, Spearman's $\rho$ between measured chunk size and recall over all
+in-scope settings, without tests. A confirmatory rule was fixed before
+held-out set~2 was scored: for each parser and budget, Spearman's $\rho$ over
+that parser's \RQtwoHTwoSetupsPerParser{} primary setups, with a
+document-bootstrap interval; RQ2 holds if every $\rho$ is negative.
 
 \subsection{Answer quality}\label{sec:aq}
 
@@ -181,9 +185,9 @@ fixed a separate design on 10~November 2026, before running it. It uses
 held-out set~1 a third time, for this question only, and we disclose it as
 such.
 
-From each PDF we sample 20\% of its questions (rounded up, at least one;
+From each PDF we sample \AQSampleShare{} of its questions (rounded up, at least one;
 seed 42). On tuning and held-out documents, the pool is the questions with
-certain gold spans shared by both parsers. For scanned PDFs it is all 110
+certain gold spans shared by both parsers. For scanned PDFs it is all \ScannedQuestions{}
 MP-DocVQA questions, since no located gold is needed. On digital PDFs we
 compare seven Docling setups: M1 at 256 and 384 tokens, LangChain recursive at
 256 and 512, recursive at 512, fixed-token at 1,024 and LangChain's default,
@@ -193,7 +197,7 @@ OCR.
 
 The context for each question is exactly what the scorer reads: hybrid
 retrieval, with chunks in rank order up to 1,250 tokens. Gemini~3.5 Flash-Lite
-answers at temperature 0 with one fixed prompt that asks it to answer only
+answers at temperature \AnswerTemperature{} with one fixed prompt that asks it to answer only
 from the context or reply ``not found''. Each answer is compared with the
 source's own reference answer. The primary measures are token F1 and whether
 the reference answer is contained in the response. An LLM judge gives a
