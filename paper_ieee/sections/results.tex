@@ -145,3 +145,40 @@ Tesseract setting, but only one difference survives Holm correction:
 \RQfourScannedTopDiff{} \RQfourScannedTopCI{} against
 \RQfourScannedTopSetup{} (Holm $p$ = \RQfourScannedTopHolm{}). This agrees
 with keeping Docling's default OCR for scans (Section~\ref{sec:rq5}).
+
+\subsection{RQ5: tuning versus defaults}\label{sec:rq5}
+
+\input{generated/figures/rq5_fig}
+
+\textbf{(a) Parser settings.} On digital PDFs
+(\RQfiveADigitalQuestions{} shared questions), no parser variant differs
+from its default by more than \RQfiveADigitalMaxAbsDiff{} in recall, and
+none is significant (smallest Holm $p$ = \RQfiveADigitalMinHolm{};
+Fig.~\ref{fig:rq5}a). The defaults reach \RQfiveADigitalDoclingRecall{} for
+Docling and \RQfiveADigitalPdfplumberRecall{} for pdfplumber, the range
+because each variant is compared on its own shared questions. On scanned PDFs
+(\RQfiveAScannedDocuments{} documents, \RQfiveAScannedQuestions{} shared
+questions), Tesseract OCR and Docling's default OCR do not differ:
+\RQfiveAScannedDiff{} \RQfiveAScannedCI{} (Holm $p$ =
+\RQfiveAScannedHolm{}). The parser choice that matters for scans is
+detecting them at all: pdfplumber reads no text from scanned pages, so the
+released tool routes them to Docling.
+
+\textbf{(b) Chunk size.} Over \RQfiveBComparisons{} comparisons on held-out
+set~1, the tuned size beats the default only where the default is far off
+(Fig.~\ref{fig:rq5}b). LangChain's default chunk size loses
+\RQfiveBLangchainRecursiveDoclingDiff{}
+\RQfiveBLangchainRecursiveDoclingCI{} on Docling
+(\RQfiveBLangchainRecursiveDoclingDefault{} against
+\RQfiveBLangchainRecursiveDoclingTuned{}) and
+\RQfiveBLangchainRecursivePdfplumberDiff{}
+\RQfiveBLangchainRecursivePdfplumberCI{} on pdfplumber
+(\RQfiveBLangchainRecursivePdfplumberDefault{} against
+\RQfiveBLangchainRecursivePdfplumberTuned{}), both with Holm $p$
+\RQfiveBLangchainRecursiveDoclingHolm{}. For fixed-token, recursive and M1,
+the tuned size differs from the default by
+\RQfiveBRecursiveDoclingDiff{} to \RQfiveBMethodOneTreePdfplumberDiff{}, and
+no difference is significant (Holm $p$ from
+\RQfiveBFixedTokenPdfplumberHolm{} to \RQfiveBMethodOneTreeDoclingHolm{}).
+Tuning pays off when a library's default is far from the optimum; when the
+default is already close, it adds nothing measurable.

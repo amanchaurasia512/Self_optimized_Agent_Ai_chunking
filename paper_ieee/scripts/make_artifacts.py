@@ -688,12 +688,12 @@ def tick_step(rows, most=4):
     return next(step for step in (0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5) if span / step <= most)
 
 
-def interval_plot(rows, title, row_height=0.55):
+def interval_plot(rows, title, xlabel, row_height=0.55):
     """One axis of differences with asymmetric 95% intervals, one row per comparison, labels on one line; filled
     black circles pass Holm, open circles do not."""
     # pgfplots cannot parse ( ) or , inside a symbolic coordinate: letters-only keys, readable names as tick labels
     keys = {name: letters(name) for name, *rest in rows}
-    lines = [f"\\nextgroupplot[title={{{title}}}, height={len(rows) * row_height:.2f}cm, symbolic y coords={{{','.join(keys.values())}}},"
+    lines = [f"\\nextgroupplot[title={{{title}}}, xlabel={{{xlabel}}}, height={len(rows) * row_height:.2f}cm, symbolic y coords={{{','.join(keys.values())}}},"
              f" ytick={{{','.join(keys.values())}}}, yticklabels={{{','.join(f'{{{name}}}' for name in keys)}}},"
              f" xtick distance={tick_step(rows)},"
              r" extra x ticks={0}, extra x tick labels={}, extra x tick style={grid=major, major grid style={dashed}}]"]
@@ -715,10 +715,10 @@ def rq5(read):
                     for row in digital.sort_values("variant").itertuples(index=False)]
     figure = "\n".join([r"\begin{tikzpicture}",
                         r"\begin{groupplot}[group style={group size=1 by 2, vertical sep=2.2cm}, scale only axis,"
-                        r" width=\columnwidth-3.6cm, xlabel={Recall difference (tuned $-$ default)}, scaled x ticks=false,"
+                        r" width=\columnwidth-3.6cm, scaled x ticks=false,"
                         r" x tick label style={/pgf/number format/fixed}]",
-                        *interval_plot(digital_rows, "(a) Parser settings, digital"),
-                        *interval_plot(chunker_rows, "(b) Chunk size"),
+                        *interval_plot(digital_rows, "(a) Parser settings, digital", r"Recall difference (variant $-$ default)"),
+                        *interval_plot(chunker_rows, "(b) Chunk size", r"Recall difference (tuned $-$ default)"),
                         r"\end{groupplot}", r"\end{tikzpicture}", ""])
     numbers = {}
     for row in chunker.itertuples(index=False):
@@ -1203,8 +1203,8 @@ FIGURES = {  # figure body -> (label, caption, wide); the caption sits below the
             r"Recall@4,000, a pre-registered RQ3 measure outside the main budgets, also favours small chunks: best setups "
             r"\RQthreeDoclingRecallFourZeroZeroZeroBest{} (\RQthreeDoclingRecallFourZeroZeroZeroSize{} tokens) on Docling and "
             r"\RQthreePdfplumberRecallFourZeroZeroZeroBest{} (\RQthreePdfplumberRecallFourZeroZeroZeroSize{} tokens) on pdfplumber.", False),
-    "rq5": ("fig:rq5", "RQ5: (a) parser variants minus default, digital PDFs; (b) tuned size minus default, held-out 1. "
-            "Filled marks: significant after Holm.", False),
+    "rq5": ("fig:rq5", "RQ5: (a) parser variants minus default, digital PDFs; (b) tuned size minus default, held-out set~1. "
+            r"Bars: 95\% document bootstrap intervals. Filled marks are significant after Holm correction.", False),
 }
 FIGURE_ROOT = "generated/figures"  # the bodies' folder as main.tex (in paper_ieee/) inputs them
 
