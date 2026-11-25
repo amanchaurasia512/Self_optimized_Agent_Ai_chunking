@@ -105,3 +105,43 @@ Under a fixed number of chunks, a large chunk puts more text in front of the
 reader, so measures such as Recall@$k$ and MRR reward size itself. A fixed
 token budget removes that advantage, and any comparison of chunk sizes has to
 say which of the two it uses.
+
+\subsection{RQ4: retrieval quality versus answer quality}\label{sec:rq4}
+
+\input{generated/rq4}
+
+On held-out set~1 (\AQHeldOutQuestions{} sampled questions), answers are best
+with \RQfourBest{} (token F1 \RQfourBestFOne{}). Table~\ref{tab:rq4} compares
+it with the other \RQfourComparisons{} digital setups. Answers confirm the
+large-chunk penalty: the best setup beats
+\RQfourDoclingFixedTokenSizeOneZeroTwoFourSetup{} by
+\RQfourDoclingFixedTokenSizeOneZeroTwoFourDiff{}
+\RQfourDoclingFixedTokenSizeOneZeroTwoFourCI{} (Holm $p$
+\RQfourDoclingFixedTokenSizeOneZeroTwoFourHolm{}). It also beats
+\RQfourDoclingMethodOneTreeTThreeEightFourSetup{} by
+\RQfourDoclingMethodOneTreeTThreeEightFourDiff{}
+\RQfourDoclingMethodOneTreeTThreeEightFourCI{} (Holm $p$ =
+\RQfourDoclingMethodOneTreeTThreeEightFourHolm{}), although the two are tied
+on recall; we report this difference but do not claim it. Against
+\RQfourDoclingLangchainDefaultSetup{} the gain is
+\RQfourDoclingLangchainDefaultDiff{} \RQfourDoclingLangchainDefaultCI{}, not
+significant after correction (Holm $p$ =
+\RQfourDoclingLangchainDefaultHolm{}), although recall separates this default
+clearly (Section~\ref{sec:rq5}). The remaining setups differ by
+\RQfourDoclingLangchainRecursiveSizeFiveOneTwoDiff{} to
+\RQfourDoclingLangchainRecursiveSizeTwoFiveSixDiff{}, with Holm $p$ =
+1.000. On tuning data (\AQTuningQuestions{} questions), no difference is
+significant.
+Across setups, answer F1 follows recall: Spearman's $\rho$ between F1 and
+Recall@1,250 is \RQfourSpearmanTuningFOne{} on tuning and
+\RQfourSpearmanHeldOutFOne{} on held-out set~1 (judge scores, secondary:
+\RQfourSpearmanTuningJudge{} and \RQfourSpearmanHeldOutJudge{}). Answers
+do not separate the small-chunk setups.
+
+On scanned PDFs (\AQScannedQuestions{} questions), the best setup is
+\RQfourScannedBest{} (F1 \RQfourScannedBestFOne{}), with Docling's default OCR.
+It scores above all \RQfourScannedComparisons{} other setups, including every
+Tesseract setting, but only one difference survives Holm correction:
+\RQfourScannedTopDiff{} \RQfourScannedTopCI{} against
+\RQfourScannedTopSetup{} (Holm $p$ = \RQfourScannedTopHolm{}). This agrees
+with keeping Docling's default OCR for scans (Section~\ref{sec:rq5}).
