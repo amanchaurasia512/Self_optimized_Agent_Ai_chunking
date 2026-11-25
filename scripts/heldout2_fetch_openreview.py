@@ -1,4 +1,5 @@
-"""Held-out set 2 (spec v1.2 "Held-out set 2: PeerQA" and "Held-out set 2: correction and PDF sources"): download the
+"""NOT USED (replaced by ViDoRe V3, see spec v1.2 "Held-out set 2: ViDoRe V3 (replaces PeerQA)").
+Held-out set 2 (spec v1.2 "Held-out set 2: PeerQA" and "Held-out set 2: correction and PDF sources"): download the
 PDFs of the OpenReview papers among the 93 eligible PeerQA papers (at least 2 answerable questions with evidence in
 answer_evidence_mapped, from the metadata in data/external/peerqa/), with the author's own OpenReview login.
 Credentials come only from the environment (OPENREVIEW_USERNAME, OPENREVIEW_PASSWORD); they are never printed or

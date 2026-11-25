@@ -2,6 +2,6 @@
 \begin{figure}[!t]
 \centering
 \input{generated/figures/rq3.tex}
-\caption{RQ3 on tuning: the same settings scored with a fixed number of chunks and with a fixed token budget. Both series use the same questions (QASPER included), so Recall@1,250 here differs slightly (up to 0.029) from the tuning per-setting means that exclude QASPER; trend lines are least-squares fits for display only. Recall@4,000, a measure named in the diagnostic's design and outside the main budgets, also favours small chunks: best setups \RQthreeDoclingRecallFourZeroZeroZeroBest{} (\RQthreeDoclingRecallFourZeroZeroZeroSize{} tokens) on Docling and \RQthreePdfplumberRecallFourZeroZeroZeroBest{} (\RQthreePdfplumberRecallFourZeroZeroZeroSize{} tokens) on pdfplumber.}
+\caption{RQ3 on tuning: the same settings scored with a fixed number of chunks and with a fixed token budget. Both series use the questions of the fixed-k run (QASPER excluded; each parser's own gold), so Recall@1,250 here differs (up to \RQthreeFigureGap{}) from the tuning means on the questions kept for every setup; trend lines are least-squares fits for display only. Recall@4,000, a measure named in the diagnostic's design and outside the main budgets, also favours small chunks: best setups \RQthreeDoclingRecallFourZeroZeroZeroBest{} (\RQthreeDoclingRecallFourZeroZeroZeroSize{} tokens) on Docling and \RQthreePdfplumberRecallFourZeroZeroZeroBest{} (\RQthreePdfplumberRecallFourZeroZeroZeroSize{} tokens) on pdfplumber.}
 \label{fig:rq3}
 \end{figure}

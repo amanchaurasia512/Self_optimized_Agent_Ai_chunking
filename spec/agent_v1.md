@@ -239,6 +239,7 @@ pages). Agent-only facts (pages OCR'd, step timings, parser mode) go in the run 
    peak memory, pages OCR'd and failures. Before running, write 3 questions per PDF with their answers, then report
    how many the agent finds. A smoke test, not a research claim.
 5. Server: repeat test 4's timing on the deployment machine before choosing it.
+   - Note (2026-11-25): test 5 is dropped from paper 1, see "Agent test 5 dropped from paper 1 (2026-11-24)" below.
 
 ## Out of scope (v1)
 Hindi and other languages; per-document tuning; tables as structured data; user accounts. The app and deployment
@@ -250,6 +251,8 @@ Hindi and other languages; per-document tuning; tables as structured data; user 
 - The reading budget is a user setting (750 / 1,250 / 2,000 tokens, default 1,250); the agent does not choose it.
 - The app (App v1, v1.1 and the Docker image) was built on 2026-11-13, before tests 4 and 5, which are still not
   done. This departs from "Out of scope (v1)", which said the app and deployment come after these tests pass.
+  - Note (2026-11-25): since then, test 4 was run and test 5 was dropped from paper 1, see "Agent test 5 dropped from
+    paper 1 (2026-11-24)" below.
 
 ## Default chunker (2026-11-24)
 - The agent's default chunker is the fixed tuning winner, docling/langchain_recursive_size256_overlap0_noprefix,

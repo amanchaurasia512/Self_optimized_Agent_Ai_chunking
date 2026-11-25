@@ -2,7 +2,7 @@
 
 A pre-registered study of chunking for retrieval over PDFs, and an agent built on its results. A *setup* is a parser
 (Docling or pdfplumber) times a chunker setting (fixed-token, recursive, LangChain, sentence, semantic, LLM-regex,
-page, and an own structure-tree method). Every setup is scored with one frozen retrieval scorer, so the only thing
+page, and an own structure-tree method; semantic was left out of the held-out evaluation, out of GPU memory). Every setup is scored with one frozen retrieval scorer, so the only thing
 that changes between setups is how the text was extracted and cut.
 
 All decisions are written into the spec before they are run: `spec/spec_v1.md` (frozen 2026-10-26),
@@ -37,13 +37,15 @@ source (spec v1.2, "Scope: Hindi").
 ## The agent
 
 The agent turns the study's results into a tool (`spec/agent_v1.md`). It does not tune itself per document, because
-RQ1 found no gain from that. It adapts where the study showed it matters: it detects scanned pages, and it reads
-ranked chunks up to a token budget.
+RQ1 found no gain from that. It reads ranked chunks up to a token
+budget; scan detection selects the parser in fast mode only.
 
 | Mode | Parser | Chunker |
 |---|---|---|
-| thorough (default) | Docling (reads scans, keeps more answer text) | `docling/method1_tree_T384_noprefix` (0.752, tied with the best) |
-| fast (`--fast`) | pdfplumber; the whole document goes to Docling if any page has no text layer | `pdfplumber/method1_tree_T384_noprefix` (0.772, the best recall on questions both parsers could place, but loses more answer text on held-out: 27.6% vs 16.3% of questions) |
+| thorough (default) | Docling for every PDF (reads scans) | `langchain_recursive_size256_overlap0_noprefix`, the setup chosen on tuning |
+| fast (`--fast`) | pdfplumber; the whole document goes to Docling if any page has no text layer | the same chunker; on digital PDFs this is not the tuned setup, and pdfplumber loses more answer text (held-out set 1: 27.6% vs 16.3% of questions) |
+
+History of the default: `spec/agent_v1.md`, "Default chunker (2026-11-24)".
 
 ```bash
 python -m src.agent chunk <pdf> -o <chunks.json>            # thorough; needs the Docling environment
@@ -94,9 +96,12 @@ a laptop CPU reproduces the study's Kaggle GPU extraction exactly; `--fast` on a
 ## Sealed held-out rule
 
 - `pdfs/split.csv` is locked. Documents whose split starts with `held_out` (`held_out`, `held_out_c`,
-  `held_out_ood`, `held_out_hindi`) are sealed.
-- Scripts read the split file and refuse held-out documents unless run with `--final`. `--final` was used once,
-  for the final evaluation (P3-FINAL-20261106-1). **Do not run anything with `--final`** to reproduce tuning
+  `held_out_ood`, `held_out_hindi`, `held_out_2`) are sealed. Held-out set 2 (`held_out_2`) is 53 ViDoRe V3 documents.
+- Scripts read the split file and refuse held-out documents unless run with `--final`. `--final` was used for
+  the final evaluation of held-out set 1 (P3-FINAL-20261106-1, scored once), later reports and analyses on it (gold
+  drop and size by source, 2026-11-12; reproduction and the analysis without the Indian documents, 2026-11-14), and
+  the held-out set 2 steps (2026-11-22 to 2026-11-24, scored once per gold variant). RQ5(b) and answer quality also
+  use held-out set 1. Details: spec v1.2. **Do not run anything with `--final`** to reproduce tuning
   results; reading the existing held-out score files is the only held-out access needed to reproduce the analyses.
 - Any change to a frozen part (scorer, chunker version, spec decision) needs a new version and a spec note.
 - Project rules for AI-assisted coding are in `CLAUDE.md`.
@@ -106,7 +111,7 @@ a laptop CPU reproduces the study's Kaggle GPU extraction exactly; `--fast` on a
 | Path | Contents |
 |---|---|
 | `spec/` | Frozen specs v1, v1.1, v1.2 (design notes, amendments, results), `agent_v1.md` and `chunk.schema.json` |
-| `src/parse/` | Parsers: Docling, pdfplumber, LlamaParse (backup) |
+| `src/parse/` | Parsers: Docling, pdfplumber; LlamaParse (extracted once, never scored; spec v1.2, 2026-11-25) |
 | `src/chunk/` | Shared chunking base, all chunkers (`chunkers.py`), own method 1 (`method1.py`, `tree.py`), LLM client (`llm.py`) |
 | `src/gold/` | Gold placement rules (`matching.py`) |
 | `src/eval/` | `score.py` (scorer_v1), `embed.py` (bge-m3 cache), `stats.py` (bootstrap settings) |
@@ -203,8 +208,9 @@ python -m scripts.rq5_parser_compare --run P3-RQ5S-20261111-1 --sample scanned  
 python -m scripts.rq5_chunker_compare --tuning-run P3-LOCAL-20261105-4 --heldout-run P3-FINAL-20261106-1   # -> P5-LOCAL-20261110-2
 ```
 
-Docling variants: `ocr_off`, `table_mode_switched`, `headings`, `replace_broken_text`, `ocr_tesseract`,
-`ocr_rapidocr`, `ocr_scale_double`. On the scanned sample `ocr_rapidocr` and `ocr_scale_double` gave text identical
+Docling variants: `ocr_off`, `table_mode_switched`, `headings`, `ocr_tesseract`, `ocr_rapidocr`,
+`ocr_scale_double`. `replace_broken_text` was planned but not run (the default OCR engine has no such option; spec v1.2,
+2026-11-10). On the scanned sample `ocr_rapidocr` and `ocr_scale_double` gave text identical
 to the default and are not separate settings (spec v1.2, 2026-11-12 correction).
 
 ### AQ: answer quality
@@ -232,7 +238,7 @@ python -m scripts.p3_size_by_source --run P3-LOCAL-20261105-4 # size-recall curv
 ```
 
 The held-out versions of `p3_gold_drop` and `p3_size_by_source` read existing scores or gold counts with `--final`
-(counts only, after the final evaluation); they were run once and do not need re-running.
+(counts only, after the final evaluation); they were run on 2026-11-12 and reproduced on 2026-11-14.
 
 ## Where results live
 

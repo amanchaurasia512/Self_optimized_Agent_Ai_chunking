@@ -3,12 +3,12 @@
 \centering
 \caption{Deviations, corrections and disclosures recorded in the specification.}
 \label{tab:deviations}
-\footnotesize
+\scriptsize
 \begin{tabular}{llp{11cm}}
 \toprule
 Date & Kind & What \\
 \midrule
-2026-11-03 & deviation & Tree structure of most H1 held-out documents seen while designing the tree method (no questions, answers or scores). \\
+2026-11-03 & deviation & Tree structure of most documents in the first part of held-out set 1 seen while designing the tree method (no questions, answers or scores). \\
 2026-11-04 & deviation & Line blocks for pdfplumber added to the tree method after the first development scores; the earlier version is kept. \\
 2026-11-05 & deviation & Floor test failed under the pre-written rule; rule amended to paired differences; both results reported. \\
 2026-11-05 & deviation & Tie rule changed to paired per-document differences, before any RQ1 result. \\
@@ -16,7 +16,7 @@ Date & Kind & What \\
 2026-11-05 & deviation & Chunk-size grid extended after the tuning results were seen (tuning-only work). \\
 2026-11-05 & deviation & Prefix-cap fault in the tree method fixed; prefix settings re-made; the old outputs kept as superseded. \\
 2026-11-05 & deviation & RQ1 rules amended after the tuning development run: split-half oracle; cost no longer breaks ties. \\
-2026-11-06 & correction & Held-out H1 count corrected: the Hindi pair is part of it. \\
+2026-11-06 & correction & Count of the first part of held-out set 1 corrected: the Hindi pair is part of it. \\
 2026-11-06 & deviation & Semantic chunker left out of the held-out evaluation (out of GPU memory). \\
 2026-11-06 & deviation & An option naming the pre-registered primary choice set added after held-out scoring; analysis functions unchanged. \\
 2026-11-08 & deviation & RQ5(a) table-mode variant redefined before running. \\
@@ -30,12 +30,38 @@ Date & Kind & What \\
 2026-11-12 & deviation & Two scanned OCR variants identical to the default; removed from the comparison family. \\
 2026-11-12 & deviation & Hindi track not evaluated (no question source); no multilingual claim. \\
 2026-11-12 & correction & Errata: Holm p bounds, a wrong duplicate claim, superseded scanned numbers. \\
+2026-11-12 & deviation & Token F1 and containment, not in the frozen answer-quality design, used as primary measures; the judge was the design's only measure. \\
 2026-11-14 & correction & Erratum: the digital sample size in RQ5(a). \\
 2026-11-14 & correction & Erratum: the fixed-k winners included superseded settings. \\
-2026-11-14 & deviation & Most answer-quality answers were made by an earlier code version and have no run record. \\
+2026-11-14 & deviation & \AQUnrecordedAnswers{} of \AQAnswers{} answer-quality answers were made by an earlier code version and have no run record. \\
 2026-11-14 & deviation & Validity check of the Indian questions stopped after its first batch; planned expansion and reason review not done. \\
 2026-11-14 & disclosure & First-pass judge-check labels were overwritten; the recorded first-pass agreement cannot be recomputed. \\
-2026-11-25 & disclosure & RQ2 on tuning was defined after the tuning scores (2026-11-12) and is descriptive (per source, all in-scope settings, no test); the confirmatory RQ2 rule (13 primary setups, intervals, every rho negative) was fixed before held-out set 2 and is tested only there. \\
+2026-11-15 & correction & Erratum: some tracked files hold dataset text, and the repository then had no licence file. \\
+2026-11-18 & correction & Erratum: a duplicated selection rule; one answer-quality difference rounded wrongly. \\
+2026-11-18 & deviation & RQ3 control: the Holm family narrowed to the tested comparisons before running. \\
+2026-11-18 & deviation & Four chunkers planned in specification v1.1 were not in the main grid, with no written reason at the time. \\
+2026-11-18 & deviation & Planned items built after the main study, on tuning data only. \\
+2026-11-18 & deviation & Extension amended before any code: overlap compared at one size only; our own definition of the dynamic chunker. \\
+2026-11-18 & deviation & Extension: the paragraph chunker defined for Docling only. \\
+2026-11-18 & deviation & Cross-references for the tree method built, then left out of the scored extension before any recall. \\
+2026-11-19 & deviation & Second embedder: the number of new setups and the RQ2 comparison set corrected before any code. \\
+2026-11-19 & deviation & Second embedder loaded through a built-in class instead of remote code; checked to give the same vectors. \\
+2026-11-20 & deviation & Held-out set 2: the CUAD and OHR-Bench design replaced by PeerQA before any document was drawn or opened. \\
+2026-11-20 & deviation & Held-out set 2: PeerQA replaced by ViDoRe V3; no PeerQA PDF was downloaded or opened. \\
+2026-11-22 & disclosure & Held-out set 2: the pdfplumber extraction ran before its access-gate edits were committed. \\
+2026-11-23 & disclosure & Held-out set 2: pages without text found after the Docling run; nothing re-run. \\
+2026-11-23 & deviation & Held-out set 2: the implementation note fixed certain-only gold in place of the drop rule named earlier. \\
+2026-11-23 & deviation & Held-out set 2: the drop rule made primary and certain-only a sensitivity check, after gold counts, before any score. \\
+2026-11-24 & deviation & RQ2 on held-out set 2 read per parser instead of over all setups together, before any score. \\
+2026-11-25 & disclosure & The RQ3 figure leaves out two questions without fixed-k rows; display only. \\
+2026-11-25 & disclosure & RQ2 on tuning was defined after the tuning scores (2026-11-12) and is descriptive (per source, all in-scope settings, no test); the confirmatory RQ2 rule (primary setups, intervals, every rho negative) was fixed before held-out set 2 and is tested only there. \\
+2026-11-25 & deviation & Planned secondary RQ1 analyses at budgets 750 and 2,000 not run. \\
+2026-11-25 & deviation & Planned measures of a per-document chooser (gap captured, cost ratio) not computed: none was built after NO-GO. \\
+2026-11-25 & deviation & Planned RQ1 reference loss of page and LangChain-default chunking not reported. \\
+2026-11-25 & deviation & Planned LlamaParse comparison dropped: extracted, never scored. \\
+2026-11-25 & deviation & Backup embedders not run. \\
+2026-11-25 & deviation & Planned Hit@B, Full@B, Hit@5 and Hit@10 computed but not analysed. \\
+2026-11-25 & correction & Erratum: a best chunk size of held-out CUAD given at the wrong budget. \\
 \bottomrule
 \end{tabular}
 \end{table*}

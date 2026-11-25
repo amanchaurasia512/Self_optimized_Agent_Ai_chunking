@@ -19,7 +19,7 @@ Two machines are involved:
 | Docling | 2.143.0 | P1-P2-KN02-20261103-1 (18 held-out PDFs) | Kaggle, 3.13.16 |
 | Docling (RQ5a variants) | 2.143.0 | P1-RQ5-KN01-20261109-1 … -7 | Kaggle, 3.13.16 |
 | pdfplumber | 0.11.10 | P0-LOCAL, P1-LOCAL | laptop, 3.14.4 |
-| LlamaParse | SDK 2.19.0, parse version "latest" | 3 of the P1-LOCAL records | laptop, 3.14.4 |
+| LlamaParse (extracted, never scored; spec v1.2, 2026-11-25) | SDK 2.19.0, parse version "latest" | 3 of the P1-LOCAL records | laptop, 3.14.4 |
 
 - P1-KN04 is the only record with Docling 2.144.0. All 25 tuning extractions in `data/extracted/docling/` record
   2.143.0 in their own `parser.version` field, so the 2.144.0 output is not among the tuning extractions (P1-KN06
@@ -132,4 +132,5 @@ Exact versions before App v1 (175 packages, `pip freeze`), given relative to `re
 Check (2026-11-13, laptop CPU): thorough mode on the 6-page tuning PDF
 cuad_cooltechnologies_inc_10_25_2017_ex_10_71_strategic_alliance_agreement gave extracted text, pages, elements and
 chunks identical to the study's Kaggle extraction and its docling/method1_tree_T384_noprefix chunk file (run record
-runs/tests/agent/A-LOCAL-20261113-18.json).
+runs/tests/agent/A-LOCAL-20261113-18.json). The agent's default chunker then was
+method1_tree T384; since 2026-11-24 it is langchain_recursive 256 (spec/agent_v1.md, "Default chunker").

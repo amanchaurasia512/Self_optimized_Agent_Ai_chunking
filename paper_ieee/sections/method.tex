@@ -25,9 +25,11 @@ A second held-out set was added later as a replication. Its document
 selection, gold rule, one gold amendment (made after the gold counts were
 known; Section~\ref{sec:gold}) and analysis code were written into dated notes
 before it was scored, and it was also scored once, on
-24~November 2026. Commit and first-push times for each step are given in
+24~November 2026. Commit and run times for each step,
+and first-push times up to 14~November, are given in
 Table~\ref{tab:timeline}. Where we departed from the specification we say so:
-Table~\ref{tab:deviations} lists \DeviationCount{} deviations and \CorrectionCount{} corrections.
+Table~\ref{tab:deviations} lists \DeviationCount{} deviations,
+\CorrectionCount{} corrections and \DisclosureCount{} disclosures.
 
 \textbf{Uses of the held-out sets.} Held-out set~1 was scored once, for RQ1, and
 its results were then used again: for RQ5(b) (second use), for answer quality
@@ -75,7 +77,7 @@ pages are all text or table pages within one document, and documents with at
 least two such queries and at most 200 pages; % src: spec/spec_v1.2.md:1328
  questions on charts and images and
 longer documents are therefore outside this set. This gives \HTwoSelectedDocuments{} documents % src: spec/spec_v1.2.md:1327-1328
-(\HTwoSelectedHr{} HR, \HTwoSelectedIndustrial{} Industrial, \HTwoSelectedPharmaceuticals{} Pharmaceuticals) and 286 queries, none overlapping % src: spec/spec_v1.2.md:1328
+(\HTwoSelectedHr{} HR, \HTwoSelectedIndustrial{} Industrial, \HTwoSelectedPharmaceuticals{} Pharmaceuticals) and \HTwoQueries{} queries, none overlapping
 the other sets. Under the primary gold rule (Section~\ref{sec:gold}),
 \RQoneHTwoDropRuleDocuments{} documents and \RQoneHTwoDropRuleQuestions{} questions can be scored.
 
@@ -94,7 +96,7 @@ left out).
 For held-out set~2 the evidence is the words inside the human-drawn evidence
 boxes, read from the PDF text layer. Under the primary rule, a page is kept
 when the matcher's frozen drop rule (threshold \GoldDropThreshold{}) accepts every piece of
-its box text; of the 286 queries, \HTwoKeptDocling{} keep gold on Docling and % src: spec/spec_v1.2.md:1328
+its box text; of the \HTwoQueries{} queries, \HTwoKeptDocling{} keep gold on Docling and
 \HTwoKeptPdfplumber{} on pdfplumber. Two variants serve as sensitivity checks: one keeps a query if
 any of its evidence pages is placed, and a stricter certain-only variant
 applies the held-out set~1 rule. Certain-only was designed for short answer
@@ -178,7 +180,7 @@ chunk holds gold), and MRR (the reciprocal rank of the first chunk that holds
 gold). R@4000 in Table~\ref{tab:rq3err} is Recall@4,000, with a budget in tokens.
 This diagnostic was designed on 12~November, after the tuning and held-out
 results, and has no test. A control designed on 18~November adds Lift@5:
-Recall@5 minus its value under a random chunk order, averaged over 20 random % src: spec/spec_v1.2.md:776-777
+Recall@5 minus its value under a random chunk order, averaged over \RandomOrders{} random
 orders. It tests size 256 against 1,024 for four chunker families and two
 parsers.
 
@@ -197,15 +199,16 @@ replaced this by the paired interval above. Specs~v1 and v1.1 also said that the
 cheaper setup wins a tie and defined the oracle as the cheapest tied setup. A
 development run on tuning data showed two problems with this. First, setups
 without overlap index almost the same text, so their costs differ by about
-0.1 token per document, and the cheapest tied setup was chosen by noise: the % src: spec/spec_v1.2.md:140-143
+\TieCostDifference{} token per document, and the cheapest tied setup was chosen by noise: the
 best single setup became pdfplumber with groups of eight sentences (\CheapestTieBestRecall{}),
 while the top setup scored \TuningTopRecall{}. Second, per-document tie tests have almost
-no power on documents with few questions (98 of \TuningSetups{} setups tied at four % src: spec/spec_v1.2.md:140-143
+no power on documents with few questions (\TieUnresolvedSetups{} of \TuningSetups{} setups tied at four
 questions), so the cheapest-tied oracle fell below the best single setup on
-8 documents. An amendment on 5~November, the day before held-out set~1 was % src: spec/spec_v1.2.md:140-143
+\CheapestOracleBelowDocuments{} documents. An amendment on 5~November, the day before held-out set~1 was
 scored, therefore made the rule recall-only and introduced the split-half
 oracle described below. Cost is reported separately, on two Pareto fronts,
-index tokens and chunk count (Table~\ref{tab:cost}).
+index tokens and chunk count (Section~\ref{sec:rq1}); Table~\ref{tab:cost}
+gives the index cost at 384 tokens.
 
 An oracle that picks each document's best setup using the same questions it is
 scored on would gain from chance alone. We avoid this with split-half
@@ -299,7 +302,7 @@ open-weight model, Qwen3-8B (4-bit, greedy decoding); it was first committed on
 12~November with the result, so git cannot show that it came before the check.
 On \JudgeCases{} cases labelled by one person the judge agreed in
 \ManualJudgeFirstPassAgreement\% (kappa \ManualJudgeFirstPassKappa{}), below the
-frozen mark of 80\%. A second, non-blind pass over the disagreements gave % src: spec/spec_v1.2.md:285
+frozen mark of \JudgePassMark\%. A second, non-blind pass over the disagreements gave
 \JudgeSecondAgreement\% (kappa \JudgeSecondKappa{}); the judge is therefore
 secondary only. Setups are compared with
 the same paired document bootstrap and Holm correction as above, and we report

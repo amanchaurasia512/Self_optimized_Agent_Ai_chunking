@@ -2,7 +2,7 @@
 generated from locked result files only (data/results/, runs/, and the manual facts as tagged); nothing is re-run.
 Based on the paper-v1.2 generator (paper/scripts/make_artifacts.py). Inputs frozen at paper-v1.2 are checked against
 docs/paper_checksums.txt as tagged; inputs made after the tag (held-out 2, extension, second embedder) are checked
-against docs/paper_checksums_v1.3.txt (paper-v1.3 lock), as tagged at paper-v1.3.1, or by a checksummed run record. Outputs go to paper_ieee/generated/ only and are byte-identical
+against docs/paper_checksums_v1.3.txt (paper-v1.3 lock) or by a checksummed run record. Outputs go to paper_ieee/generated/ only and are byte-identical
 between runs. --no-tag-check skips the tag checks (tests on fake data only)."""
 import argparse
 import hashlib
@@ -90,7 +90,7 @@ INPUTS = {
     "h2_exclusion_record": "runs/P4-H2-20261124-5.json",
     "ext_rq1": "data/results/ext/P4-EXT-20261119-2_rq1.csv",
     "rob_rq1": "data/results/rob/P4-ROB-20261120-1_rq1.csv",
-    # tracked at LOCK_TAG, not in a checksum file: must equal the file as tagged (TAG_LOCKED)
+    # tracked, added to CHECKSUMS_LOCK on 2026-11-25 (spec v1.2 "paper-v1.3 lock, extended")
     "sweep_tests": "data/results/p3/budget_sweep_tuning_tests.csv",
     "sweep_crossover": "data/results/p3/budget_sweep_tuning_crossover.csv",
     "extension_versus": "data/results/ext/P4-EXT-20261119-2_versus_reference.csv",
@@ -99,11 +99,19 @@ INPUTS = {
     # not tracked: its SHA-256 is the recorded input of the checksummed record h2_drop (RECORD_LOCKED)
     "scores_h2": "data/results/p3/P3-H2-20261124-1.csv.gz",
     "aq_tuning": "data/results/aq/analysis_tuning.csv",
+    "run_rq5b": "runs/P5-LOCAL-20261110-2.json",
+    "run_sweep": "runs/P3-SWEEP-20261118-1.json",
+    "run_h2_pdfplumber": "runs/P1-LOCAL-20261122-1.json",
+    "run_h2_docling": "runs/P1-H2-KN01-20261122-1.json",
+    "run_h2_gold": "runs/P1-H2-GOLD-20261123-1.json",
+    "run_h2_droprule": "runs/P1-H2-DROPRULE-20261123-1.json",
+    "run_h2_scores": "runs/P3-H2-20261124-1.json",
 }
-TAG_LOCKED = {"sweep_tests", "sweep_crossover", "extension_versus", "extension_rules", "robustness_rq3"}
+LOCK_EXTENDED = {"sweep_tests", "sweep_crossover", "extension_versus", "extension_rules", "robustness_rq3", "run_sweep",
+                 "run_h2_pdfplumber", "run_h2_docling", "run_h2_gold", "run_h2_droprule", "run_h2_scores"}
 RECORD_LOCKED = {"scores_h2": "h2_drop"}
 TAGGED_INPUTS = {"manual", "split"}  # removed or extended (held-out 2 rows) since the tag: read with git show <TAG>:<path>, checked against the tagged checksum file
-AFTER_TAG = {key for key in INPUTS if key.startswith(("h2_", "ext_", "rob_"))}  # checked against CHECKSUMS_LOCK
+AFTER_TAG = LOCK_EXTENDED | {key for key in INPUTS if key.startswith(("h2_", "ext_", "rob_"))}  # checked against CHECKSUMS_LOCK
 H2_SETS = {"h2_drop": "Drop rule", "h2_sensitivity": "Sensitivity", "h2_certain": "Certain-only"}  # gold variants, spec v1.2
 # The tag freezes the result files (through the checksum file), the checksum file, the spec and the study code the
 # generator imports constants from. After the tag, src/ gained new chunkers (extension, agent): additions are allowed,
@@ -116,7 +124,7 @@ SPEC = "spec/spec_v1.2.md"  # read as tagged (git show <TAG>:spec/spec_v1.2.md),
 # and the one-line summaries are the paper's; the generator refuses a row whose anchors are not each on exactly one line.
 DEVIATIONS = [
     ("deviation", ["Written on 2026-11-03, before any new document is opened.", "Deviation note: 12 of its 13 documents"],
-     "Tree structure of most H1 held-out documents seen while designing the tree method (no questions, answers or scores)."),
+     "Tree structure of most documents in the first part of held-out set 1 seen while designing the tree method (no questions, answers or scores)."),
     ("deviation", ["- A13 (2026-11-04, after the first dev scores"],
      "Line blocks for pdfplumber added to the tree method after the first development scores; the earlier version is kept."),
     ("deviation", ["- S14 floor, result and amendment (2026-11-05)"],
@@ -132,7 +140,7 @@ DEVIATIONS = [
     ("deviation", ["## P4 analysis rules, amended after the first dev run (2026-11-05)"],
      "RQ1 rules amended after the tuning development run: split-half oracle; cost no longer breaks ties."),
     ("correction", ["- Correction (2026-11-06): H1 = held_out (11) + held_out_hindi (2)."],
-     "Held-out H1 count corrected: the Hindi pair is part of it."),
+     "Count of the first part of held-out set 1 corrected: the Hindi pair is part of it."),
     ("deviation", ["- P4-KN01 (2026-11-06): 49 of 50 settings complete"],
      "Semantic chunker left out of the held-out evaluation (out of GPU memory)."),
     ("deviation", ["## Held-out gold (2026-11-06), made before any held-out scoring", "After scoring, p4_analyse got a --settings option"],
@@ -162,17 +170,65 @@ DEVIATIONS = [
     ("correction", ["## Errata (2026-11-14, fixed-k)"], "Erratum: the fixed-k winners included superseded settings."),
     ("deviation", ["## Supplementary analyses for the paper (2026-11-14), read-only, descriptive",
                    "The 1,661 earlier answers come from the unpaced code"],
-     "Most answer-quality answers were made by an earlier code version and have no run record."),
+     "@AQUnrecordedAnswers@ of @AQAnswers@ answer-quality answers were made by an earlier code version and have no run record."),
     ("deviation", ["## GOLDEN_200 validity check stopped after batch 1 (2026-11-14), deviation"],
      "Validity check of the Indian questions stopped after its first batch; planned expansion and reason review not done."),
     ("disclosure", ["## AQ judge check: first-pass labels overwritten in place (reporting, added 2026-11-14)"],
      "First-pass judge-check labels were overwritten; the recorded first-pass agreement cannot be recomputed."),
 ]
-LATER_DISCLOSURES = [  # recorded after the tag: anchored to the working spec, same rules
+LATER_DISCLOSURES = [  # recorded after the tag, or named only later: anchored to the working spec, same rules
+    ("deviation", ["## AQ result (2026-11-12)", "- Primary measure token F1 (document means"],
+     "Token F1 and containment, not in the frozen answer-quality design, used as primary measures; the judge was the design's only measure."),
+    ("correction", ["## Errata (2026-11-15, distributed data)"],
+     "Erratum: some tracked files hold dataset text, and the repository then had no licence file."),
+    ("correction", ["## Errata (2026-11-18)"], "Erratum: a duplicated selection rule; one answer-quality difference rounded wrongly."),
+    ("deviation", ["- Amendment before running (2026-11-18): the Holm family"],
+     "RQ3 control: the Holm family narrowed to the tested comparisons before running."),
+    ("deviation", ["## Scope: planned chunkers not in the final grid (2026-11-18), reporting"],
+     "Four chunkers planned in specification v1.1 were not in the main grid, with no written reason at the time."),
+    ("deviation", ["## Extension: the five planned items, built after the main study (2026-11-18), design before any code"],
+     "Planned items built after the main study, on tuning data only."),
+    ("deviation", ["- Amendment before any code (2026-11-18):"],
+     "Extension amended before any code: overlap compared at one size only; our own definition of the dynamic chunker."),
+    ("deviation", ["- Amendment before any score (2026-11-18), paragraph_group"], "Extension: the paragraph chunker defined for Docling only."),
+    ("deviation", ["- Decision before any recall (2026-11-18), method 1 v2 (cross-references)"],
+     "Cross-references for the tree method built, then left out of the scored extension before any recall."),
+    ("deviation", ["## Robustness embedder: nomic-embed-text-v1.5, design before any code (2026-11-19)",
+                   "- Two corrections to the first draft, made before any code"],
+     "Second embedder: the number of new setups and the RQ2 comparison set corrected before any code."),
+    ("deviation", ["- Clarification before the Kaggle run (2026-11-19), robustness embedder"],
+     "Second embedder loaded through a built-in class instead of remote code; checked to give the same vectors."),
+    ("deviation", ["## Held-out set 2: correction and PDF sources (2026-11-20)"],
+     "Held-out set 2: the CUAD and OHR-Bench design replaced by PeerQA before any document was drawn or opened."),
+    ("deviation", ["## Held-out set 2: ViDoRe V3 (replaces PeerQA), design before any document is opened (2026-11-20)"],
+     "Held-out set 2: PeerQA replaced by ViDoRe V3; no PeerQA PDF was downloaded or opened."),
+    ("disclosure", ["## Held-out set 2: extraction (pdfplumber on the laptop, Docling as H2-KN01), design before running (2026-11-22)",
+                    "- Disclosure: the pdfplumber extraction P1-LOCAL-20261122-1 ran before"],
+     "Held-out set 2: the pdfplumber extraction ran before its access-gate edits were committed."),
+    ("disclosure", ["## Held-out set 2: Docling H2-KN01 imported; Industrial pages without text (2026-11-23, found after the run)"],
+     "Held-out set 2: pages without text found after the Docling run; nothing re-run."),
+    ("deviation", ["## Held-out set 2: gold implementation (scripts/h2_gold_boxes.py), design before running (2026-11-23)"],
+     "Held-out set 2: the implementation note fixed certain-only gold in place of the drop rule named earlier."),
+    ("deviation", ["## Held-out set 2: gold rule amendment (2026-11-23, after gold counts, before any score)"],
+     "Held-out set 2: the drop rule made primary and certain-only a sensitivity check, after gold counts, before any score."),
+    ("deviation", ["- Clarification (2026-11-24, before any held-out 2 score): RQ2 uses"],
+     "RQ2 on held-out set 2 read per parser instead of over all setups together, before any score."),
+    ("disclosure", ["Fig. rq3 (2026-11-25): descriptive re-aggregation"],
+     "The RQ3 figure leaves out two questions without fixed-k rows; display only."),
     ("disclosure", ["## RQ2 on tuning is descriptive (disclosure, 2026-11-25)"],
      "RQ2 on tuning was defined after the tuning scores (2026-11-12) and is descriptive (per source, all in-scope settings, "
-     "no test); the confirmatory RQ2 rule (13 primary setups, intervals, every rho negative) was fixed before held-out "
+     "no test); the confirmatory RQ2 rule (primary setups, intervals, every rho negative) was fixed before held-out "
      "set 2 and is tested only there."),
+    ("deviation", ["## Planned RQ1 at budgets 750 and 2,000: not run (2026-11-25)"], "Planned secondary RQ1 analyses at budgets 750 and 2,000 not run."),
+    ("deviation", ['## "Gap captured" and "Cost ratio" of the agent: not computed (2026-11-25)'],
+     "Planned measures of a per-document chooser (gap captured, cost ratio) not computed: none was built after NO-GO."),
+    ("deviation", ["## Page and langchain_default as reference loss: not reported for RQ1 (2026-11-25)"],
+     "Planned RQ1 reference loss of page and LangChain-default chunking not reported."),
+    ("deviation", ["## LlamaParse comparison: dropped (2026-11-25)"], "Planned LlamaParse comparison dropped: extracted, never scored."),
+    ("deviation", ["## Backup embedders (Cohere API, Qwen3-Embedding-0.6B): not run (2026-11-25)"], "Backup embedders not run."),
+    ("deviation", ["## Hit@B, Full@B, Hit@5 and Hit@10: computed, not analysed (2026-11-25)"],
+     "Planned Hit@B, Full@B, Hit@5 and Hit@10 computed but not analysed."),
+    ("correction", ["## Erratum (2026-11-25): best size of held-out CUAD"], "Erratum: a best chunk size of held-out CUAD given at the wrong budget."),
 ]
 SIZE_FAMILIES = {"fixed_token": r"fixed_token_size(\d+)_overlap0_noprefix", "recursive": r"recursive_size(\d+)_overlap0_noprefix",
                  "langchain_recursive": r"langchain_recursive_size(\d+)_overlap0_noprefix", "method1_tree": r"method1_tree_T(\d+)_noprefix"}
@@ -230,11 +286,6 @@ class Inputs:
         """A tracked file as it is at the paper tag."""
         return self.git("show", f"{TAG}:{path}")
 
-    def tagged_digest(self, path):
-        """SHA-256 of a tracked file as it is at LOCK_TAG."""
-        content = subprocess.run(["git", "-C", str(self.root), "show", f"{LOCK_TAG}:{path}"], capture_output=True, check=True).stdout
-        return hashlib.sha256(content).hexdigest()
-
     def changed_since_tag(self, paths):
         """Files whose diff against the paper tag removes or changes a line (pure additions are allowed), and paths
         that are missing."""
@@ -267,9 +318,7 @@ def verify(root, keys, tag_check=True):
     for key in sorted(keys):
         relative, checksums = INPUTS[key], CHECKSUMS_LOCK if key in AFTER_TAG else CHECKSUMS
         listed = lists[checksums]
-        if key in TAG_LOCKED:
-            checksums, listed = LOCK_TAG, {relative: read.tagged_digest(relative)}
-        elif key in RECORD_LOCKED:
+        if key in RECORD_LOCKED:
             record = INPUTS[RECORD_LOCKED[key]]
             checksums, listed = record, {each["path"]: each["sha256"] for each in read.json(RECORD_LOCKED[key])["inputs"]}
         if relative not in listed:
@@ -328,7 +377,7 @@ FAMILIES = [("langchain_recursive", "LC"), ("langchain_default", "LC-def"), ("me
             ("recursive", "Rec"), ("sentence", "Sent"), ("semantic", "Sem"), ("llm_regex", "LLM"),
             ("page", "Page")]  # longer names first: langchain_recursive before recursive
 PARSERS = {"docling": "D", "docling_ocr_tesseract": "D-Tess", "pdfplumber": "P"}
-DISPLAY = {"held_out": "Held-out", "tuning": "Tuning", "bm25": "BM25", "dense": "Dense", "hybrid": "Hybrid",
+DISPLAY = {"held_out": "Held-out set 1", "tuning": "Tuning", "bm25": "BM25", "dense": "Dense", "hybrid": "Hybrid",
            "primary": "Primary", "full": "Full", "original": "Original", "study": "Study runs", "tests": "Test runs",
            "docling": "Docling", "pdfplumber": "pdfplumber"}
 
@@ -601,10 +650,12 @@ def robustness(read):
     retrievers = read.csv("retrievers").query("split == 'held_out' and scope == 'primary'").set_index("retriever")
     no_indian = read.csv("held_out_no_indian").query("variant == 'without Indian' and scope == 'primary'").iloc[0]
     extension = read.csv("ext_rq1").query("variant == 'all' and scope == 'primary + new'").iloc[0]
+    new = read.csv("extension_versus").query("budget == 1250 and variant == 'all'")["setup"]
+    new_setups, new_chunkers = len(new), new.str.split("/").str[1].nunique()
     nomic = read.csv("rob_rq1").query("embedder == 'nomic'").set_index(["variant", "retriever"])
     cases = [(f"{display(name)} only", "held-out 1", retrievers.loc[name], "retrievers") for name in ("bm25", "dense")]
     cases += [("Without Indian", "held-out 1", no_indian, "held_out_no_indian"),
-              (f"Grid + 6 chunkers ({extension['setups']})", "tuning", extension, "ext_rq1")]
+              (f"Primary + {new_chunkers} chunkers, {new_setups} setups ({extension['setups']})", "tuning", extension, "ext_rq1")]
     cases += [(f"nomic, {retriever}" + (", w/o Indian" if variant == "without Indian" else ""), "tuning",
                nomic.loc[(variant, retriever)], "rob_rq1")
               for variant, retriever in (("all tuning", "hybrid"), ("all tuning", "dense"), ("without Indian", "hybrid"))]
@@ -612,7 +663,7 @@ def robustness(read):
     for label, split, row, key in cases:
         rows.append([label, split.replace("held-out 1", "held-out set 1"), f"{signed(row['gap'])} {interval(row['gap_low'], row['gap_high'])}",
                      "GO" if row["gap_low"] > 0 else "NO-GO"])
-        name = f"Rob{letters(label)}{letters(split)}"
+        name = f"Rob{'Extension' if key == 'ext_rq1' else letters(label)}{letters(split)}"
         numbers |= {f"{name}Gap": (signed(row["gap"]), INPUTS[key]), f"{name}GapCI": (interval(row["gap_low"], row["gap_high"]), INPUTS[key])}
     return {"tables/ext_rob.tex": tabular("llll", ["Check", "Split", r"Gap [95\%]", "Rule"], rows)}, numbers
 
@@ -662,7 +713,9 @@ def rq3(read):
             name = f"RQthree{letters(parser)}{letters(row.measure)}"
             numbers |= {f"{name}Best": (short(row.best), INPUTS["fixedk"]), f"{name}Score": (fixed(row.score), INPUTS["fixedk"]),
                         f"{name}Size": (row.tokens, INPUTS["fixedk"])}
-    return {"figures/rq3.tex": rq3_figure(read, kept), "tables/rq3_erratum.tex": fixedk_erratum(frame, kept, labels)}, numbers
+    figure, gap = rq3_figure(read, kept)
+    numbers["RQthreeFigureGap"] = (fixed(gap), f"{INPUTS['fixedk']}, {INPUTS['scores_tuning']}, {INPUTS['p4_tuning_full']}")
+    return {"figures/rq3.tex": figure, "tables/rq3_erratum.tex": fixedk_erratum(frame, kept, labels)}, numbers
 
 
 def trend(sizes, scores):
@@ -681,6 +734,9 @@ def rq3_figure(read, kept):
         raise ValueError("rq3: fixed-k rows without a Recall@1,250 score")
     series = {"recall10": ("*", "solid", "Recall@10 (fixed number of chunks)"), "recall": ("o", "dashed", "Recall@1,250 (fixed token budget)")}
     values, plots = ["chunk_tokens", *series], []
+    per_setting = frame.groupby(["parser", "setting", "doc_id"])["recall"].mean().groupby(["parser", "setting"]).mean()
+    per_setting.index = [f"{parser}/{setting}" for parser, setting in per_setting.index]
+    gap = (per_setting - read.csv("p4_tuning_full", index_col=0)["recall"]).abs().max()  # P4: questions kept by every setup
     for parser, part in frame.groupby("parser"):
         table = part.groupby(["setting", "doc_id"])[values].mean().groupby("setting").mean()  # question, then document means
         plots.append(f"\\nextgroupplot[title={{{display(parser)}}}]")
@@ -694,7 +750,7 @@ def rq3_figure(read, kept):
                       r" scale only axis, width=0.5\columnwidth-0.9cm, height=4cm, xmin=0, ymin=0, ymax=1, label style={font=\footnotesize},"
                       r" tick label style={font=\footnotesize}, title style={font=\footnotesize}, xlabel={Mean chunk size (tokens)}, ylabel={Recall},"
                       r" /pgf/number format/1000 sep={,}, legend cell align=left, legend style={at={(-0.06,-0.32)}, anchor=north, font=\footnotesize}]",
-                      *plots, r"\end{groupplot}", r"\end{tikzpicture}", ""])
+                      *plots, r"\end{groupplot}", r"\end{tikzpicture}", ""]), gap
 
 
 def fixedk_erratum(frame, kept, labels):
@@ -877,7 +933,7 @@ def coverage(read):
 def a1_index_cost(read):
     chosen = ["method1_tree_T384_noprefix", "recursive_size384_overlap0_noprefix", "langchain_recursive_size384_overlap0_noprefix"]
     rows = []
-    for split, key in (("Tuning", "p4_tuning_full"), ("Held-out", "p4_full")):
+    for split, key in (("Tuning", "p4_tuning_full"), ("Held-out set 1", "p4_full")):
         setups = read.csv(key, index_col=0)
         for parser in ("docling", "pdfplumber"):
             for setting in chosen:
@@ -898,18 +954,22 @@ def a2_retrievers(read):
 
 
 def a5_compute(read):
-    compute = read.csv("compute").groupby("group")[["gpu_hours", "cpu_hours", "chunker_llm_calls", "aq_answer_calls", "agent_answer_calls", "paid_credits"]].sum()
+    compute = read.csv("compute").groupby("group")[["gpu_hours", "cpu_hours", "chunker_llm_calls", "aq_answer_calls"]].sum()
+    answers = len(read.csv("aq_f1"))
     labels = {"gpu_hours": "GPU hours", "cpu_hours": "CPU hours", "chunker_llm_calls": "LLM calls: chunkers",
-              "aq_answer_calls": "LLM calls: AQ", "agent_answer_calls": "LLM calls: agent", "paid_credits": "LlamaParse credits"}
+              "aq_answer_calls": "LLM calls: answer quality"}
     groups = sorted(compute.index)
     rows = [[label] + [fixed(compute.loc[group, column], 1) if "hours" in column else f"{compute.loc[group, column]:,.0f}" for group in groups]
             for column, label in labels.items()]
-    return {"tables/a5_compute.tex": tabular("l" + "r" * len(groups), [""] + [display(group) for group in groups], rows)}, {}
+    return {"tables/a5_compute.tex": tabular("l" + "r" * len(groups), [""] + [display(group) for group in groups], rows)}, {
+        "AQAnswers": (f"{answers:,}", INPUTS["aq_f1"]),
+        "AQUnrecordedAnswers": (f"{answers - int(compute['aq_answer_calls'].sum()):,}", f"{INPUTS['aq_f1']}, {INPUTS['compute']}"),
+        "AQRecordedAnswers": (int(compute["aq_answer_calls"].sum()), INPUTS["compute"])}
 
 
 def a6_no_indian(read):
     groups = {}
-    for split, key in (("Tuning", "tuning_p4"), ("Held-out", "held_out_no_indian")):
+    for split, key in (("Tuning", "tuning_p4"), ("Held-out set 1", "held_out_no_indian")):
         table = read.csv(key).assign(documents_set=lambda frame: frame["variant"].map(lambda variant: "all" if variant.startswith("all") else "no Indian"))
         counts = table.drop_duplicates("documents_set")  # documents and questions are the same in every choice set of a group
         if len(table.drop_duplicates(["documents_set", "documents", "questions"])) != len(counts):
@@ -965,7 +1025,7 @@ def sanity(read):
 
 # Appendix A3: the events of RESULTS.md 8.3 whose evidence is checksummed or content-addressed (commits, the tag)
 TIMELINE = [("Specification v1", "commit", "607d29c"), ("Specification v1.1: chunker pool, oracle, gap", "commit", "de4aff3"),
-            ("Method 1 defined before any retrieval result", "commit", "a4c30f7"), ("Specification v1.2: Method 1 rules", "commit", "4584c8f"),
+            ("Method 1 defined before any retrieval result", "commit", "a4c30f7"), ("Specification v1.2: first version, held-out sets", "commit", "b1bd7d1"), ("Specification v1.2: Method 1 rules", "commit", "4584c8f"),
             ("Method 1 rules added", "commit", "5503874"), ("Method 1 amendment: line blocks", "commit", "f92ba8c"),
             ("Amendment: floor test and tie rule", "commit", "a89b9ff"), ("RQ5 added (after the tuning scores)", "commit", "e59c69c"),
             (r"scorer\_v1 frozen", "commit", "448173c"), ("Grid extension after the first official run", "commit", "6032033"),
@@ -974,10 +1034,22 @@ TIMELINE = [("Specification v1", "commit", "607d29c"), ("Specification v1.1: chu
             ("Held-out chunking", "run", "chunking_final_record"), ("Held-out gold", "commit", "a2c87c6"),
             ("Held-out scoring", "run", "p3_final_record"), ("Held-out analysis", "run", "p4_final"),
             ("Held-out result", "commit", "0d42cd0"), ("RQ5(a) design frozen", "commit", "8116310"),
+            ("RQ5(b) design (after the held-out result)", "commit", "2bb6197"), ("RQ5(b) analysis", "run", "run_rq5b"),
             ("Answer-quality design frozen", "commit", "479a55c"), ("Answer-quality code", "commit", "e5a924a"),
             ("Correction (MP-DocVQA answers); judge-check code", "commit", "3d5407e"), ("Answer-quality result", "commit", "a6278ca"),
-            ("Held-out gold-drop and size-by-source reports", "commit", "5a6b52d"), ("Errata", "commit", "3b9ecd6"),
-            ("Errata", "commit", "56bd9ae"), ("Result files tracked (paper tag)", "tag", TAG)]
+            ("Fixed-k analysis (RQ3)", "run", "fixedk_record"),
+            ("Reports: gold drop, size by source (RQ2 descriptive), fixed-k design", "commit", "5a6b52d"), ("Errata", "commit", "3b9ecd6"),
+            ("Errata", "commit", "56bd9ae"), ("Result files tracked (paper tag)", "tag", TAG),
+            ("RQ3 control design", "commit", "86ac27a"), ("RQ3 control run", "run", "run_sweep"), ("RQ3 control result", "commit", "824a412"),
+            ("Extension design", "commit", "b8e2810"), ("Second-embedder design", "commit", "9347166"),
+            ("Held-out set 2: first design (CUAD, OHR-Bench)", "commit", "923f596"), ("Held-out set 2: PeerQA design", "commit", "4f1401e"),
+            ("Held-out set 2: ViDoRe V3 design", "commit", "99bb88c"), ("Held-out set 2: documents registered", "commit", "639eb33"),
+            ("Held-out set 2: extraction (pdfplumber)", "run", "run_h2_pdfplumber"), ("Held-out set 2: extraction (Docling)", "run", "run_h2_docling"),
+            ("Held-out set 2: gold code and analysis note", "commit", "c36f7e5"), ("Held-out set 2: gold run", "run", "run_h2_gold"),
+            ("Held-out set 2: gold-rule amendment", "commit", "b54b92c"), ("Held-out set 2: drop-rule gold run", "run", "run_h2_droprule"),
+            ("Held-out set 2: analysis code, RQ2 clarification", "commit", "38bac40"), ("Held-out set 2: scoring", "run", "run_h2_scores"),
+            ("Held-out set 2: RQ1 analysis", "run", "h2_drop"), ("Held-out set 2: result", "commit", "dea2882"),
+            ("RQ2 on tuning declared descriptive", "commit", "00593e6")]
 ZERO = "0" * 40
 
 
@@ -1172,12 +1244,15 @@ def deviations(read):
         if any(len(lines) != 1 for lines in found):
             raise ValueError(f"spec anchor not on exactly one line: {[anchor for anchor, lines in zip(anchors, found) if len(lines) != 1]}")
         date = next(match.group(0) for lines in found if (match := re.search(r"\d{4}-\d{2}-\d{2}", lines[0])))
-        rows.append([date, kind, escape(summary)])
-    counts = {kind: sum(each == kind for each, anchors, summary in DEVIATIONS) for kind in ("deviation", "correction")}
-    source = f"{SPEC} at {TAG}, rows of kind {{}} in tables/deviations.tex"
+        rows.append([date, kind, re.sub("@([A-Za-z]+)@", lambda match: f"\\{match[1]}{{}}", escape(summary))])
+    rows.sort(key=lambda row: row[0])
+    counts = {kind: sum(each == kind for each, anchors, summary in DEVIATIONS + LATER_DISCLOSURES)
+              for kind in ("deviation", "correction", "disclosure")}
+    source = f"{SPEC}, rows of kind {{}} in deviations.tex"
     return ({"tables/deviations.tex": tabular(r"llp{11cm}", ["Date", "Kind", "What"], rows)},
             {"DeviationCount": (counts["deviation"], source.format("deviation")),
-             "CorrectionCount": (counts["correction"], source.format("correction"))})
+             "CorrectionCount": (counts["correction"], source.format("correction")),
+             "DisclosureCount": (counts["disclosure"], source.format("disclosure"))})
 
 
 MANUAL_SHOWN_ELSEWHERE = {"judge_first_pass_disagreements": "JudgeDisagreements"}  # one macro per number
@@ -1213,6 +1288,7 @@ def question_counts(read):
     common = question_matrix(scores, scores["setting"].unique())[0].groupby(level="doc_id").size()
     if (len(common), int(common.sum())) != (drop["documents"], drop["questions"]):
         raise ValueError("held-out 2 common set differs from the P4 record")
+    setups = read.csv("p4_primary", index_col=0)
     held_out_1 = read.csv("p4_primary_documents")["questions"]
     numbers = {"RQonePrimaryGapWidth": (gap_width(final["primary"]), INPUTS["p4_final"]),
                "RQoneHTwoDropRuleGapWidth": (gap_width(drop), INPUTS["h2_drop"]),
@@ -1221,6 +1297,8 @@ def question_counts(read):
                "RQoneHTwoOneQuestionDocuments": (int((common == 1).sum()), INPUTS["scores_h2"]),
                "RQoneHTwoTwoQuestionDocuments": (int((common == 2).sum()), INPUTS["scores_h2"]),
                "RQoneHTwoMedianQuestions": (f"{common.median():g}", INPUTS["scores_h2"])}
+    numbers |= {f"RQonePareto{part}": (", ".join(short(setup) for setup in setups.index[setups[column]]), INPUTS["p4_primary"])
+                for part, column in (("Tokens", "pareto_tokens"), ("Chunks", "pareto_chunks"))}
     kept = scores.groupby("parser")[["doc_id", "question_id"]].apply(lambda part: len(part.drop_duplicates()))
     numbers |= {f"HTwoKept{letters(parser)}": (int(count), INPUTS["scores_h2"]) for parser, count in kept.items()}
     return {}, numbers
@@ -1287,20 +1365,37 @@ def disclosures(read):
     return {}, numbers
 
 
+SPEC_FACTS = {  # numbers the text takes from a spec note: read from the spec as tagged (LOCK_TAG)
+    "HTwoQueries": r"Result: 53 documents, (\d+) queries", "TieCostDifference": r"differences of ([\d.]+) token per document",
+    "TieUnresolvedSetups": r"\((\d+) of 100 setups tied at 4 questions\)", "CheapestOracleBelowDocuments": r"oracle was below the best single on\s+(\d+) documents",
+    "RandomOrders": r"averaged over (\d+) random permutations", "JudgePassMark": r"agreement is at least (\d+)%"}
+
+
+def spec_facts(read):
+    text, numbers = read.git("show", f"{LOCK_TAG}:{SPEC}"), {}
+    for name, pattern in SPEC_FACTS.items():
+        found = set(re.findall(pattern, text))
+        if len(found) != 1:
+            raise ValueError(f"{name}: {len(found)} values in the spec")
+        numbers[name] = (found.pop(), f"{SPEC} at {LOCK_TAG}")
+    return {}, numbers
+
+
 BUILDERS = {
+    spec_facts: set(),
     rq1: {"p4_final", "p4_primary", "tuning_p4", "h2_pooled"} | {key + part for key in H2_SETS for part in ("", "_setups")},
     rq2_held_out_2: {"h2_rq2"} | set(H2_SETS),
     hr_check: {"h2_exclusion", "h2_exclusion_record", "h2_drop"},
-    robustness: {"retrievers", "held_out_no_indian", "ext_rq1", "rob_rq1"},
+    robustness: {"retrievers", "held_out_no_indian", "ext_rq1", "rob_rq1", "extension_versus"},
     rq2: {"size_tuning", "size_tuning_summary", "size_final_summary"},
-    rq3: {"fixedk", "scores_tuning"},
+    rq3: {"fixedk", "scores_tuning", "p4_tuning_full"},
     rq4: {"aq_held_out", "aq_held_out_vs_best", "aq_tuning_vs_best", "aq_scanned", "aq_scanned_vs_best", "aq_f1", "aq_judgements", "scores_tuning", "scores_held_out",
           "judge_check", "judge_check_keys"},
     rq5: {"rq5_chunker", "rq5_digital", "rq5_scanned"},
     coverage: {"gold_drop_tuning", "gold_drop_final", "split", "p4_primary_documents"},
     a1_index_cost: {"p4_tuning_full", "p4_full"},
     a2_retrievers: {"retrievers"},
-    a5_compute: {"compute"},
+    a5_compute: {"compute", "aq_f1"},
     a6_no_indian: {"tuning_p4", "held_out_no_indian"},
     a7_golden: {"golden_labels", "golden_sample"},
     manual: {"manual"},
@@ -1311,12 +1406,12 @@ BUILDERS = {
     grid: {"p4_tuning_full", "p4_primary"},
     deviations: set(),
     sanity: {"sanity_log"},
-    question_counts: {"p4_final", "h2_drop", "scores_h2", "p4_primary_documents"},
+    question_counts: {"p4_final", "p4_primary", "h2_drop", "scores_h2", "p4_primary_documents"},
     rq2_caveats: {"h2_rq2", "h2_drop", "size_final_summary", "gold_drop_final"},
     rq3_controls: {"sweep_tests", "sweep_crossover"},
     disclosures: {"aq_held_out", "aq_tuning", "aq_scanned", "rq5_digital", "rq5_chunker", "extension_versus", "extension_rules",
                   "robustness_rq3", "tuning_p4", "held_out_no_indian"},
-    timeline: {"github_page1", "github_page2", "pdfplumber_record", "chunking_final_record", "p3_final_record", "p4_final"},
+    timeline: {"github_page1", "github_page2", "pdfplumber_record", "chunking_final_record", "p3_final_record", "p4_final", "run_rq5b", "fixedk_record", "run_sweep", "run_h2_pdfplumber", "run_h2_docling", "run_h2_gold", "run_h2_droprule", "run_h2_scores", "h2_drop"},
 }
 
 
@@ -1327,15 +1422,17 @@ FLOATS = {  # table body -> (label, caption, wide)
             r"questions. $^\dagger$Secondary: oracle minus the tuning winner, not the per-set gap; bootstrap stratified by set.", True),
     "rq2_h2": ("tab:rq2h2", r"RQ2 on held-out set~2: Spearman's $\rho$ of chunk size against Recall@$B$ per parser, with 95\% "
                r"document bootstrap intervals.", True),
-    "ext_rob": ("tab:robust", "Robustness of RQ1 (hybrid Recall@1,250 unless named; 26 setups unless named).", True),
+    "ext_rob": ("tab:robust", r"Robustness of RQ1 (hybrid Recall@1,250 unless named; \RQoneSetups{} setups unless named). All rows are descriptive or "
+                r"post-hoc; the Rule column applies the pre-registered threshold for reference only.", True),
     "rq4": ("tab:rq4", "RQ4 on held-out set~1: token F1 of the best setup minus each setup.", False),
     "rq3_erratum": ("tab:rq3err", "RQ3 erratum: superseded settings removed.", True),
     "a1_index_cost": ("tab:cost", "Index cost at 384 tokens (mean per document).", True),
-    "a2_retrievers": ("tab:retrievers", "RQ1 by retriever (primary choice set).", True),
-    "a3_timeline": ("tab:timeline", "Pre-registration timeline (IST).", True),
-    "a5_compute": ("tab:compute", "Compute.", False),
-    "a6_no_indian": ("tab:noindian", "RQ1 with and without the Indian documents.", True),
-    "a7_golden": ("tab:golden", "Indian-question validity check (batch 1).", True),
+    "a2_retrievers": ("tab:retrievers", "RQ1 by retriever (primary choice set). Descriptive, run after the held-out result except the hybrid rows of held-out set~1.", True),
+    "a3_timeline": ("tab:timeline", "Pre-registration timeline (IST). --: no first-push time recorded (runs, and commits after 14 November).", True),
+    "a5_compute": ("tab:compute", r"Compute in run records up to 14 November (before held-out set~2, the extension and the second embedder). Only "
+                   r"\AQRecordedAnswers{} of \AQAnswers{} answer-quality answers are in run records; the judge is in none.", False),
+    "a6_no_indian": ("tab:noindian", "RQ1 with and without the Indian documents. Descriptive; the rows without them were run after the held-out result.", True),
+    "a7_golden": ("tab:golden", "Indian-question validity check (first batch).", True),
     "docling_settings": ("tab:docling", "Docling settings.", False),
     "grid": ("tab:chunkers", "Chunker grid (bold: primary choice set of RQ1).", True),
     "deviations": ("tab:deviations", "Deviations, corrections and disclosures recorded in the specification.", True),
@@ -1346,8 +1443,9 @@ FLOATS = {  # table body -> (label, caption, wide)
 FIGURES = {  # figure body -> (label, caption, wide); the caption sits below the figure (IEEE)
     "rq2": ("fig:rq2", "RQ2 on tuning: Recall@1,250 against mean chunk size, per source.", False),
     "rq3": ("fig:rq3", "RQ3 on tuning: the same settings scored with a fixed number of chunks and with a fixed token budget. "
-            "Both series use the same questions (QASPER included), so Recall@1,250 here differs slightly (up to 0.029) from the "
-            "tuning per-setting means that exclude QASPER; trend lines are least-squares fits for display only. "
+            "Both series use the questions of the fixed-k run (QASPER excluded; each parser's own gold), so Recall@1,250 here differs (up to "
+            r"\RQthreeFigureGap{}) from the tuning means on the questions kept for every setup; trend lines are least-squares "
+            "fits for display only. "
             r"Recall@4,000, a measure named in the diagnostic's design and outside the main budgets, also favours small chunks: best setups "
             r"\RQthreeDoclingRecallFourZeroZeroZeroBest{} (\RQthreeDoclingRecallFourZeroZeroZeroSize{} tokens) on Docling and "
             r"\RQthreePdfplumberRecallFourZeroZeroZeroBest{} (\RQthreePdfplumberRecallFourZeroZeroZeroSize{} tokens) on pdfplumber.", False),
@@ -1371,7 +1469,7 @@ def ieee_float(name, body):
     label, caption, wide = FLOATS[name]
     environment = "table*" if wide else "table"
     return "\n".join([f"% Generated by paper_ieee/scripts/make_artifacts.py; do not edit.", f"\\begin{{{environment}}}[!t]",
-                      r"\centering", f"\\caption{{{caption}}}", f"\\label{{{label}}}", r"\scriptsize" if name == "key" else r"\footnotesize",
+                      r"\centering", f"\\caption{{{caption}}}", f"\\label{{{label}}}", r"\scriptsize" if name in ("key", "deviations", "a3_timeline") else r"\footnotesize",
                       body.rstrip("\n"), f"\\end{{{environment}}}", ""])
 
 

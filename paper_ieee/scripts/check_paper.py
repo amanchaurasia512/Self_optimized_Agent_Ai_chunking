@@ -67,6 +67,15 @@ def without_sourced(path, text):
     return "\n".join(lines)
 
 
+def captions_only(text):
+    """Only the captions of a generated file (line breaks kept)."""
+    kept, position = "", 0
+    for match in re.finditer(r"\\caption\{((?:[^{}]|\{[^{}]*\})*)\}", text):
+        kept += "\n" * text.count("\n", position, match.start()) + match[1]
+        position = match.end()
+    return kept
+
+
 def typed_numbers(sections):
     """Math holding a letter ($k=60$, $B$) is left out; purely numeric math is still reported."""
     bare = {}
@@ -121,7 +130,8 @@ def main():
     files = included(PAPER / "main.tex")
     sections = {path: load(path) for path in sorted((PAPER / "sections").glob("*.tex"))}
     prose = {path: text for path, text in files.items() if path.name != "numbers.tex"}
-    checks = {"1 hand-typed numbers": typed_numbers(sections), "2 log": log_problems(), "3 labels and refs": label_problems(files),
+    captions = {path: captions_only(text) for path, text in files.items() if path not in sections}
+    checks = {"1 hand-typed numbers": typed_numbers(sections) + typed_numbers(captions), "2 log": log_problems(), "3 labels and refs": label_problems(files),
               "4 macros": missing_macros(sections), "5 terms": [line for pattern, note in TERMS.items() for line in hits(prose | sections, pattern, note)],
               "6 captions": caption_problems(files)}
     for name, problems in checks.items():

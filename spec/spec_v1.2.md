@@ -1741,3 +1741,54 @@ Fig. rq3 (2026-11-25): descriptive re-aggregation of locked per-question scores 
 RQ2 on tuning was defined after the tuning scores (2026-11-12) and is descriptive (per source, all in-scope settings, no
 test); the confirmatory RQ2 rule (13 primary setups, intervals, every rho negative) was fixed before held-out set 2 and is
 tested only there.
+
+
+## Planned RQ1 at budgets 750 and 2,000: not run (2026-11-25)
+- "Held-out evaluation plan" (2026-11-05) lists RQ1 at budgets 750 and 2,000 as secondary. It was not run: every P4
+  run record that names a budget names 1,250. The scores at 750 and 2,000 exist (RQ2 uses them). No RQ1 claim is made
+  at these budgets. Reporting only; nothing is run now.
+
+## "Gap captured" and "Cost ratio" of the agent: not computed (2026-11-25)
+- Spec v1.1 ("Main numbers") plans gap captured = (agent - best single) / (oracle - best single) and cost ratio. Both
+  need an agent that chooses per document. RQ1 is NO-GO and no such agent was built, so neither is computed.
+
+## Page and langchain_default as reference loss: not reported for RQ1 (2026-11-25)
+- The plan (2026-11-05) names langchain_default and page on both parsers as reference only. Their held-out recalls are
+  in P4-FINAL-20261106-1_full_setups.csv, but no reference loss was reported for RQ1. RQ5(b) compares
+  langchain_default with the tuned LangChain size; page is in no reported comparison.
+
+## LlamaParse comparison: dropped (2026-11-25)
+- Spec v1 plans LlamaParse as a paid comparison parser. Extractions were made (P1-LOCAL-20261028-*, 1,711 credits), but
+  it was never chunked or scored. It is not a backup parser of the study or the tool; no claim is made about it.
+
+## Backup embedders (Cohere API, Qwen3-Embedding-0.6B): not run (2026-11-25)
+- Spec v1 names them as backup embedders. Neither was used for retrieval. Qwen3-Embedding-0.6B is used only inside
+  the semantic chunker. The second embedder is nomic-embed-text-v1.5 (2026-11-19).
+
+## Hit@B, Full@B, Hit@5 and Hit@10: computed, not analysed (2026-11-25)
+- Spec v1 plans them. scorer_v1 writes them to the score files (hit, full, hit5, hit10), but no analysis or claim uses
+  them. RQ3 uses Recall@5, Recall@10, Hit@1, MRR and Recall@4,000.
+
+## Sarvam as an answer-provider fallback: not built (2026-11-25)
+- Spec v1 names Gemini Flash-Lite, then Sarvam, then Groq. src/agent/providers.py has Gemini and Groq adapters (and
+  Ollama for agent test 4); there is no Sarvam adapter.
+
+## Patram-Bench backup dataset: not used (2026-11-25)
+- The backup named in "Backup dataset" (2026-11-03) was never used; no spec entry for its use was written.
+
+## Erratum (2026-11-25): best size of held-out CUAD
+- "Size curve by source" (2026-11-12) says "best sizes up to 699 at 2,000 on pdfplumber". The CSV
+  (size_by_source_summary_P3-FINAL-20261106-1.csv) gives 699 at 750, 543 at 1,250 and 685 at 2,000. A transcription
+  error in the note; the correlations and the conclusion are unchanged. The earlier line stays as written.
+
+## paper-v1.3 lock, extended (2026-11-25)
+Adds to "paper-v1.3 lock" (2026-11-24); reporting only, no result or decision changes, nothing is re-run.
+- Five more result inputs, tracked since before tag paper-v1.3.1 and unchanged since, are added to
+  `docs/paper_checksums_v1.3.txt`: data/results/p3/budget_sweep_tuning_tests.csv, budget_sweep_tuning_crossover.csv,
+  data/results/ext/P4-EXT-20261119-2_versus_reference.csv, data/results/ext/diagnostics/rules_summary.csv and
+  data/results/rob/P4-ROB-20261120-1_rq3.csv.
+- Also added, for the timeline table only: the run records P1-LOCAL-20261122-1, P1-H2-KN01-20261122-1,
+  P1-H2-GOLD-20261123-1, P1-H2-DROPRULE-20261123-1, P3-H2-20261124-1 and P3-SWEEP-20261118-1.
+- The held-out 2 score file data/results/p3/P3-H2-20261124-1.csv.gz is git-ignored. The generator accepts it only if
+  its SHA-256 equals the input hash recorded in runs/P4-H2-20261124-1.json, which is in the checksum file. It is used
+  only to count questions per document and per parser.

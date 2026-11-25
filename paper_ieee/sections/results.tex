@@ -54,6 +54,9 @@ Pooled over both sets (\RQonePooledDocuments{} documents,
 \RQonePooledGapCI{}. This is a different quantity from the per-set gap, and
 pooling did not narrow the interval.
 
+On held-out set~1 the Pareto front on index tokens and recall is
+\RQoneParetoTokens{}, and on chunk count and recall \RQoneParetoChunks{}.
+
 By the pre-registered rule the decision is NO-GO. We find no evidence of a gain
 from choosing a setup per document over a single small-chunk setup under a
 fixed token budget.
@@ -103,7 +106,7 @@ Pharmaceuticals is negative at every budget on both parsers.
 
 The result of RQ2 depends on fixing the number of tokens read. When the number of chunks is fixed instead, the ranking reverses: on both
 parsers, Recall@10 rises with chunk size while Recall@1,250 falls
-(Fig.~\ref{fig:rq3}, whose questions include QASPER). On
+(Fig.~\ref{fig:rq3}). On
 tuning data, over the \RQthreeSettingsKept{} settings that remain after
 \RQthreeSettingsLeftOut{} superseded settings are left out
 (Table~\ref{tab:rq3err}), Recall@5 is highest for
@@ -231,8 +234,8 @@ retrieval alone, and \RobWithoutIndianHeldOutOneGap{}
 The four extension chunkers planned in spec~v1.1 (paragraph groups, dynamic
 token size, section- and table-aware chunking, and Docling's HybridChunker)
 were run on tuning data only. Adding their \ExtSetups{} setups to the choice set
-leaves the gap at \RobGridSixChunkersThreeTwoTuningGap{}
-\RobGridSixChunkersThreeTwoTuningGapCI{}. None beats the tuning best single
+leaves the gap at \RobExtensionTuningGap{}
+\RobExtensionTuningGapCI{}. None beats the tuning best single
 setup, and \ExtLower{} are lower after Holm correction: HybridChunker
 (\ExtHybridDiff{} \ExtHybridCI{}) and section- and table-aware chunking on
 Docling (\ExtSectionDoclingDiff{} \ExtSectionDoclingCI{}) and pdfplumber
