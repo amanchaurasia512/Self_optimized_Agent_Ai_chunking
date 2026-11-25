@@ -77,3 +77,31 @@ variants, two parsers and three budgets, each over
 weakest at the largest budget: at 2,000 tokens,
 \RQtwoHTwoLargestBudgetIncludeZero{} of the
 \RQtwoHTwoLargestBudgetValues{} intervals include zero.
+\subsection{RQ3: the measure changes the best size}\label{sec:rq3}
+
+\input{generated/figures/rq3_fig}
+\input{generated/rq3_erratum}
+
+The result of RQ2 depends on fixing the number of tokens read. When the number of chunks is fixed instead, the ranking reverses: on both
+parsers, Recall@10 rises with chunk size while Recall@1,250 falls
+(Fig.~\ref{fig:rq3}). On
+tuning data, over the \RQthreeSettingsKept{} settings that remain after
+\RQthreeSettingsLeftOut{} superseded settings are left out
+(Table~\ref{tab:rq3err}), Recall@5 is highest for
+\RQthreeDoclingRecallFiveBest{} on both parsers (measured size
+\RQthreeDoclingRecallFiveSize{} and \RQthreePdfplumberRecallFiveSize{}
+tokens), and Recall@10 for \RQthreeDoclingRecallOneZeroBest{}
+(\RQthreeDoclingRecallOneZeroSize{} and \RQthreePdfplumberRecallOneZeroSize{}
+tokens). MRR also favours large chunks: \RQthreeDoclingMrrBest{}
+(\RQthreeDoclingMrrSize{} tokens) on Docling and \RQthreePdfplumberMrrBest{}
+(\RQthreePdfplumberMrrSize{} tokens) on pdfplumber. Hit@1 is split: a large
+setting wins on pdfplumber (\RQthreePdfplumberHitOneBest{},
+\RQthreePdfplumberHitOneSize{} tokens) but a small one on Docling
+(\RQthreeDoclingHitOneBest{}, \RQthreeDoclingHitOneSize{} tokens).
+Under a token budget, small chunks win instead, as RQ2 shows for every budget
+up to 2,000 tokens.
+
+Under a fixed number of chunks, a large chunk puts more text in front of the
+reader, so measures such as Recall@$k$ and MRR reward size itself. A fixed
+token budget removes that advantage, and any comparison of chunk sizes has to
+say which of the two it uses.

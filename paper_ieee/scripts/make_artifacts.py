@@ -624,30 +624,48 @@ def rq3(read):
     frame = read.csv("fixedk", usecols=["parser", "setting", "doc_id", "chunk_tokens"] + MEASURES)
     kept = in_scope(frame["setting"].unique())  # spec Errata 2026-11-14 (fixed-k): superseded *_vNN and sanity left out
     labels = {"recall5": "R@5", "recall10": "R@10", "hit1": "Hit@1", "mrr": "MRR", MEASURES[-1]: f"R@{MEASURES[-1][6:]}"}
-    # fixed-k measures at 1..n, the token-budget measure after a gap, a dashed line between the two groups
-    positions = {measure: index + 1.0 for index, measure in enumerate(MEASURES[:-1])} | {MEASURES[-1]: len(MEASURES) + 0.6}
-    gap = (len(MEASURES) - 1 + positions[MEASURES[-1]]) / 2
-    plots, numbers = [], {"RQthreeSettingsKept": (len(kept), INPUTS["fixedk"]),
-                          "RQthreeSettingsLeftOut": (frame["setting"].nunique() - len(kept), INPUTS["fixedk"])}
-    for index, (parser, table) in enumerate(fixedk_tables(frame[frame["setting"].isin(kept)]).items()):
-        sizes, details = best_sizes(table)
+    numbers = {"RQthreeSettingsKept": (len(kept), INPUTS["fixedk"]),
+               "RQthreeSettingsLeftOut": (frame["setting"].nunique() - len(kept), INPUTS["fixedk"])}
+    for parser, table in fixedk_tables(frame[frame["setting"].isin(kept)]).items():
+        details = best_sizes(table)[1]
         details = details.rename(columns={"best setting": "best", "chunk tokens": "tokens"})
-        points = [(positions[measure], sizes.loc["all settings", measure]) for measure in MEASURES]
-        plots += [f"\\addplot+[black, only marks, mark={MARKS[index]}] coordinates {{{coordinates(points, y_places=0)}}};",
-                  f"\\addlegendentry{{{display(parser)}}}"]
         for row in details[details["scope"] == "all settings"].itertuples(index=False):
             name = f"RQthree{letters(parser)}{letters(row.measure)}"
             numbers |= {f"{name}Best": (setup_name(row.best), INPUTS["fixedk"]), f"{name}Score": (fixed(row.score), INPUTS["fixedk"]),
                         f"{name}Size": (row.tokens, INPUTS["fixedk"])}
-    figure = "\n".join([r"\begin{tikzpicture}",
-                        f"\\begin{{axis}}[scale only axis, width=\\columnwidth-2.4cm, height=4.5cm,"
-                        f" xmin=0.4, xmax={positions[MEASURES[-1]] + 0.6:.1f}, xtick={{{','.join(f'{positions[m]:.1f}' for m in MEASURES)}}},"
-                        f" xticklabels={{{','.join(labels[m] for m in MEASURES)}}}, x tick label style={{rotate=35, anchor=north east}},"
-                        f" extra x ticks={{{gap:.1f}}}, extra x tick labels={{}}, extra x tick style={{grid=major, major grid style={{dashed}}}},"
-                        r" ylabel={Best chunk size (tokens)}, legend style={at={(0.5,-0.42)}, anchor=north, legend columns=-1,"
-                        r" /tikz/every even column/.append style={column sep=0.3cm}}]",
-                        *plots, r"\end{axis}", r"\end{tikzpicture}", ""])
-    return {"figures/rq3.tex": figure, "tables/rq3_erratum.tex": fixedk_erratum(frame, kept, labels)}, numbers
+    return {"figures/rq3.tex": rq3_figure(read, kept), "tables/rq3_erratum.tex": fixedk_erratum(frame, kept, labels)}, numbers
+
+
+def trend(sizes, scores):
+    """End points of the least-squares line over the measured size range."""
+    slope = sizes.cov(scores) / sizes.var()
+    return [(size, scores.mean() + slope * (size - sizes.mean())) for size in (sizes.min(), sizes.max())]
+
+
+def rq3_figure(read, kept):
+    """Settings on the same questions: Recall@10 and hybrid Recall@1,250 against mean chunk size, one panel per parser."""
+    frame = read.csv("fixedk", usecols=KEYS + ["chunk_tokens", "recall10"], dtype={"question_id": str})
+    scores = read.csv("scores_tuning", usecols=KEYS + ["retriever", "budget", "recall"], dtype={"question_id": str})
+    scores = scores[(scores["retriever"] == "hybrid") & (scores["budget"] == 1250)]
+    frame = frame[frame["setting"].isin(kept)].merge(scores[KEYS + ["recall"]], on=KEYS, how="left", validate="one_to_one")
+    if frame["recall"].isna().any():
+        raise ValueError("rq3: fixed-k rows without a Recall@1,250 score")
+    series = {"recall10": ("*", "solid", "Recall@10 (fixed number of chunks)"), "recall": ("o", "dashed", "Recall@1,250 (fixed token budget)")}
+    values, plots = ["chunk_tokens", *series], []
+    for parser, part in frame.groupby("parser"):
+        table = part.groupby(["setting", "doc_id"])[values].mean().groupby("setting").mean()  # question, then document means
+        plots.append(f"\\nextgroupplot[title={{{display(parser)}}}]")
+        for column, (mark, line, name) in series.items():
+            plots.append(f"\\addplot[black, only marks, mark={mark}, mark size=1.3pt] coordinates {{{coordinates(table[['chunk_tokens', column]].itertuples(index=False))}}};")
+            if parser == "pdfplumber":  # one legend, centred under both panels
+                plots.append(f"\\addlegendentry{{{name}}}")
+            plots.append(f"\\addplot[black, thick, {line}, forget plot] coordinates {{{coordinates(trend(table['chunk_tokens'], table[column]))}}};")
+    return "\n".join([r"\begin{tikzpicture}",
+                      r"\begin{groupplot}[group style={group size=2 by 1, horizontal sep=0.4cm, ylabels at=edge left, yticklabels at=edge left},"
+                      r" scale only axis, width=0.5\columnwidth-0.9cm, height=4cm, xmin=0, ymin=0, ymax=1, label style={font=\footnotesize},"
+                      r" tick label style={font=\footnotesize}, title style={font=\footnotesize}, xlabel={Mean chunk size (tokens)}, ylabel={Recall},"
+                      r" /pgf/number format/1000 sep={,}, legend cell align=left, legend style={at={(-0.06,-0.32)}, anchor=north, font=\footnotesize}]",
+                      *plots, r"\end{groupplot}", r"\end{tikzpicture}", ""])
 
 
 def fixedk_erratum(frame, kept, labels):
@@ -1133,7 +1151,7 @@ BUILDERS = {
     hr_check: {"h2_exclusion", "h2_exclusion_record", "h2_drop"},
     robustness: {"retrievers", "held_out_no_indian", "ext_rq1", "rob_rq1"},
     rq2: {"size_tuning", "size_tuning_summary", "size_final_summary"},
-    rq3: {"fixedk"},
+    rq3: {"fixedk", "scores_tuning"},
     rq4: {"aq_held_out", "aq_held_out_vs_best", "aq_tuning_vs_best", "aq_scanned", "aq_scanned_vs_best", "aq_f1", "aq_judgements", "scores_tuning", "scores_held_out",
           "judge_check", "judge_check_keys"},
     rq5: {"rq5_chunker", "rq5_digital", "rq5_scanned"},
@@ -1179,7 +1197,12 @@ FLOATS = {  # table body -> (label, caption, wide)
 
 FIGURES = {  # figure body -> (label, caption, wide); the caption sits below the figure (IEEE)
     "rq2": ("fig:rq2", "RQ2 on tuning: Recall@1,250 against mean chunk size, per source.", False),
-    "rq3": ("fig:rq3", "RQ3 on tuning: best chunk size under each measure.", False),
+    "rq3": ("fig:rq3", "RQ3 on tuning: the same settings scored with a fixed number of chunks and with a fixed token budget. "
+            "Both series use the same questions (QASPER included), so Recall@1,250 here differs slightly (up to 0.029) from the "
+            "tuning per-setting means that exclude QASPER; trend lines are least-squares fits for display only. "
+            r"Recall@4,000, a pre-registered RQ3 measure outside the main budgets, also favours small chunks: best setups "
+            r"\RQthreeDoclingRecallFourZeroZeroZeroBest{} (\RQthreeDoclingRecallFourZeroZeroZeroSize{} tokens) on Docling and "
+            r"\RQthreePdfplumberRecallFourZeroZeroZeroBest{} (\RQthreePdfplumberRecallFourZeroZeroZeroSize{} tokens) on pdfplumber.", False),
     "rq5": ("fig:rq5", "RQ5: (a) parser variants minus default, digital PDFs; (b) tuned size minus default, held-out 1. "
             "Filled marks: significant after Holm.", False),
 }

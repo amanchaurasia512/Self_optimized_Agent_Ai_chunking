@@ -1732,3 +1732,6 @@ inputs made after the tag paper-v1.2, so they get their own checksum file.
   scripts/p3_fixedk.py) and allows additions only: no line may be removed or changed since the tag. Reason: after the
   tag, `src/` gained new chunkers (extension, agent) and new modules; these additions do not change any frozen
   constant (chunk limits, prefix cap, resamples, level, splits, budgets), but the whole-`src/` check refused them.
+
+Fig. rq3 (2026-11-25): descriptive re-aggregation of locked per-question scores over the fixed-k question set (88,200 rows;
+2 qasper_2001_09899 questions without fixed-k rows dropped); no test, display only.
