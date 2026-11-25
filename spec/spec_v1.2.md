@@ -1792,3 +1792,10 @@ Adds to "paper-v1.3 lock" (2026-11-24); reporting only, no result or decision ch
 - The held-out 2 score file data/results/p3/P3-H2-20261124-1.csv.gz is git-ignored. The generator accepts it only if
   its SHA-256 equals the input hash recorded in runs/P4-H2-20261124-1.json, which is in the checksum file. It is used
   only to count questions per document and per parser.
+
+## Held-out set 2 result files tracked (2026-11-25)
+- The held-out 2 score files (data/results/p3/P3-H2-20261124-1, -2, -3) and result tables (data/results/p4/P4-H2-20261124-*,
+  data/results/h2/) are no longer git-ignored. Their columns hold document ids, query ids, setup names, scores and
+  statistics only; no document text, page image, question or answer. No file is changed.
+- P3-H2-20261124-1.csv.gz is added to `docs/paper_checksums_v1.3.txt`. The check against the hash in
+  runs/P4-H2-20261124-1.json ("paper-v1.3 lock, extended") stays. The statement there that it is git-ignored no longer holds.
