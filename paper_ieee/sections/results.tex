@@ -183,3 +183,36 @@ no difference is significant (Holm $p$ from
 \RQfiveBFixedTokenPdfplumberHolm{} to \RQfiveBMethodOneTreeDoclingHolm{}).
 Tuning pays off when a library's default is far from the optimum; when the
 default is already close, it adds nothing measurable.
+
+\subsection{Extension and robustness}\label{sec:extension}
+
+\input{generated/ext_rob}
+
+The NO-GO verdict of RQ1 does not depend on the retriever, the corpus mix,
+the chunker pool or the embedder (Table~\ref{tab:robust}). On held-out
+set~1, the gap is \RobBMTwoFiveOnlyHeldOutOneGap{}
+\RobBMTwoFiveOnlyHeldOutOneGapCI{} with BM25 alone and
+\RobDenseOnlyHeldOutOneGap{} \RobDenseOnlyHeldOutOneGapCI{} with dense
+retrieval alone, and \RobWithoutIndianHeldOutOneGap{}
+\RobWithoutIndianHeldOutOneGapCI{} without the Indian documents.
+
+The four extension chunkers planned in spec~v1.1 (paragraph groups, dynamic
+token size, section- and table-aware chunking, and Docling's HybridChunker)
+were run on tuning data only. Adding them to the choice set leaves the gap
+at \RobGridSixChunkersThreeTwoTuningGap{}
+\RobGridSixChunkersThreeTwoTuningGapCI{}. With nomic-embed-text-v1.5 as the
+dense embedder, also on tuning data, the gap is
+\RobNomicHybridTuningGap{} \RobNomicHybridTuningGapCI{} with hybrid
+retrieval, \RobNomicDenseTuningGap{} \RobNomicDenseTuningGapCI{} with dense
+retrieval alone, and \RobNomicHybridWOIndianTuningGap{}
+\RobNomicHybridWOIndianTuningGapCI{} without the Indian documents. Every
+interval contains zero, so every variant gives NO-GO, and the pre-stated
+verdicts on RQ2 and RQ3 also hold with this embedder.
+
+\subsection{The released tool}\label{sec:tool}
+
+Following the NO-GO verdict, the released tool does not choose a setup per
+document. It applies the setup chosen on tuning data, \RQoneTuningWinner{},
+to every PDF, with scan detection, since pdfplumber reads no text from
+scanned pages and the parser choice that matters is whether a page is
+scanned (Section~\ref{sec:rq5}).

@@ -590,7 +590,7 @@ def robustness(read):
               for variant, retriever in (("all tuning", "hybrid"), ("all tuning", "dense"), ("without Indian", "hybrid"))]
     rows, numbers = [], {}
     for label, split, row, key in cases:
-        rows.append([label, split, f"{signed(row['gap'])} {interval(row['gap_low'], row['gap_high'])}",
+        rows.append([label, split.replace("held-out 1", "held-out set 1"), f"{signed(row['gap'])} {interval(row['gap_low'], row['gap_high'])}",
                      "GO" if row["gap_low"] > 0 else "NO-GO"])
         name = f"Rob{letters(label)}{letters(split)}"
         numbers |= {f"{name}Gap": (signed(row["gap"]), INPUTS[key]), f"{name}GapCI": (interval(row["gap_low"], row["gap_high"]), INPUTS[key])}
