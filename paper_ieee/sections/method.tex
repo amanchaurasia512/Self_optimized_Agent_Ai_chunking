@@ -119,10 +119,12 @@ to be placed in each parser's text.
 
 A setup is one parser combined with one chunker setting. The parsers are
 Docling~2.143.0~\cite{auer2024docling} with default settings (Table~\ref{tab:docling})
-and pdfplumber~0.11.10. The chunkers (Table~\ref{tab:chunkers}) are
-fixed-token, recursive, LangChain recursive (including its default settings),
-sentence groups, semantic, LLM-regex (Gemini~3.5 Flash-Lite) and page-based
-chunking, plus our own structure-tree method, M1. Semantic chunking was left out
+and pdfplumber~0.11.10~\cite{pdfplumber}. The chunkers (Table~\ref{tab:chunkers}) are
+fixed-token, recursive, LangChain recursive~\cite{langchain} (including its default settings),
+sentence groups, semantic, LLM-regex (Gemini~3.5 Flash-Lite~\cite{gemini}) and page-based
+chunking, plus our own structure-tree method, M1. The recursive, sentence,
+semantic and LLM-regex chunkers use the code of Adaptive
+Chunking~\cite{demourajunior2026adaptive}. Semantic chunking was left out
 of the held-out evaluation, where it ran out of GPU memory. Every chunker shares one final step: chunks shorter
 than 100 tokens are merged, and chunks longer than 1,024 tokens are split
 again.
@@ -143,7 +145,7 @@ worse for every method, and prefix, overlap at 512, semantic and LLM-regex gave
 no gain or ranked lowest. Two further choice sets are reported: the original
 grid (\RQoneOriginalSetups{} setups on held-out set~1) and the full grid
 (\HeldOutSetups{}; \TuningSetups{} on tuning, where semantic is included). Spec~v1.1 also planned paragraph groups, dynamic token
-size, section- and table-aware chunking and Docling's HybridChunker. These were
+size, section- and table-aware chunking and Docling's HybridChunker~\cite{hybridchunker}. These were
 built later and tested on tuning data only, as an extension
 (Section~\ref{sec:extension}). A cross-reference feature planned for M1 was built as a later variant and dropped
 before any recall was computed.
@@ -212,7 +214,8 @@ gives the index cost at 384 tokens.
 
 An oracle that picks each document's best setup using the same questions it is
 scored on would gain from chance alone. We avoid this with split-half
-cross-fitting: over 200 random splits, the oracle picks the best setup on one
+cross-fitting, following the cross-fitting idea of~\cite{crossfitting} (not
+their estimator): over 200 random splits, the oracle picks the best setup on one
 half of a document's questions and is measured on the other half. The gap is
 the mean over documents of the oracle's recall minus that of the best single
 setup. A document with one question cannot be split; it takes the best single
@@ -244,7 +247,7 @@ quantity from the per-set gap, and the two are never combined.
 
 RQ2 was first examined on tuning data as a descriptive analysis, added on
 12~November after the tuning scores were known: for each parser, budget and
-source, Spearman's $\rho$ between measured chunk size and recall over all
+source, Spearman's $\rho$~\cite{spearman} between measured chunk size and recall over all
 in-scope settings, without tests. A confirmatory rule was fixed before
 held-out set~2 was scored: for each parser and budget, Spearman's $\rho$ over
 that parser's \RQtwoHTwoSetupsPerParser{} primary setups, with a
@@ -289,7 +292,7 @@ compare seven Docling setups: M1 at 256 and 384 tokens, LangChain recursive at
 256 and 512, recursive at 512, fixed-token at 1,024 and LangChain's default,
 all without prefix or overlap. On scanned PDFs we compare the five RQ5
 settings with Docling's default OCR against the same settings with Tesseract
-OCR.
+OCR~\cite{tesseract}.
 
 The context for each question is exactly what the scorer reads: hybrid
 retrieval, with chunks in rank order up to 1,250 tokens. Gemini~3.5 Flash-Lite
@@ -298,7 +301,7 @@ from the context or reply ``not found''. Each answer is compared with the
 source's own reference answer. The primary measures are token F1 and whether
 the reference answer is contained in the response. An LLM judge gives a
 secondary score. An amendment dated 11~November changed it from Gemini to an
-open-weight model, Qwen3-8B (4-bit, greedy decoding); it was first committed on
+open-weight model, Qwen3-8B~\cite{qwen3} (4-bit, greedy decoding); it was first committed on
 12~November with the result, so git cannot show that it came before the check.
 On \JudgeCases{} cases labelled by one person the judge agreed in
 \ManualJudgeFirstPassAgreement\% (kappa \ManualJudgeFirstPassKappa{}), below the
