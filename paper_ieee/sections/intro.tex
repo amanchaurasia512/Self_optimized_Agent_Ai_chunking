@@ -1,0 +1,52 @@
+\section{Introduction}\label{sec:intro}
+
+Systems that answer questions over PDFs first extract the text, then cut it
+into chunks that are indexed and retrieved. Both steps can lose information:
+a parser can drop or garble text, and a chunker can split the evidence for an
+answer across pieces. Because documents differ in layout and structure, a
+natural idea is to choose the parser and chunker for each document, and recent
+work proposes doing so from intrinsic quality signals
+\cite{demourajunior2026adaptive}.
+
+Before building such a chooser, we ask a narrower question: how much
+retrieval quality is lost by using one fixed parse-and-chunk setup for every
+PDF, and how much of that loss could a choice per document recover? If an
+oracle that sees each document's questions cannot beat the best fixed setup,
+a chooser that does not see them is unlikely to. We study this together with
+four related questions:
+\begin{itemize}
+\item \textbf{RQ1:} Does choosing a setup per document improve retrieval over
+the best single setup?
+\item \textbf{RQ2:} At a fixed token budget, how does chunk size relate to
+recall?
+\item \textbf{RQ3:} Does the best chunk size change when retrieval is measured
+with a fixed number of chunks instead of a fixed token budget?
+\item \textbf{RQ4:} Do differences in answer quality follow differences in
+retrieval?
+\item \textbf{RQ5:} Do tuned parser settings and chunk sizes beat library
+defaults?
+\end{itemize}
+
+We compare setups by the text they let a reader see, not by how many chunks
+they return: every setup reads its ranked chunks up to the same token budget.
+The design, the scorer and the decision rule for RQ1 were written into dated
+specifications before any held-out score existed, and the main result is
+replicated on a second held-out set with a different source of gold evidence.
+Where the study departed from its plan, we report it.
+
+Our contributions are:
+\begin{enumerate}
+\item A pre-registered test of per-document selection on two sealed held-out
+sets, with an oracle that is cross-fitted so that it does not gain from
+selection luck. It finds no evidence of a gain over a single small-chunk setup
+under a fixed token budget (Section~\ref{sec:rq1}).
+\item A token-budgeted comparison of chunk sizes, showing that small chunks
+tend to retrieve best at a fixed budget and that a fixed number of chunks
+reverses this ranking (Sections~\ref{sec:rq2} and~\ref{sec:rq3}).
+\item A test of tuning against defaults: a library default far from the best
+size costs recall, while parser settings show no detectable effect, and
+detecting scanned pages is the parser choice that matters
+(Section~\ref{sec:rq5}).
+\item A full record of deviations, reuse of held-out data and post-hoc
+analyses, with the code, the locked results and a tool with fixed defaults.
+\end{enumerate}
