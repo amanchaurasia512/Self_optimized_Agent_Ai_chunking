@@ -1,0 +1,60 @@
+\section{Related Work}\label{sec:related}
+
+\textbf{Chunking strategies and their selection.} Several recent studies compare
+many ways of cutting documents. Shaukat et al.~\cite{shaukat2026systematic}
+test thirty-six segmentation methods with five embedders and report that methods
+aware of content beat plain fixed-length splitting, with paragraph groups in
+first place overall. \'Smigielski et al.~\cite{smigielski2026chunking} note that
+new chunkers are often built for narrow use cases and are hard to compare with
+each other. Qu et al.~\cite{qu2025semantic} reach a sober view of one popular
+idea: over three retrieval tasks, the gains from semantic chunking were not
+steady enough to pay for its computation. Other work proposes new cutters.
+HiChunk~\cite{lu2025hichunk} uses fine-tuned language models to build a
+hierarchy over the document and merges units at retrieval time;
+MoC~\cite{zhao2025moc} guides chunkers to output regular expressions, and
+introduces two direct measures of chunk quality; StrucChunk~\cite{singh2026strucchunk}
+represents legal texts as graphs of provisions and resolves cross-references
+before embedding. The work closest to our main question is Adaptive
+Chunking~\cite{demourajunior2026adaptive}, which picks a chunker for each document
+using five measures computed from the document alone, and reports better
+answers than with a single method. Its pool also contains an LLM-regex splitter and a
+recursive splitter that we reuse. Orbach et al.~\cite{orbach2025hpo} tune whole
+RAG configurations instead and find that greedy or random search is enough
+to reach significant gains on every dataset they use.
+
+\textbf{Retrieval units, chunk size and budgets.} How large a unit should be
+has no agreed answer. Chen et al.~\cite{chen2024densex} index propositions, short units that each
+hold one fact, and find better retrieval than with passages; under a given computation budget, downstream
+question answering also improves. Bhat et al.~\cite{bhat2025chunksize} vary
+fixed chunk sizes and find that the best one depends on the data, small for
+short factual answers and large where wider context is needed, and that it also
+differs between embedding models. In a chemistry setting, Amiri and
+Bocklitz~\cite{amiri2025chunk} see larger effects from the embedder than from
+other choices, and suggest medium to large chunks with low overlap as a starting
+point. These recommendations point in different directions. Our RQ3 offers one
+possible reason: in our tuning data, the preferred size changes when the number of chunks,
+rather than the number of tokens, is held fixed. Whether this explains the
+differences between those studies is not something we test.
+
+\textbf{PDF parsing, OCR and benchmarks.} A second line of work asks what the
+parser contributes. OmniDocBench~\cite{ouyang2024omnidocbench} evaluates document
+parsing in detail over nine kinds of source.
+OHR-Bench~\cite{zhang2024ocr} follows OCR noise into RAG and concludes that none
+of the OCR solutions it tests is good enough for building knowledge bases. Sun
+et al.~\cite{sun2026ocr} show on industrial documents that a low character error
+rate does not guarantee good retrieval. Santos et al.~\cite{santos2026pdf} compare
+four conversion tools on Portuguese administrative documents and attribute more
+of the accuracy to metadata and hierarchy-aware splitting than to the tool.
+El Bachyr et al.~\cite{elbachyr2026empirical} examine parsers and chunkers
+jointly on financial questions, and Singh~\cite{singh2026parser} runs a factorial
+study on Indian regulatory texts in which parser and chunker interact. Lin and
+Du~\cite{lin2026pdf} retrieve layout-based evidence units from clinical
+guidelines, matching page-level recall while using less context. For evaluation, UniDoc-Bench~\cite{peng2025unidoc} and
+ViDoRe~V3~\cite{loison2026vidore} supply questions over visually rich pages; the
+latter also has human-drawn evidence boxes, which we use as gold.
+
+\textbf{This study.} We compare setups under a fixed token budget, and
+evaluate the choice of a setup per document on two sealed held-out sets with a cross-fitted oracle,
+against a decision rule written in advance. We find no evidence of a gain from
+that choice in this design, which does not contradict studies that use other
+data, measures or selection signals.

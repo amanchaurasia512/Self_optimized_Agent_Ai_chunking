@@ -26,6 +26,7 @@ ALLOWED = [  # editable: design constants, dates and versions that may be typed
     r"(?<![\d.,])(?:256|384|512|1,024)(?![\d%]|[.,]\d)",  # chunk sizes; post-processing maximum; embedding dimensions
     r"\b100 tokens",  # post-processing minimum
     r"\bseed\s+42\b", r"\b200 random splits", r"\b(?:95|10|5)\\%",  # statistics; shares
+    r"\bCC~BY(?:-NC)?~4\.0|\bApache-2\.0",  # licence names
     r"(?<![\d.])(?:k=60|k_?1=1\.5|b=0\.75)(?![\d.])",  # retrieval (outside math)
 ]
 LATEX_CAPITALS = {"Alpha", "Beta", "Gamma", "Delta", "Theta", "Lambda", "Pi", "Sigma", "Phi", "Psi", "Omega", "LaTeX", "TeX"}

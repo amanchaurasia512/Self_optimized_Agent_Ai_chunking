@@ -21,3 +21,5 @@
 ## Keys and secrets
 - Never print, log or commit API keys. The Gemini key lives in ~/.config/gemini/api_key; read it only through src/chunk/llm.py.
 - Agent keys are read only through src/agent/providers.py; src/chunk/llm.py stays the study's client.
+## Git
+- Never run git commit, git push or git tag. The author commits himself.

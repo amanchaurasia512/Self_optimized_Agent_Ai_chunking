@@ -36,6 +36,11 @@
 !/data/results/supplementary-20261114/github_activity_page1.json
 !/data/results/supplementary-20261114/github_activity_page2.json
 !/data/results/repro-20261114/comparison/aq_judge_check.log
+# held-out set 2 (2026-11-25): ids, scores and statistics only, no text of ViDoRe V3
+!/data/results/h2/
+!/data/results/h2/P4-H2-20261124-*.csv
+!/data/results/p3/P3-H2-20261124-*.csv.gz
+!/data/results/p4/P4-H2-20261124-*.csv
 .venv/
 .env
 __pycache__/

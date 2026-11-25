@@ -1,0 +1,13 @@
+,recall,index_tokens,chunks,tied_with_best,pareto_tokens,pareto_chunks
+docling/recursive_size512_overlap0_noprefix,0.9007328838024113,40671.31034482759,91.82758620689656,True,True,True
+docling/method1_tree_T512_noprefix,0.8794292064917865,40669.55172413793,104.06896551724138,True,True,False
+docling/fixed_token_size256_overlap0_noprefix,0.8612258448707015,40670.34482758621,159.68965517241378,True,False,False
+docling/sentence_sentences5_noprefix,0.8460008774300221,40670.275862068964,162.0,False,False,False
+pdfplumber/method1_tree_T512_noprefix,0.8383034411382903,37797.75862068965,91.48275862068965,True,True,True
+docling/langchain_recursive_size512_overlap0_noprefix,0.8267940395234216,40670.8275862069,96.75862068965517,False,False,False
+pdfplumber/fixed_token_size256_overlap0_noprefix,0.8238340534031374,37798.34482758621,148.24137931034483,False,False,False
+pdfplumber/fixed_token_size512_overlap0_noprefix,0.8221028285667914,37798.34482758621,74.17241379310344,False,False,True
+pdfplumber/langchain_recursive_size512_overlap0_noprefix,0.8141756280023436,37798.34482758621,95.13793103448276,True,False,False
+pdfplumber/sentence_sentences5_noprefix,0.7869643541516993,37798.275862068964,155.58620689655172,False,False,False
+pdfplumber/recursive_size512_overlap0_noprefix,0.747259455554509,37798.379310344826,83.75862068965517,False,False,False
+docling/fixed_token_size512_overlap0_noprefix,0.6950169284738756,40670.206896551725,79.96551724137932,False,False,False
