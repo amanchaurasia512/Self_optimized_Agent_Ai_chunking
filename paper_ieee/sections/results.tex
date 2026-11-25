@@ -108,8 +108,8 @@ The result of RQ2 depends on fixing the number of tokens read. When the number o
 parsers, Recall@10 rises with chunk size while Recall@1,250 falls
 (Fig.~\ref{fig:rq3}). On
 tuning data, over the \RQthreeSettingsKept{} settings that remain after
-\RQthreeSettingsLeftOut{} superseded settings are left out
-(Table~\ref{tab:rq3err}), Recall@5 is highest for
+\RQthreeSupersededSettings{} superseded and \RQthreeSanitySettings{} sanity
+settings are left out (Table~\ref{tab:rq3err}), Recall@5 is highest for
 \RQthreeDoclingRecallFiveBest{} on both parsers (measured size
 \RQthreeDoclingRecallFiveSize{} and \RQthreePdfplumberRecallFiveSize{}
 tokens), and Recall@10 for \RQthreeDoclingRecallOneZeroBest{}
@@ -178,7 +178,7 @@ On scanned PDFs (\AQScannedQuestions{} questions), the best setup is
 Tesseract setting, but only one difference survives Holm correction:
 \RQfourScannedTopDiff{} \RQfourScannedTopCI{} against
 \RQfourScannedTopSetup{} (Holm $p$ = \RQfourScannedTopHolm{}). That pair differs
-in chunker as well as OCR, and recall finds no difference between the two OCR
+in chunker as well as OCR, and recall detects no difference between the two OCR
 settings (Section~\ref{sec:rq5}), so this is weak evidence on OCR.
 
 \subsection{RQ5: tuning versus defaults}\label{sec:rq5}
@@ -215,8 +215,8 @@ size, the tuned size differs from the default by
 \RQfiveBRecursiveDoclingDiff{} to \RQfiveBMethodOneTreePdfplumberDiff{}, and
 no difference is significant (Holm $p$ from
 \RQfiveBFixedTokenPdfplumberHolm{} to \RQfiveBMethodOneTreeDoclingHolm{}).
-Tuning pays off when a library's default is far from the optimum; when the
-default is already close, we detect no gain.
+For LangChain, whose default is far from the best size, tuning pays off; where
+the starting size is already close, we detect no gain.
 
 \subsection{Extension and robustness}\label{sec:extension}
 

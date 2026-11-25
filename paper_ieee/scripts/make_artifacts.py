@@ -106,9 +106,10 @@ INPUTS = {
     "run_h2_gold": "runs/P1-H2-GOLD-20261123-1.json",
     "run_h2_droprule": "runs/P1-H2-DROPRULE-20261123-1.json",
     "run_h2_scores": "runs/P3-H2-20261124-1.json",
+    "run_docling_headings": "runs/P1-RQ5-KN01-20261109-3.json",  # a variant that leaves the table mode at its default
 }
 LOCK_EXTENDED = {"sweep_tests", "sweep_crossover", "extension_versus", "extension_rules", "robustness_rq3", "run_sweep",
-                 "run_h2_pdfplumber", "run_h2_docling", "run_h2_gold", "run_h2_droprule", "run_h2_scores"}
+                 "run_h2_pdfplumber", "run_h2_docling", "run_h2_gold", "run_h2_droprule", "run_h2_scores", "run_docling_headings"}
 RECORD_LOCKED = {"scores_h2": "h2_drop"}
 TAGGED_INPUTS = {"manual", "split"}  # removed or extended (held-out 2 rows) since the tag: read with git show <TAG>:<path>, checked against the tagged checksum file
 AFTER_TAG = LOCK_EXTENDED | {key for key in INPUTS if key.startswith(("h2_", "ext_", "rob_"))}  # checked against CHECKSUMS_LOCK
@@ -216,9 +217,8 @@ LATER_DISCLOSURES = [  # recorded after the tag, or named only later: anchored t
     ("disclosure", ["Fig. rq3 (2026-11-25): descriptive re-aggregation"],
      "The RQ3 figure leaves out two questions without fixed-k rows; display only."),
     ("disclosure", ["## RQ2 on tuning is descriptive (disclosure, 2026-11-25)"],
-     "RQ2 on tuning was defined after the tuning scores (2026-11-12) and is descriptive (per source, all in-scope settings, "
-     "no test); the confirmatory RQ2 rule (primary setups, intervals, every rho negative) was fixed before held-out "
-     "set 2 and is tested only there."),
+ "Tuning RQ2 is descriptive (per source, all in-scope settings, no test), as it was defined after the tuning scores; the "
+     "confirmatory rule is tested on held-out set 2 only."),
     ("deviation", ["## Planned RQ1 at budgets 750 and 2,000: not run (2026-11-25)"], "Planned secondary RQ1 analyses at budgets 750 and 2,000 not run."),
     ("deviation", ['## "Gap captured" and "Cost ratio" of the agent: not computed (2026-11-25)'],
      "Planned measures of a per-document chooser (gap captured, cost ratio) not computed: none was built after NO-GO."),
@@ -633,15 +633,18 @@ def rq2_held_out_2(read):
     for run, label in variants.items():
         for index, parser in enumerate(sorted(frame["parser"].unique())):
             values = [cell[(run, parser, budget)] for budget in budgets]
-            rows.append([label if index == 0 else "", PARSERS[parser]]
+            documents = {value.documents for value in values}
+            if len(documents) != 1:
+                raise ValueError("RQ2: document count differs between budgets")
+            rows.append([label if index == 0 else "", PARSERS[parser], documents.pop()]
                         + [f"{fixed(value.spearman)} {interval(value.low, value.high)}" for value in values])
             numbers |= {f"RQtwoHTwo{letters(label)}{letters(parser)}{letters(budget)}": (fixed(value.spearman), source) for budget, value in zip(budgets, values)}
     largest = frame[frame["budget"] == budgets[-1]]
     numbers |= {"RQtwoHTwoNegative": (int((frame["spearman"] < 0).sum()), source), "RQtwoHTwoValues": (len(frame), source),
                 "RQtwoHTwoLargestBudgetIncludeZero": (int(((largest["low"] <= 0) & (largest["high"] >= 0)).sum()), source),
                 "RQtwoHTwoLargestBudgetValues": (len(largest), source), "RQtwoHTwoSetupsPerParser": (int(frame["setups"].iloc[0]), source)}
-    header = ["Gold", "Parser"] + [f"{budget:,}" for budget in budgets]
-    return {"tables/rq2_h2.tex": tabular("ll" + "l" * len(budgets), header, rows)}, numbers
+    header = ["Gold", "Parser", "Docs"] + [f"{budget:,}" for budget in budgets]
+    return {"tables/rq2_h2.tex": tabular("llr" + "l" * len(budgets), header, rows)}, numbers
 
 
 def robustness(read):
@@ -677,7 +680,7 @@ def rq2(read):
         plots.append(f"\\nextgroupplot[title={{{parser.capitalize()} ({PARSERS[parser]})}}]")
         for index, (source, group) in enumerate(part.groupby("source")):
             points = group.sort_values(["chunk_size", "setting"])[["chunk_size", "recall"]].itertuples(index=False)
-            plots.append(f"\\addplot+[only marks, mark={MARKS[index % len(MARKS)]}] coordinates {{{coordinates(points)}}};")
+            plots.append(f"\\addplot[black, only marks, mark={("*", "square", "triangle")[index % 3]}, mark size=1.6pt] coordinates {{{coordinates(points)}}};")
             if parser == "pdfplumber":  # the legend sits under the lower panel
                 plots.append(f"\\addlegendentry{{{escape(source)}}}")
     figure = "\n".join([r"\begin{tikzpicture}",
@@ -703,9 +706,11 @@ def fixedk_tables(frame):
 def rq3(read):
     frame = read.csv("fixedk", usecols=["parser", "setting", "doc_id", "chunk_tokens"] + MEASURES)
     kept = in_scope(frame["setting"].unique())  # spec Errata 2026-11-14 (fixed-k): superseded *_vNN and sanity left out
+    superseded = [setting for setting in frame["setting"].unique() if re.search(r"_v\d\d$", setting)]
     labels = {"recall5": "R@5", "recall10": "R@10", "hit1": "Hit@1", "mrr": "MRR", MEASURES[-1]: f"R@{MEASURES[-1][6:]}"}
     numbers = {"RQthreeSettingsKept": (len(kept), INPUTS["fixedk"]),
-               "RQthreeSettingsLeftOut": (frame["setting"].nunique() - len(kept), INPUTS["fixedk"])}
+               "RQthreeSupersededSettings": (len(superseded), INPUTS["fixedk"]),
+               "RQthreeSanitySettings": (frame["setting"].nunique() - len(kept) - len(superseded), INPUTS["fixedk"])}
     for parser, table in fixedk_tables(frame[frame["setting"].isin(kept)]).items():
         details = best_sizes(table)[1]
         details = details.rename(columns={"best setting": "best", "chunk tokens": "tokens"})
@@ -800,7 +805,7 @@ def rq5(read):
                     for row in digital.sort_values("variant").itertuples(index=False)]
     figure = "\n".join([r"\begin{tikzpicture}",
                         r"\begin{groupplot}[group style={group size=1 by 2, vertical sep=2.2cm}, scale only axis,"
-                        r" width=\columnwidth-3.6cm, scaled x ticks=false,"
+                        r" width=\columnwidth-3.8cm, scaled x ticks=false,"
                         r" x tick label style={/pgf/number format/fixed}]",
                         *interval_plot(digital_rows, "(a) Parser settings, digital", r"Recall difference (variant $-$ default)"),
                         *interval_plot(chunker_rows, "(b) Chunk size", r"Recall difference (tuned $-$ default)"),
@@ -1030,10 +1035,10 @@ TIMELINE = [("Specification v1", "commit", "607d29c"), ("Specification v1.1: chu
             ("Amendment: floor test and tie rule", "commit", "a89b9ff"), ("RQ5 added (after the tuning scores)", "commit", "e59c69c"),
             (r"scorer\_v1 frozen", "commit", "448173c"), ("Grid extension after the first official run", "commit", "6032033"),
             ("Method 1 v1.2 (prefix cap)", "commit", "93d7e16"), ("P4 v2 on the tuning set", "commit", "a781ff7"),
-            ("Held-out plan frozen", "commit", "305da55"), ("Held-out extraction (pdfplumber)", "run", "pdfplumber_record"),
-            ("Held-out chunking", "run", "chunking_final_record"), ("Held-out gold", "commit", "a2c87c6"),
-            ("Held-out scoring", "run", "p3_final_record"), ("Held-out analysis", "run", "p4_final"),
-            ("Held-out result", "commit", "0d42cd0"), ("RQ5(a) design frozen", "commit", "8116310"),
+            ("Held-out set 1: plan frozen", "commit", "305da55"), ("Held-out set 1: extraction (pdfplumber)", "run", "pdfplumber_record"),
+            ("Held-out set 1: chunking", "run", "chunking_final_record"), ("Held-out set 1: gold", "commit", "a2c87c6"),
+            ("Held-out set 1: scoring", "run", "p3_final_record"), ("Held-out set 1: analysis", "run", "p4_final"),
+            ("Held-out set 1: result", "commit", "0d42cd0"), ("RQ5(a) design frozen", "commit", "8116310"),
             ("RQ5(b) design (after the held-out result)", "commit", "2bb6197"), ("RQ5(b) analysis", "run", "run_rq5b"),
             ("Answer-quality design frozen", "commit", "479a55c"), ("Answer-quality code", "commit", "e5a924a"),
             ("Correction (MP-DocVQA answers); judge-check code", "commit", "3d5407e"), ("Answer-quality result", "commit", "a6278ca"),
@@ -1141,6 +1146,7 @@ def setups_scoring(read):
     docling = read.json("docling_record")["stack"]["parser"]
     if docling["settings"].get("variant") or not docling["settings"]["do_ocr"] or docling["settings"]["ocr_engine"] != "OcrAutoOptions":
         raise ValueError("the Docling record is not the default automatic-OCR setup")
+    variant = read.json("run_docling_headings")["stack"]["parser"]["settings"]
     scoring, fixedk = read.json("p3_tuning_record")["stack"], read.json("fixedk_record")["stack"]
     budgets = sorted(scoring["budgets"])
     settings = read.csv("p4_tuning_full", index_col=0).index.str.split("/").str[1].unique()
@@ -1154,7 +1160,7 @@ def setups_scoring(read):
     full = lambda key: read.json(key)["stack"]["summary"]["full"]["setups"]
     record, code = INPUTS["p3_tuning_record"], f"{' and '.join(CODE_AT_TAG)} at {TAG}"
     rows = [[r"\texttt{" + escape(name) + "}", r"\texttt{" + escape(json.dumps(value).strip('"')) + "}"]
-            for name, value in docling["settings"].items()]  # every setting the record lists, as recorded
+            for name, value in (docling["settings"] | {"table_mode": variant["table_mode"].split(".")[-1]}).items()]
     settings_table = tabular("ll", ["Setting", "Value"], rows)
     return {"tables/docling_settings.tex": settings_table}, {"DoclingVersion": (docling["version"], INPUTS["docling_record"]),
                 "PdfplumberVersion": (read.json("pdfplumber_record")["stack"]["parser"]["version"], INPUTS["pdfplumber_record"]),
@@ -1297,6 +1303,7 @@ def question_counts(read):
                "RQoneHTwoOneQuestionDocuments": (int((common == 1).sum()), INPUTS["scores_h2"]),
                "RQoneHTwoTwoQuestionDocuments": (int((common == 2).sum()), INPUTS["scores_h2"]),
                "RQoneHTwoMedianQuestions": (f"{common.median():g}", INPUTS["scores_h2"])}
+    numbers["RQoneTiedLowestRecall"] = (fixed(setups.loc[setups["tied_with_best"], "recall"].min()), INPUTS["p4_primary"])
     numbers |= {f"RQonePareto{part}": (", ".join(short(setup) for setup in setups.index[setups[column]]), INPUTS["p4_primary"])
                 for part, column in (("Tokens", "pareto_tokens"), ("Chunks", "pareto_chunks"))}
     kept = scores.groupby("parser")[["doc_id", "question_id"]].apply(lambda part: len(part.drop_duplicates()))
@@ -1401,7 +1408,7 @@ BUILDERS = {
     manual: {"manual"},
     design: {"split", "scores_tuning", "p3_final_record", "p4_tuning_record"},
     method_facts: {"gold_drop_final", "p4_tuning_record"},
-    setups_scoring: {"docling_record", "pdfplumber_record", "p3_tuning_record", "fixedk_record", "p4_tuning_full", "p4_tuning_record", "p4_final"},
+    setups_scoring: {"docling_record", "run_docling_headings", "pdfplumber_record", "p3_tuning_record", "fixedk_record", "p4_tuning_full", "p4_tuning_record", "p4_final"},
     statistics_aq: {"p4_final", "aq_sample", "manual", "judge_check", "judge_check_keys", "aq_judgements", "golden_labels"},
     grid: {"p4_tuning_full", "p4_primary"},
     deviations: set(),
@@ -1419,21 +1426,21 @@ BUILDERS = {
 
 FLOATS = {  # table body -> (label, caption, wide)
     "rq1": ("tab:rq1", r"RQ1: hybrid Recall@1,250, primary choice set unless named. Held-out set~2 rows give documents / "
-            r"questions. $^\dagger$Secondary: oracle minus the tuning winner, not the per-set gap; bootstrap stratified by set.", True),
+            r"questions. $^\dagger$Secondary: oracle minus the tuning winner, not the per-set gap; bootstrap stratified by set. Tied counts include the best setup.", True),
     "rq2_h2": ("tab:rq2h2", r"RQ2 on held-out set~2: Spearman's $\rho$ of chunk size against Recall@$B$ per parser, with 95\% "
                r"document bootstrap intervals.", True),
     "ext_rob": ("tab:robust", r"Robustness of RQ1 (hybrid Recall@1,250 unless named; \RQoneSetups{} setups unless named). All rows are descriptive or "
                 r"post-hoc; the Rule column applies the pre-registered threshold for reference only.", True),
     "rq4": ("tab:rq4", "RQ4 on held-out set~1: token F1 of the best setup minus each setup.", False),
-    "rq3_erratum": ("tab:rq3err", "RQ3 erratum: superseded settings removed.", True),
+    "rq3_erratum": ("tab:rq3err", "RQ3 erratum: superseded and sanity settings removed.", True),
     "a1_index_cost": ("tab:cost", "Index cost at 384 tokens (mean per document).", True),
-    "a2_retrievers": ("tab:retrievers", "RQ1 by retriever (primary choice set). Descriptive, run after the held-out result except the hybrid rows of held-out set~1.", True),
+    "a2_retrievers": ("tab:retrievers", "RQ1 by retriever (primary choice set). Descriptive, run after the held-out result except the hybrid rows of held-out set~1. Tied counts include the best.", True),
     "a3_timeline": ("tab:timeline", "Pre-registration timeline (IST). --: no first-push time recorded (runs, and commits after 14 November).", True),
     "a5_compute": ("tab:compute", r"Compute in run records up to 14 November (before held-out set~2, the extension and the second embedder). Only "
                    r"\AQRecordedAnswers{} of \AQAnswers{} answer-quality answers are in run records; the judge is in none.", False),
-    "a6_no_indian": ("tab:noindian", "RQ1 with and without the Indian documents. Descriptive; the rows without them were run after the held-out result.", True),
+    "a6_no_indian": ("tab:noindian", "RQ1 with and without the Indian documents. Descriptive; the rows without them were run after the held-out result. Tied counts include the best.", True),
     "a7_golden": ("tab:golden", "Indian-question validity check (first batch).", True),
-    "docling_settings": ("tab:docling", "Docling settings.", False),
+    "docling_settings": ("tab:docling", r"Docling settings; \texttt{table\_mode} as recorded in a variant run that leaves it at its default.", False),
     "grid": ("tab:chunkers", "Chunker grid (bold: primary choice set of RQ1).", True),
     "deviations": ("tab:deviations", "Deviations, corrections and disclosures recorded in the specification.", True),
     "key": ("tab:key", "Short names used in the tables.", True),

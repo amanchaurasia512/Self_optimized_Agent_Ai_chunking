@@ -10,9 +10,9 @@ work proposes doing so from intrinsic quality signals
 
 Before building such a chooser, we ask a narrower question: how much
 retrieval quality is lost by using one fixed parse-and-chunk setup for every
-PDF, and how much of that loss could a choice per document recover? If an
-oracle that sees each document's questions cannot beat the best fixed setup,
-a chooser that does not see them is unlikely to. We study this together with
+PDF, and does a choice per document, made by a cross-fitted oracle from a part
+of each document's own questions, recover any of it? The oracle selects on few
+questions, so its gap is not a bound on every chooser. We study this together with
 four related questions:
 \begin{itemize}
 \item \textbf{RQ1:} Does choosing a setup per document improve retrieval over
@@ -23,15 +23,18 @@ recall?
 with a fixed number of chunks instead of a fixed token budget?
 \item \textbf{RQ4:} Do differences in answer quality follow differences in
 retrieval?
-\item \textbf{RQ5:} Do tuned parser settings and chunk sizes beat library
-defaults?
+\item \textbf{RQ5:} Do tuned parser settings and chunk sizes beat their
+defaults (a library default for the parsers and LangChain, our own starting
+size for the other chunkers)?
 \end{itemize}
 
 We compare setups by the text they let a reader see, not by how many chunks
 they return: every setup reads its ranked chunks up to the same token budget.
-The design, the scorer and the decision rule for RQ1 were written into dated
-specifications before any held-out score existed, and the main result is
-replicated on a second held-out set with a different source of gold evidence.
+The RQ1 design, the scorer and the RQ1 decision rule were written into dated
+specifications before the first held-out set was scored; the designs of the
+other parts came later and are dated in Section~\ref{sec:method}. The NO-GO
+decision is repeated on a second held-out set with a different source of gold
+evidence.
 Where the study departed from its plan, we report it.
 
 Our contributions are:
@@ -41,12 +44,13 @@ sets, with an oracle that is cross-fitted so that it does not gain from
 selection luck. It finds no evidence of a gain over a single small-chunk setup
 under a fixed token budget (Section~\ref{sec:rq1}).
 \item A token-budgeted comparison of chunk sizes, showing that small chunks
-tend to retrieve best at a fixed budget and that a fixed number of chunks
-reverses this ranking (Sections~\ref{sec:rq2} and~\ref{sec:rq3}).
-\item A test of tuning against defaults: a library default far from the best
-size costs recall, while parser settings show no detectable effect, and
-detecting scanned pages is the parser choice that matters
+tend to retrieve best at a budget of 750 or 1,250 tokens (not established at
+2,000) and, on tuning data, that a fixed number of chunks reverses this ranking
+(Sections~\ref{sec:rq2} and~\ref{sec:rq3}).
+\item A comparison of tuning against defaults: LangChain's default chunk size
+costs recall (post-hoc, on held-out set~1), while parser settings show no
+detectable effect, and for scans what matters is detecting them
 (Section~\ref{sec:rq5}).
 \item A full record of deviations, reuse of held-out data and post-hoc
-analyses, with the code, the locked results and a tool with fixed defaults.
+analyses, with the code, the checksummed results and a tool with fixed defaults.
 \end{enumerate}

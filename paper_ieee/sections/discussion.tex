@@ -4,36 +4,34 @@
 choice per document beats the best single setup, and neither held-out set
 gives it. This is not proof that a better chooser can never help: the best
 single setup is selected on the same questions it is scored on, and the
-oracle chooses from only half of a document's few questions. The result is
-better read as follows: in this design, many setups are statistically tied,
-the differences between them are small, and selecting on a handful of
-questions per document adds more noise than it removes. The larger choice
-sets point the same way: with more setups to choose from, the oracle does
-worse, not better. In practice, this supports a simpler default: use one
-small-chunk setup and spend tuning effort on its chunk size rather than on a
-per-document selector.
+oracle chooses from only half of a document's few questions. In this
+design, many setups are statistically tied (on held-out set~1 the tied recalls
+run from \RQoneTiedLowestRecall{} to \RQoneBestRecall{}), and the oracle selects
+on a handful of questions. On held-out set~1 the gap is lower in the larger
+choice sets; on tuning data, adding the extension setups leaves it unchanged. Within the cases tested (English PDFs, two
+parsers, 1,250 tokens), this supports a simple default: one small-chunk setup
+rather than a per-document selector.
 
-\textbf{The measure decides the answer.} RQ2 and RQ3 together show that the
-best chunk size is not a property of the chunker alone. Under a fixed number
+\textbf{The measure decides the answer.} RQ2 and RQ3 (the latter on tuning data) together suggest that the best chunk size is not a property of the chunker alone. Under a fixed number
 of chunks, a larger chunk shows the reader more text, so Recall@$k$ rewards
-size itself; under a fixed token budget that advantage disappears and small
-chunks tend to win. Comparisons of chunk sizes that fix the number of
+size itself; under a fixed budget of 750 or 1,250 tokens that advantage disappears and
+small chunks tend to win. Comparisons of chunk sizes that fix the number of
 retrieved chunks therefore mix the quality of the chunks with the amount of
 text read. We suggest that such comparisons report the token budget, or both
 measures. Our size effect also weakens as the budget grows and is not
 established at 2,000 tokens on held-out set 2; a larger budget leaves room
 for larger chunks, but we did not test this explanation.
 
-\textbf{Defaults and tuning.} Tuning paid off in one place: LangChain's
-default chunk size was far from the best size for this budget. Where our
+\textbf{Defaults and tuning.} In a post-hoc comparison on held-out set~1, tuning paid off in one
+place: LangChain's default chunk size was far from the best size for this budget. Where our
 starting size was already close, tuning brought no detectable gain, and
 parser settings changed recall very little. For scanned PDFs, the parser
-choice that mattered was whether text was extracted at all. A practical check
-is therefore to compare a library's default chunk size with the token budget
-the system will use, and to detect scanned pages before parsing.
+choice that mattered was whether text was extracted at all. For settings like those tested, a
+practical check is to compare a library's default chunk size with the token
+budget in use and, when a parser without OCR is used, to detect scanned pages.
 
-\textbf{Answers and retrieval.} Answer quality agrees with retrieval on the
-large-chunk penalty, but the evidence is weak: it rests on few setups, one
+\textbf{Answers and retrieval.} Answer quality is consistent with a large-chunk
+penalty but disagrees with recall on two M1 sizes, and the evidence is weak: it rests on few setups, one
 answering model and a measure chosen after the answers existed. Whether
 retrieval gains of the size we measure change answers in practice needs a
 larger, pre-registered answer study.

@@ -1,5 +1,5 @@
 # paper-v1.3 lock (2026-11-24): SHA-256 of the inputs made after paper-v1.2 (held-out 2, extension, second embedder).
-# Extended on 2026-11-25 (spec v1.2 "paper-v1.3 lock, extended" and "Held-out set 2 result files tracked"): the last 12 entries.
+# Extended on 2026-11-25 (spec v1.2 "paper-v1.3 lock, extended" and "Held-out set 2 result files tracked"): the last 13 entries.
 # Inputs frozen at paper-v1.2 stay in docs/paper_checksums.txt (unchanged). Checked by paper_ieee/scripts/make_artifacts.py.
 9d7588a290554a45532737d49fe0efccecef1b17f1349160b6d9742d9eccde68  data/results/ext/P4-EXT-20261119-2_rq1.csv
 9e227f20d2c3fbe07879e483c0f13ea4bdbdf9ca242f780b7f850bf83f39bcf6  data/results/h2/P4-H2-20261124-5_exclusion.csv
@@ -25,3 +25,4 @@ f25a61fbe8d03faaf95cee9bf233fc8c88e720049678d8cf73bf205908f89d83  runs/P1-LOCAL-
 f4c7962dfd3d32d22b35b79180782e37b049b80170ef75a8e2e477ff59692221  runs/P1-H2-DROPRULE-20261123-1.json
 b7504c49726105db9176336a37aebd42098814374407688c28d26baa6da82124  runs/P3-H2-20261124-1.json
 340ee7f72c05c708e38510fb2a6b365a79034bf426aa755733eb9bec00af6bf3  data/results/p3/P3-H2-20261124-1.csv.gz
+337fba18b3c5031d788e22683b76b717f4235968d9d1eff1687cc2c95221cda2  runs/P1-RQ5-KN01-20261109-3.json

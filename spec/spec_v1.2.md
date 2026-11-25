@@ -1799,3 +1799,13 @@ Adds to "paper-v1.3 lock" (2026-11-24); reporting only, no result or decision ch
   statistics only; no document text, page image, question or answer. No file is changed.
 - P3-H2-20261124-1.csv.gz is added to `docs/paper_checksums_v1.3.txt`. The check against the hash in
   runs/P4-H2-20261124-1.json ("paper-v1.3 lock, extended") stays. The statement there that it is git-ignored no longer holds.
+
+## Second held-out run without the Indian documents (disclosure, 2026-11-25)
+- "Robustness without the Indian documents, held-out" (2026-11-14) names P4-FINAL-NOINDIAN-20261114-1. A second run,
+  P4-FINAL-NOINDIAN-20261114-2, was made about two minutes later (12:54 UTC, uncommitted_changes true, as -1); no note
+  named it. Its _p4.csv is byte-identical to that of -1. It is kept; no result changes.
+- The 2026-11-14 reproduction check also repeated the held-out gold-drop and size-by-source reports with --final.
+
+## paper-v1.3 lock: one more input (2026-11-25)
+- runs/P1-RQ5-KN01-20261109-3.json (RQ5(a) headings variant) is added to `docs/paper_checksums_v1.3.txt`: it records the
+  Docling default table mode (ACCURATE), which the default variant's record does not list. No result changes.

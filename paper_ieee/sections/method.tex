@@ -2,8 +2,9 @@
 
 We ask one question first: how much retrieval quality is lost when a single
 parse-and-chunk setup is used for every PDF, and how much of that loss an
-oracle could recover by choosing a setup per document. To answer it fairly, we
-fixed the design before any held-out question, answer or score was seen, placed gold evidence with one
+oracle, cross-fitted on the document's own questions, recovers by choosing a
+setup per document. To answer it fairly, we
+fixed the RQ1 design before held-out set~1 was scored, placed gold evidence with one
 rule for every parser, and compared setups by how much text they let the reader
 see rather than by how many chunks they return. This section describes each
 part in turn.
@@ -11,8 +12,9 @@ part in turn.
 
 \subsection{Pre-registration}\label{sec:prereg}
 
-We fixed the design, the scorer and the decision rule before any held-out score
-existed, so that held-out results could not shape the rules used to judge them.
+We fixed the RQ1 design, the scorer and the RQ1 decision rule before held-out
+set~1 was scored, so that held-out results could not shape the rules used to judge them. The designs of RQ3, RQ4 and RQ5 and the
+confirmatory rule of RQ2 came later and are dated below.
 One exposure came earlier: while designing M1 we viewed the parsed tree structure
 of most documents in the first part of held-out set~1 (no questions, answers or
 scores; Table~\ref{tab:deviations}).
@@ -24,7 +26,7 @@ v1.1 on 1~November (chunker pool, oracle and cost) and v1.2 from 3~November
 A second held-out set was added later as a replication. Its document
 selection, gold rule, one gold amendment (made after the gold counts were
 known; Section~\ref{sec:gold}) and analysis code were written into dated notes
-before it was scored, and it was also scored once, on
+before it was scored, and it was scored once per gold variant, on
 24~November 2026. Commit and run times for each step,
 and first-push times up to 14~November, are given in
 Table~\ref{tab:timeline}. Where we departed from the specification we say so:
@@ -34,8 +36,9 @@ Table~\ref{tab:deviations} lists \DeviationCount{} deviations,
 \textbf{Uses of the held-out sets.} Held-out set~1 was scored once, for RQ1, and
 its results were then used again: for RQ5(b) (second use), for answer quality
 (third use), for reports of gold drop rate and of chunk size by source on
-12~November, and on 14~November for a reproduction check and for the analyses
-without the Indian documents and by retriever. No chunker in the choice sets, scorer or decision
+12~November, and on 14~November for a reproduction check (which repeated
+these reports), for the analysis by retriever and for the analysis without the Indian
+documents (recorded twice, with identical output). No chunker in the choice sets, scorer or decision
 rule was changed after it was opened. Held-out set~2 was scored once per gold
 variant and analysed once, for RQ1 and RQ2.
 
@@ -47,8 +50,7 @@ We use three document sets, kept apart throughout.
 question and \TuningMainDocuments{} (\TuningMainQuestions{} questions) enter the main analysis, which leaves out
 QASPER and UniDoc-Bench. They are drawn from CUAD contracts~\cite{hendrycks2021cuad}, OHR-Bench~\cite{zhang2024ocr}, an Indian
 regulatory benchmark~\cite{singh2026parser}, QASPER~\cite{dasigi2021qasper} and
-UniDoc-Bench~\cite{peng2025unidoc}. Choices of settings were made on this set, apart from the exposure stated in
-Section~\ref{sec:prereg}.
+UniDoc-Bench~\cite{peng2025unidoc}. The primary settings were chosen on this set.
 
 \textbf{Held-out set 1.} \AccountingHeldOut{} sealed documents: unseen documents from the known
 sources, one new document for each known document type, and out-of-domain
@@ -87,8 +89,8 @@ Scanned PDFs for RQ5(a) come from MP-DocVQA~\cite{tito2023mpdocvqa}.
 
 Each question needs its evidence located in the text a parser produces. One
 matching rule places the gold evidence as character spans in each parser's
-own output. For held-out set~1 the evidence is the answer string given by each
-source; if the rule cannot place it with certainty, the question is dropped.
+own output. For held-out set~1 the evidence is the answer or evidence span given by each
+source (for FinanceBench, its evidence text); if the rule cannot place it with certainty, the question is dropped.
 This removes \CoverageHeldOutDoclingShare{} of held-out set~1 questions for Docling and \CoverageHeldOutPdfplumberShare{} for
 pdfplumber (of \CoverageHeldOutDoclingTotal{} questions, QASPER and UniDoc-Bench
 left out).
@@ -109,8 +111,7 @@ before any held-out set~2 score, we made the drop rule primary and certain-only
 a sensitivity check.
 
 All comparisons use only the questions kept for every setup being compared.
-This keeps the comparison fair, but a parser that places more gold, as Docling
-does, gets no credit for it in recall. The drop rates above keep this coverage
+This keeps the comparison fair, but a parser that places more gold, as Docling does on held-out set~1, gets no credit for it in recall. The drop rates above keep this coverage
 difference visible. In held-out set~2 the gold comes from
 the boxes and does not depend on the parser at the source, but it still has
 to be placed in each parser's text.
@@ -121,7 +122,7 @@ A setup is one parser combined with one chunker setting. The parsers are
 Docling~2.143.0~\cite{auer2024docling} with default settings (Table~\ref{tab:docling})
 and pdfplumber~0.11.10~\cite{pdfplumber}. The chunkers (Table~\ref{tab:chunkers}) are
 fixed-token, recursive, LangChain recursive~\cite{langchain} (including its default settings),
-sentence groups, semantic, LLM-regex (Gemini~3.5 Flash-Lite~\cite{gemini}) and page-based
+sentence groups (Stanza~\cite{stanza}), semantic (embedder Qwen3-Embedding-0.6B~\cite{qwen3embedding}), LLM-regex (Gemini~3.5 Flash-Lite~\cite{gemini}) and page-based
 chunking, plus our own structure-tree method, M1. The recursive, sentence,
 semantic and LLM-regex chunkers use the code of Adaptive
 Chunking~\cite{demourajunior2026adaptive}. Semantic chunking was left out
@@ -255,7 +256,9 @@ document-bootstrap interval; RQ2 holds if every $\rho$ is negative. The reading
 by parser, instead of one $\rho$ over all \RQoneSetups{} setups, was
 clarified on 24~November, before any held-out set~2 score. The rule is for the
 primary gold, with certain-only as its sensitivity check; we also show the
-drop-rule sensitivity variant. These setups span target sizes 256 to 512 only.
+drop-rule sensitivity variant. These setups span target sizes 256 to 512 only. Each parser is scored on
+its own question set, so the document counts (Table~\ref{tab:rq2h2}) differ
+from those of RQ1.
 
 \subsection{Parser settings and chunk size (RQ5)}\label{sec:rq5method}
 

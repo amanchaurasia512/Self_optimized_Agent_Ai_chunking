@@ -21,7 +21,11 @@ were judged invalid by one rater, with short context, and the check stopped
 after its first batch; the Indian held-out questions were not checked. Comparisons use questions that every setup can
 place, which hides differences in coverage between parsers. The two held-out
 sets differ in gold source and gold rule, and the rule of the second was changed
-after gold counts, though before any score.
+after gold counts, though before any score; the pooled gap mixes both. Held-out set~2
+excludes questions on charts and images and documents over 200 pages. % src: spec/spec_v1.2.md:1328
+Its box
+gold is read from the PDF text layer, which pdfplumber also extracts from, so
+pages without a text layer give no gold. The answer judge was checked by one rater.
 
 \textbf{Reuse and post-hoc parts.} Held-out set~1 was used for RQ1, then for
 RQ5(b), answer quality, gold-drop and size reports, and analyses by retriever
@@ -31,7 +35,7 @@ tuning scores, RQ5(b) after the held-out scores, and the primary answer measures
 structure of most documents of the first part of held-out set~1 had been seen.
 
 \textbf{Weaker evidence.} The RQ2 effect is not established at 2,000 tokens on
-held-out set~2, and is positive there for two of three corpora.
+held-out set~2, and is positive there for two of three corpora under the primary gold.
 Answer quality covers \RQfourSetups{} digital setups and one answering model,
 and \AQUnrecordedAnswers{} of \AQAnswers{} answers have no run record. The scanned
 results rest on \RQfiveAScannedQuestions{} shared questions for recall and

@@ -21,25 +21,27 @@ aman.1si17cs008@gmail.com}}
 \begin{abstract}
 Retrieval-augmented generation over PDFs depends on how each document is
 parsed and cut into chunks, and a common proposal is to choose the parser and
-chunker per document. We test whether this choice pays off in a study whose
-design, scorer and decision rule were fixed before held-out data were scored.
+chunker per document. We test whether this choice pays off; the
+design, scorer and decision rule of this test were fixed before the first
+held-out set was scored.
 We score \RQoneSetups{} parse-and-chunk setups (two parsers,
 \RQonePrimarySettings{} chunker settings) on two sealed held-out sets,
-\RQoneDocuments{} PDFs with \RQoneQuestions{} span-level questions and
+\RQoneDocuments{} PDFs with \RQoneQuestions{} questions with located answer evidence and
 \RQoneHTwoDropRuleDocuments{} ViDoRe V3 PDFs with
-\RQoneHTwoDropRuleQuestions{} box-level questions, reading ranked chunks up to
+\RQoneHTwoDropRuleQuestions{} questions with human-drawn evidence boxes, reading ranked chunks up to
 a fixed budget of 1,250 tokens. A per-document oracle, cross-fitted on half of
 each document's questions, falls below the best single setup on both sets
 (gap \RQonePrimaryGap{} \RQonePrimaryGapCI{} and \RQoneHTwoDropRuleGap{}
-\RQoneHTwoDropRuleGapCI{}), and the pre-registered rule gives NO-GO on both.
+\RQoneHTwoDropRuleGapCI{}), and the pre-registered rule gives NO-GO (no per-document chooser) on both.
 We find no evidence of a gain from choosing a setup per document, although
-few questions per document limit what any chooser can learn. At a budget of
-750 or 1,250 tokens, smaller chunks tend to retrieve more; under a fixed
-number of chunks the ranking reverses, because large chunks put more text in
-front of the reader. Tuning helps where a default is far off: tuned sizes beat
-LangChain's default chunk size by \RQfiveBLangchainRecursivePdfplumberDiff{}
+few questions per document limit what the oracle can learn, so the gap is not
+a bound on every chooser. At a budget of
+750 or 1,250 tokens, smaller chunks tend to retrieve more; on tuning data,
+a fixed number of chunks reverses this ranking, as large chunks put more text
+in front of the reader. In a post-hoc comparison on the first held-out set,
+tuned sizes beat LangChain's default chunk size by \RQfiveBLangchainRecursivePdfplumberDiff{}
 to \RQfiveBLangchainRecursiveDoclingDiff{} in recall, while parser settings
-show no detectable gain. We release the code, the locked results and a tool
+show no detectable gain. We release the code, the checksummed results and a tool
 with fixed defaults.
 \end{abstract}
 
