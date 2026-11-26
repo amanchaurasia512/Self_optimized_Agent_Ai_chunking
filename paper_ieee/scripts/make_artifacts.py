@@ -1375,7 +1375,8 @@ def disclosures(read):
 SPEC_FACTS = {  # numbers the text takes from a spec note: read from the spec as tagged (LOCK_TAG)
     "HTwoQueries": r"Result: 53 documents, (\d+) queries", "TieCostDifference": r"differences of ([\d.]+) token per document",
     "TieUnresolvedSetups": r"\((\d+) of 100 setups tied at 4 questions\)", "CheapestOracleBelowDocuments": r"oracle was below the best single on\s+(\d+) documents",
-    "RandomOrders": r"averaged over (\d+) random permutations", "JudgePassMark": r"agreement is at least (\d+)%"}
+    "RandomOrders": r"averaged over (\d+) random permutations", "JudgePassMark": r"agreement is at least (\d+)%",
+    "HTwoMaxPages": r"at least 2 eligible queries and at most (\d+) pages"}
 
 
 def spec_facts(read):

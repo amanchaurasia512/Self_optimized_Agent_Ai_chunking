@@ -16,9 +16,7 @@ advantage disappears and small chunks tend to win. Comparisons at a fixed number
 amount of text read; we suggest that they report the token budget, or both
 measures.
 
-\textbf{Defaults.} In a post-hoc comparison on held-out set~1, LangChain's default
-chunk size was far from the best size for this budget; where our starting size
-was already close, tuning brought no detectable gain, and parser settings changed
-recall very little. For settings like those tested, a practical check is to
+\textbf{Defaults.} Tuning paid off only against LangChain's default chunk size
+(post-hoc, Section~\ref{sec:rq5}). For settings like those tested, a practical check is to
 compare a library's default chunk size with the token budget in use and, when a
 parser without OCR is used, to detect scanned pages.

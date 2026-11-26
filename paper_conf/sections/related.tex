@@ -17,9 +17,10 @@ splitters we reuse.
 \textbf{Chunk size and budgets.} 
 Chen et al.~\cite{chen2024densex} index propositions and find better retrieval than with passages. Bhat et
 al.~\cite{bhat2025chunksize} find that the best fixed size depends on the data and that
-it also differs between embedding models. Our RQ3 offers one possible reason for such differences, which we do
-not test: in our tuning data, the preferred size changes when the number of chunks, rather than
-the number of tokens, is held fixed. 
+it also differs between embedding models. These recommendations point in different directions. Our RQ3 offers one
+possible reason: in our tuning data, the preferred size changes when the number of chunks,
+rather than the number of tokens, is held fixed. Whether this explains the
+differences between those studies is not something we test. 
 
 \textbf{Parsing, OCR and benchmarks.} OHR-Bench~\cite{zhang2024ocr} follows OCR
 noise into RAG and concludes that none of the OCR solutions it tests is good
@@ -32,7 +33,5 @@ UniDoc-Bench~\cite{peng2025unidoc} and ViDoRe~V3~\cite{loison2026vidore} supply
 questions over visually rich pages; the latter also has human-drawn evidence
 boxes, which we use as gold.
 
-\textbf{This study.} We compare setups under a fixed token budget, and evaluate
-the choice of a setup per document on two sealed held-out sets with a
-cross-fitted oracle, against a decision rule written in advance. Studies with
-other data, measures or selection signals are not directly comparable.
+Studies with other data, measures or selection signals are not directly
+comparable to ours.

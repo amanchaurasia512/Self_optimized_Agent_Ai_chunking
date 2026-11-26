@@ -65,7 +65,8 @@ Industrial on pdfplumber (\RQtwoHTwoIndustrialPdfplumberOneTwoFiveZero{}).
 
 On tuning data, when the number of chunks is fixed instead of the tokens, the
 ranking reverses: on both parsers, Recall@10 rises with chunk size while
-Recall@1,250 falls (Fig.~\ref{fig:rq3}). Recall@5 is highest for
+Recall@1,250 falls (Fig.~\ref{fig:rq3}). Over the \RQthreeSettingsKept{} settings kept after the
+erratum (superseded and sanity settings left out), Recall@5 is highest for
 \RQthreeDoclingRecallFiveBest{} on both parsers (measured size
 \RQthreeDoclingRecallFiveSize{} and \RQthreePdfplumberRecallFiveSize{} tokens). MRR
 and Hit@1 barely separate sizes; their winners are nominal, without intervals or
@@ -74,8 +75,7 @@ size 256 minus size 1,024 is \RQthreeSweepBudget{} in Recall@1,250 but
 \RQthreeSweepRecall{} in Recall@5; in Lift@5, where the recall of a random chunk
 order is subtracted, it is \RQthreeSweepLift{}. All \RQthreeSweepSignificant{} of
 the \RQthreeSweepTests{} tested differences are significant (largest Holm $p$ =
-\RQthreeSweepMaxHolm{}). Under a fixed number of chunks, a large chunk puts more
-text in front of the reader, so Recall@$k$ rewards size itself. 
+\RQthreeSweepMaxHolm{}).
 
 \subsection{RQ4: retrieval quality versus answer quality}\label{sec:rq4}
 
