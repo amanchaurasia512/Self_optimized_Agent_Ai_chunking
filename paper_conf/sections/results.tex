@@ -1,0 +1,141 @@
+\section{Results}\label{sec:results}
+
+\subsection{RQ1: one fixed setup versus a choice per document}\label{sec:rq1}
+
+\input{../paper_ieee/generated/rq1}
+
+On held-out set~1 (\RQoneDocuments{} documents, \RQoneQuestions{} questions;
+Table~\ref{tab:rq1}), the best single setup is \RQoneBest{}, with hybrid
+Recall@1,250 of \RQoneBestRecall{}, and \RQoneTied{} of the \RQoneSetups{} setups,
+itself included, form the statistically tied group. The cross-fitted oracle
+reaches \RQoneOracle{}, a gap of \RQonePrimaryGap{} \RQonePrimaryGapCI{}. The
+pre-registered rule gives \RQoneDecision{}. An oracle that picks and scores on
+the same questions would show a gain of \RQoneRawGap{}. Larger choice sets do not
+change the verdict (Table~\ref{tab:rq1}).
+
+On held-out set~2, under the primary gold rule (\RQoneHTwoDropRuleDocuments{}
+documents, \RQoneHTwoDropRuleQuestions{} questions), the best single setup is
+\RQoneHTwoDropRuleBest{} (\RQoneHTwoDropRuleBestRecall{}), the oracle reaches
+\RQoneHTwoDropRuleOracle{}, and the gap is \RQoneHTwoDropRuleGap{}
+\RQoneHTwoDropRuleGapCI{}. All three gold variants are NO-GO. The primary interval
+is wider than on held-out set~1 (\RQoneHTwoDropRuleGapWidth{} against
+\RQonePrimaryGapWidth{}), so the second set did not narrow the estimate. A
+pre-stated check without the questions on the \RQoneHRCheckPages{} HR pages whose
+image and PDF shapes differ by more than 5\% is also NO-GO.
+
+The setup chosen on tuning data, \RQoneTuningWinner{}, applied unchanged, is
+statistically tied with the best single setup on every held-out set and gold
+variant. Pooled over both sets (\RQonePooledDocuments{} documents,
+\RQonePooledQuestions{} questions; secondary), the oracle
+(\RQonePooledOracle{}) stays below the tuning winner
+(\RQonePooledTuningWinnerRecall{}), a gap of \RQonePooledGap{}
+\RQonePooledGapCI{}; this is a different quantity, and pooling did not narrow the
+interval. 
+
+\subsection{RQ2: chunk size at a fixed token budget}\label{sec:rq2}
+
+\input{../paper_ieee/generated/rq2_h2}
+\sizefigure
+
+At a fixed budget of 750 or 1,250 tokens, smaller chunks tend to retrieve more of
+the gold text; at 2,000 tokens this is not established on held-out set~2. On
+tuning data, the descriptive analysis finds Spearman's $\rho$ between measured
+chunk size and recall negative for every parser, budget and source
+(Fig.~\ref{fig:rq2} shows 1,250),  ranging from \RQtwoRhoRange{}. The OHR-Bench documents of
+held-out set~1 show the same pattern; on its \RQtwoHeldOutCUADDocuments{} CUAD
+contracts the correlation weakens as the budget grows, and the one FinanceBench
+document cannot be interpreted.
+
+The pre-registered sign rule holds on held-out set~2 (Table~\ref{tab:rq2h2}): all
+\RQtwoHTwoNegative{} of the \RQtwoHTwoValues{} values of $\rho$ are negative. Of
+\RQtwoHTwoLargestBudgetValues{} intervals at each budget,
+\RQtwoHTwoIncludeZeroSevenFiveZero{} includes zero at 750 tokens,
+\RQtwoHTwoIncludeZeroOneTwoFiveZero{} at 1,250 and
+\RQtwoHTwoLargestBudgetIncludeZero{} at 2,000. By corpus (pre-stated as
+descriptive; primary gold), $\rho$ is positive at 2,000 tokens for HR
+(\RQtwoHTwoHrDoclingTwoZeroZeroZero{} on Docling,
+\RQtwoHTwoHrPdfplumberTwoZeroZeroZero{} on pdfplumber) and Industrial
+(\RQtwoHTwoIndustrialDoclingTwoZeroZeroZero{} and
+\RQtwoHTwoIndustrialPdfplumberTwoZeroZeroZero{}), and already at 1,250 for
+Industrial on pdfplumber (\RQtwoHTwoIndustrialPdfplumberOneTwoFiveZero{}).
+
+\subsection{RQ3: the measure changes the best size}\label{sec:rq3}
+
+\input{../paper_ieee/generated/figures/rq3_fig}
+
+On tuning data, when the number of chunks is fixed instead of the tokens, the
+ranking reverses: on both parsers, Recall@10 rises with chunk size while
+Recall@1,250 falls (Fig.~\ref{fig:rq3}). Recall@5 is highest for
+\RQthreeDoclingRecallFiveBest{} on both parsers (measured size
+\RQthreeDoclingRecallFiveSize{} and \RQthreePdfplumberRecallFiveSize{} tokens). MRR
+and Hit@1 barely separate sizes; their winners are nominal, without intervals or
+tests. In a control on tuning data, over four chunker families and two parsers,
+size 256 minus size 1,024 is \RQthreeSweepBudget{} in Recall@1,250 but
+\RQthreeSweepRecall{} in Recall@5; in Lift@5, where the recall of a random chunk
+order is subtracted, it is \RQthreeSweepLift{}. All \RQthreeSweepSignificant{} of
+the \RQthreeSweepTests{} tested differences are significant (largest Holm $p$ =
+\RQthreeSweepMaxHolm{}). Under a fixed number of chunks, a large chunk puts more
+text in front of the reader, so Recall@$k$ rewards size itself. 
+
+\subsection{RQ4: retrieval quality versus answer quality}\label{sec:rq4}
+
+\input{../paper_ieee/generated/rq4}
+
+On held-out set~1 (\AQHeldOutQuestions{} sampled questions), mean token F1 is
+highest with \RQfourBest{} (\RQfourBestFOne{}; Table~\ref{tab:rq4}). Answers are
+consistent with a large-chunk penalty, but this rests on one 1,024-token setup
+that also differs in chunker. The best setup also beats
+\RQfourDoclingMethodOneTreeTThreeEightFourSetup{}, although the two are tied on
+recall; we report this as open and do not claim it. On tuning data
+(\AQTuningQuestions{} questions), no difference is significant.  Across setups, Spearman's $\rho$ between F1
+and Recall@1,250 is \RQfourSpearmanTuningFOne{} on tuning and
+\RQfourSpearmanHeldOutFOne{} on held-out set~1. With only \RQfourSetups{} setups and
+no test this is weak evidence, with a measure chosen after the answers existed.
+On scanned PDFs (\AQScannedQuestions{} questions), the best setup is
+\RQfourScannedBest{} (F1 \RQfourScannedBestFOne{}), with Docling's default OCR. Only one difference survives Holm correction, against
+\RQfourScannedTopSetup{} (Holm $p$ = \RQfourScannedTopHolm{}). That pair differs in chunker as well as OCR, so this is
+weak evidence on OCR.
+
+\subsection{RQ5: tuning versus defaults}\label{sec:rq5}
+
+\tuningfigure
+
+\textbf{(a) Parser settings.} On digital PDFs (\RQfiveADigitalDocuments{} tuning
+documents, \RQfiveADigitalQuestions{} shared questions), no parser variant differs
+from its default by more than \RQfiveADigitalMaxAbsDiff{} in recall, and no
+difference is significant (smallest Holm $p$ = \RQfiveADigitalMinHolm{};
+Fig.~\ref{fig:rq5}a). On scanned PDFs (\RQfiveAScannedDocuments{} documents,
+\RQfiveAScannedQuestions{} shared questions), we detect no difference between
+Tesseract OCR and Docling's default OCR: \RQfiveAScannedDiff{} \RQfiveAScannedCI{}.
+The parser choice that matters for scans is detecting them at all: pdfplumber
+reads no text from scanned pages.
+
+\textbf{(b) Chunk size.} In this post-hoc comparison on held-out set~1
+(Fig.~\ref{fig:rq5}b), LangChain's default chunk size loses
+\RQfiveBLangchainRecursiveDoclingDiff{} \RQfiveBLangchainRecursiveDoclingCI{} on
+Docling and \RQfiveBLangchainRecursivePdfplumberDiff{}
+\RQfiveBLangchainRecursivePdfplumberCI{} on pdfplumber, both with Holm $p$
+\RQfiveBLangchainRecursiveDoclingHolm{}. For fixed-token, recursive and M1, whose
+default is our own 512-token starting size, the tuned size differs from the
+default by \RQfiveBRecursiveDoclingDiff{} to \RQfiveBMethodOneTreePdfplumberDiff{},
+and no difference is significant.
+
+\subsection{Extension, robustness and the tool}\label{sec:extension}
+
+The NO-GO verdict is unchanged in descriptive checks. On held-out set~1, the gap is
+\RobBMTwoFiveOnlyHeldOutOneGap{} \RobBMTwoFiveOnlyHeldOutOneGapCI{} with BM25 alone
+and \RobDenseOnlyHeldOutOneGap{} \RobDenseOnlyHeldOutOneGapCI{} with dense retrieval
+alone, and \RobWithoutIndianHeldOutOneGap{} \RobWithoutIndianHeldOutOneGapCI{}
+without the Indian documents. On tuning data, adding the \ExtSetups{} setups of four
+planned chunkers, including Docling's HybridChunker~\cite{hybridchunker}, leaves the
+gap at \RobExtensionTuningGap{} \RobExtensionTuningGapCI{}. The HybridChunker result
+includes our span mapping: \ExtHybridUnlocated{} of its \ExtHybridChunks{} chunks
+could not be located, so it is not a test of HybridChunker as used directly. With
+nomic-embed-text-v1.5~\cite{nomic} as the dense embedder, also on tuning data, the
+gap is \RobNomicHybridTuningGap{} \RobNomicHybridTuningGapCI{} with hybrid
+retrieval. The robustness table and the RQ3 erratum are in the repository (tag paper-v1.4).
+
+The tool does not choose a setup per document. Its default mode applies
+\RQoneTuningWinner{} to every PDF; its fast mode keeps the chunker but parses with
+pdfplumber, unless a page has no text layer; then the whole document goes to
+Docling. Fast mode on digital PDFs is therefore not the tuned setup.

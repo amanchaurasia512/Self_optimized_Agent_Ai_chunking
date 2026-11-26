@@ -1,0 +1,105 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+
+\input{../paper_ieee/generated/numbers}
+% The generated figures keep their data; only their size and panel layout are set here.
+\makeatletter
+\newcommand{\FigHeight}{0.38\columnwidth}
+\newcommand{\CompactFigure}[2]{% panel width, horizontal separation
+  \pgfplotsset{
+    height/.code={\pgfkeyssetvalue{/pgfplots/height}{\FigHeight}},
+    width/.code={\pgfkeyssetvalue{/pgfplots/width}{#1}},
+    group/group size/.code={\def\pgfplots@group@columns{2}\def\pgfplots@group@rows{1}},
+    group/horizontal sep/.initial=#2,
+    every axis/.append style={label style={font=\scriptsize}, tick label style={font=\scriptsize},
+      title style={font=\scriptsize}, legend style={font=\scriptsize}}}}
+\newcommand{\sizefigure}{\begingroup\CompactFigure{0.5\columnwidth-1.3cm}{1.1cm}
+\pgfplotsset{legend style/.code={\pgfplotsset{every axis legend/.append style={##1, at={(-0.25,-0.38)}}}}}
+\input{../paper_ieee/generated/figures/rq2_fig}
+\endgroup}
+\newcommand{\tuningfigure}{\begingroup\CompactFigure{0.5\columnwidth-2.4cm}{1.3cm}
+\pgfplotsset{every axis/.append style={xlabel style={align=center, text width=2.6cm}, x tick label style={rotate=60, anchor=east}}}
+\input{../paper_ieee/generated/figures/rq5_fig}
+\endgroup}
+\makeatother
+\begin{document}
+\makeatletter\def\input@path{{../paper_ieee/}}\makeatother % the generated floats input generated/figures/*
+
+\title{What Matters When Chunking PDFs for Retrieval:\\Size, Budget, and Parser}
+\author{\IEEEauthorblockN{Aman Chaurasia}
+\IEEEauthorblockA{Independent Researcher\\
+New Delhi, India\\
+aman.1si17cs008@gmail.com}}
+\maketitle
+\bstctlcite{conf:control}
+
+\begin{abstract}
+Retrieval-augmented generation over PDFs depends on how each document is
+parsed and cut into chunks, and a common proposal is to choose the parser and
+chunker per document. We test whether this choice pays off; the
+design, scorer and decision rule of this test were fixed before the first
+held-out set was scored.
+We score \RQoneSetups{} parse-and-chunk setups (two parsers,
+\RQonePrimarySettings{} chunker settings) on two sealed held-out sets,
+\RQoneDocuments{} PDFs with \RQoneQuestions{} questions with located answer evidence and
+\RQoneHTwoDropRuleDocuments{} ViDoRe V3 PDFs with
+\RQoneHTwoDropRuleQuestions{} questions with human-drawn evidence boxes, reading ranked chunks up to
+a fixed budget of 1,250 tokens. A per-document oracle, cross-fitted on half of
+each document's questions, falls below the best single setup on both sets
+(gap \RQonePrimaryGap{} \RQonePrimaryGapCI{} and \RQoneHTwoDropRuleGap{}
+\RQoneHTwoDropRuleGapCI{}), and the pre-registered rule gives NO-GO (no per-document chooser) on both.
+We find no evidence of a gain from choosing a setup per document, although
+few questions per document limit what the oracle can learn, so the gap is not
+a bound on every chooser. At a budget of
+750 or 1,250 tokens, smaller chunks tend to retrieve more; on tuning data,
+a fixed number of chunks reverses this ranking, as large chunks put more text
+in front of the reader. In a post-hoc comparison on the first held-out set,
+tuned sizes beat LangChain's default chunk size by \RQfiveBLangchainRecursivePdfplumberDiff{}
+to \RQfiveBLangchainRecursiveDoclingDiff{} in recall, while parser settings
+show no detectable gain. We release the code, the checksummed results and a tool
+with fixed defaults.
+\end{abstract}
+
+\begin{IEEEkeywords}
+retrieval-augmented generation, document chunking, PDF parsing, evaluation, pre-registration
+\end{IEEEkeywords}
+
+\input{./sections/intro}
+
+\input{./sections/related}
+
+\input{./sections/method}
+
+\input{./sections/results}
+
+\input{./sections/discussion}
+
+\input{./sections/limitations}
+
+\input{./sections/conclusion}
+\input{./sections/availability}
+\section*{Acknowledgment}
+Following IEEE policy, I disclose my use of AI in this work. I used Claude
+(Anthropic), through the Claude app and Claude Code, between October and
+November 2026. Claude drafted the text of the Abstract, Sections~I--VII, the
+Appendix and the data and code availability statement, working from my study
+design, my dated specifications and the locked results. For Related Work, it
+drafted from the abstracts of the cited papers, and each statement was
+checked against them. Claude Code wrote most of the analysis code and the
+script that produces every table, figure and reported number. No figure or
+image was made by an AI model. I designed the study, made every research
+decision and ran the experiments. I reviewed and edited every section,
+checked the outputs of all the code, and I take full responsibility for the
+content of this paper.
+\bibliographystyle{IEEEtran}
+\makeatletter\let\input@path\undefined\makeatother % main.bbl is this paper's own
+\bibliography{bstcontrol,../paper_ieee/references}
+
+\end{document}

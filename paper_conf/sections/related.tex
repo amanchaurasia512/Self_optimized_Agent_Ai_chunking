@@ -1,0 +1,38 @@
+\section{Related Work}\label{sec:related}
+
+\textbf{Chunking strategies and their selection.} Shaukat et
+al.~\cite{shaukat2026systematic} test thirty-six segmentation methods with five
+embedders and report that methods aware of content beat plain fixed-length
+splitting. Qu et
+al.~\cite{qu2025semantic} find that, over three retrieval tasks, the gains from
+semantic chunking were not steady enough to pay for its computation. Other work
+proposes new cutters: HiChunk~\cite{lu2025hichunk} uses fine-tuned language
+models to build a hierarchy over the document, and MoC~\cite{zhao2025moc} guides
+chunkers to output regular expressions . The work closest to our main question is Adaptive
+Chunking~\cite{demourajunior2026adaptive}, which picks a chunker for each document
+using five measures computed from the document alone, and reports better answers
+than with a single method; its pool contains the LLM-regex and recursive
+splitters we reuse.
+
+\textbf{Chunk size and budgets.} 
+Chen et al.~\cite{chen2024densex} index propositions and find better retrieval than with passages. Bhat et
+al.~\cite{bhat2025chunksize} find that the best fixed size depends on the data and that
+it also differs between embedding models. Our RQ3 offers one possible reason for such differences, which we do
+not test: in our tuning data, the preferred size changes when the number of chunks, rather than
+the number of tokens, is held fixed. 
+
+\textbf{Parsing, OCR and benchmarks.} OHR-Bench~\cite{zhang2024ocr} follows OCR
+noise into RAG and concludes that none of the OCR solutions it tests is good
+enough for building knowledge bases. Santos et al.~\cite{santos2026pdf} compare
+four conversion tools  and attribute more of
+the accuracy to metadata and hierarchy-aware splitting than to the tool. El Bachyr
+et al.~\cite{elbachyr2026empirical} examine parsers and chunkers jointly , and Singh~\cite{singh2026parser} runs a factorial study on
+Indian regulatory texts in which parser and chunker interact.
+UniDoc-Bench~\cite{peng2025unidoc} and ViDoRe~V3~\cite{loison2026vidore} supply
+questions over visually rich pages; the latter also has human-drawn evidence
+boxes, which we use as gold.
+
+\textbf{This study.} We compare setups under a fixed token budget, and evaluate
+the choice of a setup per document on two sealed held-out sets with a
+cross-fitted oracle, against a decision rule written in advance. Studies with
+other data, measures or selection signals are not directly comparable.

@@ -1,0 +1,121 @@
+\section{Method}\label{sec:method}
+
+\subsection{Pre-registration}\label{sec:prereg}
+
+We fixed the RQ1 design, the scorer and the RQ1 decision rule before held-out
+set~1 was scored; the other designs and RQ2's confirmatory rule came later. One exposure came earlier: while designing M1 we viewed the
+parsed tree structure of most documents in the first part of held-out set~1 (no
+questions, answers or scores). Held-out set~1 was scored once, on 6~November,
+and its results were reused (RQ5(b), answer quality, further reports and
+checks); no chunker in the choice sets, scorer or decision rule was changed after
+it was opened. A second held-out set, added later as a replication, was scored
+once per gold variant, on 24~November 2026. The timeline, all deviations and every reuse are in
+the repository (tag paper-v1.4).
+
+\subsection{Documents and questions}\label{sec:docs}
+
+\textbf{Tuning.} \TuningDocuments{} documents, of which \TuningMainDocuments{}
+(\TuningMainQuestions{} questions) enter the main analysis, from
+CUAD~\cite{hendrycks2021cuad}, OHR-Bench~\cite{zhang2024ocr}, an Indian
+regulatory benchmark~\cite{singh2026parser}, QASPER~\cite{dasigi2021qasper} and
+UniDoc-Bench~\cite{peng2025unidoc} (the last two left out).
+
+\textbf{Held-out set 1.} \AccountingHeldOut{} sealed documents from known
+sources, new document types and out of domain (one from
+FinanceBench~\cite{islam2023financebench}). \AccountingMain{} documents with
+\RQoneQuestions{} questions can be scored.
+
+\textbf{Held-out set 2.} ViDoRe~V3~\cite{loison2026vidore}, a source new to the study,
+selected from metadata alone (two earlier designs were replaced before any of their
+documents was drawn or opened), keeping queries whose evidence pages are all text
+or table pages: \HTwoQueries{} queries in \HTwoSelectedDocuments{} documents before
+gold filtering. Under the primary gold rule, \RQoneHTwoDropRuleQuestions{}
+questions in \RQoneHTwoDropRuleDocuments{} documents can be scored. 
+
+\textbf{Question quality.} The OHR-Bench, UniDoc-Bench and Indian questions are LLM-generated. The author's check (one rater, stopped after its
+first batch against its own expansion rule) found \GoldenOverallInvalid{} of
+\GoldenOverallLabelled{} Indian tuning questions invalid.
+
+\subsection{Gold}\label{sec:gold}
+
+One matching rule places gold evidence as character spans in each parser's own
+output. For held-out set~1 it is each source's answer or evidence span; a question that cannot be placed with certainty is dropped. This removes
+\CoverageHeldOutDoclingShare{} of held-out set~1 questions for Docling and
+\CoverageHeldOutPdfplumberShare{} for pdfplumber. For held-out set~2 the evidence
+is the text inside the human-drawn boxes; the primary rule keeps a
+page when the matcher's frozen drop rule accepts all its box text; two
+sensitivity variants keep a query if any evidence page is placed  or
+apply the held-out set~1 rule (certain-only). On 23~November, after seeing how many questions each rule keeps but before any
+held-out set~2 score, we made the drop rule primary. Comparisons use only questions kept for every compared setup, which hides
+coverage differences between parsers.
+
+\subsection{Setups}\label{sec:setups}
+
+A setup pairs a parser with a chunker setting. The parsers are
+Docling~2.143.0~\cite{auer2024docling} (D, default settings) and
+pdfplumber~0.11.10~\cite{pdfplumber} (P). The chunkers are fixed-token (FT),
+recursive (Rec), LangChain recursive~\cite{langchain} (LC), sentence groups (Sent;
+Stanza~\cite{stanza}), semantic (Qwen3-Embedding-0.6B~\cite{qwen3embedding};
+tuning only, out of GPU memory on held-out data), LLM-regex
+(Gemini~3.5 Flash-Lite~\cite{gemini}), page-based, and our structure-tree method, M1; four reuse the code of Adaptive
+Chunking~\cite{demourajunior2026adaptive}. In names, the number is the size; +p marks a prefix,
+LC-def LangChain's default and D-Tess Docling with Tesseract OCR. Chunks under 100 tokens are merged and those over 1,024 tokens split again. M1 keeps a parser-tree node whole if it fits the target
+size, opens it otherwise, and packs neighbouring pieces.
+
+The primary choice set was fixed before held-out set~1 was opened: Rec, LC, FT and M1 without prefix, each at 256, 384 and
+512 tokens, plus sentence groups of five. That gives \RQonePrimarySettings{}
+settings and, with two parsers, \RQoneSetups{} setups. Further choice sets are the original grid (\RQoneOriginalSetups{} setups on held-out set~1) and
+the full grid (\HeldOutSetups{}).
+
+\subsection{Retrieval and scoring}\label{sec:scoring}
+
+Retrieval is BM25~\cite{bm25}, dense (bge-m3~\cite{chen2024m3}) or a hybrid by
+reciprocal rank fusion~\cite{rrf}.
+Recall@$B$ is the share of gold characters, each counted once, in the ranked
+chunks read until $B$ tokens are used, the last one cut at the budget. We use $B \in \{750, 1{,}250, 2{,}000\}$; the headline result
+is hybrid Recall@1,250. A floor test (chunks cut at random positions score \SanityFloorLower{} lower) failed
+in all \SanityFloorFailedOriginal{} parser and retriever cases under its
+pre-written rule and passed only under a rule amended after that result.
+
+RQ3 (Recall@$k$, Hit@1 and MRR at fixed $k$ on tuning data) was designed on
+12~November, after the held-out set~1 results, and has no test. A later control, also designed after
+the held-out set~1 results, adds Lift@5.
+
+\subsection{Statistics}\label{sec:stats}
+
+Question scores are averaged per document, with 95\% intervals from a document
+bootstrap~\cite{bootstrap} (2,000 document resamples, seed 42, two-sided). Two setups are tied when the paired interval of their per-document
+difference contains zero. The tie rule changed twice before held-out set~1 was scored.
+
+With split-half cross-fitting (the idea of~\cite{crossfitting}, not their
+estimator) over 200 random splits, the oracle picks the best setup on half of a document's questions and
+is measured on the other. The gap is the mean per-document recall of the oracle minus the best single setup. A document
+with one question takes the best single setup's value. This holds for
+\RQoneOneQuestionDocuments{} of \RQoneDocuments{} documents on held-out set~1 and
+for \RQoneHTwoOneQuestionDocuments{} of \RQoneHTwoDropRuleDocuments{} on held-out
+set~2, where the median document has \RQoneHTwoMedianQuestions{} questions. Choosing the best single setup on the questions it is scored on, and fitting the
+oracle on half of a document's questions, both push the gap down, so it is not an
+upper bound on what any chooser could gain. The rule: a per-document chooser is worth building only if the gap's interval lies
+above zero. Multiple comparisons use Holm's correction~\cite{holm}.
+
+RQ2 began as a descriptive tuning analysis, added on 12~November after the
+tuning scores were known. A confirmatory rule was fixed before held-out set~2
+was scored: RQ2 holds if, for each parser and budget, Spearman's
+$\rho$~\cite{spearman} of measured chunk size against recall over that parser's
+\RQtwoHTwoSetupsPerParser{} primary setups is negative. These setups span target
+sizes 256 to 512 only.
+
+\subsection{RQ4 and RQ5}\label{sec:aq}
+
+RQ5(a), designed after held-out set~1 was scored, compares parser settings with defaults on digital tuning PDFs and scanned PDFs from
+MP-DocVQA~\cite{tito2023mpdocvqa}. RQ5(b), whether a tuned chunk size beats the default, was specified on
+10~November after the held-out set~1 scores existed: a second use of that set, not
+confirmatory. 
+
+For RQ4, the design, fixed after held-out set~1 was scored, had one
+measure, an LLM judge; token F1 and
+containment, added after the answers existed, are primary, and the judge (Qwen3-8B~\cite{qwen3}) failed its
+human check and is secondary only. We sample \AQSampleShare{} of each PDF's questions and compare seven Docling
+setups, and five scanned-PDF settings with Docling's default OCR or
+Tesseract~\cite{tesseract}. Gemini Flash-Lite answers from the 1,250 tokens
+hybrid retrieval reads.

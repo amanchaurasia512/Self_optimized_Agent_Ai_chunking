@@ -1,0 +1,24 @@
+\section{Discussion}\label{sec:discussion}
+
+\textbf{What the NO-GO means.} Neither held-out set gives the evidence the decision rule asks
+for, that a choice per document beats the best single setup.
+This is not proof that a better chooser can never help: the best single setup is
+selected on the same questions it is scored on, and the oracle chooses from only
+half of a document's few questions.  Within the cases tested (English PDFs, two parsers, 1,250
+tokens), this supports a simple default: one small-chunk setup rather than a
+per-document selector.
+
+\textbf{Fixed $k$ versus fixed budget.} RQ2 and RQ3 (the latter on tuning data)
+together suggest that the best chunk size is not a property of the chunker alone.
+Under a fixed number of chunks, a larger chunk shows the reader more text, so
+Recall@$k$ rewards size itself; under a fixed budget of 750 or 1,250 tokens that
+advantage disappears and small chunks tend to win. Comparisons at a fixed number of chunks therefore mix chunk quality with the
+amount of text read; we suggest that they report the token budget, or both
+measures.
+
+\textbf{Defaults.} In a post-hoc comparison on held-out set~1, LangChain's default
+chunk size was far from the best size for this budget; where our starting size
+was already close, tuning brought no detectable gain, and parser settings changed
+recall very little. For settings like those tested, a practical check is to
+compare a library's default chunk size with the token budget in use and, when a
+parser without OCR is used, to detect scanned pages.

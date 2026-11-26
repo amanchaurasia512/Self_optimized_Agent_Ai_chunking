@@ -1,0 +1,25 @@
+\section{Introduction}\label{sec:intro}
+
+Systems that answer questions over PDFs first extract the text, then cut it
+into chunks that are indexed and retrieved. Because documents differ in layout
+and structure, a natural idea is to choose the parser and chunker for each
+document, and recent work proposes doing so from intrinsic quality
+signals~\cite{demourajunior2026adaptive}. Before building such a chooser, we ask
+how much retrieval quality is lost by using one fixed parse-and-chunk setup for
+every PDF, and whether a choice per document, made by a cross-fitted oracle from
+a part of each document's own questions, recovers any of it. The oracle selects
+on few questions, so its gap is not a bound on every chooser. We study five
+questions. \textbf{RQ1:} Does choosing a setup per document improve retrieval over
+the best single setup? \textbf{RQ2:} At a fixed token budget, how does chunk size
+relate to recall? \textbf{RQ3:} Does the best chunk size change when a fixed number
+of chunks replaces the fixed token budget? \textbf{RQ4:} Do differences in answer
+quality follow differences in retrieval? \textbf{RQ5:} Do tuned parser settings and
+chunk sizes beat their defaults (a library default for the parsers and
+LangChain, our own starting size for the other chunkers)?
+
+Every setup reads its ranked chunks up to the same token budget. The RQ1 design,
+the scorer and the RQ1 decision rule were written into dated specifications
+before the first held-out set was scored; the designs of the other parts came
+later and are dated in Section~\ref{sec:method}. We find no evidence of a gain from
+choosing a setup per document, and the NO-GO decision is repeated on a second
+held-out set with a different source of gold evidence. 
