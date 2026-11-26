@@ -8,6 +8,9 @@ Steps, from the repo root:
     .venv-docling/bin/python -m src.agent.test4 index    build every index (per document; failures recorded)
     .venv-docling/bin/python -m src.agent batch ...      the answers (printed by plan)
     .venv-docling/bin/python -m src.agent.test4 report   F1, contained, not found, times, memory, failures
+--chunker (index, report): method1_tree_T384_noprefix (run 1, default) or langchain_recursive_size256_overlap0_noprefix
+(run 2, spec v1.2 "Agent test 4, run 2", 2026-11-26: chunked from run 1's saved Docling extractions, files in
+data/agent_test4/run2_<setting>/). --limit N indexes the first N documents only, a timing test (needs runs/tests/).
 Prints ids and counts only."""
 import argparse
 import json
@@ -19,6 +22,8 @@ import pandas as pd
 from scripts.p1_cuad_download import REPO_ID as CUAD_REPO, doc_id_for, pdf_paths_by_title
 from scripts.p1_cuad_select import CUAD_JSON, gold_spans
 from scripts.rq5_scanned_select import MAX_PAGES, MIN_PAGES, page_list
+from src.agent.pipeline import SETUPS
+from src.agent.test4_llm import RUN1_SETTING, run_dir, saved_extraction
 from src.agent.unseen_scanned import (MIN_QUESTIONS, QUESTIONS_PER_DOC, SEED, SEPARATOR, TEST_PICKS, spread,
                                       study_documents)
 from src.common.manifest import PROJECT_ROOT, RUNS_DIR, file_sha256, project_path
@@ -202,9 +207,12 @@ def plan():
 
 # ---------- index ----------
 
-def index_documents(cache_root=CACHE, machine="laptop", source="LOCAL"):
-    """Builds or loads every PDF's thorough index one at a time; a document that fails is recorded with its error and
-    left out of batch_questions.csv. One run record for the step."""
+def index_documents(cache_root=CACHE, machine="laptop", source="LOCAL", setting=RUN1_SETTING, limit=None,
+                    output_dir=None, records_dir=RUNS_DIR):
+    """Builds or loads every PDF's thorough index one at a time (run 2: chunked from run 1's saved extraction; a
+    missing one is a failure, never parsed); a document that fails is recorded with its error and left out of
+    batch_questions.csv. One run record for the step; with limit, the first limit documents only (a timing test,
+    record in runs/tests/)."""
     from src.agent import index
     from src.agent.ask import load_embedder, open_index
     from src.agent.batch import sealed_pdfs, tag
@@ -214,7 +222,9 @@ def index_documents(cache_root=CACHE, machine="laptop", source="LOCAL"):
     from src.eval.embed import EMBEDDER
     questions = pd.read_csv(QUESTIONS, dtype=str, keep_default_na=False)
     kinds = dict(zip(questions["pdf"], questions["kind"]))
-    pdfs = list(kinds)
+    pdfs = list(kinds)[:limit]
+    if limit is not None and Path(records_dir).resolve() == RUNS_DIR.resolve():
+        raise SystemExit("--limit is a timing test: give --records-dir runs/tests")
     sealed = sealed_pdfs(pdfs)
     if sealed:
         raise SystemExit(f"refused, not tuning documents in pdfs/split.csv: {', '.join(sorted(sealed.values()))}")
@@ -224,9 +234,12 @@ def index_documents(cache_root=CACHE, machine="laptop", source="LOCAL"):
     for number, pdf in enumerate(pdfs, start=1):
         start, status = len(logger.stages), "ok"
         try:
-            session = open_index(pdf, logger, run_id, False, None, cache_root, index.embed)
+            extraction = saved_extraction(pdf, setting)
+            if extraction and not extraction.exists():
+                raise FileNotFoundError(f"no saved extraction {project_path(extraction)}")
+            session = open_index(pdf, logger, run_id, False, extraction, cache_root, index.embed, setting)
             documents.append({"document": number, "pdf": pdf, "kind": kinds[pdf],
-                              **plan_stack(session["planned"], session["document"]),
+                              **plan_stack(session["planned"], session["document"], setting),
                               "pdf_sha256": session["planned"]["pdf_sha"], "cache_hit": session["cache_hit"],
                               "chunks": len(session["chunks"])})
         except Exception as error:  # a test of the tool: record the failure and go on with the next document
@@ -235,13 +248,29 @@ def index_documents(cache_root=CACHE, machine="laptop", source="LOCAL"):
         tag(logger, start, document=number)
         print(f"{number}/{len(pdfs)} {Path(pdf).stem}: {status}")
     indexed = {document["pdf"] for document in documents}
-    questions[questions["pdf"].isin(indexed)].to_csv(BATCH_QUESTIONS, index=False)
-    stack = {"agent_mode": "test4_index", "parser_mode": "thorough", "chunker": chunker_info(), "embedder": EMBEDDER,
-             "cache_root": manifest.project_path(cache_root), "documents": documents, "failures": failures}
-    record = manifest.build_manifest(run_id, SPEC, stack, [QUESTIONS, *map(Path, pdfs)], [BATCH_QUESTIONS],
+    batch_questions = Path(output_dir or run_dir(setting)) / BATCH_QUESTIONS.name
+    batch_questions.parent.mkdir(parents=True, exist_ok=True)
+    questions[questions["pdf"].isin(indexed)].to_csv(batch_questions, index=False)
+    stack = {"agent_mode": "test4_index", "parser_mode": "thorough", "setting": setting, "chunker": chunker_info(setting),
+             "embedder": EMBEDDER, "cache_root": manifest.project_path(cache_root), "limit": limit,
+             "documents": documents, "failures": failures}
+    inputs = [QUESTIONS, *map(Path, pdfs), *filter(None, (saved_extraction(pdf, setting) for pdf in pdfs))]
+    record = manifest.build_manifest(run_id, SPEC, stack, [path for path in inputs if path.exists()], [batch_questions],
                                      logger.summary(), machine)
-    print(f"{len(documents)} indexed, {len(failures)} failed -> {project_path(BATCH_QUESTIONS)}\n"
-          f"run record: {manifest.write_manifest(record)}")
+    print(f"{len(documents)} indexed, {len(failures)} failed -> {project_path(batch_questions)}\n"
+          f"run record: {write_record(record, records_dir)}")
+
+
+def write_record(record, records_dir):
+    """runs/<id>.json, or <records_dir>/test_at4_index_<id>.json for a timing test; never rewritten."""
+    if Path(records_dir).resolve() == RUNS_DIR.resolve():
+        return manifest.write_manifest(record)
+    path = Path(records_dir) / f"test_at4_index_{record['run_id']}.json"
+    if path.exists():
+        raise FileExistsError(f"run record already exists: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(record, indent=2), encoding="utf-8")
+    return path
 
 
 # ---------- report ----------
@@ -278,13 +307,16 @@ def kind_summary(kind, steps, answers, failures):
             "failures": [failure for failure in failures if failure["kind"] == kind]}
 
 
-def report():
-    answers_path = project_path(ANSWERS)
-    index_record = newest_record(lambda record: record["stack"].get("agent_mode") == "test4_index")
+def report(setting=RUN1_SETTING):
+    answers_file, summary_file = (run_dir(setting) / path.name for path in (ANSWERS, SUMMARY))
+    answers_path = project_path(answers_file)
+    index_record = newest_record(lambda record: record["stack"].get("agent_mode") == "test4_index"
+                                 and record["stack"].get("setting", RUN1_SETTING) == setting
+                                 and record["stack"].get("limit") is None)
     batch_record = newest_record(lambda record: record["stack"].get("agent_mode") == "batch" and answers_path in record["outputs"])
     if index_record is None or batch_record is None:
         raise SystemExit("needs the test4 index run record and the batch run record that wrote answers.csv")
-    answers, steps = pd.read_csv(ANSWERS), step_rows(index_record)
+    answers, steps = pd.read_csv(answers_file), step_rows(index_record)
     failures = index_record["stack"]["failures"]
     summary = {"index_run_record": index_record["run_id"], "index_machine": index_record["environment"]["machine"],
                "batch_run_record": batch_record["run_id"], "questions": int(batch_record["stack"]["questions"]),
@@ -292,8 +324,8 @@ def report():
                "batch_peak_ram_mb": batch_record["costs"]["totals"]["peak_ram_mb"],
                **{kind: kind_summary(kind, steps[steps["kind"] == kind], answers[answers["kind"] == kind], failures)
                   for kind in ("digital", "scanned")}}
-    SUMMARY.write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    print(json.dumps(summary, indent=2), f"\nsummary -> {project_path(SUMMARY)}")
+    summary_file.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    print(json.dumps(summary, indent=2), f"\nsummary -> {project_path(summary_file)}")
 
 
 def main():
@@ -302,11 +334,18 @@ def main():
     arg_parser.add_argument("--cache-root", default=str(CACHE), help="index step: cache folder")
     arg_parser.add_argument("--machine", default="laptop", help="index step: machine in the run record")
     arg_parser.add_argument("--source", default="LOCAL", help="index step: run id source, e.g. AT4-KN01 on Kaggle")
+    arg_parser.add_argument("--chunker", default=RUN1_SETTING, choices=tuple(SETUPS), help="index, report: run 1 (default) or run 2")
+    arg_parser.add_argument("--limit", type=int, help="index step: first N documents only (a timing test)")
+    arg_parser.add_argument("--output-dir", help="index step: batch_questions.csv folder (default by --chunker)")
+    arg_parser.add_argument("--records-dir", default=str(RUNS_DIR), help="index step: runs/ (default) or runs/tests/")
     args = arg_parser.parse_args()
     if args.step == "index":
-        index_documents(Path(args.cache_root), args.machine, args.source)
+        index_documents(Path(args.cache_root), args.machine, args.source, args.chunker, args.limit, args.output_dir,
+                        Path(args.records_dir))
+    elif args.step == "report":
+        report(args.chunker)
     else:
-        {"select": select, "plan": plan, "report": report}[args.step]()
+        {"select": select, "plan": plan}[args.step]()
 
 
 if __name__ == "__main__":

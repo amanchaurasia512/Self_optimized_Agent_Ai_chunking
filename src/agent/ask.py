@@ -41,24 +41,26 @@ def load_embedder(embed, logger):
             index.encoder()
 
 
-def open_index(pdf_path, logger, run_id, fast=False, from_extraction=None, cache_root=AGENT_CACHE, embed=index.embed):
-    """Scan check, then the cached index or a new one (parse, chunk, embed), then its chunks and vectors: a session."""
+def open_index(pdf_path, logger, run_id, fast=False, from_extraction=None, cache_root=AGENT_CACHE, embed=index.embed,
+               setting=SETTING):
+    """Scan check, then the cached index or a new one (parse, chunk, embed), then its chunks and vectors: a session.
+    setting names the chunker (pipeline.SETUPS; default the agent's chunker)."""
     planned = plan(pdf_path, fast, from_extraction, logger, cache_root)
-    folder = index.index_folder(planned, SETTING, cache_root)
+    folder = index.index_folder(planned, setting, cache_root)
     with logger.stage("load_index"):
-        found = index.cached_index(folder, planned["parser"], chunker_info())
+        found = index.cached_index(folder, planned["parser"], chunker_info(setting))
     if found:
         document, chunk_doc, info = found
     else:
-        document, chunk_doc = build(planned, run_id, logger)
+        document, chunk_doc = build(planned, run_id, logger, setting)
         with logger.stage("embed") as stage:
-            index.save_index(folder, document, chunk_doc, index.index_info(document["parser"], chunker_info()), embed)
+            index.save_index(folder, document, chunk_doc, index.index_info(document["parser"], chunker_info(setting)), embed)
             stage["chunks"] = len(chunk_doc["chunks"])
     with logger.stage("load_vectors"):
         chunks = index.load_chunks(folder / "chunks.json")
         vectors = index.chunk_vectors(folder, chunks)
     return {"planned": planned, "folder": folder, "document": document, "chunk_doc": chunk_doc, "chunks": chunks,
-            "vectors": vectors, "cache_hit": bool(found)}
+            "vectors": vectors, "cache_hit": bool(found), "setting": setting}
 
 
 def ask_index(session, question, logger, budget=1250, context_only=False, embed=index.embed, answer=providers.answer):

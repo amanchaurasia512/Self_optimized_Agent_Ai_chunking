@@ -17,8 +17,16 @@ from src.common.validate import layer1_report, load_validator
 
 # The tuning winner (spec/agent_v1.md, "Default chunker", 2026-11-24); named as scripts/p2_chunk.setting_name names it.
 CHUNKER_NAME, CHUNKER_SETTINGS, HEADING_PREFIX = "langchain_recursive", {"size": 256, "overlap": 0}, False
-SETTING = "_".join([CHUNKER_NAME, *(f"{key}{value}" for key, value in CHUNKER_SETTINGS.items()),
-                    "prefix" if HEADING_PREFIX else "noprefix"])
+
+
+def setting_name(name, settings, prefix):
+    return "_".join([name, *(f"{key}{value}" for key, value in settings.items()), "prefix" if prefix else "noprefix"])
+
+
+SETTING = setting_name(CHUNKER_NAME, CHUNKER_SETTINGS, HEADING_PREFIX)
+# Chunker setups by setting name: the default, and method1_tree T384 (the agent's chunker before 2026-11-24, agent test 4 run 1).
+SETUPS = {setting_name(*setup): setup for setup in ((CHUNKER_NAME, CHUNKER_SETTINGS, HEADING_PREFIX),
+                                                    ("method1_tree", {"T": 384}, False))}
 SPEC = "agent_v1"
 
 
@@ -104,12 +112,12 @@ def plan(pdf_path, fast=False, from_extraction=None, logger=None, cache_root=Non
             "extraction": extraction, "empty_pages": empty_pages, "page_count": page_count, "parser": parser, "reason": reason}
 
 
-def chunker_info():
-    entry = CHUNKERS[CHUNKER_NAME]
-    return {"name": CHUNKER_NAME, "version": entry["version"], "settings": {**CHUNKER_SETTINGS, "heading_prefix": HEADING_PREFIX}}
+def chunker_info(setting=SETTING):
+    name, settings, prefix = SETUPS[setting]
+    return {"name": name, "version": CHUNKERS[name]["version"], "settings": {**settings, "heading_prefix": prefix}}
 
 
-def build(planned, run_id, logger):
+def build(planned, run_id, logger, setting=SETTING):
     """Parse (or take the extraction) and chunk: (document, chunk document)."""
     with logger.stage("parse"):
         if planned["extraction"]:
@@ -118,24 +126,25 @@ def build(planned, run_id, logger):
         else:
             document = parse(planned["pdf"], planned["parser"], planned["pdf"].stem, planned["reason"])
             source = {"sha256": planned["pdf_sha"], "file": planned["pdf"].name}
-    entry = CHUNKERS[CHUNKER_NAME]
+    name, settings, prefix = SETUPS[setting]
+    entry = CHUNKERS[name]
     nodes = entry["nodes"](document) if "nodes" in entry else None  # as scripts/p2_chunk builds the study's files
-    prefix_budget = int(entry["prefix_share"] * CHUNKER_SETTINGS["T"]) if "prefix_share" in entry else None
+    prefix_budget = int(entry["prefix_share"] * settings["T"]) if "prefix_share" in entry else None
     with logger.stage("chunk") as stage:
-        spans = entry["function"](document, **CHUNKER_SETTINGS)
-        chunk_doc = chunk_document(document, spans, chunker_info(), run_id, source, HEADING_PREFIX, nodes, prefix_budget)
+        spans = entry["function"](document, **settings)
+        chunk_doc = chunk_document(document, spans, chunker_info(setting), run_id, source, prefix, nodes, prefix_budget)
         stage["chunks"] = len(chunk_doc["chunks"])
         chunk_doc["quality"]["layer1"] = layer1_report(chunk_doc, document["text"], load_validator())
     return document, chunk_doc
 
 
-def plan_stack(planned, document):
+def plan_stack(planned, document, setting=SETTING):
     """The run-record fields every agent mode shares."""
     return {"parser_mode": "fast" if planned["fast"] else "thorough", "parser": document["parser"],
             "parser_reason": planned["reason"],
             "from_extraction": manifest.project_path(planned["from_extraction"]) if planned["from_extraction"] else None,
             "pages": planned["page_count"], "pages_without_text": len(planned["empty_pages"]),
-            "pages_without_text_list": planned["empty_pages"], "chunker": chunker_info(), "tokenizer": TOKENIZER}
+            "pages_without_text_list": planned["empty_pages"], "chunker": chunker_info(setting), "tokenizer": TOKENIZER}
 
 
 def plan_inputs(planned):

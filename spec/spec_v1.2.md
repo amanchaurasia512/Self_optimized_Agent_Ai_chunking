@@ -1809,3 +1809,11 @@ Adds to "paper-v1.3 lock" (2026-11-24); reporting only, no result or decision ch
 ## paper-v1.3 lock: one more input (2026-11-25)
 - runs/P1-RQ5-KN01-20261109-3.json (RQ5(a) headings variant) is added to `docs/paper_checksums_v1.3.txt`: it records the
   Docling default table mode (ACCURATE), which the default variant's record does not list. No result changes.
+
+## Note (26 Nov 2026)
+pdfs/split.csv: the hash in docs/paper_checksums.txt:86 (added 14 Nov, c62c7a9) is of version 9c453c8. On 20 Nov (639eb33) 53 rows for held-out set 2 (ViDoRe V3) were appended; the 66 earlier rows are byte-identical and no document changed split. The new hash goes in docs/paper_checksums_v1.4.txt.
+
+## Agent test 4, run 2 (specified 26 Nov, before running)
+The tool's default chunker is LangChain recursive 256 (src/agent/pipeline.py:18-21), but test 4 (20-23 Nov) indexed with method1_tree_T384. Run 2 repeats test 4 with the default chunker: same 100 documents, the saved thorough-mode Docling extractions (no new parsing), same 300 questions, hybrid retrieval at 1,250 tokens, same Gemini model and 4.3 s pacing, same measures (gold contained, token F1, answer contained, not found, time and peak memory per step). qwen2.5:3b is not re-run. Both runs are reported; neither replaces the other. Test 4 ran in thorough mode only, so the fast-mode parser switch is not evaluated.
+
+Note (26 Nov 2026): test4.py took the agent's default chunker, which changed from method1_tree_T384 to LangChain recursive 256 on 24 Nov; run 1 (20-23 Nov) used method1_tree_T384, and the new --chunker default pins it there.

@@ -41,9 +41,11 @@ def seconds(logger, start):
 
 
 def run_batch(questions_csv, output_csv, budget=1250, fast=False, cache_root=AGENT_CACHE, machine="laptop",
-              embed=index.embed, answer=providers.answer, sleep=time.sleep, clock=time.monotonic, interval=INTERVAL):
+              embed=index.embed, answer=providers.answer, sleep=time.sleep, clock=time.monotonic, interval=INTERVAL,
+              setting=SETTING, from_extractions=None):
     """Writes output_csv (also when a provider error stops the batch part-way) and the run record; returns
-    (answer rows as a DataFrame, run record path)."""
+    (answer rows as a DataFrame, run record path). setting names the chunker (pipeline.SETUPS); from_extractions maps
+    a PDF to an existing extraction file to chunk instead of parsing it."""
     rows = pd.read_csv(questions_csv, dtype=str, keep_default_na=False)
     missing = set(COLUMNS) - set(rows.columns)
     if missing:
@@ -60,7 +62,7 @@ def run_batch(questions_csv, output_csv, budget=1250, fast=False, cache_root=AGE
     sessions, index_seconds = {}, {}
     for number, pdf in enumerate(pdfs, start=1):
         start = len(logger.stages)
-        sessions[pdf] = open_index(pdf, logger, run_id, fast, None, cache_root, embed)
+        sessions[pdf] = open_index(pdf, logger, run_id, fast, (from_extractions or {}).get(pdf), cache_root, embed, setting)
         tag(logger, start, document=number)
         index_seconds[pdf] = round(sum(seconds(logger, start).values()), 3)
 
@@ -88,11 +90,11 @@ def run_batch(questions_csv, output_csv, budget=1250, fast=False, cache_root=AGE
         table = pd.DataFrame(answered)
         Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
         table.to_csv(output_csv, index=False)
-        documents = [{"document": number, **plan_stack(sessions[pdf]["planned"], sessions[pdf]["document"]),
+        documents = [{"document": number, **plan_stack(sessions[pdf]["planned"], sessions[pdf]["document"], setting),
                       "pdf_sha256": sessions[pdf]["planned"]["pdf_sha"], "cache_hit": sessions[pdf]["cache_hit"],
                       "chunks": len(sessions[pdf]["chunks"])} for number, pdf in enumerate(pdfs, start=1)]
-        stack = {"agent_mode": "batch", "parser_mode": "fast" if fast else "thorough", "setting": SETTING,
-                 "chunker": chunker_info(), "embedder": EMBEDDER, "budget": budget, "pace_seconds": round(interval, 3),
+        stack = {"agent_mode": "batch", "parser_mode": "fast" if fast else "thorough", "setting": setting,
+                 "chunker": chunker_info(setting), "embedder": EMBEDDER, "budget": budget, "pace_seconds": round(interval, 3),
                  "cache_root": manifest.project_path(cache_root), "documents": documents,
                  "questions": len(rows), "answered": len(answered),
                  "answers_by_entry": dict(Counter(row["provider_entry"] for row in answered))}
