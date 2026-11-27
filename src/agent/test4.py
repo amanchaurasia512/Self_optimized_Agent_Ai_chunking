@@ -26,6 +26,7 @@ from src.agent.pipeline import SETUPS
 from src.agent.test4_llm import RUN1_SETTING, run_dir, saved_extraction
 from src.agent.unseen_scanned import (MIN_QUESTIONS, QUESTIONS_PER_DOC, SEED, SEPARATOR, TEST_PICKS, spread,
                                       study_documents)
+from src.common import manifest
 from src.common.manifest import PROJECT_ROOT, RUNS_DIR, file_sha256, project_path
 from src.common.paths import DATA
 from src.common.pdf_catalog import PDF_MANIFEST
@@ -217,7 +218,6 @@ def index_documents(cache_root=CACHE, machine="laptop", source="LOCAL", setting=
     from src.agent.ask import load_embedder, open_index
     from src.agent.batch import sealed_pdfs, tag
     from src.agent.pipeline import SPEC, agent_run_id, chunker_info, plan_stack
-    from src.common import manifest
     from src.common.cost_logger import CostLogger
     from src.eval.embed import EMBEDDER
     questions = pd.read_csv(QUESTIONS, dtype=str, keep_default_na=False)
